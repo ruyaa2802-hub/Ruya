@@ -28,6 +28,22 @@ kariyerinin başlangıç yılı) videoya bilerek alınmadı. Yer ve tarih bilgis
 Beyazperde ve biyografiler.com (doğum tarihi/yeri), Wikipedia "G.O.R.A." ve "A.R.O.G." sayfaları (film tarihleri),
 Hokkabaz (2006) yönetmenlik bilgisi.
 
+## 3B karakter (Blender)
+
+Sahne 3'teki sunucu karakteri `blender/host_layer.py` ile 3B olarak üretilir. Blender uygulaması yerine
+`bpy` (Blender'ın Python modülü) kullanılır; Workbench motoru ile render alınır (EEVEE CPU'da çok yavaş).
+
+```bash
+python3.11 -m venv blender-venv && ./blender-venv/bin/pip install bpy
+# libEGL gerekir: apt-get install -y libegl1 libgl1 libgles2
+OUT_DIR=./host_frames FRAMES=549-931 ./blender-venv/bin/python blender/host_layer.py
+# kareler 1080x1920 RGBA, 30 fps zaman çizelgesine göre adlandırılır (host_0549.png ...)
+HOST_DIR=./host_frames node render.cjs silent.mp4 30 60
+```
+
+Kare klasörü (~350 MB) depoya konmaz. `index.html` bu kareleri `window.HOST_DIR` üzerinden okur;
+`render.cjs` bu değeri `HOST_DIR` ortam değişkeninden alır.
+
 ## Yeniden üretim
 
 ```bash

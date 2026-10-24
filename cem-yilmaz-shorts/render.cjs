@@ -13,6 +13,9 @@ const frames = Math.round(fps * seconds);
 (async () => {
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
+  // HOST_DIR: folder with the Blender host frames (host_0549.png ...); defaults to ./host
+  const hostDir = process.env.HOST_DIR ? 'file://' + path.resolve(process.env.HOST_DIR) : 'host';
+  await page.addInitScript((dir) => { window.HOST_DIR = dir; }, hostDir);
   await page.goto('file://' + path.join(here, 'index.html'));
   await page.evaluate(() => document.fonts.ready);
 
