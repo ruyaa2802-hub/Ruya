@@ -182,14 +182,14 @@
 
   // captions: one line per scene, words reveal across the narration length
   const CAPS = {
-    s1: "Cem Yılmaz kimdir? Türk komedisinin en tanıdık isimlerinden biri... Peki hayatı nasıl başladı? Gelin birlikte bakalım!",
-    s2: "Cem Yılmaz, 23 Nisan 1973'te İstanbul'da doğdu. Kariyerine sahnede, espri yaparak başladı ve izleyicinin kalbini hızla kazandı.",
-    s3: "Stand-up gösterileriyle tanınan Cem Yılmaz, 2004'te GORA ile sinemaya adım attı. Filmin hem senaryosunu yazdı hem de başrolünü oynadı.",
-    s4: "GORA'nın ardından 2008'de AROG geldi ve o yıl Türkiye'nin en çok izlenen filmlerinden biri oldu. 2009'da Yahşi Batı ile western parodisine uzandı. 2018'de ise Arif V 216 vizyona girdi.",
-    s5: "Oyuncu, yönetmen ve senarist Cem Yılmaz, Türk komedisine kendi tarzını kazandırdı. Sence Cem Yılmaz'ın en komik filmi hangisi? Yorumlarda yaz!"
+    s1: "Cem Yılmaz kim? Türk komedisinin en sevilen isimlerinden biri! Gelin, hayatına ve kariyerine birlikte bakalım!",
+    s2: "Cem Yılmaz, 23 Nisan 1973'te İstanbul'da doğdu. Sahnede espri yaparak başladı ve izleyicinin kalbini hemen kazandı!",
+    s3: "Stand-up sahnelerinde kendine bir isim yaptı. Sonra 2004'te GORA ile sinemaya adım attı! Hem senaryoyu yazdı, hem başrolü oynadı.",
+    s4: "GORA'nın ardından 2008'de AROG geldi, o yılın en çok hasılat yapan Türk filmi oldu! 2009'da Yahşi Batı ile western parodisine uzandı, 2018'de de Arif V 216 vizyona girdi!",
+    s5: "Oyuncu, yönetmen, senarist: Cem Yılmaz, Türk komedisine kendi tarzını kazandırdı! Sence en komik filmi hangisi? Yorumlarda yaz!"
   };
-  // narration length in seconds (from generated audio), used to pace caption reveal
-  const CAP_LEN = { s1: 7.6, s2: 9.36, s3: 9.12, s4: 15.44, s5: 9.04 };
+  // narration length in seconds (fitted audio per scene), used to pace caption reveal
+  const CAP_LEN = { s1: 7.73, s2: 9.74, s3: 12.74, s4: 15.74, s5: 12.74 };
   const capBox = document.getElementById("capBox");
   const capWords = {};
   for (const k in CAPS) {
