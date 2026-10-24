@@ -1,0 +1,34 @@
+{
+  "id": "test-01",
+  "purpose": "Teknik doğrulama: karakter yürür, kameraya yaklaşır, bir nesneyle (mikrofon) etkileşir.",
+  "duration_seconds": 8,
+  "aspect_ratio": "9:16",
+  "character": {
+    "type": "fictional",
+    "note": "Kurgusal bir karakter. Gerçek bir kişiye benzetilmez ve gerçek bir kişinin sesi kullanılmaz.",
+    "appearance": "Kısa koyu saçlı, orta yaşlı erkek; koyu gri ceket, beyaz açık yakalı gömlek."
+  },
+  "beats": [
+    "Sahnenin arka tarafından kameraya doğru yavaş yürür (tek sürekli hareket).",
+    "Vintage krom mikrofon standına ulaşır.",
+    "Mikrofonu sağ eliyle kavrar ve kaldırır.",
+    "Başını boş seyirci alanına doğru çevirir.",
+    "Kısa, doğal bir gülümseme."
+  ],
+  "camera": "Yavaş el kamerası ile dolly-in, hafif doğal titreşim, sığ alan derinliği.",
+  "lighting": "Tek sıcak spot ışık, hafif sis, sert ve gerçekçi gölgeler.",
+  "environment": "Karanlık, boş tiyatro sahnesi; ahşap zemin.",
+  "audio": {
+    "ambient": "Oda sesi ve ayak sesleri.",
+    "dialogue": false
+  },
+  "acceptance_criteria": [
+    "Yüz ve kıyafet tüm karelerde değişmiyor (kimlik kayması yok).",
+    "Yürüyüş doğal; ayak basışı zemine uyuyor, kayma yok.",
+    "Mikrofon eldeki temasla hareket ediyor; nesne yüzmüyor.",
+    "El, uzuv ve parmak sayısında bozulma yok.",
+    "Kamera hareketi sarsıntılı değil, sahne ışığı tutarlı."
+  ],
+  "status": "blocked",
+  "blocker": "Bu ElevenLabs hesabında video üretimi ücretli plan gerektiriyor. Harici bir video sağlayıcısı veya ücretli plan gerekiyor."
+}
