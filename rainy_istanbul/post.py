@@ -137,9 +137,14 @@ def main():
         yy, xx = np.mgrid[0:H, 0:W]
         rr = np.sqrt(((xx - W / 2) / (W / 2)) ** 2 * 0.8 + ((yy - H / 2) / (H / 2)) ** 2)
         out *= (1 - 0.35 * np.clip(rr - 0.35, 0, 1) ** 1.6)[..., None]
-        # film grain (per frame, luminance weighted)
-        g = rng.normal(0, 0.016, (H, W, 1)).astype(np.float32)
-        out = out + g * (0.6 + 0.4 * np.sqrt(np.clip(lum, 0, 1)))
+        # upscale to the delivery size, then film grain at full resolution
+        out = np.clip(out, 0, 1)
+        if (W, H) != (1080, 1920):
+            out = np.stack([np.asarray(Image.fromarray(out[..., k].astype(np.float32), mode="F").resize((1080, 1920), Image.LANCZOS)) for k in range(3)], axis=2)
+            out = np.clip(out, 0, 1)
+        lum = out.mean(axis=2, keepdims=True)
+        g = rng.normal(0, 0.016, (1920, 1080, 1)).astype(np.float32)
+        out = out + g * (0.6 + 0.4 * np.sqrt(lum))
         out = np.clip(out, 0, 1)
         Image.fromarray((out * 255 + 0.5).astype(np.uint8)).save(os.path.join(DST, f"p_{fnum:04d}.png"))
         print("post", fnum, flush=True)

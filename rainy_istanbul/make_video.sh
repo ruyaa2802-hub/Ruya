@@ -18,7 +18,7 @@ fi
 python3 "$HERE/post.py" "$W/render" "$W/post"
 python3 "$HERE/audio.py" "$W/scene_track.json" "$W/sound.wav"
 ffmpeg -y -framerate 30 -i "$W/post/p_%04d.png" -i "$W/sound.wav" \
-  -vf "scale=1080:1920:flags=lanczos,unsharp=5:5:0.4" \
+  -vf "unsharp=5:5:0.3" \
   -c:v libx264 -preset slow -crf 17 -pix_fmt yuv420p -profile:v high \
   -c:a aac -b:a 192k -shortest -movflags +faststart "$W/rainy_istanbul_10s.mp4"
 echo "done: $W/rainy_istanbul_10s.mp4"
