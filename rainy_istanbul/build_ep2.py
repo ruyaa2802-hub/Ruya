@@ -141,6 +141,9 @@ with open(os.path.splitext(OUT)[0] + "_track.json", "w") as fh:
 leg_proxy = coat.make_leg_proxy(suit, rig, rig.data.bones["thigh_l"].head_local.z + 0.05)
 cl = coat.add_cloth(coat_obj, [leg_proxy], E.FRAMES)
 cl.settings.quality = 12           # sprinting: more substeps
+cl.settings.air_damping = 0.6      # at sprint speed the default drag throws the hem over his head
+cl.settings.mass = 1.0
+cl.settings.bending_stiffness = 10.0
 cl.point_cache.use_disk_cache = True
 bpy.ops.wm.save_as_mainfile(filepath=OUT)
 for f in range(1, E.FRAMES + 1):
