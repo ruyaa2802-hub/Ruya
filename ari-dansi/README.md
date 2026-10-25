@@ -63,3 +63,27 @@ Tarayıcı önizlemesi: proje kökünde `npx http-server .` → `http://localhos
   Kesin "saniye başına metre" değeri koloniye/türe göre değiştiği için videoda sayı verilmedi.
 * Dönüş halkaları sırayla sağdan ve soldan yapılır (sekiz şekli); halkalar bilgi taşımaz.
 * Takipçi arılar dansçıya dönük, antenleriyle yakından izler.
+
+## Son kontrol (ölçülen değerler)
+
+* Süre 42,5 sn · 1275 kare · 1280×720 @ 30 fps · H.264 + AAC 192 kbps stereo
+* Ses: miks –16,1 LUFS (entegre), tepe –1,0 dBFS; anlatım altında müzik –10 dB, ambiyans –6 dB, efekt –4 dB otomatik kısılır
+* Anlatım yerleşimi (`out/audio/narration_timing.json`):
+
+| Başlangıç–bitiş | Cümle |
+|---|---|
+| 1,2–3,5 | Bir arının çiçek tarlası bulduğunu düşün. |
+| 4,2–6,8 | Peki, arkadaşlarına yolu nasıl anlatır? |
+| 9,7–11,7 | İşte sırrı: Dans ederek! |
+| 12,1–18,1 | Bal arıları, özel bir sallanma dansıyla… |
+| 18,8–22,6 | Dansın yönü, güneşe göre… |
+| 24,6–28,8 | Dansın süresi ise… |
+| 31,8–36,1 | Yani bu minik canlılar… |
+| 37,0–40,5 | Doğanın en şaşırtıcı iletişim yöntemlerinden biri, değil mi? |
+
+## Sınırlamalar
+
+* Görüntü gerçek zamanlı 3D motorla (Three.js) üretildi; büyük stüdyo filmlerindeki ışın izleme, gerçek tüy simülasyonu
+  veya kas/deformasyon animasyonu yoktur. Karakterler basit geometrilerden oluşur, tüy etkisi doku + "sheen" ile verilmiştir.
+* Kanat çırpışı 30 fps'de okunabilmesi için gerçek frekanstan (~230 Hz) yavaş, saydamlık + hareket yelpazesiyle temsil edilir.
+* Müzik ve efektler prosedürel sentezdir (hazır kütüphane kaydı değildir).

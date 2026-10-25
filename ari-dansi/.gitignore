@@ -3,3 +3,5 @@ out/stills/
 out/parts/
 logs/
 __pycache__/
+out/video_noaudio.mp4
+out/concat.txt

@@ -515,9 +515,9 @@ music *= dyn * fade_in * (1 - ss(41.6, 42.5, t_axis) * 0.85)
 duck_m = 1 - duck * (1 - db(-10))
 duck_a = 1 - duck * (1 - db(-6))
 duck_s = 1 - duck * (1 - db(-4))
-music_st = music * db(-15) * duck_m
+music_st = music * db(-10) * duck_m
 amb_st = amb * duck_a
-sfx_st = sfx * duck_s * fade_out
+sfx_st = sfx * db(2) * duck_s * fade_out
 mix = narr + music_st + amb_st + sfx_st
 peak = np.abs(mix).max()
 if peak > db(-1):
