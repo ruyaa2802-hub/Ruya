@@ -2,3 +2,4 @@ node_modules/
 out/stills/
 out/parts/
 logs/
+__pycache__/
