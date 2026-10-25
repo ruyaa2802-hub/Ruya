@@ -5,3 +5,5 @@ logs/
 __pycache__/
 out/video_noaudio.mp4
 out/concat.txt
+out/parts_v/
+out/video_vertical_noaudio.mp4

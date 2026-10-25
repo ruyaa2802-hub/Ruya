@@ -10,7 +10,28 @@ import { Post } from './post.js';
 //  frame is a pure function of time t, so it can be rendered frame-by-frame.
 // ===========================================================================
 
-const W = 1280, H = 720;
+const PARAMS = new URLSearchParams(location.search);
+const VERT = PARAMS.get('format') === 'vertical'; // Shorts / Reels: 1080×1920
+const W = VERT ? 1080 : 1280, H = VERT ? 1920 : 720;
+const SUBS = VERT || PARAMS.has('subs');
+// portrait frames get a taller vertical field of view so subjects keep similar horizontal room
+const FOV = (f) => (VERT ? 2 * THREE.MathUtils.radToDeg(Math.atan(Math.tan(THREE.MathUtils.degToRad(f / 2)) * 1.62)) : f);
+{
+  const stage = document.getElementById('stage');
+  stage.style.width = `${W}px`;
+  stage.style.height = `${H}px`;
+  if (VERT) stage.classList.add('vertical');
+  const cv = document.getElementById('c');
+  cv.width = W;
+  cv.height = H;
+  cv.style.width = `${W}px`;
+  cv.style.height = `${H}px`;
+  const svg = document.getElementById('diag');
+  svg.setAttribute('width', W);
+  svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+}
+const SUBTITLES = SUBS ? await fetch('./subtitles.json').then((r) => r.json()) : [];
 export const FPS = 30;
 export const DURATION = 42.5;
 
@@ -51,8 +72,8 @@ dance.B = dance.M.clone().addScaledVector(dance.d, dance.L / 2);
 
 const garden = createGarden();
 const hive = createHive(dance);
-const camG = new THREE.PerspectiveCamera(40, W / H, 0.1, 2500);
-const camH = new THREE.PerspectiveCamera(40, W / H, 0.05, 120);
+const camG = new THREE.PerspectiveCamera(FOV(40), W / H, 0.1, 2500);
+const camH = new THREE.PerspectiveCamera(FOV(40), W / H, 0.05, 120);
 
 // ---------------- Cast ----------------
 const gHero = createBee({ hero: true, seed: 1 });
@@ -190,6 +211,7 @@ garden.heroFlower.landings.push(T.land1, T.takeoff1);
 const estabPos = E.clone().addScaledVector(gDir, 6.5).addScaledVector(perp, 3.2).add(v3(0, 1.0, 0));
 const estabLook = E.clone().addScaledVector(gDir, 1.0).add(v3(0, 0.6, 0));
 const wideLook = G.clone().addScaledVector(hDir, 9).add(v3(0, 1.4, 0));
+if (VERT) wideLook.lerp(Ltop0[0], 0.4); // narrow portrait frame: keep Pırıltı's flower in shot
 const widePos0 = G.clone().addScaledVector(hDir, 21.5).addScaledVector(perp, -3.5).add(v3(0, 7.0, 0));
 function widePos(t) {
   return widePos0.clone().lerp(wideLook, 0.1 * ss(39.6, 42.5, t));
@@ -254,21 +276,37 @@ const $ = (id) => document.getElementById(id);
 const ov = {
   title: $('title'), diag: $('diag'), upLine: $('upLine'), sun: $('sun'), arc: $('arc'), runArrow: $('runArrow'), hub: $('hub'),
   miniBee: $('miniBee'), angleTag: $('angleTag'), sunTag: $('sunTag'), hiveTag: $('hiveTag'), gardenTag: $('gardenTag'),
-  dirPill: $('dirPill'), upPill: $('upPill'), panel: $('panel'), fillA: $('fillA'), fillB: $('fillB'), end: $('end'),
+  dirPill: $('dirPill'), upPill: $('upPill'), panel: $('panel'), fillA: $('fillA'), fillB: $('fillB'), end: $('end'), sub: $('sub'),
 };
-const C = { x: 640, y: 360 };
-const ARROW = 262;
+const C = { x: W / 2, y: H / 2 };
+const ARROW = VERT ? 560 : 262;
+const UPLEN = VERT ? 540 : 250;
+const SUN_Y = C.y - UPLEN - 26;
+const ARC_R = VERT ? 110 : 72;
 const AD = { x: Math.sin(TH), y: -Math.cos(TH) };
 const op = (el, v, extra = '') => { el.style.opacity = v.toFixed(3); if (extra) el.style.transform = extra; };
 const place = (el, x, y) => { el.style.left = `${x}px`; el.style.top = `${y}px`; };
-place(ov.angleTag, 640 + 112 * Math.sin(TH / 2) - 18, 360 - 112 * Math.cos(TH / 2) - 14);
-place(ov.sunTag, 672, 66);
-place(ov.hiveTag, 548, 384);
-place(ov.gardenTag, 812, 128);
-place(ov.upPill, 60, 120);
-place(ov.dirPill, 340, 620);
+const tip = { x: C.x + AD.x * ARROW, y: C.y + AD.y * ARROW };
+for (const id of ['upLine', 'runArrow']) { ov[id].setAttribute('x1', C.x); ov[id].setAttribute('y1', C.y); ov[id].setAttribute('x2', C.x); ov[id].setAttribute('y2', C.y); }
+ov.hub.setAttribute('cx', C.x);
+ov.hub.setAttribute('cy', C.y);
+if (VERT) {
+  place(ov.angleTag, C.x + 165 * Math.sin(TH / 2) - 26, C.y - 165 * Math.cos(TH / 2) - 20);
+  place(ov.sunTag, C.x + 46, SUN_Y - 22);
+  place(ov.hiveTag, C.x - 140, C.y + 34);
+  place(ov.gardenTag, tip.x - 250, tip.y - 76);
+  ov.upPill.style.top = '170px';
+  ov.dirPill.style.top = '1150px';
+} else {
+  place(ov.angleTag, C.x + 112 * Math.sin(TH / 2) - 18, C.y - 112 * Math.cos(TH / 2) - 14);
+  place(ov.sunTag, C.x + 32, SUN_Y - 18);
+  place(ov.hiveTag, C.x - 92, C.y + 24);
+  place(ov.gardenTag, tip.x + 23, tip.y - 19);
+  place(ov.upPill, 60, 120);
+  place(ov.dirPill, 340, 620);
+}
 {
-  const a1 = -Math.PI / 2, a2 = -Math.PI / 2 + TH, r = 72;
+  const a1 = -Math.PI / 2, a2 = -Math.PI / 2 + TH, r = ARC_R;
   ov.arc.setAttribute('d', `M ${C.x + r * Math.cos(a1)} ${C.y + r * Math.sin(a1)} A ${r} ${r} 0 0 1 ${C.x + r * Math.cos(a2)} ${C.y + r * Math.sin(a2)}`);
   ov.arcLen = r * TH;
   ov.arc.setAttribute('stroke-dasharray', `${ov.arcLen} ${ov.arcLen}`);
@@ -281,9 +319,9 @@ function updateOverlay(t) {
   const diagOn = window01(t, 18.55, 24.65, 0.3);
   op(ov.diag, diagOn);
   const pU = ss(18.7, 19.35, t);
-  ov.upLine.setAttribute('y2', (C.y - 250 * pU).toFixed(1));
+  ov.upLine.setAttribute('y2', (C.y - UPLEN * pU).toFixed(1));
   const sp = ss(19.15, 19.55, t);
-  ov.sun.setAttribute('transform', `translate(640,84) scale(${(sp * (1 + 0.15 * bell(t, 19.5, 0.12))).toFixed(3)}) rotate(${(t * 20).toFixed(1)})`);
+  ov.sun.setAttribute('transform', `translate(${C.x},${SUN_Y}) scale(${(sp * (1 + 0.15 * bell(t, 19.5, 0.12))).toFixed(3)}) rotate(${(t * 20).toFixed(1)})`);
   const pR = ss(19.0, 20.0, t);
   ov.runArrow.setAttribute('x2', (C.x + AD.x * ARROW * pR).toFixed(1));
   ov.runArrow.setAttribute('y2', (C.y + AD.y * ARROW * pR).toFixed(1));
@@ -309,13 +347,24 @@ function updateOverlay(t) {
   ov.fillA.style.width = `${(fill * 100).toFixed(1)}%`;
   ov.fillB.style.width = `${(fill * 100).toFixed(1)}%`;
 
+  // subtitles (burned in for the Shorts version)
+  let subOn = 0;
+  for (const c of SUBTITLES) {
+    if (t >= c.start - 0.1 && t < c.end + 0.15) {
+      if (ov.sub.textContent !== c.text) ov.sub.textContent = c.text;
+      subOn = window01(t, c.start - 0.1, c.end + 0.15, 0.1);
+      break;
+    }
+  }
+  op(ov.sub, subOn);
+
   op(ov.end, window01(t, 41.3, 43.5, 0.5), `translateY(${((1 - ss(41.3, 41.9, t)) * 14).toFixed(1)}px)`);
 }
 
 // ===========================================================================
 //  Frame
 // ===========================================================================
-function setCam(cam, pos, look, fov = 40, up = UP) {
+function setCam(cam, pos, look, fov = FOV(40), up = UP) {
   cam.position.copy(pos);
   cam.up.copy(up);
   cam.lookAt(look);
@@ -515,7 +564,7 @@ function updateTrail(t) {
 
 // ---------------- Shot list ----------------
 function hiveCamera(t) {
-  const frontPos = A3.clone().setZ(7.4);
+  const frontPos = A3.clone().setZ(VERT ? 6.2 : 7.4);
   const frontLook = A3.clone().setZ(0);
   const p0 = v3(4.6, 3.2, 8.4), l0 = v3(1.5, 0.5, 0);
   const p1 = v3(1.25, 2.55, 4.3), l1 = v3(0.05, 0.05, 0);
@@ -534,7 +583,7 @@ function hiveCamera(t) {
   // scene 4: pull back & follow the bees toward the entrance light
   const u3 = easeInOut(remap(t, 30.7, 33.4));
   const exitPos = v3(lerp(A3.x, 7.2, u3), lerp(A3.y, 1.0, u3), lerp(7.4, 8.6, u3));
-  const exitLook = hHero.root.position.clone().lerp(v3(14, 1.8, 3.8), 0.25);
+  const exitLook = hHero.root.position.clone().lerp(v3(14, 1.8, 3.8), VERT ? 0.08 : 0.25);
   pos.lerp(exitPos, ss(30.7, 31.2, t));
   look.lerp(exitLook, ss(30.9, 31.8, t));
   const focus = pos.distanceTo(t < 30.9 ? (t < T.danceStart ? hHero.root.position : A3) : hHero.root.position);
@@ -542,7 +591,8 @@ function hiveCamera(t) {
   return { pos, look, focus, aperture: lerp(13, 4.5, front), maxBlur: 12 };
 }
 
-const aerialPos = HIVE.clone().add(v3(0, 92, 0));
+// height chosen so the hive→garden distance spans exactly ARROW pixels on screen (angle and length match the diagram)
+const aerialPos = HIVE.clone().add(v3(0, (H / 2) * Math.hypot(G.x - HIVE.x, G.z - HIVE.z) / (Math.tan(THREE.MathUtils.degToRad(30)) * ARROW), 0));
 
 function frame(t) {
   // which world(s) are on screen
@@ -571,7 +621,7 @@ function frame(t) {
   }
   if (gcam || aerialMix > 0) {
     // pose garden bees (needs camera direction for wing back-light → set camera first with provisional look)
-    if (gcam) setCam(camG, gcam.pos, gcam.look || T1, 40);
+    if (gcam) setCam(camG, gcam.pos, gcam.look || T1);
     poseGardenBees(t);
   }
   if (inGarden1) {
@@ -581,7 +631,7 @@ function frame(t) {
     if (t > T.land1 - 0.3 && t <= T.takeoff1) look = T1.clone().add(v3(0, 0.45, 0)).lerp(hp, 0.2);
     gcam.look = look;
     gcam.focus = gcam.pos.distanceTo(hp);
-    setCam(camG, gcam.pos, look, 40);
+    setCam(camG, gcam.pos, look);
     garden.setShadowFocus(T1, t < 3 ? 26 : 10);
     garden.update(t, camG, camG.position.clone().lerp(T1, 0.7));
     garden.updateSparks(t, T1, 5.1, 1.3);
@@ -589,7 +639,7 @@ function frame(t) {
   if (inGarden4) {
     const target = gHero.root.position;
     gcam.focus = gcam.pos.distanceTo(target);
-    setCam(camG, gcam.pos, gcam.look, 40);
+    setCam(camG, gcam.pos, gcam.look);
     garden.setShadowFocus(t < 37.5 ? target : wideLook, t < 37.5 ? 16 : 22);
     garden.update(t, camG, camG.position.clone().lerp(gcam.look, 0.5));
     garden.updateSparks(t, Ltop0[0], 38.9, 0.9);

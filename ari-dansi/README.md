@@ -39,6 +39,19 @@ python3 audio/make_audio.py                    # cues.json gerekir (render yazar
 ffmpeg -i out/video_noaudio.mp4 -i out/soundtrack.wav -c:v copy -c:a aac -b:a 192k -shortest out/final.mp4
 ```
 
+### Shorts / Reels (dikey 1080×1920, gömülü Türkçe altyazı)
+
+```bash
+node render.cjs --format vertical --from 0 --to 42.5 --out out/video_vertical_noaudio.mp4
+ffmpeg -i out/video_vertical_noaudio.mp4 -i out/soundtrack.wav -c:v copy \
+  -af "volume=3.8dB,alimiter=limit=0.891:level=false" -c:a aac -b:a 192k -shortest out/arilar-dans-ederek-konusuyor_shorts.mp4
+```
+
+Dikey sürüm aynı sahneleri dikey kadraja göre yeniden render eder (yatay videodan kırpma değildir): kamera görüş açısı
+dikeye göre genişletilir, diyagram/kuşbakışı ölçeği yeniden hesaplanır, altyazı (`scene/subtitles.json`, Inter yarı kalın 42 px)
+Shorts arayüzünün kapladığı alt bölgenin üstüne yerleşir. Ayrı altyazı dosyası: `out/altyazi_tr.srt`.
+Yatay sürüme altyazı eklemek için: `--subs`.
+
 Hızlı kontrol için tek kareler: `node render.cjs --stills 5.5,19.6,23.2`
 
 Tarayıcı önizlemesi: proje kökünde `npx http-server .` → `http://localhost:8080/scene/index.html`

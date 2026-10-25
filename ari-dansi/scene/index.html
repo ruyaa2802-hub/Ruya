@@ -27,6 +27,20 @@
   .fill.g { background: linear-gradient(90deg, #ffe066, #8fe36b); }
   .ico { font-size: 26px; width: 34px; text-align: center; }
   #panel .foot { text-align: center; font-size: 20px; font-weight: 700; margin-top: 8px; color: #ffe39a; }
+  #sub { text-wrap: balance; left: 50%; bottom: 26px; transform: translateX(-50%); max-width: 1000px; width: max-content; text-align: center; font-weight: 600; font-size: 28px;
+    line-height: 1.25; color: #fff; background: rgba(14, 9, 3, 0.58); padding: 6px 16px 8px; border-radius: 12px; text-shadow: 0 1px 3px rgba(0,0,0,0.7); }
+  #stage.vertical #sub { bottom: 440px; font-size: 42px; max-width: 900px; padding: 8px 22px 10px; border-radius: 16px; }
+  #stage.vertical .pill { font-size: 32px !important; padding: 14px 24px; border-radius: 24px; left: 50%; transform: translateX(-50%); }
+  #stage.vertical .tag { font-size: 30px; }
+  #stage.vertical #title { top: 500px; padding: 0 50px; }
+  #stage.vertical #title .t1 { font-size: 104px; line-height: 1.04; }
+  #stage.vertical #title .t2 { font-size: 34px; margin-top: 18px; }
+  #stage.vertical #panel { width: 900px; bottom: auto; top: 1030px; padding: 22px 30px 18px; box-sizing: border-box; }
+  #stage.vertical .lab { width: 250px; font-size: 30px; }
+  #stage.vertical .ico { font-size: 36px; width: 44px; }
+  #stage.vertical .bar { height: 30px; border-radius: 15px; }
+  #stage.vertical #panel .foot { font-size: 27px; }
+  #stage.vertical #end { bottom: auto; top: 1230px; font-size: 62px; padding: 0 40px; }
   #end { left: 0; right: 0; bottom: 46px; text-align: center; font-family: 'Inter Display','Inter',sans-serif; font-weight: 900; font-size: 44px; color: #ffd23d;
     text-shadow: 0 3px 0 #6b3505, 0 8px 22px rgba(0,0,0,0.55); }
 </style>
@@ -78,6 +92,7 @@
       <div class="foot">Sallanma ne kadar uzun sürerse, çiçekler o kadar uzakta!</div>
     </div>
     <div id="title" class="o"><div class="t1">Arılar Dans Ederek Konuşuyor!</div><div class="t2">Pırıltı'nın gizli dansı</div></div>
+    <div id="sub" class="o"></div>
     <div id="end" class="o">Arılar dans ederek konuşur! 🐝</div>
   </div>
 </div>

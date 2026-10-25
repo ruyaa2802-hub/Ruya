@@ -15,6 +15,8 @@ const args = Object.fromEntries(
   process.argv.slice(2).reduce((acc, a, i, arr) => (a.startsWith('--') ? [...acc, [a.slice(2), arr[i + 1] && !arr[i + 1].startsWith('--') ? arr[i + 1] : true]] : acc), [])
 );
 const FPS = 30;
+const VERT = args.format === 'vertical';
+const VW = VERT ? 1080 : 1280, VH = VERT ? 1920 : 720;
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.wav': 'audio/wav', '.css': 'text/css' };
 function serve() {
@@ -33,13 +35,13 @@ function serve() {
   const srv = await serve();
   const port = srv.address().port;
   const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--disable-gpu-vsync'] });
-  const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: VW, height: VH }, deviceScaleFactor: 1 });
   page.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') console.log('[page]', m.text()); });
   page.on('pageerror', (e) => console.log('[pageerror]', e.message));
-  await page.goto(`http://127.0.0.1:${port}/scene/index.html?render=1`);
+  await page.goto(`http://127.0.0.1:${port}/scene/index.html?render=1${VERT ? '&format=vertical' : ''}${args.subs ? '&subs=1' : ''}`);
   await page.waitForFunction('window.READY === true', null, { timeout: 120000 });
   await page.evaluate(() => document.fonts.ready);
-  const clip = { x: 0, y: 0, width: 1280, height: 720 };
+  const clip = { x: 0, y: 0, width: VW, height: VH };
 
   if (args.stills) {
     fs.mkdirSync(path.join(ROOT, 'out/stills'), { recursive: true });
@@ -47,7 +49,7 @@ function serve() {
       const t = parseFloat(s);
       const t0 = Date.now();
       await page.evaluate((t) => window.renderAt(t), t);
-      const file = path.join(ROOT, `out/stills/t_${t.toFixed(2)}.png`);
+      const file = path.join(ROOT, `out/stills/${VERT ? 'v_' : ''}t_${t.toFixed(2)}.png`);
       await page.screenshot({ path: file, clip });
       console.log('still', t, file, `${Date.now() - t0}ms`);
     }
