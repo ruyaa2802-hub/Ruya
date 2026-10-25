@@ -12,6 +12,7 @@ OUT = argv[0]
 START, END = int(argv[1]), int(argv[2])
 PCT = int(argv[3]) if len(argv) > 3 else 100
 SPP = int(argv[4]) if len(argv) > 4 else 16
+STEP = int(argv[5]) if len(argv) > 5 else 1
 os.makedirs(os.path.join(OUT, "beauty"), exist_ok=True)
 os.makedirs(os.path.join(OUT, "mist"), exist_ok=True)
 
@@ -134,5 +135,6 @@ with open(os.path.join(OUT, "camera.json"), "w") as fh:
     json.dump(cams, fh)
 
 scn.frame_start, scn.frame_end = START, END
+scn.frame_step = STEP
 bpy.ops.render.render(animation=True)
 print("RENDER_DONE")

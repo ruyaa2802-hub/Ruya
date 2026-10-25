@@ -15,6 +15,8 @@ from PIL import Image, ImageDraw, ImageFilter
 SRC, DST = sys.argv[1], sys.argv[2]
 os.makedirs(DST, exist_ok=True)
 cams = json.load(open(os.path.join(SRC, "camera.json")))
+# optional: build track json with an "interior" flag per frame (no rain drawn inside the bus)
+INTERIOR = json.load(open(sys.argv[3]))["interior"] if len(sys.argv) > 3 else None
 MIST_START, MIST_DEPTH = 1.0, 120.0
 FPS = 30.0
 SHUTTER = 0.5 / FPS
@@ -88,6 +90,8 @@ def main():
         mask = Image.new("L", (W, H), 0)
         draw = ImageDraw.Draw(mask)
         ok = (z1 > 0.35) & (z0 > 0.35)
+        if INTERIOR is not None and INTERIOR[fnum - 1]:
+            ok &= False
         ok &= (u1 > -50) & (u1 < W + 50) & (v1 > -200) & (v1 < H + 200)
         focus = c["focus"]
         for i in np.nonzero(ok)[0]:
@@ -103,7 +107,7 @@ def main():
             draw.line([(u0[i], v0[i]), (u1[i], v1[i])], fill=a, width=width)
         # ground splashes near the camera (short lived)
         cam_xy = t[:2]
-        for _ in range(int(55 * scale + 10)):
+        for _ in range(0 if (INTERIOR is not None and INTERIOR[fnum - 1]) else int(55 * scale + 10)):
             gx = rng.uniform(-0.3, 7.0)
             gy = cam_xy[1] + rng.uniform(-2, 16)
             gz = 0.02 if abs(gx) < 2.3 else 0.16
