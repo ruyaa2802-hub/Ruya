@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Arılar Dans Ederek Konuşuyor!</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1280px; height: 720px; overflow: hidden; font-family: 'Inter', 'DejaVu Sans', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1280px; height: 720px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  #title { left: 0; right: 0; top: 250px; text-align: center; }
+  #title .t1 { font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; font-size: 78px; letter-spacing: -1px; color: #ffd23d;
+    background: linear-gradient(180deg, #fff3b0 0%, #ffcf2e 45%, #f39a12 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 0 #7a3d06) drop-shadow(0 10px 24px rgba(40,15,0,0.55)); }
+  #title .t2 { margin-top: 10px; font-weight: 600; font-size: 24px; color: #fff8e6; letter-spacing: 3px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }
+  .pill { background: rgba(32, 18, 4, 0.72); color: #fff6dc; border: 2px solid rgba(255, 205, 80, 0.85); border-radius: 18px; padding: 10px 18px;
+    font-size: 23px; font-weight: 700; box-shadow: 0 8px 28px rgba(0,0,0,0.35); white-space: nowrap; }
+  .pill b { color: #ffcf3a; }
+  .tag { font-size: 20px; font-weight: 800; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 0 2px #000; white-space: nowrap; }
+  #panel { left: 50%; bottom: 34px; transform: translateX(-50%); width: 760px; background: rgba(32,18,4,0.78); border: 2px solid rgba(255,205,80,0.85);
+    border-radius: 22px; padding: 16px 24px 14px; color: #fff6dc; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+  .row { display: flex; align-items: center; gap: 14px; margin: 6px 0; }
+  .lab { width: 210px; font-weight: 800; font-size: 21px; }
+  .bar { flex: 1; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.12); overflow: hidden; position: relative; }
+  .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 11px; background: linear-gradient(90deg, #ffb21c, #ff7a1a); }
+  .fill.g { background: linear-gradient(90deg, #ffe066, #8fe36b); }
+  .ico { font-size: 26px; width: 34px; text-align: center; }
+  #panel .foot { text-align: center; font-size: 20px; font-weight: 700; margin-top: 8px; color: #ffe39a; }
+  #end { left: 0; right: 0; bottom: 46px; text-align: center; font-family: 'Inter Display','Inter',sans-serif; font-weight: 900; font-size: 44px; color: #ffd23d;
+    text-shadow: 0 3px 0 #6b3505, 0 8px 22px rgba(0,0,0,0.55); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1280" height="720"></canvas>
+  <div id="ov">
+    <svg id="diag" class="o" width="1280" height="720" viewBox="0 0 1280 720" style="left:0;top:0">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#ff8a1c"/>
+        </marker>
+        <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.6"/></filter>
+      </defs>
+      <g filter="url(#sh)">
+        <line id="upLine" x1="640" y1="360" x2="640" y2="112" stroke="#fff6c8" stroke-width="5" stroke-dasharray="14 12" stroke-linecap="round"/>
+        <g id="sun" transform="translate(640,84)">
+          <g id="rays" stroke="#ffd23d" stroke-width="5" stroke-linecap="round">
+            <line x1="0" y1="-38" x2="0" y2="-30"/><line x1="0" y1="38" x2="0" y2="30"/><line x1="-38" y1="0" x2="-30" y2="0"/><line x1="38" y1="0" x2="30" y2="0"/>
+            <line x1="-27" y1="-27" x2="-21" y2="-21"/><line x1="27" y1="27" x2="21" y2="21"/><line x1="-27" y1="27" x2="-21" y2="21"/><line x1="27" y1="-27" x2="21" y2="-21"/>
+          </g>
+          <circle r="21" fill="#ffd23d" stroke="#fff3b0" stroke-width="3"/>
+        </g>
+        <path id="arc" d="" fill="none" stroke="#ffffff" stroke-width="4"/>
+        <line id="runArrow" x1="640" y1="360" x2="640" y2="360" stroke="#ff8a1c" stroke-width="8" stroke-linecap="round" marker-end="url(#ah)"/>
+        <circle id="hub" cx="640" cy="360" r="8" fill="#fff" stroke="#ff8a1c" stroke-width="3"/>
+        <g id="miniBee" transform="translate(640,360)">
+          <ellipse rx="15" ry="10" fill="#f6b81c" stroke="#2a1a0e" stroke-width="2"/>
+          <path d="M-4,-9 v18 M4,-9 v18" stroke="#2a1a0e" stroke-width="4"/>
+          <ellipse cx="-3" cy="-12" rx="8" ry="6" fill="rgba(230,245,255,0.85)" stroke="#9ab" stroke-width="1"/>
+          <ellipse cx="6" cy="-12" rx="7" ry="5" fill="rgba(230,245,255,0.85)" stroke="#9ab" stroke-width="1"/>
+          <circle cx="15" cy="-1" r="6" fill="#f6b81c" stroke="#2a1a0e" stroke-width="2"/>
+        </g>
+      </g>
+    </svg>
+    <div id="angleTag" class="o tag">açı</div>
+    <div id="sunTag" class="o tag">Güneşin yönü</div>
+    <div id="hiveTag" class="o tag">Kovan</div>
+    <div id="gardenTag" class="o tag">Çiçek bahçesi</div>
+    <div id="dirPill" class="o pill">Düz koşunun <b>yönü</b> = güneşe göre <b>uçuş yönü</b></div>
+    <div id="upPill" class="o pill" style="font-size:20px">Peteğin <b>yukarısı</b> = <b>güneşin</b> yönü</div>
+    <div id="panel" class="o">
+      <div class="row"><div class="ico">⏱️</div><div class="lab">Sallanma süresi</div><div class="bar"><div id="fillA" class="fill"></div></div></div>
+      <div class="row"><div class="ico">🌼</div><div class="lab">Uzaklık</div><div class="bar"><div id="fillB" class="fill g"></div></div></div>
+      <div class="foot">Sallanma ne kadar uzun sürerse, çiçekler o kadar uzakta!</div>
+    </div>
+    <div id="title" class="o"><div class="t1">Arılar Dans Ederek Konuşuyor!</div><div class="t2">Pırıltı'nın gizli dansı</div></div>
+    <div id="end" class="o">Arılar dans ederek konuşur! 🐝</div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
