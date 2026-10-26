@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Arılar kapak</title>
+<style>
+  html, body { margin: 0; background: #000; }
+  #stage { position: relative; overflow: hidden; font-family: 'Inter', sans-serif; background: #2a1404 center / cover no-repeat; }
+  #shade { position: absolute; inset: 0; }
+  .badge { position: absolute; background: #ffd23d; color: #2a1404; font-weight: 900; letter-spacing: 1px; border-radius: 22px;
+    box-shadow: 0 8px 0 #7a3d06, 0 16px 40px rgba(0,0,0,0.45); white-space: nowrap; transform: rotate(-3deg); }
+  .badge .q { color: #d1400f; }
+  .head { position: absolute; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; color: #fff; line-height: 0.98;
+    -webkit-text-stroke: 16px #2a1404; paint-order: stroke fill; filter: drop-shadow(0 8px 0 rgba(0,0,0,0.45)); }
+  .head em { font-style: normal; color: #ffd23d; }
+  .sub { position: absolute; color: #fff7dc; font-weight: 800; background: rgba(30,14,2,0.72); border: 4px solid #ffcf3a; border-radius: 20px; white-space: nowrap; }
+  .logo { position: absolute; display: flex; align-items: center; gap: 12px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; color: #fff;
+    -webkit-text-stroke: 8px #2a1404; paint-order: stroke fill; }
+  .logo img { border-radius: 50%; border: 5px solid #fff4c4; box-shadow: 0 4px 14px rgba(0,0,0,0.5); }
+  .hero, .moves { position: absolute; filter: drop-shadow(0 18px 30px rgba(0,0,0,0.45)); }
+
+  /* vertical 1080×1920 (Shorts) */
+  .v #stage { width: 1080px; height: 1920px; }
+  .v #shade { background: linear-gradient(180deg, rgba(20,8,0,0.82) 0%, rgba(20,8,0,0.25) 30%, rgba(20,8,0,0) 50%, rgba(20,8,0,0.2) 66%, rgba(20,8,0,0.85) 100%); }
+  .v .badge { left: 50%; top: 170px; transform: translateX(-50%) rotate(-3deg); font-size: 66px; padding: 18px 36px 22px; }
+  .v .head { left: 40px; right: 40px; top: 330px; text-align: center; font-size: 150px; }
+  .v .sub { left: 50%; top: 1440px; transform: translateX(-50%); font-size: 46px; padding: 16px 32px 18px; }
+  .v .logo { left: 50%; top: 1580px; transform: translateX(-50%); font-size: 58px; }
+  .v .logo img { width: 96px; height: 96px; }
+  .v .hero { left: 20px; top: 620px; width: 1040px; transform: rotate(-6deg); }
+  .v .moves { left: 190px; top: 900px; width: 700px; opacity: 0.9; }
+
+  /* horizontal 1280×720 */
+  .h #stage { width: 1280px; height: 720px; }
+  .h #shade { background: linear-gradient(90deg, rgba(20,8,0,0.88) 0%, rgba(20,8,0,0.6) 38%, rgba(20,8,0,0) 62%); }
+  .h .badge { left: 50px; top: 56px; font-size: 40px; padding: 12px 24px 15px; transform: rotate(-3deg); }
+  .h .head { left: 46px; top: 170px; width: 640px; font-size: 92px; -webkit-text-stroke: 12px #2a1404; }
+  .h .sub { left: 52px; top: 512px; font-size: 30px; padding: 10px 22px 12px; }
+  .h .logo { left: 52px; top: 606px; font-size: 40px; -webkit-text-stroke: 6px #2a1404; }
+  .h .logo img { width: 64px; height: 64px; }
+  .h .hero { left: 690px; top: 70px; width: 620px; transform: rotate(-5deg); }
+  .h .moves { left: 810px; top: 230px; width: 380px; opacity: 0.9; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="shade"></div>
+  <div class="badge">BUNU BİLİYOR MUYDUNUZ<span class="q">?</span></div>
+  <div class="head">Arılar <em>DANS</em> ederek konuşur!</div>
+  <img class="hero" src="../out/brand/pirilti_saydam.png" alt="">
+  <svg class="moves" viewBox="0 0 300 300"><g fill="none" stroke="#fff4c4" stroke-width="12" stroke-linecap="round">
+    <path d="M40 120 q -25 30 0 60"/><path d="M15 100 q -35 50 0 100"/><path d="M260 120 q 25 30 0 60"/><path d="M285 100 q 35 50 0 100"/></g></svg>
+  <div class="sub">🐝 Sallanma dansı = yön + uzaklık</div>
+  <div class="logo"><img src="../out/brand/pirilumo_profil_800.png" alt="">Pirilumo</div>
+</div>
+<script>
+  const p = new URLSearchParams(location.search);
+  document.body.className = p.get('f') === 'h' ? 'h' : 'v';
+  document.getElementById('stage').style.backgroundImage = `url(${p.get('bg')})`;
+  Promise.all([...document.images].map((i) => (i.complete ? 1 : new Promise((r) => (i.onload = i.onerror = r))))).then(() => (window.READY = true));
+</script>
+</body>
+</html>
