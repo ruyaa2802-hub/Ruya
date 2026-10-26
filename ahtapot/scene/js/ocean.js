@@ -235,10 +235,10 @@ export function createOcean({ clear = [] } = {}) {
     }
   };
   // hiding coral wall the octopus rises from (scene 1)
-  for (let i = 0; i < 9; i++) branchCoral(-2.2 + i * 0.55, -4.6 + Math.sin(i) * 0.3, 1.05 + (i % 3) * 0.2, i % coralMats.length, 100 + i);
-  brainCoral(-2.6, -4.1, 0.8, '#c9d36a');
-  brainCoral(2.5, -4.3, 0.7, '#e7a15c');
-  rock(0.2, -5.8, 1.4, 0.8);
+  for (let i = 0; i < 9; i++) { const x = -5.0 + i * 0.5, z = -7.0 + Math.sin(i) * 0.3; if (!blocked(x, z)) branchCoral(x, z, 1.05 + (i % 3) * 0.2, i % coralMats.length, 100 + i); }
+  brainCoral(-4.6, -6.5, 0.8, '#c9d36a');
+  brainCoral(-1.6, -6.6, 0.7, '#e7a15c');
+  rock(-2.9, -8.6, 1.4, 0.8);
   // side reef around the stage and along the swim path (+x / -z direction)
   placeCluster(-4.2, -1.5, 2.2, 14);
   placeCluster(4.4, -1.0, 2.2, 14);

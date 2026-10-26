@@ -3,6 +3,7 @@ import { clamp, lerp, remap, smooth, ss, easeInOut, easeOut, window01, v3, quatF
 import { createOctopus } from './octopus.js';
 import { createOcean, floorY } from './ocean.js';
 import { Post } from './post.js';
+import { CAM_CLEAR } from './cam_clear.js';
 
 // ===========================================================================
 //  "Ahtapotların 3 Kalbi Var, Peki Neden?" — vertical 1080×1920, 42.5 s.
@@ -29,6 +30,7 @@ const CLEAR = [];
 for (const [x, z] of [[0, -0.6], [0.8, -1.8], [2.0, -3.2], [3.1, -4.6], [3.6, -5.4], [4.6, -7.2], [5.6, -9.3], [5.0, -11.4], [3.6, -13.0], [3.0, -14.0]]) CLEAR.push([x, z, 2.0]);
 for (const [x, z] of [[1.5, -2.5], [2.2, -5.0], [2.6, -7.6], [3.0, -9.5], [2.0, -10.0], [0.8, -8.0], [-0.4, -5.6]]) CLEAR.push([x, z, 1.7]);
 for (const [x, z] of [[-4, -0.2], [-3, -1.8], [-1.8, -3.2], [-0.8, -4.6], [-0.4, -5.4], [0.6, -2.2], [1.6, -4.0], [5.4, -3.6], [6.2, -5.4]]) CLEAR.push([x, z, 1.6]); // scene-3 camera orbit
+CLEAR.push(...CAM_CLEAR);
 const ocean = createOcean({ clear: CLEAR });
 const octo = createOctopus();
 ocean.scene.add(octo.root);
@@ -62,7 +64,7 @@ const pulse = (t, list) => {
 // ---------------- octopus path ----------------
 const curve = (pts) => new THREE.CatmullRomCurve3(pts.map((p) => v3(...p)), false, 'catmullrom', 0.5);
 const HOME = v3(0, 2.35, -0.6);
-const pathRise = curve([[0, 0.2, -5.6], [0, 1.6, -5.5], [0, 3.0, -5.0], [0, 2.9, -3.2], [0, 2.5, -1.6], [0, 2.35, -0.6]]);
+const pathRise = curve([[-2.8, 0.2, -8.0], [-2.8, 1.6, -7.9], [-2.6, 3.0, -7.4], [-1.6, 2.9, -4.8], [-0.5, 2.5, -2.4], [0, 2.35, -0.6]]);
 const pathSwim = curve([[0, 2.35, -0.6], [0.8, 2.5, -1.8], [2.0, 2.45, -3.2], [3.1, 2.55, -4.6], [3.6, 2.5, -5.4]]);
 const pathJet = curve([[3.6, 2.5, -5.4], [4.6, 2.3, -7.2], [5.6, 2.1, -9.3], [5.0, 2.4, -11.4], [3.6, 2.6, -13.0]]);
 const pathEnd = curve([[3.6, 2.6, -13.0], [3.2, 2.8, -13.6], [3.0, 2.9, -14.0]]);
@@ -156,20 +158,65 @@ function camState(t) {
   if (t < T.s2) {
     // wide on the coral wall → dolly in to the surprised face
     const u = easeInOut(remap(t, 0, T.surprise + 0.4));
-    const p0 = v3(0, 1.7, 6.8), l0 = v3(0, 1.9, -4.5);
+    const p0 = v3(-1.2, 1.8, 5.8), l0 = v3(-2.4, 2.0, -7.0);
     const p1 = v3(0, 2.55, 4.0), l1 = v3(0, 2.3, -0.6);
     pos = p0.lerp(p1, u).add(v3(0, 0, -0.5 * ss(T.surprise, T.s2, t)));
     look = l0.lerp(l1, u);
     focusTarget = look;
   } else if (t < T.s3) {
-    // arc around to the back-right so the mantle (and what is inside) is clear
+    return camS2(t);
+  } else if (t < T.s4) {
+    // scene 3 camera, joined smoothly from where scene 2 ended
+    const c3 = camS3(t);
+    const j = easeInOut(remap(t, T.s3, T.s3 + 3.6));
+    if (j < 1) {
+      const c2 = camS2(T.s3);
+      c3.pos = c2.pos.lerp(c3.pos, j);
+      const away = c3.pos.clone().sub(mantleCenter(octoBase(t).pos)).setY(0).normalize();
+      c3.pos.addScaledVector(away, 0.9 * Math.sin(Math.PI * j)).add(v3(0, 0.4 * Math.sin(Math.PI * j), 0));
+      c3.look = c2.look.lerp(c3.look, j);
+    }
+    return c3;
+  } else if (false) {
+    // (unused)
     const c = mantleCenter(HOME);
     const a = THREE.MathUtils.degToRad(lerp(0, 132, easeInOut(remap(t, T.s2, 9.4))) + 4 * Math.sin((t - 9.4) * 0.35) * ss(9.4, 10.5, t));
     const r = lerp(4.0, 3.15, easeInOut(remap(t, T.s2, 9.4)));
     pos = orbit(c, a, r, lerp(0.15, 0.55, easeInOut(remap(t, T.s2, 9.4))));
     look = c.clone().add(v3(0, -0.15, 0));
     focusTarget = c;
-  } else if (t < T.s4) {
+  } else {
+    // chase the jet, then pull back to the wide reef — joined smoothly from the scene-3 camera
+    const st = octoBase(t);
+    const c = st.pos.clone().add(v3(0, 0.3, 0));
+    // lead shot: the camera stays ahead of the octopus as it jets toward (and past) us
+    const chase = c.clone().add(v3(-1.9, 1.5, -4.4));
+    const wide = v3(0.4, 6.6, -23.5);
+    const w = easeInOut(remap(t, 35.0, 41.5));
+    pos = chase.lerp(wide, w);
+    look = c.clone().lerp(v3(3.2, 2.2, -14.5), w * 0.5);
+    focusTarget = st.pos;
+    const j = easeInOut(remap(t, T.s4, T.s4 + 1.8));
+    if (j < 1) {
+      const a3 = camS3(T.s4);
+      pos = a3.pos.lerp(pos, j);
+      look = a3.look.lerp(look, j);
+    }
+  }
+  return { pos, look, focusTarget };
+}
+function camS2(t) {
+  // arc around to the back-right so the mantle (and what is inside) is clear
+  const c = mantleCenter(HOME);
+  const k = easeInOut(remap(t, T.s2, 11.0));
+  const a = THREE.MathUtils.degToRad(lerp(0, 128, k) + 4 * Math.sin((t - 10.2) * 0.35) * ss(10.2, 11.3, t));
+  const r = lerp(4.0, 3.15, k);
+  const pos = orbit(c, a, r, lerp(0.15, 0.55, k));
+  return { pos, look: c.clone().add(v3(0, -0.15, 0)), focusTarget: c };
+}
+function camS3(t) {
+  let pos, look, focusTarget;
+  {
     // follow the swimming octopus from the side-back, push in for the flow, pull back after
     const st = octoBase(t);
     const c = mantleCenter(st.pos);
@@ -180,16 +227,6 @@ function camState(t) {
     pos = orbit(c, a, r, 1.1 - 0.4 * ss(26.5, 29.8, t));
     look = c.clone().add(v3(0, -0.2 - 0.25 * ss(26.5, 29.8, t), 0));
     focusTarget = c;
-  } else {
-    // chase the jet, then pull back to the wide reef
-    const st = octoBase(t);
-    const c = st.pos.clone().add(v3(0, 0.3, 0));
-    const chase = c.clone().add(v3(-2.3, 2.0, 3.6));
-    const wide = v3(-1.2, 6.3, -3.2);
-    const w = easeInOut(remap(t, 35.0, 41.5));
-    pos = chase.lerp(wide, w);
-    look = c.clone().lerp(v3(3.2, 2.2, -14.5), w * 0.5);
-    focusTarget = st.pos;
   }
   return { pos, look, focusTarget };
 }
@@ -331,7 +368,7 @@ function updateOverlay(t, an) {
   label(ov.labs.bR, left[1], 150, 110, clamp(bOn), 'lnBR');
   label(ov.labs.s, S, 170, -160, clamp(sOn), 'lnS');
   const gl = proj(G).x > proj(GL).x ? G : GL;
-  label(ov.labs.g, gl, 170, -60, clamp(gOn), 'lnG');
+  label(ov.labs.g, gl, -170, -130, clamp(gOn), 'lnG');
   const o2On = window01(t, T.o2 + 0.2, T.flowSeq + 0.6, 0.35) * lx;
   label(ov.labs.o2, gl.clone().add(v3(0, 0, 0)), 150, 90, clamp(o2On), 'lnO2');
   op(ov.legend, window01(t, T.bFocus + 0.2, T.xrayOut + 1.2, 0.4));
@@ -415,6 +452,8 @@ window.DURATION = DURATION;
 window.FPS = FPS;
 window.EVENTS = EVENTS;
 window.renderAt = (t) => frame(t);
+window.camAt = (t) => camState(t).pos.toArray();
+window.octoAt = (t) => octoState(t).pos.toArray();
 if (!new URLSearchParams(location.search).has('render')) {
   const stage = document.getElementById('stage');
   const fit = () => {

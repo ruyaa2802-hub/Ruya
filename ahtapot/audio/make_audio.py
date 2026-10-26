@@ -224,9 +224,9 @@ amb = np.zeros((2, N))
 brown = np.cumsum(rng.standard_normal(N))
 brown = fft_filter(brown - np.convolve(brown, np.ones(4800) / 4800, mode='same'), lo=25, hi=320)
 swell = 0.7 + 0.3 * np.sin(2 * np.pi * 0.09 * t_axis) * np.sin(2 * np.pi * 0.13 * t_axis + 1)
-amb += np.stack([norm(brown), np.roll(norm(brown), 2400)]) * swell * db(-24)
+amb += np.stack([norm(brown), np.roll(norm(brown), 2400)]) * swell * db(-17)
 hiss = fft_filter(rng.standard_normal((2, N)).reshape(-1), lo=900, hi=3200).reshape(2, N)
-amb += norm(hiss) * (0.6 + 0.4 * np.sin(2 * np.pi * 0.07 * t_axis)) * db(-40)
+amb += norm(hiss) * (0.6 + 0.4 * np.sin(2 * np.pi * 0.07 * t_axis)) * db(-34)
 # far-away bubble streams
 tb = 0.2
 while tb < DUR - 0.2:
