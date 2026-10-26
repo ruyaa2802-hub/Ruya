@@ -1,0 +1,33 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rüya Shorts Önizleme</title>
+<style>
+:root{--bg:#0e0f12;--panel:#17191e;--text:#e8e9ec;--muted:#9aa0aa;--accent:#f0b44c}
+html,body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif}
+#wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px}
+#stage{position:relative;height:min(78vh,960px);aspect-ratio:9/16;background:#000;border-radius:10px;overflow:hidden}
+#stage canvas{width:100%!important;height:100%!important;display:block}
+#bar{width:min(92vw,720px);display:flex;flex-direction:column;gap:6px}
+#scrub{width:100%}
+#row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button,select{background:var(--panel);color:var(--text);border:1px solid #2a2d34;border-radius:8px;padding:6px 10px;font:inherit;cursor:pointer}
+#info{color:var(--muted);font-variant-numeric:tabular-nums}
+#marks{position:relative;height:14px}
+#marks span{position:absolute;top:0;width:2px;height:14px;background:#444}
+#marks span.scene{background:var(--accent)}
+</style></head><body>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<div id="wrap">
+  <div id="stage"></div>
+  <div id="bar">
+    <div id="marks"></div>
+    <input id="scrub" type="range" min="0" max="1000" value="0">
+    <div id="row">
+      <button id="play">▶ Oynat</button>
+      <select id="q"><option value="0.5">Önizleme (540p)</option><option value="0.75">Orta (810p)</option><option value="1">Tam (1080×1920)</option></select>
+      <label><input type="checkbox" id="mb"> Hareket bulanıklığı</label>
+      <span id="info"></span>
+    </div>
+  </div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body></html>
