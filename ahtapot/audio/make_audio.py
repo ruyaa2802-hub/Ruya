@@ -14,7 +14,8 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 48000
-DUR = 42.5
+DUR = 59.7
+DSH = 17.2  # finale shift (scene 4 moved after the bonus facts)
 N = int(SR * DUR)
 t_axis = np.arange(N) / SR
 rng = np.random.default_rng(11)
@@ -79,24 +80,39 @@ def env(n, a, r):
 
 
 # ---------------------------------------------------------------- narration
-raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', os.path.join(ROOT, 'audio/raw/take1.mp3'), '-f', 'f32le', '-ac', '1', '-ar', str(SR), '-'], capture_output=True, check=True).stdout
-take = np.frombuffer(raw, dtype=np.float32).astype(np.float64)
-SIL = [(2.850, 3.472), (5.672, 6.211), (8.611, 9.301), (12.166, 12.750), (16.483, 17.007), (20.895, 21.304)]
-starts = [0.0] + [e for _, e in SIL]
-ends = [s for s, _ in SIL] + [len(take) / SR]
-PLACE = [1.2, 8.6, 11.6, 18.2, 22.2, 31.0, 36.0]
+def load(name):
+    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', os.path.join(ROOT, 'audio/raw', name), '-f', 'f32le', '-ac', '1', '-ar', str(SR), '-'], capture_output=True, check=True).stdout
+    return np.frombuffer(raw, dtype=np.float32).astype(np.float64)
+
+
+def split(take, sil):
+    st = [0.0] + [e for _, e in sil]
+    en = [s for s, _ in sil] + [len(take) / SR]
+    return list(zip(st, en))
+
+
+take1, take2 = load('take1.mp3'), load('take2_ek.mp3')
+SEG1 = split(take1, [(2.850, 3.472), (5.672, 6.211), (8.611, 9.301), (12.166, 12.750), (16.483, 17.007), (20.895, 21.304)])
+SEG2 = split(take2, [(5.662, 6.174), (12.617, 12.961)])
+# (take, start, end, place) in story order
+CLIPS = [(take1, *SEG1[i], p) for i, p in zip(range(5), [1.2, 8.6, 11.6, 18.2, 22.2])]
+CLIPS += [(take2, *SEG2[i], p) for i, p in zip(range(3), [26.5, 32.6, 40.0])]
+CLIPS += [(take1, *SEG1[i], p) for i, p in zip(range(5, 7), [31.0 + DSH, 36.0 + DSH])]
 TEXT = [
     'Bir ahtapotun tam üç kalbi olduğunu biliyor muydun?',
     'İki kalbi kanı solungaçlara gönderir.',
     'Üçüncü kalbi ise kanı vücuduna pompalar.',
     'Ahtapotlar oksijeni sudan solungaçlarıyla alır.',
     'Üç kalbin görev paylaşımı, kan dolaşımının bu sürecini destekler.',
+    'Bu arada, ahtapotun kanı mavidir; çünkü oksijeni, bakır içeren hemosiyanin taşır.',
+    'Bir bilgi daha: Ahtapotlar, derilerindeki renk hücreleri sayesinde göz açıp kapayana kadar renk değiştirebilir.',
+    'Dahası, sinir hücrelerinin yaklaşık üçte ikisi kollarındadır. Bu yüzden her kol, bazı hareketleri kendi başına yönetebilir!',
     'Üstelik yüzmek, ahtapotun sistemik kalbinin atışını yavaşlatabilir.',
     'İşte bu yüzden bu canlılar, okyanusun en ilginç sakinlerinden biri!',
 ]
 narr_m = np.zeros(N)
 timing = []
-for a, b, p, txt in zip(starts, ends, PLACE, TEXT):
+for (take, a, b, p), txt in zip(CLIPS, TEXT):
     seg = take[int(max(0, a - 0.06) * SR): int((b + 0.1) * SR)].copy()
     f = int(0.02 * SR)
     seg[:f] *= np.linspace(0, 1, f)
@@ -124,10 +140,11 @@ duck = np.interp(np.arange(N), np.arange(len(d_s)) * ds, d_s)
 
 # ---------------------------------------------------------------- cues
 cues = []
-for f in sorted(glob.glob(os.path.join(ROOT, 'out/parts_v/part*.cues.json'))):
+CUE_FILES = sorted(glob.glob(os.path.join(ROOT, 'out/keep/p0*.cues.json'))) + sorted(glob.glob(os.path.join(ROOT, 'out/parts_v/n*.cues.json')))
+for f in CUE_FILES:
     cues += json.load(open(f))['cues']
 cues.sort(key=lambda c: c['t'])
-events = json.load(open(sorted(glob.glob(os.path.join(ROOT, 'out/parts_v/part*.cues.json')))[0]))['events']
+events = json.load(open(CUE_FILES[-1]))['events']  # event list of the current timeline
 ct = np.array([c['t'] for c in cues])
 ox = np.interp(t_axis, ct, np.clip([c['octo']['x'] for c in cues], -1, 1))
 od = np.interp(t_axis, ct, [c['octo']['d'] for c in cues])
@@ -177,12 +194,12 @@ def sparkle(base=1318.5, notes=(0, 4, 7, 12, 16), step=0.06):
 
 
 # swim strokes: soft water swishes on each closing stroke while swimming
-swim_on = lambda t: (0.9 < t < 4.2) or (17.0 < t < 30.5) or (35.8 < t < 42.3)
+swim_on = lambda t: (0.9 < t < 4.2) or (17.0 < t < 30.5) or (31.8 < t < 47.0) or (35.8 + DSH < t < DUR - 0.2)
 tb = 0.3
 while tb < DUR:
     if swim_on(tb):
         i = min(int(tb * SR), N - 1)
-        g = db(-27) / (1 + od[i] / 6)
+        g = db(-27 if not (30.6 < tb < 47.2) else -32) / (1 + od[i] / 6)
         place(sfx, swish(0.6, 150, 1200), tb, g, float(ox[i]) * 0.6)
     tb += 1.35
 
@@ -213,6 +230,17 @@ for e in events:
         place(sfx, swish(1.4, 80, 900), t0 - 0.2, db(-12), 0)
         for k in range(30):
             place(sfx, bubble(rng.uniform(300, 900)), t0 + k * rng.uniform(0.02, 0.09), db(-22), float(rng.uniform(-0.6, 0.6)))
+    elif ty == 'shimmer':  # chromatophore colour snap
+        n = int(0.35 * SR)
+        tt = np.arange(n) / SR
+        fw = fft_filter(rng.standard_normal(n), lo=2500, hi=9000) * np.sin(np.pi * tt / 0.35) ** 2
+        place(sfx, norm(fw), t0 - 0.12, db(-27), float(rng.uniform(-0.3, 0.3)))
+        place(sfx, bell(1975.5 * 2 ** (rng.integers(0, 5) / 12), 0.8), t0, db(-27), 0)
+    elif ty == 'neuro':  # tingling nerve signals running down the arms
+        for k in range(16):
+            place(sfx, bell(2637 * 2 ** (((k * 5) % 12) / 12), 0.5), t0 + k * 0.42, db(-31), float(np.sin(k * 1.3) * 0.6))
+            n = int(0.05 * SR)
+            place(sfx, norm(fft_filter(rng.standard_normal(n), lo=3000, hi=10000)) * np.exp(-np.arange(n) / (0.01 * SR)), t0 + k * 0.42 + 0.21, db(-34), float(np.cos(k) * 0.5))
     elif ty == 'accent_soft':
         place(sfx, sparkle(1046.5, (0, 7, 12, 16), 0.09), t0, db(-21), 0)
     elif ty == 'beat':  # lub-dub, felt more than heard
@@ -238,11 +266,11 @@ while tb < DUR - 0.2:
 # octopus bubble trail while jetting
 for i in np.where(np.diff((ojet > 0.3).astype(int)) != 0)[0]:
     pass
-tb = 30.6
-while tb < 35.4:
+tb = 30.6 + DSH
+while tb < 35.4 + DSH:
     place(amb, bubble(rng.uniform(250, 700)), tb, db(-26), float(ox[int(tb * SR)]))
     tb += rng.uniform(0.03, 0.08)
-fade = ss(0, 0.8, t_axis) * (1 - ss(42.0, 42.5, t_axis))
+fade = ss(0, 0.8, t_axis) * (1 - ss(DUR - 0.5, DUR, t_axis))
 amb *= fade
 
 # ---------------------------------------------------------------- music
@@ -257,7 +285,7 @@ CH = {  # pad voicing, arpeggio, bass
     'Gm': ([50, 55, 58, 62], [58, 62, 67, 70, 74, 70, 67, 62], 43),
     'A': ([49, 52, 57, 61], [57, 61, 64, 69, 73, 69, 64, 61], 45),
 }
-song = ['Dm', 'Bb', 'F', 'C', 'Dm', 'Bb', 'Gm', 'A', 'Dm', 'F', 'Bb', 'C', 'F', 'C', 'Bb', 'F']
+song = ['Dm', 'Bb', 'F', 'C', 'Dm', 'Bb', 'Gm', 'A', 'Dm', 'F', 'Bb', 'C', 'Gm', 'C', 'F', 'Dm', 'Bb', 'C', 'F', 'C', 'F']
 
 
 def pad_note(freq, dur):
@@ -287,7 +315,7 @@ for b, ch in enumerate(song):
         sig = pad_note(mtof(m), (DUR - t0 + 0.5) if final else BAR + 1.2)
         i0 = int(t0 * SR)
         pad[i0:i0 + len(sig[: N - i0])] += sig[: N - i0]
-    sec = 0 if t0 < 7 else 1 if t0 < 17 else 2 if t0 < 30 else 3
+    sec = 0 if t0 < 7 else 1 if t0 < 17 else 2 if t0 < 30 + DSH else 3
     step = BEAT / 2
     for i, m in enumerate(notes):
         if sec == 0 and i % 2:
@@ -307,13 +335,13 @@ music[1] += np.roll(pad, 400)
 music += arp * 0.5
 music += np.stack([fft_filter(bass, hi=500), fft_filter(bass, hi=500)]) * 0.7
 music = norm(music)
-dyn = 0.55 + 0.2 * ss(6, 8.5, t_axis) - 0.1 * ss(17, 19, t_axis) * (1 - ss(29, 31, t_axis)) + 0.25 * ss(30.5, 33, t_axis)
-music *= dyn * ss(0, 1.0, t_axis) * (1 - ss(41.4, 42.5, t_axis) * 0.9)
+dyn = 0.55 + 0.2 * ss(6, 8.5, t_axis) - 0.1 * ss(17, 19, t_axis) * (1 - ss(29 + DSH, 31 + DSH, t_axis)) + 0.08 * ss(31.5, 33, t_axis) * (1 - ss(46, 47.5, t_axis)) + 0.25 * ss(30.5 + DSH, 33 + DSH, t_axis)
+music *= dyn * ss(0, 1.0, t_axis) * (1 - ss(DUR - 1.1, DUR, t_axis) * 0.9)
 
 # ---------------------------------------------------------------- mix
 music_st = music * db(-10) * (1 - duck * (1 - db(-10)))
 amb_st = amb * (1 - duck * (1 - db(-6)))
-sfx_st = sfx * (1 - duck * (1 - db(-4))) * (1 - ss(42.1, 42.5, t_axis))
+sfx_st = sfx * (1 - duck * (1 - db(-4))) * (1 - ss(DUR - 0.4, DUR, t_axis))
 mix = narr + music_st + amb_st + sfx_st
 peak = np.abs(mix).max()
 scale = db(-1) / peak if peak > db(-1) else 1.0

@@ -6,12 +6,15 @@ import { Post } from './post.js';
 import { CAM_CLEAR } from './cam_clear.js';
 
 // ===========================================================================
-//  "Ahtapotların 3 Kalbi Var, Peki Neden?" — vertical 1080×1920, 42.5 s.
+//  "Ahtapotların 3 Kalbi Var, Peki Neden?" — vertical 1080×1920, 59.7 s.
 //  Every frame is a pure function of t.
 // ===========================================================================
 const W = 1080, H = 1920;
 export const FPS = 30;
-export const DURATION = 42.5;
+export const DURATION = 59.7;
+// The finale (old scene 4, authored for t = 30…42.5) now plays D seconds later,
+// after the blue-blood note and the two bonus facts.
+const D = 17.2;
 const FOVV = 60; // vertical field of view for the portrait frame
 
 const canvas = document.getElementById('c');
@@ -39,7 +42,8 @@ const cam = new THREE.PerspectiveCamera(FOVV, W / H, 0.05, 400);
 // ---------------- timeline ----------------
 const T = {
   rise: 0.9, approach: 2.5, surprise: 4.15, s2: 7.0, xrayIn: 7.7, bFocus: 8.4, sFocus: 11.4, loop: 14.6,
-  s3: 17.0, o2: 18.2, flowSeq: 22.0, hemo: 25.8, xrayOut: 27.2, s4: 30.0, jet0: 30.6, jet1: 35.2, wave: 38.4, end: DURATION,
+  s3: 17.0, o2: 18.2, flowSeq: 22.0, hemo: 26.4, xrayOut: 31.4, s4: 30.0, jet0: 30.6, jet1: 35.2, wave: 38.4, end: 42.5, // s4…end: finale in its own (old) time
+  blue: 26.3, color: 31.8, arms: 39.4, s4n: 30.0 + D,
 };
 const SUBS = await fetch('./subtitles.json').then((r) => r.json());
 
@@ -47,11 +51,11 @@ const SUBS = await fetch('./subtitles.json').then((r) => r.json());
 const SYS_BEATS = [];
 {
   let tb = 7.6;
-  while (tb < 30.9) { SYS_BEATS.push(tb); tb += 1.0; }
+  while (tb < 30.9 + D) { SYS_BEATS.push(tb); tb += 1.0; }
   for (const d of [1.25, 1.6, 2.05, 2.6]) { SYS_BEATS.push(tb); tb += d; }
   while (tb < DURATION) { SYS_BEATS.push(tb); tb += 1.4; }
 }
-const BR_BEATS = SYS_BEATS.map((b) => b - 0.22).concat([31.75, 33.6, 35.7]).sort((a, b) => a - b); // branchial hearts keep pumping
+const BR_BEATS = SYS_BEATS.map((b) => b - 0.22).concat([31.75 + D, 33.6 + D, 35.7 + D]).sort((a, b) => a - b); // branchial hearts keep pumping
 const pulse = (t, list) => {
   let v = 0;
   for (const b of list) {
@@ -102,11 +106,21 @@ function octoState(t) {
     strokeSwim(1);
     pose.look = [0, 0];
     pose.blink = Math.exp(-(((t - 24.4) / 0.05) ** 2));
-  } else if (t < T.jet1 + 0.6) {
-    const u = easeInOut(remap(t, T.jet0, T.jet1));
+  } else if (t < T.s4n + 0.6) {
+    // bonus facts: hover at the end of the swim path, facing the camera
+    pos = pathSwim.getPointAt(1).add(v3(0, 0.07 * Math.sin(t * 1.6), 0));
+    fwd = pathSwim.getTangentAt(1);
+    strokeSwim(0.45);
+    const b = bonusState(t);
+    Object.assign(pose, b);
+    pose.blink = Math.exp(-(((t - 34.9) / 0.05) ** 2)) + Math.exp(-(((t - 42.6) / 0.05) ** 2));
+    pose.look = [0, 0];
+  } else if (t - D < T.jet1 + 0.6) {
+    const to = t - D;
+    const u = easeInOut(remap(to, T.jet0, T.jet1));
     pos = pathJet.getPointAt(u);
     fwd = pathJet.getTangentAt(u);
-    jet = ss(T.jet0 - 0.2, T.jet0 + 0.4, t) * (1 - ss(T.jet1 - 0.4, T.jet1 + 0.5, t));
+    jet = ss(T.jet0 - 0.2, T.jet0 + 0.4, to) * (1 - ss(T.jet1 - 0.4, T.jet1 + 0.5, to));
     pose.spread = lerp(0.5, 0.0, jet);
     pose.wave = lerp(0.6, 0.22, jet);
     pose.sway = lerp(0.35, 0.12, jet);
@@ -114,16 +128,17 @@ function octoState(t) {
     pose.omega = lerp(3, 7, jet);
     pose.len = lerp(2.0, 2.15, jet);
   } else {
-    const u = easeOut(remap(t, T.jet1 + 0.6, T.end));
+    const to = t - D;
+    const u = easeOut(remap(to, T.jet1 + 0.6, T.end));
     pos = pathEnd.getPointAt(u);
     fwd = v3(0, 0, 1);
     strokeSwim(0.6);
-    const wv = window01(t, T.wave, T.end + 1, 0.5);
+    const wv = window01(to, T.wave, T.end + 1, 0.5);
     pose.armLift = 0.45 * wv;
     pose.spread = lerp(pose.spread, 0.85, wv);
     pose.curl = 0.3 + 0.3 * wv;
     pose.wave = 0.6 + 0.3 * wv;
-    pose.blink = Math.exp(-(((t - 40.6) / 0.05) ** 2));
+    pose.blink = Math.exp(-(((to - 40.6) / 0.05) ** 2));
   }
   // orientation: upright, facing where it swims (or the camera); jet = mantle-first
   const flat = v3(fwd.x, 0, fwd.z);
@@ -132,10 +147,15 @@ function octoState(t) {
   let yawDir = flat;
   if (t < T.s3) {
     yawDir = v3(0, 0, 1); // scene 1 faces the camera; scene 2 keeps that heading while the camera circles
-  } else if (t > T.jet1 + 0.3) {
+  } else if (t >= T.s4 + 0.6 && t < T.s4n + 0.6) {
+    const c = camBonus(t).pos;
+    const toCam = v3(c.x - pos.x, 0, c.z - pos.z).normalize();
+    const w = ss(T.color - 0.6, T.color + 1.4, t) * (1 - ss(T.s4n - 0.6, T.s4n + 0.6, t));
+    yawDir = flat.clone().lerp(toCam, w).normalize();
+  } else if (t - D > T.jet1 + 0.3) {
     const c = camState(t).pos;
     const toCam = v3(c.x - pos.x, 0, c.z - pos.z).normalize();
-    const w = ss(T.jet1 + 0.3, T.jet1 + 1.6, t);
+    const w = ss(T.jet1 + 0.3, T.jet1 + 1.6, t - D);
     yawDir = flat.clone().lerp(toCam, w).normalize();
   }
   const qUp = quatFromForwardUp(yawDir, v3(0, 1, 0));
@@ -165,7 +185,7 @@ function camState(t) {
     focusTarget = look;
   } else if (t < T.s3) {
     return camS2(t);
-  } else if (t < T.s4) {
+  } else if (t < T.color) {
     // scene 3 camera, joined smoothly from where scene 2 ended
     const c3 = camS3(t);
     const j = easeInOut(remap(t, T.s3, T.s3 + 3.6));
@@ -177,28 +197,33 @@ function camState(t) {
       c3.look = c2.look.lerp(c3.look, j);
     }
     return c3;
-  } else if (false) {
-    // (unused)
-    const c = mantleCenter(HOME);
-    const a = THREE.MathUtils.degToRad(lerp(0, 132, easeInOut(remap(t, T.s2, 9.4))) + 4 * Math.sin((t - 9.4) * 0.35) * ss(9.4, 10.5, t));
-    const r = lerp(4.0, 3.15, easeInOut(remap(t, T.s2, 9.4)));
-    pos = orbit(c, a, r, lerp(0.15, 0.55, easeInOut(remap(t, T.s2, 9.4))));
-    look = c.clone().add(v3(0, -0.15, 0));
-    focusTarget = c;
+  } else if (t < T.s4n) {
+    // bonus facts, joined smoothly from the scene-3 close-up
+    const cb = camBonus(t);
+    const j = easeInOut(remap(t, T.color, T.color + 2.2));
+    if (j < 1) {
+      const c3 = camS3(T.color);
+      cb.pos = c3.pos.lerp(cb.pos, j);
+      const away = cb.pos.clone().sub(mantleCenter(octoBase(t).pos)).setY(0).normalize();
+      cb.pos.addScaledVector(away, 0.8 * Math.sin(Math.PI * j));
+      cb.look = c3.look.lerp(cb.look, j);
+    }
+    return cb;
   } else {
+    const to = t - D;
     // chase the jet, then pull back to the wide reef — joined smoothly from the scene-3 camera
     const st = octoBase(t);
     const c = st.pos.clone().add(v3(0, 0.3, 0));
     // lead shot: the camera stays ahead of the octopus as it jets toward (and past) us
     const chase = c.clone().add(v3(-1.9, 1.5, -4.4));
     const wide = v3(0.4, 6.6, -23.5);
-    const w = easeInOut(remap(t, 35.0, 41.5));
+    const w = easeInOut(remap(to, 35.0, 41.5));
     pos = chase.lerp(wide, w);
     look = c.clone().lerp(v3(3.2, 2.2, -14.5), w * 0.5);
     focusTarget = st.pos;
-    const j = easeInOut(remap(t, T.s4, T.s4 + 1.8));
+    const j = easeInOut(remap(t, T.s4n, T.s4n + 1.8));
     if (j < 1) {
-      const a3 = camS3(T.s4);
+      const a3 = camBonus(T.s4n);
       pos = a3.pos.lerp(pos, j);
       look = a3.look.lerp(look, j);
     }
@@ -221,14 +246,46 @@ function camS3(t) {
     const st = octoBase(t);
     const c = mantleCenter(st.pos);
     const heading = Math.atan2(st.fwd.x, st.fwd.z);
-    const push = window01(t, 20.8, 27.4, 1.6);
-    const a = heading + THREE.MathUtils.degToRad(lerp(132, 105, ss(T.s3, 20, t)) - 55 * ss(26.5, 29.8, t));
-    const r = lerp(4.3, 3.5, push) + 0.9 * ss(26.8, 29.8, t);
-    pos = orbit(c, a, r, 1.1 - 0.4 * ss(26.5, 29.8, t));
-    look = c.clone().add(v3(0, -0.2 - 0.25 * ss(26.5, 29.8, t), 0));
+    const push = window01(t, 20.8, 33.0, 1.6);
+    const a = heading + THREE.MathUtils.degToRad(lerp(132, 105, ss(T.s3, 20, t)));
+    const r = lerp(4.3, 3.5, push);
+    pos = orbit(c, a, r, 1.1);
+    look = c.clone().add(v3(0, -0.2, 0));
     focusTarget = c;
   }
   return { pos, look, focusTarget };
+}
+function camBonus(t) {
+  // in front of the hovering octopus (scene-3 clearing); lower for the arms fact
+  const P = pathSwim.getPointAt(1);
+  const c = P.clone().add(v3(0, 0.65, 0));
+  const lowK = easeInOut(remap(t, T.arms, T.arms + 1.8));
+  const a = -Math.PI / 2 + 0.22 * Math.sin((t - T.color) * 0.28) + 0.3 * lowK;
+  const r = lerp(3.7, 3.4, ss(T.color, T.arms, t));
+  const pos = orbit(c, a, r, lerp(0.35, -0.55, lowK));
+  const look = c.clone().add(v3(0, lerp(-0.1, -0.85, lowK), 0));
+  return { pos, look, focusTarget: c.clone().add(v3(0, -0.5 * lowK, 0)) };
+}
+function bonusState(t) {
+  // fact 1: chromatophores — quick colour snaps; fact 2: glowing nerve cords in the arms
+  const keys = [[33.9, '#9a5be0', 0], [34.15, '#ff4f2b', 1], [35.5, '#ff4f2b', 1], [35.75, '#d7bf86', 1], [36.9, '#d7bf86', 1], [37.15, '#fff1d6', 1], [37.75, '#fff1d6', 1], [37.95, '#ff3d6e', 1], [38.6, '#ff3d6e', 1], [38.95, '#9a5be0', 0]];
+  let col = new THREE.Color(keys[0][1]), amt = 0;
+  for (let i = 0; i < keys.length - 1; i++) {
+    const [t0, c0, a0] = keys[i], [t1, c1, a1] = keys[i + 1];
+    if (t >= t0 && t < t1) {
+      const k = smooth(remap(t, t0, t1));
+      col = new THREE.Color(c0).lerp(new THREE.Color(c1), k);
+      amt = lerp(a0, a1, k);
+    }
+  }
+  return {
+    tint: col,
+    tintAmt: amt,
+    mottle: amt,
+    neuro: window01(t, T.arms + 0.6, T.s4n - 0.2, 0.5),
+    indep: window01(t, T.arms + 2.0, T.s4n + 0.4, 0.8),
+    spread: 0.55 + 0.25 * window01(t, T.arms + 0.6, T.s4n, 0.8),
+  };
 }
 // position/forward of the octopus without the orientation logic (avoids recursion)
 function octoBase(t) {
@@ -236,6 +293,8 @@ function octoBase(t) {
     const u = smooth(remap(t, T.s3, T.s4 + 0.6));
     return { pos: pathSwim.getPointAt(u), fwd: pathSwim.getTangentAt(u) };
   }
+  if (t < T.s4n + 0.6) return { pos: pathSwim.getPointAt(1), fwd: pathSwim.getTangentAt(1) };
+  t -= D;
   if (t < T.jet1 + 0.6) {
     const u = easeInOut(remap(t, T.jet0, T.jet1));
     return { pos: pathJet.getPointAt(u), fwd: pathJet.getTangentAt(u) };
@@ -264,6 +323,7 @@ function anatomyState(t) {
   const oxygen = ss(T.o2 + 0.6, T.o2 + 2.6, t) * (1 - ss(T.xrayOut, T.xrayOut + 1.5, t)) + 0.35 * flow.gill * (t < T.s3 ? 1 : 0);
   return {
     xray,
+    blueGlow: 0.9 * window01(t, T.blue + 0.3, T.xrayOut, 0.5),
     oxygen: clamp(oxygen),
     highlight: { b: clamp(hlB), s: clamp(hlS) },
     beat: { b: pulse(t, BR_BEATS), s: pulse(t, SYS_BEATS) },
@@ -318,7 +378,7 @@ function updateO2(t) {
 const $ = (id) => document.getElementById(id);
 const ov = {
   big: $('big'), labs: { bL: $('labBL'), bR: $('labBR'), s: $('labS'), g: $('labG'), o2: $('labO2') }, lines: $('lines'),
-  legend: $('legend'), hemo: $('hemo'), hud: $('hud'), hudHeart: $('hudHeart'), ecg: $('ecg'), outro: $('outro'), sub: $('sub'),
+  legend: $('legend'), hemo: $('hemo'), chrom: $('chrom'), neuro: $('neuro'), hud: $('hud'), hudHeart: $('hudHeart'), ecg: $('ecg'), outro: $('outro'), sub: $('sub'),
 };
 const op = (el, v, tr) => { el.style.opacity = v.toFixed(3); if (tr !== undefined) el.style.transform = tr; };
 const proj = (p) => { const s = p.clone().project(cam); return { x: (s.x * 0.5 + 0.5) * W, y: (-s.y * 0.5 + 0.5) * H, z: s.z }; };
@@ -372,14 +432,16 @@ function updateOverlay(t, an) {
   const o2On = window01(t, T.o2 + 0.2, T.flowSeq + 0.6, 0.35) * lx;
   label(ov.labs.o2, gl.clone().add(v3(0, 0, 0)), 150, 90, clamp(o2On), 'lnO2');
   op(ov.legend, window01(t, T.bFocus + 0.2, T.xrayOut + 1.2, 0.4));
-  op(ov.hemo, window01(t, T.hemo, T.s4 - 0.2, 0.35), `translateX(-50%) scale(${(0.92 + 0.08 * ss(T.hemo, T.hemo + 0.3, t)).toFixed(3)})`);
+  op(ov.hemo, window01(t, T.hemo, T.color + 0.2, 0.35), `translateX(-50%) scale(${(0.92 + 0.08 * ss(T.hemo, T.hemo + 0.3, t)).toFixed(3)})`);
+  op(ov.chrom, window01(t, T.color + 1.0, T.arms - 0.1, 0.35), `translateX(-50%) scale(${(0.92 + 0.08 * ss(T.color + 1.0, T.color + 1.3, t)).toFixed(3)})`);
+  op(ov.neuro, window01(t, T.arms + 0.8, T.s4n - 0.1, 0.35), `translateX(-50%) scale(${(0.92 + 0.08 * ss(T.arms + 0.8, T.arms + 1.1, t)).toFixed(3)})`);
 
   // heart-rate HUD (scene 4)
-  op(ov.hud, window01(t, T.jet0 + 0.2, 36.4, 0.4));
+  op(ov.hud, window01(t, T.jet0 + 0.2 + D, 36.4 + D, 0.4));
   ov.hudHeart.style.transform = `scale(${(1 + 0.28 * pulse(t, SYS_BEATS)).toFixed(3)})`;
   ov.ecg.setAttribute('d', ecgPath(t));
 
-  op(ov.outro, window01(t, T.wave + 0.2, T.end + 1, 0.5), `translateX(-50%) translateY(${((1 - ss(T.wave + 0.2, T.wave + 0.8, t)) * 30).toFixed(1)}px)`);
+  op(ov.outro, window01(t, T.wave + 0.2 + D, DURATION + 1, 0.5), `translateX(-50%) translateY(${((1 - ss(T.wave + 0.2 + D, T.wave + 0.8 + D, t)) * 30).toFixed(1)}px)`);
 
   // subtitles
   let on = 0;
@@ -415,14 +477,14 @@ function frame(t) {
   ocean.update(t, cam, st.pos.clone().add(v3(0, 0.2, 0)), st.jet > 0.2 ? 1 : 0.15);
 
   const focus = cam.position.distanceTo(cs.focusTarget);
-  const wide = ss(37, 41.5, t);
+  const wide = ss(37 + D, 41.5 + D, t);
   post.renderLayer(0, ocean.scene, cam, { focus, aperture: lerp(t < T.s2 ? 9 : 11, 6, wide), maxBlur: 14 });
   post.composite({
     exposure: 1.05,
     bloom: 0.55,
     vignette: 0.6,
     threshold: 1.0,
-    fade: (1 - ss(0, 0.6, t)) + ss(42.0, 42.5, t) * 0.85,
+    fade: (1 - ss(0, 0.6, t)) + ss(DURATION - 0.5, DURATION, t) * 0.85,
     frame: Math.round(t * FPS),
   });
   updateOverlay(t, an);
@@ -443,9 +505,12 @@ export const EVENTS = [
   { t: T.sFocus, type: 'ping' },
   { t: T.o2 + 0.2, type: 'sparkle' },
   { t: T.hemo, type: 'ping' },
-  { t: T.jet0, type: 'jet' },
-  { t: T.wave + 0.2, type: 'accent_soft' },
-  ...SYS_BEATS.filter((b) => b > T.xrayIn && b < 36.6).map((b) => ({ t: b, type: 'beat' })),
+  { t: T.color + 1.0, type: 'ping' },
+  ...[34.15, 35.75, 37.15, 37.95].map((x) => ({ t: x, type: 'shimmer' })),
+  { t: T.arms + 0.6, type: 'neuro' },
+  { t: T.jet0 + D, type: 'jet' },
+  { t: T.wave + 0.2 + D, type: 'accent_soft' },
+  ...SYS_BEATS.filter((b) => (b > T.xrayIn && b < T.color) || (b > T.s4n && b < 36.6 + D)).map((b) => ({ t: b, type: 'beat' })),
 ];
 
 window.DURATION = DURATION;

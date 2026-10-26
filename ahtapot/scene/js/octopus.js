@@ -61,7 +61,7 @@ export function flowMaterial(color) {
 }
 
 class Arm {
-  constructor(material, suckerMat, idx) {
+  constructor(material, suckerMat, idx, nerveMat) {
     this.idx = idx;
     this.SEG = 46;
     this.RAD = 10;
@@ -100,6 +100,28 @@ class Arm {
     this.suckers = new THREE.InstancedMesh(new THREE.TorusGeometry(1, 0.42, 8, 14), suckerMat, this.NS * 2);
     this.suckers.frustumCulled = false;
     this.pts = Array.from({ length: this.SEG + 1 }, () => new THREE.Vector3());
+    if (nerveMat) {
+      const NR = 6, nn = (this.SEG + 1) * (NR + 1);
+      const ng = new THREE.BufferGeometry();
+      this.npos = new Float32Array(nn * 3);
+      const nuv = new Float32Array(nn * 2), nidx = [];
+      for (let i = 0; i <= this.SEG; i++) for (let j = 0; j <= NR; j++) {
+        const k = i * (NR + 1) + j;
+        nuv[k * 2] = i / this.SEG;
+        nuv[k * 2 + 1] = j / NR;
+        if (i < this.SEG && j < NR) { const a0 = k, b0 = k + NR + 1; nidx.push(a0, a0 + 1, b0, b0, a0 + 1, b0 + 1); }
+      }
+      ng.setAttribute('position', new THREE.BufferAttribute(this.npos, 3));
+      this.nnor = new Float32Array(nn * 3);
+      ng.setAttribute('normal', new THREE.BufferAttribute(this.nnor, 3));
+      ng.setAttribute('uv', new THREE.BufferAttribute(nuv, 2));
+      ng.setIndex(nidx);
+      this.NR = NR;
+      this.nerve = new THREE.Mesh(ng, nerveMat);
+      this.nerve.frustumCulled = false;
+      this.nerve.renderOrder = 10;
+      this.nerve.visible = false;
+    }
   }
 
   // base: Vector3 (local), o: outward dir, params: {pitch0, len, wave, sway, curl, t, phase}
@@ -140,6 +162,20 @@ class Arm {
       }
       B.crossVectors(T, N).normalize();
       const r = 0.15 * Math.pow(1 - s, 0.85) + 0.012 + (s < 0.08 ? (0.08 - s) * 0.9 : 0);
+      if (this.nerve && this.nerve.visible) {
+        const rn = 0.028 * (1 - s * 0.6);
+        for (let j = 0; j <= this.NR; j++) {
+          const a = (j / this.NR) * Math.PI * 2;
+          tmp.copy(N).multiplyScalar(Math.cos(a)).addScaledVector(B, Math.sin(a));
+          const k = (i * (this.NR + 1) + j) * 3;
+          this.npos[k] = pts[i].x + tmp.x * rn;
+          this.npos[k + 1] = pts[i].y + tmp.y * rn;
+          this.npos[k + 2] = pts[i].z + tmp.z * rn;
+          this.nnor[k] = tmp.x;
+          this.nnor[k + 1] = tmp.y;
+          this.nnor[k + 2] = tmp.z;
+        }
+      }
       for (let j = 0; j <= RAD; j++) {
         const a = (j / RAD) * Math.PI * 2;
         tmp.copy(N).multiplyScalar(Math.cos(a)).addScaledVector(B, Math.sin(a));
@@ -169,6 +205,7 @@ class Arm {
     this.mesh.geometry.attributes.position.needsUpdate = true;
     this.mesh.geometry.attributes.normal.needsUpdate = true;
     this.mesh.geometry.computeBoundingSphere();
+    if (this.nerve && this.nerve.visible) { this.nerve.geometry.attributes.position.needsUpdate = true; this.nerve.geometry.attributes.normal.needsUpdate = true; }
   }
 }
 
@@ -181,6 +218,23 @@ export function createOctopus() {
   const armSkin = new THREE.MeshPhysicalMaterial({ map: tex, vertexColors: true, roughness: 0.45, clearcoat: 0.5, clearcoatRoughness: 0.35, emissive: new THREE.Color('#2a0a4a'), emissiveIntensity: 0.25 });
   // translucent mantle material (x-ray)
   const mantleMat = skin.clone();
+  const tintU = { uTintCol: { value: new THREE.Color('#ff5a2a') }, uTintAmt: { value: 0 }, uMottle: { value: 0 }, uTintTime: { value: 0 } };
+  for (const m of [skin, armSkin, mantleMat]) {
+    m.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, tintU);
+      sh.fragmentShader = 'uniform vec3 uTintCol; uniform float uTintAmt, uMottle, uTintTime;\n' + sh.fragmentShader.replace(
+        '#include <map_fragment>',
+        `#include <map_fragment>
+         if (uTintAmt > 0.0) {
+           float lum = dot(diffuseColor.rgb, vec3(0.299, 0.587, 0.114));
+           float flick = 0.5 + 0.5 * sin(uTintTime * 7.0 + lum * 40.0 + vMapUv.x * 23.0 + vMapUv.y * 31.0);
+           vec3 tinted = uTintCol * (0.45 + 1.7 * lum) * (1.0 + uMottle * (flick - 0.5) * 0.9);
+           diffuseColor.rgb = mix(diffuseColor.rgb, tinted, uTintAmt);
+         }`
+      );
+    };
+    m.customProgramCacheKey = () => 'octo-tint';
+  }
   const suckerMat = new THREE.MeshPhysicalMaterial({ color: '#ffc6e0', roughness: 0.4, clearcoat: 0.6 });
   const white = new THREE.MeshPhysicalMaterial({ color: '#ffffff', roughness: 0.18, clearcoat: 1 });
   const pupilMat = new THREE.MeshPhysicalMaterial({ color: '#120a1c', roughness: 0.15, clearcoat: 1 });
@@ -236,13 +290,29 @@ export function createOctopus() {
   const ooh = add(new THREE.TorusGeometry(0.06, 0.024, 10, 24), dark, body, [0, 0.02, 0.8], 1, [0.3, 0, 0]);
   const oohFill = add(new THREE.CircleGeometry(0.06, 20), new THREE.MeshStandardMaterial({ color: '#2a0838' }), body, [0, 0.02, 0.795], 1, [0.3, 0, 0]);
 
-  // arms
+  // arms (+ glowing nerve cords for the "neurons in the arms" fact)
+  const nerveMat = flowMaterial('#a8fbff');
+  nerveMat.blending = THREE.AdditiveBlending;
   const arms = [];
   for (let i = 0; i < 8; i++) {
-    const a = new Arm(armSkin, suckerMat, i);
-    body.add(a.mesh, a.suckers);
+    const a = new Arm(armSkin, suckerMat, i, nerveMat);
+    body.add(a.mesh, a.suckers, a.nerve);
     arms.push(a);
   }
+  const brainMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.4, 2.4, 2.6), transparent: true, opacity: 0, depthTest: false, depthWrite: false, blending: THREE.AdditiveBlending });
+  const brain = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), brainMat);
+  brain.position.set(0, 0.42, -0.15);
+  brain.scale.set(0.16, 0.11, 0.13);
+  brain.renderOrder = 11;
+  brain.visible = false;
+  body.add(brain);
+  const ringMat = nerveMat;
+  const nerveRing = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.025, 8, 48), ringMat);
+  nerveRing.position.set(0, -0.36, 0.02);
+  nerveRing.rotation.x = Math.PI / 2;
+  nerveRing.renderOrder = 10;
+  nerveRing.visible = false;
+  body.add(nerveRing);
 
   // ---------------- anatomy (inside the mantle) ----------------
   const anatomy = new THREE.Group();
@@ -347,6 +417,15 @@ export function createOctopus() {
       // arms
       const spread = p.spread ?? 0.5;
       const wave = p.wave ?? 0.6;
+      const indep = p.indep ?? 0;
+      const neuro = clamp(p.neuro ?? 0);
+      for (const a of arms) a.nerve.visible = neuro > 0.001;
+      brain.visible = false; // kept off: reads as a patch on the face
+      nerveRing.visible = neuro > 0.001;
+      nerveMat.uniforms.uOpacity.value = neuro;
+      nerveMat.uniforms.uTime.value = t * 1.4;
+      nerveMat.uniforms.uGlow.value = 0.6;
+      brainMat.opacity = neuro * 0.45 * (0.7 + 0.3 * Math.sin(t * 6));
       for (let i = 0; i < 8; i++) {
         const th = ((i + 0.5) / 8) * Math.PI * 2;
         const o = new THREE.Vector3(Math.sin(th), 0, Math.cos(th));
@@ -354,11 +433,11 @@ export function createOctopus() {
         const front = Math.max(0, o.z); // arms in front curl a bit more for cuteness
         arms[i].update(base, o, {
           t,
-          omega: p.omega ?? 3.2,
-          phase: phases[i],
+          omega: (p.omega ?? 3.2) * (1 + indep * 0.35 * Math.sin(i * 2.1 + 0.7)),
+          phase: phases[i] + indep * i * 1.9,
           len: (p.len ?? 1.75) * (0.92 + 0.08 * Math.sin(phases[i] * 3)),
           pitch0: THREE.MathUtils.lerp(-1.45, -0.05, spread) + (p.armLift ?? 0) * (0.6 + 0.4 * front) - stroke * 0.35,
-          wave,
+          wave: wave * (1 + indep * 0.6 * Math.sin(i * 1.3 + t * 0.9)),
           sway: (p.sway ?? 0.35) * (0.6 + 0.4 * Math.sin(phases[i])),
           curl: (p.curl ?? 0.25) * (0.7 + 0.5 * front),
         });
@@ -376,6 +455,11 @@ export function createOctopus() {
       smile.scale.setScalar(1 - surprise);
       ooh.scale.setScalar(Math.max(0.0001, surprise));
       oohFill.scale.setScalar(Math.max(0.0001, surprise));
+      // chromatophore colour change
+      tintU.uTintAmt.value = clamp(p.tintAmt ?? 0);
+      tintU.uMottle.value = p.mottle ?? 0;
+      tintU.uTintTime.value = t;
+      if (p.tint) tintU.uTintCol.value.copy(p.tint);
       // x-ray
       const xr = clamp(p.xray ?? 0);
       mantleMat.transparent = xr > 0.001;
@@ -416,6 +500,8 @@ export function createOctopus() {
       gillFlowMat.uniforms.uOpacity.value = xr * f.gill;
       oxMat.uniforms.uOpacity.value = xr * Math.max(f.ox, f.aorta);
       for (const mt of [deoxMat, gillFlowMat, oxMat]) mt.uniforms.uTime.value = t;
+      oxMat.uniforms.uGlow.value = p.blueGlow ?? 0;
+      gillFlowMat.uniforms.uGlow.value = (p.blueGlow ?? 0) * 0.6;
       vessels.ox.forEach((v) => (v.visible = f.ox > 0.01));
       vessels.aorta.forEach((v) => (v.visible = f.aorta > 0.01));
       for (const a of arrows) {
