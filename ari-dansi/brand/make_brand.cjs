@@ -49,6 +49,11 @@ const srv = http.createServer((req, res) => {
     console.log('wrote pirilti_saydam.png');
   }
 
+  // channel banner (2560×1440) + preview with YouTube's visible areas marked
+  await shot('/brand/banner.html', 2560, 1440, 'pirilumo_banner_2560x1440.png', 1);
+  await shot('/brand/banner.html?guide=1', 2560, 1440, 'onizleme_banner_alanlar.png', 1);
+  require('child_process').execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', path.join(OUT, 'pirilumo_banner_2560x1440.png'), '-q:v', '2', path.join(OUT, 'pirilumo_banner_2560x1440.jpg')]);
+
   // 2) clean 3D frames from the animation (graphics overlay hidden)
   const clean = () => { document.getElementById('ov').style.display = 'none'; };
   const frame = (fmt, t) => `/scene/index.html?render=1${fmt === 'v' ? '&format=vertical' : ''}`;
