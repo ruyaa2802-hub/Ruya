@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Pirilumo profil — hayvanlar dünyası</title>
+<style>
+  html, body { margin: 0; background: #000; }
+  #stage { position: relative; width: 1600px; height: 1600px; overflow: hidden; }
+  #c { position: absolute; inset: 0; width: 1600px; height: 1600px; }
+  #guide { position: absolute; inset: 0; border-radius: 50%; box-shadow: 0 0 0 800px rgba(0,0,0,0.55); display: none; }
+  body.guide #guide { display: block; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage"><canvas id="c" width="1600" height="1600"></canvas><div id="guide"></div></div>
+<script type="module">
+import * as THREE from 'three';
+import { TTFLoader } from 'three/addons/loaders/TTFLoader.js';
+import { Font } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { Post } from '../scene/js/post.js';
+import { rng, softDotTexture, canvasTexture } from '../scene/js/util.js';
+import { createLion, createElephant, createPenguin } from './hayvanlar2.js';
+
+const SIZE = 1600;
+const P = new URLSearchParams(location.search);
+const num = (k, d) => parseFloat(P.get(k) ?? d);
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(SIZE, SIZE, false);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const post = new Post(renderer, SIZE, SIZE);
+const R = rng(9);
+const scene = new THREE.Scene();
+
+// ---------- sky: deep blue → bright cyan, sun glow upper-left ----------
+const sunDir = new THREE.Vector3(-0.45, 0.55, 0.7).normalize();
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(300, 32, 16), new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, uniforms: { sunDir: { value: sunDir } },
+  vertexShader: `varying vec3 d; void main(){ d = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+  fragmentShader: `varying vec3 d; uniform vec3 sunDir; void main(){
+    float h = d.y * 0.5 + 0.5;
+    vec3 c = mix(vec3(0.3,0.72,1.0), vec3(0.04,0.2,0.7), smoothstep(0.4, 0.9, h));
+    float s = max(dot(normalize(d), normalize(vec3(-0.5,0.45,-0.75))), 0.);
+    c += vec3(1.0,0.9,0.6) * pow(s, 6.) * 0.5;
+    gl_FragColor = vec4(c, 1.); }`,
+})));
+
+// ---------- lights ----------
+scene.add(new THREE.HemisphereLight(0xd8ecff, 0x3d6b2a, 1.2));
+const key = new THREE.DirectionalLight(0xfff0d8, 3.6);
+key.position.set(-7, 11, 13);
+key.target.position.set(0, -0.5, 0);
+key.castShadow = true;
+key.shadow.mapSize.set(4096, 4096);
+Object.assign(key.shadow.camera, { left: -7, right: 7, top: 7, bottom: -7, near: 1, far: 60 });
+key.shadow.bias = -0.0003;
+key.shadow.normalBias = 0.02;
+key.shadow.radius = 5;
+scene.add(key, key.target);
+const rim = new THREE.DirectionalLight(0xbfe4ff, 2.4);
+rim.position.set(7, 5, -9);
+scene.add(rim);
+
+// ---------- the little planet ----------
+const PR = 3.4;
+const PC = new THREE.Vector3(0, -PR + 0.05, 0);
+const worldTex = canvasTexture(2048, 1024, (g, w, h) => {
+  const sea = g.createLinearGradient(0, 0, 0, h);
+  sea.addColorStop(0, '#3aa2ff'); sea.addColorStop(1, '#1d6fd6');
+  g.fillStyle = sea; g.fillRect(0, 0, w, h);
+  const r = rng(3);
+  const blob = (cx, cy, rad, col) => { for (let i = 0; i < 26; i++) { g.fillStyle = col; g.beginPath(); g.arc(cx + (r() - 0.5) * rad * 1.6, cy + (r() - 0.5) * rad, rad * (0.35 + r() * 0.45), 0, 7); g.fill(); } };
+  // continents (sand rim first, then grass)
+  const lands = [[300, 420, 150], [760, 520, 170], [1180, 380, 140], [1560, 560, 190], [1880, 430, 120], [520, 760, 110], [1350, 760, 120]];
+  for (const [x, y, s] of lands) blob(x, y, s * 1.12, '#f1d58a');
+  for (const [x, y, s] of lands) blob(x, y, s, '#5cbf4f');
+  for (const [x, y, s] of lands) blob(x + 20, y + 10, s * 0.55, '#469f3d');
+  // the north cap (where the animals stand) is a grassy meadow
+  g.fillStyle = '#62c452'; g.fillRect(0, 0, w, 230);
+  for (let x = 0; x < w; x += 60) { g.beginPath(); g.arc(x + 30, 230, 40 + r() * 30, 0, 7); g.fill(); }
+  // polar ice at the bottom
+  g.fillStyle = '#f2fbff'; g.fillRect(0, h - 70, w, 70);
+});
+const planet = new THREE.Mesh(new THREE.SphereGeometry(PR, 128, 64), new THREE.MeshStandardMaterial({ map: worldTex, roughness: 0.65 }));
+planet.position.copy(PC);
+planet.rotation.y = 2.2;
+planet.receiveShadow = true;
+scene.add(planet);
+// soft atmosphere halo
+const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: softDotTexture(), color: new THREE.Color(0.7, 0.9, 1.4), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }));
+halo.position.copy(PC).add(new THREE.Vector3(0, 0, -1));
+halo.scale.set(PR * 3.0, PR * 3.0, 1);
+scene.add(halo);
+
+// place something on the planet surface: angle a around Z (0 = top), b around X (tilt toward camera)
+function onPlanet(obj, a, b = 0, lift = 0, yaw = 0) {
+  const pivot = new THREE.Group();
+  pivot.position.copy(PC);
+  pivot.rotation.set(b, 0, -a, 'ZXY');
+  obj.position.set(0, PR + lift, 0);
+  obj.rotation.y = yaw;
+  pivot.add(obj);
+  scene.add(pivot);
+  return pivot;
+}
+
+// grass tufts & flowers on the cap
+{
+  const blade = new THREE.ConeGeometry(0.035, 0.32, 4);
+  blade.translate(0, 0.16, 0);
+  const N = 1400;
+  const im = new THREE.InstancedMesh(blade, new THREE.MeshStandardMaterial({ roughness: 0.9 }), N);
+  const m = new THREE.Matrix4(), q = new THREE.Quaternion(), c = new THREE.Color(), up = new THREE.Vector3();
+  for (let i = 0; i < N; i++) {
+    const a = (R() - 0.5) * 1.5, b = (R() - 0.5) * 1.1 + 0.15;
+    up.set(Math.sin(a), Math.cos(a) * Math.cos(b), Math.cos(a) * Math.sin(b)).normalize();
+    q.setFromUnitVectors(new THREE.Vector3(0, 1, 0), up);
+    q.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler((R() - 0.5) * 0.4, R() * 6, 0)));
+    m.compose(PC.clone().addScaledVector(up, PR - 0.02), q, new THREE.Vector3(1, 0.6 + R() * 0.8, 1));
+    im.setMatrixAt(i, m);
+    im.setColorAt(i, c.setHSL(0.27 + R() * 0.05, 0.6, 0.32 + R() * 0.14));
+  }
+  im.receiveShadow = true;
+  scene.add(im);
+  const COLS = ['#ffffff', '#ff7fb0', '#ffd23d', '#b98cff', '#ff8a3d'];
+  for (let i = 0; i < 26; i++) {
+    const f = new THREE.Group();
+    const col = COLS[i % COLS.length];
+    for (let k = 0; k < 6; k++) {
+      const p = new THREE.Mesh(new THREE.SphereGeometry(1, 10, 6), new THREE.MeshStandardMaterial({ color: col, roughness: 0.5 }));
+      p.scale.set(0.05, 0.012, 0.11);
+      p.position.set(Math.sin((k / 6) * 6.283) * 0.11, 0.2, Math.cos((k / 6) * 6.283) * 0.11);
+      p.rotation.y = (k / 6) * 6.283;
+      f.add(p);
+    }
+    const ctr = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 6), new THREE.MeshStandardMaterial({ color: '#ffc61a' }));
+    ctr.position.y = 0.21;
+    f.add(ctr);
+    const a = (R() - 0.5) * 1.6, b = R() * 0.6 + 0.25;
+    if (Math.abs(a) < 0.55 && b < 0.5) { i--; continue; }
+    f.traverse((o) => (o.castShadow = true));
+    onPlanet(f, a, b);
+  }
+}
+
+// trees on the planet's shoulders
+{
+  const trunkM = new THREE.MeshStandardMaterial({ color: '#7a5230', roughness: 1 });
+  const leafM = ['#3f9a3a', '#2f8a33', '#56b04a'].map((c) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.9 }));
+  const spots = [[-0.92, -0.05, 1.0], [-0.78, -0.45, 0.8], [0.9, -0.1, 0.95], [0.8, -0.5, 0.75], [-0.3, -0.62, 0.85], [0.38, -0.66, 0.9]];
+  spots.forEach(([a, b, s], i) => {
+    const t = new THREE.Group();
+    const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.1, 0.5, 8), trunkM);
+    tr.position.y = 0.25;
+    t.add(tr);
+    if (i % 2) {
+      for (let k = 0; k < 3; k++) { const c = new THREE.Mesh(new THREE.ConeGeometry(0.42 - k * 0.1, 0.55, 14), leafM[k % 3]); c.position.y = 0.6 + k * 0.3; t.add(c); }
+    } else {
+      for (let k = 0; k < 3; k++) { const b2 = new THREE.Mesh(new THREE.IcosahedronGeometry(0.34, 2), leafM[(k + i) % 3]); b2.position.set((k - 1) * 0.2, 0.75 + (k % 2) * 0.18, 0); t.add(b2); }
+    }
+    t.scale.setScalar(s);
+    t.traverse((o) => { o.castShadow = true; o.receiveShadow = true; });
+    onPlanet(t, a, b);
+  });
+}
+
+// clouds floating around
+{
+  const cm = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.95, emissive: new THREE.Color('#bcd8ff'), emissiveIntensity: 0.15 });
+  const ball = new THREE.SphereGeometry(1, 24, 16);
+  [[-4.6, 1.6, -2.5, 1.0], [4.5, 2.4, -2.8, 0.85], [-4.2, -1.9, 0.5, 0.75], [4.4, -1.2, 0.2, 0.8], [0.4, 3.9, -4.5, 0.7]].forEach(([x, y, z, s]) => {
+    const c = new THREE.Group();
+    [[0, 0, 0, 0.55], [0.55, -0.08, 0, 0.42], [-0.55, -0.1, 0, 0.4], [0.2, 0.3, -0.1, 0.42]].forEach(([a, b, d, r]) => { const m = new THREE.Mesh(ball, cm); m.position.set(a, b, d); m.scale.setScalar(r); c.add(m); });
+    c.position.set(x, y, z);
+    c.scale.setScalar(s);
+    scene.add(c);
+  });
+  const N = 90, pos = [];
+  for (let i = 0; i < N; i++) pos.push((R() - 0.5) * 16, (R() - 0.3) * 10, -6 - R() * 6);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  scene.add(new THREE.Points(g, new THREE.PointsMaterial({ size: 0.09, map: softDotTexture(), color: new THREE.Color(2.4, 2.3, 1.6), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending })));
+}
+
+// ---------- the animals on top of the world ----------
+const elephant = createElephant(), lion = createLion(), penguin = createPenguin();
+onPlanet(elephant, -0.44, 0.12, -0.02, 0.5);
+onPlanet(lion, 0.0, 0.22, -0.02, 0.0);
+onPlanet(penguin, 0.44, 0.12, -0.02, -0.45);
+elephant.scale.setScalar(0.92);
+penguin.scale.setScalar(0.95);
+
+// ---------- 3D lettering ----------
+const ttf = new TTFLoader();
+ttf.reversed = true;
+const font = new Font(ttf.parse(await (await fetch('./fonts/Inter-Black.otf')).arrayBuffer()));
+function text3d(str, size, depth, bevel, mats) {
+  const g = new TextGeometry(str, { font, size, depth, curveSegments: 10, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel * 0.7, bevelSegments: 5 });
+  g.computeBoundingBox();
+  const bb = g.boundingBox;
+  g.translate(-(bb.max.x + bb.min.x) / 2, -bb.min.y, -depth / 2);
+  const m = new THREE.Mesh(g, mats);
+  m.castShadow = m.receiveShadow = true;
+  m.userData.width = bb.max.x - bb.min.x;
+  m.userData.height = bb.max.y - bb.min.y;
+  return m;
+}
+const yellow = new THREE.MeshPhysicalMaterial({ color: '#ffd23d', roughness: 0.25, clearcoat: 1, clearcoatRoughness: 0.08 });
+const redSide = new THREE.MeshPhysicalMaterial({ color: '#e8530c', roughness: 0.35, clearcoat: 0.6 });
+const name = text3d('Pirilumo', 1.08, 0.5, 0.08, [yellow, redSide]);
+name.position.set(0, num('ny', -1.75), num('nz', 3.7));
+name.rotation.x = -0.05;
+scene.add(name);
+
+const tag = new THREE.Group();
+const label = text3d('Hayvanları Keşfet', 0.36, 0.08, 0.025, [new THREE.MeshPhysicalMaterial({ color: '#ffffff', roughness: 0.3, clearcoat: 1 }), new THREE.MeshStandardMaterial({ color: '#dfeeff', roughness: 0.4 })]);
+const pw = label.userData.width + 0.8, ph = 0.72, pr = ph / 2;
+const shape = new THREE.Shape();
+shape.moveTo(-pw / 2 + pr, -ph / 2);
+shape.lineTo(pw / 2 - pr, -ph / 2);
+shape.absarc(pw / 2 - pr, 0, pr, -Math.PI / 2, Math.PI / 2, false);
+shape.lineTo(-pw / 2 + pr, ph / 2);
+shape.absarc(-pw / 2 + pr, 0, pr, Math.PI / 2, Math.PI * 1.5, false);
+const pill = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, { depth: 0.16, bevelEnabled: true, bevelThickness: 0.06, bevelSize: 0.05, bevelSegments: 5, curveSegments: 24 }),
+  new THREE.MeshPhysicalMaterial({ color: '#ff7a1a', roughness: 0.35, clearcoat: 0.7 }));
+pill.castShadow = pill.receiveShadow = true;
+tag.add(pill);
+label.position.set(0, -label.userData.height / 2 + 0.02, 0.27);
+tag.add(label);
+tag.position.set(0, num('ty', -2.75), num('tz', 3.75));
+tag.scale.setScalar(num('ts', 0.82));
+scene.add(tag);
+
+// ---------- camera & render ----------
+const cam = new THREE.PerspectiveCamera(num('fov', 32), 1, 0.1, 400);
+cam.position.set(0, num('cy', 1.4), num('cz', 19));
+cam.lookAt(0, num('ly', -0.75), 0);
+post.renderLayer(0, scene, cam, { focus: cam.position.distanceTo(new THREE.Vector3(0, 0.8, 1.0)), aperture: 7, maxBlur: 12 });
+post.composite({ exposure: 1.06, bloom: 0.4, vignette: 0.3, threshold: 1.3 });
+if (P.has('guide')) document.body.classList.add('guide');
+window.READY = true;
+</script>
+</body>
+</html>

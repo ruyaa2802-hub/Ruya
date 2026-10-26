@@ -200,3 +200,5 @@ export function createOwlOnStump() {
   g.userData.head = head;
   return shadowAll(g);
 }
+
+export { fuzzy, flat, add, glossyEye, smile, shadowAll, S, CONE, black, blush };

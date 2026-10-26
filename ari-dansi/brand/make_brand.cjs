@@ -36,8 +36,8 @@ const srv = http.createServer((req, res) => {
   };
 
   // 1) profile picture (rendered at 2× → 1600 px master)
-  await shot('/brand/profil3d.html', 1600, 1600, 'pirilumo_profil_1600.png', 1);
-  await shot('/brand/profil3d.html?guide=1', 1600, 1600, 'onizleme_profil_daire.png', 1);
+  await shot('/brand/profil_dunya.html', 1600, 1600, 'pirilumo_profil_1600.png', 1);
+  await shot('/brand/profil_dunya.html?guide=1', 1600, 1600, 'onizleme_profil_daire.png', 1);
   require('child_process').execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', path.join(OUT, 'onizleme_profil_daire.png'), '-vf', 'scale=800:800:flags=lanczos', path.join(OUT, '_tmp.png')]);
   fs.renameSync(path.join(OUT, '_tmp.png'), path.join(OUT, 'onizleme_profil_daire.png'));
   {
