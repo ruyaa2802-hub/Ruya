@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Ahtapotların 3 Kalbi Var, Peki Neden?</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', 'DejaVu Sans', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  #big { left: 50%; top: 250px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; font-size: 128px; line-height: 1; white-space: nowrap;
+    color: #fff; -webkit-text-stroke: 18px #3a0f6b; paint-order: stroke fill; filter: drop-shadow(0 10px 0 rgba(20,0,50,0.55)) drop-shadow(0 0 40px rgba(180,120,255,0.6)); }
+  #big em { font-style: normal; color: #ff5fa8; }
+  .lab { font-weight: 800; font-size: 36px; color: #fff; background: rgba(8, 26, 48, 0.78); border: 3px solid #7fdcff; border-radius: 16px; padding: 8px 18px; white-space: nowrap; }
+  .lab.s { border-color: #ff7a9a; }
+  .lab.o2 { border-color: #a6f4ff; color: #a6f4ff; font-size: 40px; }
+  #lines line { stroke: #ffffff; stroke-width: 4; stroke-linecap: round; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7)); }
+  #legend { left: 50%; top: 150px; transform: translateX(-50%); background: rgba(8, 26, 48, 0.72); border-radius: 22px; padding: 14px 26px; color: #fff; font-weight: 700; font-size: 30px; }
+  #legend .row { display: flex; align-items: center; gap: 14px; margin: 4px 0; white-space: nowrap; }
+  #legend .sw { width: 64px; height: 12px; border-radius: 6px; }
+  #hemo { left: 50%; top: 1240px; background: rgba(8, 26, 48, 0.8); border: 3px solid #4f9dff; color: #fff; border-radius: 22px; padding: 14px 26px; font-weight: 800; font-size: 36px; white-space: nowrap; text-align: center; }
+  #hemo small { display: block; font-size: 26px; font-weight: 600; color: #bfe0ff; margin-top: 4px; }
+  #hud { left: 60px; top: 170px; width: 520px; background: rgba(8, 26, 48, 0.78); border: 3px solid #ff7a9a; border-radius: 24px; padding: 18px 22px 14px; color: #fff; }
+  #hud .top { display: flex; align-items: center; gap: 16px; font-weight: 800; font-size: 34px; }
+  #hudHeart { width: 64px; height: 64px; }
+  #hud svg.trace { display: block; margin-top: 6px; }
+  #hud .slow { font-size: 28px; font-weight: 700; color: #ffd0dc; margin-top: 4px; }
+  #outro { left: 50%; top: 300px; text-align: center; white-space: nowrap; }
+  #outro .q { font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; font-size: 74px; color: #fff; -webkit-text-stroke: 12px #08324a; paint-order: stroke fill; filter: drop-shadow(0 8px 0 rgba(0,20,40,0.5)); line-height: 1.1; }
+  #outro .brand { display: inline-flex; align-items: center; gap: 14px; margin-top: 26px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; font-size: 50px; color: #fff; -webkit-text-stroke: 8px #08324a; paint-order: stroke fill; }
+  #outro .brand img { width: 92px; height: 92px; border-radius: 50%; border: 5px solid #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.4); }
+  #sub { text-wrap: balance; left: 50%; bottom: 440px; max-width: 920px; width: max-content; text-align: center; font-weight: 700; font-size: 46px; line-height: 1.22;
+    color: #fff; background: rgba(4, 14, 28, 0.62); padding: 8px 24px 11px; border-radius: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.7); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <svg id="lines" class="o" style="opacity:1" width="1080" height="1920">
+      <line id="lnBL"/><line id="lnBR"/><line id="lnS"/><line id="lnG"/><line id="lnO2"/>
+    </svg>
+    <div id="big" class="o">3 KALBİ <em>VAR?!</em></div>
+    <div id="labBL" class="o lab">Solungaç kalbi</div>
+    <div id="labBR" class="o lab">Solungaç kalbi</div>
+    <div id="labS" class="o lab s">Sistemik kalp</div>
+    <div id="labG" class="o lab">Solungaç</div>
+    <div id="labO2" class="o lab o2">O₂</div>
+    <div id="legend" class="o">
+      <div class="row"><div class="sw" style="background:#8fb6d9"></div>Oksijeni azalmış kan</div>
+      <div class="row"><div class="sw" style="background:#1f7bff"></div>Oksijenli kan</div>
+    </div>
+    <div id="hemo" class="o">💙 Ahtapot kanı mavidir<small>Sebebi: bakır içeren hemosiyanin</small></div>
+    <div id="hud" class="o">
+      <div class="top"><svg id="hudHeart" viewBox="0 0 100 100"><path d="M50 88 C 20 65, 4 46, 10 26 C 16 8, 40 8, 50 26 C 60 8, 84 8, 90 26 C 96 46, 80 65, 50 88 Z" fill="#ff4d6d" stroke="#fff" stroke-width="5"/></svg>Sistemik kalp</div>
+      <svg class="trace" width="390" height="90" viewBox="0 0 390 90"><path id="ecg" d="" fill="none" stroke="#ff8fa8" stroke-width="5" stroke-linejoin="round"/></svg>
+      <div class="slow">Yüzerken atışı yavaşlar</div>
+    </div>
+    <div id="outro" class="o"><div class="q">Doğanın daha<br>ne sırları var? 🌊</div><div class="brand"><img src="./assets/logo.png" alt="">Pirilumo</div></div>
+    <div id="sub" class="o"></div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
