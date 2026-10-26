@@ -1,0 +1,6 @@
+# Python 3.13 (bpy 5.2 wheels are built for cp313)
+bpy==5.2.3            # Blender as a Python module (Cycles CPU render, no GUI needed)
+numpy
+scipy                 # SFX synthesis filters
+soundfile
+faster-whisper==1.2.1 # word timings for lip sync (Turkish)

@@ -1,0 +1,32 @@
+[
+ {
+  "word": "Ben",
+  "start": 0.0,
+  "end": 0.3,
+  "p": 0.877
+ },
+ {
+  "word": "seni",
+  "start": 0.3,
+  "end": 0.64,
+  "p": 0.989
+ },
+ {
+  "word": "sekiz",
+  "start": 0.64,
+  "end": 1.14,
+  "p": 0.711
+ },
+ {
+  "word": "saattir",
+  "start": 1.14,
+  "end": 1.64,
+  "p": 0.979
+ },
+ {
+  "word": "dinliyorum.",
+  "start": 1.64,
+  "end": 2.26,
+  "p": 0.997
+ }
+]
