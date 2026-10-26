@@ -90,7 +90,34 @@ CPU'da render edilir. Bunun sonuçları ve bilinçli tercihler:
 - Altyazılar videoya gömülüdür ve ayrıca `out/ep01.srt` olarak verilir
   (sessiz izlemeye uygun). Ekran yazıları Shorts güvenli alanında tutulur.
 
-## Ölçümler
+## Çıktılar (`media/`)
 
-Ayrıntılar `out/*.log.json` dosyalarındadır (bkz. aşağıdaki "Render
-süreleri" bölümü — final render sonrası güncellenir).
+- `ep01_maas_yatti.mp4` — 1080×1920, 24 fps, 41,5 sn, H.264 + AAC (paylaşım kopyası, CRF 23)
+- `ep01_maas_yatti.srt` — Türkçe altyazı (videoda ayrıca gömülü)
+- `ep01_seslendirme.txt` — diyalog satırları ve zaman kodları (seslendirme kaydı için)
+- `ep01_kareler.jpg` — saniyede 1,5 karelik kontakt baskı
+
+## Ölçümler (bu ortam: 4 CPU çekirdeği, GPU yok, SwiftShader)
+
+| İş | Süre |
+|---|---|
+| Sahne kurulumu (prosedürel dokular, 4 ortam haritası, shader derleme) | ~21 sn |
+| Test sahnesi 1E (1,55 sn, 37 kare, yakın plan, optimizasyon öncesi) | 266 sn → 7,2 sn/kare |
+| Tam bölüm (997 kare, 720×1280, 4 çekimde 3 alt-kare hareket bulanıklığı) | 4011 sn ≈ 67 dk → ort. 4,0 sn/kare |
+| Ses sentezi (159 işaret) | ~7 sn |
+
+Uygulanan maliyet azaltımları (ölçülerek): set malzemeleri Physical → Standard,
+pencere/LED için alan ışığı yerine spot/nokta ışık, gölge haritası 4096 → 2048,
+saç kartları 2600 → 1300 ve Lambert gölgeleme (yakın planda 5,9 → 3,8 sn/kare),
+ekran/omuz üstü çekimlerde f/8. Paralel tarayıcı süreçleri kazanç sağlamadı
+(SwiftShader tüm çekirdekleri zaten kullanıyor).
+
+## Bilinen kusurlar / sonraki adımlar
+
+- Yüz modeli stilize ve zaman zaman tuhaf okunuyor (burun-ağız oranı, aşağı
+  bakarken uzayan yüz). Bir sonraki iyileştirme önceliği: yüz heykeli ve
+  saç hacmi.
+- Bilgi kartları telefona bağlı olduğu için bir kartın birkaç karelik solma
+  süresi sonraki çekime taşabiliyor (5E'de "Bakiye: 0 TL").
+- Seslendirme eklenince `out/ep01.vo.txt` zamanlarına göre kayıt alıp
+  `ffmpeg` ile karıştırmak yeterli; dudak senkronu zaten bu zamanlara göre.
