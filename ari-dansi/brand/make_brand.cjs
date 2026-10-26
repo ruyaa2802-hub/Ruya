@@ -36,8 +36,8 @@ const srv = http.createServer((req, res) => {
   };
 
   // 1) profile picture (rendered at 2× → 1600 px master)
-  await shot(`/brand/profil.html?t=${argT}`, 800, 800, 'pirilumo_profil_1600.png', 2);
-  await shot(`/brand/profil.html?t=${argT}&guide=1`, 800, 800, 'onizleme_profil_daire.png', 1);
+  await shot('/brand/profil_hayvanlar.html', 800, 800, 'pirilumo_profil_1600.png', 2);
+  await shot('/brand/profil_hayvanlar.html?guide=1', 800, 800, 'onizleme_profil_daire.png', 1);
   {
     const page = await browser.newPage({ viewport: { width: 800, height: 800 }, deviceScaleFactor: 2 });
     await page.goto(`${base}/brand/profil.html?t=${argT}&cut=1`);
