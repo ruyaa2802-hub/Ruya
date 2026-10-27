@@ -2,8 +2,8 @@
 
 Süre: 42 sn · Format: 9:16, 1080×1920 · Dil: Türkçe
 
-Bu proje ses dosyası **üretmez**. Aşağıdaki metni kendi sesinle (telefon, Audacity, CapCut vb.)
-kaydedip videonun altına yerleştirebilirsin. Zamanlar, animasyondaki ilgili hareketin başladığı
+Sentetik ses `tools/seslendir.py` ile üretilir (Piper, ücretsiz ve çevrimdışı). Kendi sesinle
+kaydetmek istersen aşağıdaki zamanlamayı kullan. Zamanlar, animasyondaki ilgili hareketin başladığı
 saniyeye göre ayarlandı. Aynı metin `kedi-seslendirme.srt` dosyasında altyazı olarak da var.
 
 | # | Başlangıç | Bitiş | Aşama | Seslendirme |

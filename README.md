@@ -17,13 +17,28 @@ API anahtarı, ücretli servis, hesap ya da sunucu gerekmez.
 
 ## Ses ve altyazı
 
-Sistem **ses dosyası üretmez.** Seslendirme metni, cümle başına başlangıç ve bitiş saniyesiyle birlikte şu dosyalarda:
+**Sesli video (ücretsiz, çevrimdışı):** `tools/seslendir.py`, açık kaynak [Piper](https://github.com/rhasspy/piper)
+ses motoru ve Türkçe `tr_TR-dfki-medium` sesiyle her cümleyi SRT'deki başlangıç saniyesinde başlatır. Bir cümle
+aralığına sığmazsa yalnızca o cümleyi en fazla %20 hızlandırır. Ses -14 LUFS'a normalize edilir ve videoyla birleştirilir:
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install piper-tts
+mkdir -p sesler && cd sesler
+curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/tr/tr_TR/dfki/medium/tr_TR-dfki-medium.onnx
+curl -LO https://huggingface.co/rhasspy/piper-voices/resolve/main/tr/tr_TR/dfki/medium/tr_TR-dfki-medium.onnx.json
+cd .. && node tools/render-video.mjs && .venv/bin/python tools/seslendir.py
+# → cikti/kedi-seslendirme.wav ve cikti/kedi-portresi-sesli.mp4
+```
+
+Piper'ın tek Türkçe sesi bir erkek sesidir. Doğal ama sentetik duyulur; daha sıcak bir anlatım için kendi
+sesini kaydedip aynı zamanlamayla eklemek hâlâ en iyi seçenektir.
+
+Seslendirme metni, cümle başına başlangıç ve bitiş saniyesiyle birlikte şu dosyalarda:
 
 - `bolumler/kedi-seslendirme.md`: tablo ve kopyalanabilir düz metin
 - `bolumler/kedi-seslendirme.srt`: altyazı dosyası (panelde "Altyazı (.srt)" ile de indirilebilir)
 
-"Sesli önizleme" seçeneği tarayıcının yerleşik Türkçe sesini yalnızca hoparlörden çalar. **Kayda girmez.**
-Sesi kendin kaydedip CapCut, DaVinci Resolve veya Shotcut gibi ücretsiz bir programda videoya ekleyebilirsin.
+"Sesli önizleme" seçeneği tarayıcının yerleşik Türkçe sesini yalnızca hoparlörden çalar. **Tarayıcı kaydına girmez.**
 
 ## Çizim nasıl üretiliyor (dürüst açıklama)
 
@@ -55,6 +70,7 @@ büyük ve stilize, göğüs bölümü sade tutuldu. Kalitenin bir sonraki adım
 studio.html                 Motor + Bölüm 1 + arayüz (tek dosya, çevrimdışı çalışır)
 bolumler/kedi-seslendirme.* Seslendirme metni (md, srt)
 tools/render-video.mjs      Kare kare MP4 dışa aktarma (Playwright + ffmpeg)
+tools/seslendir.py          Piper ile Türkçe seslendirme + videoyla birleştirme
 tools/snap.mjs              Belirli saniyelerden PNG kare alma (kontrol için)
 ```
 
