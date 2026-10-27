@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Yarasalar Karanlıkta Nasıl Yolunu Buluyor?</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', 'Noto Color Emoji', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  .chip { left: 50%; background: rgba(4, 12, 24, 0.66); border-radius: 20px; padding: 12px 24px; color: #fff; font-weight: 700; font-size: 34px; white-space: nowrap; text-align: center;
+    border: 2px solid rgba(255,255,255,0.18); }
+  .chip small { display: block; font-size: 25px; font-weight: 600; color: #c9dcef; margin-top: 2px; }
+  #slow { left: 48px; top: 150px; font-size: 26px; font-weight: 700; color: #e7f2ff; background: rgba(4, 12, 24, 0.55); border-radius: 14px; padding: 7px 16px; letter-spacing: 0.5px; }
+  #slow i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #6fe3ff; margin-right: 10px; vertical-align: 2px; }
+  #ultra { top: 210px; border-color: #6fe3ff; }
+  #legend { top: 210px; padding: 12px 26px; font-size: 32px; }
+  #legend .row { display: flex; align-items: center; gap: 14px; margin: 3px 0; }
+  #legend .sw { width: 54px; height: 0; border-top: 6px solid; border-radius: 4px; }
+  #f1 { top: 210px; border-color: #ffb45c; }
+  #f2 { top: 300px; border-color: #ffb45c; }
+  #outro { left: 50%; top: 260px; text-align: center; white-space: nowrap; }
+  #outro .q { font-family: 'Inter Display', 'Inter', 'Noto Color Emoji', sans-serif; font-weight: 800; font-size: 66px; color: #fff; line-height: 1.15;
+    text-shadow: 0 4px 18px rgba(0,0,0,0.85), 0 0 2px rgba(0,0,0,0.9); }
+  #outro .brand { display: inline-flex; align-items: center; gap: 14px; margin-top: 26px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 800; font-size: 44px; color: #fff; text-shadow: 0 3px 12px rgba(0,0,0,0.8); }
+  #outro .brand img { width: 84px; height: 84px; border-radius: 50%; border: 4px solid #fff; }
+  #outro .note { margin-top: 22px; font-size: 25px; font-weight: 600; color: #b9c9da; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
+  #sub { text-wrap: balance; left: 50%; bottom: 440px; max-width: 920px; width: max-content; text-align: center; font-weight: 700; font-size: 44px; line-height: 1.22;
+    color: #fff; background: rgba(4, 10, 20, 0.6); padding: 8px 24px 11px; border-radius: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.7); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <div id="slow" class="o"><i></i>Ağır çekim</div>
+    <div id="ultra" class="o chip">🔊 Ultrason<small>İnsan kulağının duyamadığı tiz sesler</small></div>
+    <div id="legend" class="o chip">
+      <div class="row"><div class="sw" style="border-color:#6fe3ff"></div>Gönderilen ses</div>
+      <div class="row"><div class="sw" style="border-color:#ffb45c"></div>Yankı (geri dönen ses)</div>
+    </div>
+    <div id="f1" class="o chip">⏱️ Yankı süresi → uzaklık</div>
+    <div id="f2" class="o chip">〰️ Yankıdaki değişim → yön, hareket</div>
+    <div id="outro" class="o">
+      <div class="q">Doğa, düşündüğümüzden<br>çok daha şaşırtıcı. 🦇</div>
+      <div class="brand"><img src="./assets/logo.png" alt="">Pirilumo</div>
+      <div class="note">Not: Her yarasa türü ekolokasyonu aynı ölçüde kullanmaz.</div>
+    </div>
+    <div id="sub" class="o"></div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>

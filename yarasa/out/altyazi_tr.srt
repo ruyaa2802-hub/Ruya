@@ -1,0 +1,60 @@
+1
+00:00:00,700 --> 00:00:02,500
+Göz gözü görmeyen bir karanlıkta,
+
+2
+00:00:02,910 --> 00:00:05,380
+bu yarasa küçücük bir böceği nasıl bulabiliyor?
+
+3
+00:00:05,700 --> 00:00:07,520
+Sırrı, bizim duyamadığımız kadar
+
+4
+00:00:07,520 --> 00:00:09,080
+yüksek frekanslı seslerde:
+
+5
+00:00:09,350 --> 00:00:10,300
+ultrasonlarda!
+
+6
+00:00:12,500 --> 00:00:13,720
+Yarasa ses gönderiyor.
+
+7
+00:00:13,900 --> 00:00:15,770
+Ses bir engele çarpıp geri dönüyor.
+
+8
+00:00:16,600 --> 00:00:17,910
+Yarasa da yankıyı dinliyor.
+
+9
+00:00:22,200 --> 00:00:24,490
+Yankının ne kadar sürede döndüğünü
+
+10
+00:00:24,490 --> 00:00:25,840
+ve nasıl değiştiğini
+
+11
+00:00:26,100 --> 00:00:27,570
+analiz ederek, nesnenin uzaklığını,
+
+12
+00:00:27,570 --> 00:00:29,130
+yönünü ve hareketini anlayabiliyor.
+
+13
+00:00:33,400 --> 00:00:35,560
+Yani yarasa, çevresinin seslerden oluşan
+
+14
+00:00:35,560 --> 00:00:36,970
+bir haritasını çıkarıyor.
+
+15
+00:00:37,500 --> 00:00:40,180
+Karanlık onun için tamamen kör olmak demek değil!
+
