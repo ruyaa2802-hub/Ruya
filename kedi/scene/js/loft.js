@@ -21,7 +21,7 @@ export class Loft {
       uv[k * 2 + 1] = j / segs;
       if (i < rings - 1 && j < segs) {
         const a = k, b = k + segs + 1;
-        idx.push(a, b, a + 1, b, b + 1, a + 1);
+        idx.push(a, a + 1, b, b, a + 1, b + 1);
       }
     }
     this.geo = new THREE.BufferGeometry();

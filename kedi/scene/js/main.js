@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { clamp, lerp, remap, ss, easeInOut, window01, v3 } from './util.js';
-import { createCat } from './cat.js';
+import { createCat } from './toon_cat.js';
 import { createHuman } from './human.js';
 import { createHouse } from './house.js';
 import { createGarden } from './garden.js';
@@ -85,12 +85,17 @@ function placeCat(cat, s, pose) {
 }
 // head angles (relative to the body) to look at a world point
 function lookAngles(s, sit, target, yOff = 0) {
-  const hl = v3(0, lerp(0.29, 0.3, sit) + yOff, lerp(0.27, 0.12, sit));
+  const hl = v3(0, lerp(0.27, 0.3, sit) + yOff, lerp(0.25, 0.1, sit));
   const hw = hl.applyAxisAngle(v3(0, 1, 0), s.yaw).add(v3(s.x, s.y ?? 0, s.z));
   const d = target.clone().sub(hw).applyAxisAngle(v3(0, 1, 0), -s.yaw);
-  return { headYaw: clamp(Math.atan2(d.x, d.z), -1.5, 1.5), headPitch: clamp(-Math.atan2(d.y, Math.hypot(d.x, d.z)), -0.68, 0.7) };
+  // cartoon look: the head turns part of the way, the eyes do the rest
+  const yaw = Math.atan2(d.x, d.z), pitch = -Math.atan2(d.y, Math.hypot(d.x, d.z));
+  return {
+    headYaw: clamp(yaw * 0.85, -1.4, 1.4), headPitch: clamp(pitch * 0.55, -0.42, 0.55),
+    eyeY: clamp((-pitch - 0.1) / 0.8, -0.3, 1), eyeX: clamp(yaw * 0.3, -0.5, 0.5),
+  };
 }
-const mixA = (a, b, f) => ({ headYaw: lerp(a.headYaw, b.headYaw, f), headPitch: lerp(a.headPitch, b.headPitch, f) });
+const mixA = (a, b, f) => ({ headYaw: lerp(a.headYaw, b.headYaw, f), headPitch: lerp(a.headPitch, b.headPitch, f), eyeY: lerp(a.eyeY, b.eyeY, f), eyeX: lerp(a.eyeX, b.eyeX, f) });
 
 // ---------------- world ----------------
 const house = createHouse();
@@ -149,7 +154,7 @@ function shot1(t) {
   });
   placeCat(ginger, s, {
     t, walk: s.walk, phase: s.phase, stride: 0.15, sit, ...look,
-    headPitch: look.headPitch - 0.12 * m, jaw: m, earFwd: 1, pupil: 0.7, blink: blinkAt(t, [3.1]),
+    headPitch: look.headPitch - 0.12 * m, jaw: m, earFwd: 1, pupil: 0.95, lid: 0.06, squint: ss(5.7, 6.1, t),
     tailUp: lerp(0.95, 0.85, sit), tailCurl: 0.7, tailSwish: 0.12, tailPhase: TAILP(t), tailWrap: ss(1.6, 2.4, t) * 0.0, breathe: t * 2.4,
   });
   const c = S1cam(t);
@@ -173,15 +178,15 @@ function shot2a(t) {
   placeCat(ginger, { ...a }, {
     t, walk: a.walk, phase: a.phase, stride: 0.15, ...lookAngles(a, 0, noseA.clone().add(v3(0.2, 0, 0))),
     reach: sniff * (1 - ss(11.6, 11.8, t)), crouch: 0.15 * sniff + 0.55 * ss(11.65, 11.85, t),
-    earFwd: 1 - ss(11.6, 11.8, t), earFlat: 0.6 * ss(11.65, 11.85, t), pupil: 0.55 + 0.4 * ss(11.6, 11.8, t),
+    earFwd: 1 - ss(11.6, 11.8, t), earFlat: 0.6 * ss(11.65, 11.85, t), pupil: 0.7 - 0.6 * ss(11.6, 11.75, t), lid: 0.1 * (1 - ss(11.6, 11.7, t)),
     tailUp: lerp(0.9, 0.35, ss(11.6, 11.9, t)), tailCurl: 0.6, tailSwish: 0.1, tailPhase: TAILP(t), breathe: t * 2.6,
-    headPitch: 0.05 + 0.08 * Math.sin(t * 9) * sniff - 0.25 * ss(11.65, 11.85, t), blink: blinkAt(t, [9.4]),
+    headPitch: 0.05 + 0.08 * Math.sin(t * 9) * sniff - 0.25 * ss(11.65, 11.85, t),
   });
   placeCat(grey, { ...b }, {
     t, walk: b.walk, phase: b.phase, stride: 0.15, headYaw: lerp(0, 0.35, ss(9.2, 10.2, t)) * (1 - ss(11.0, 11.4, t)),
     headPitch: 0.05 + 0.06 * Math.sin(t * 8 + 1) * sniff - 0.2 * hiss, reach: sniff * 0.8 * (1 - tense),
     arch: ss(11.0, 11.5, t) * 0.9, earSide: ss(9.2, 10.2, t) * (1 - ss(11.0, 11.3, t)), earFlat: ss(11.0, 11.35, t), earFwd: 0.6 * (1 - tense),
-    jaw: hiss * 1.0, pupil: 0.4 + 0.5 * tense, tailUp: lerp(0.5, 0.42, tense), tailCurl: 0.2, tailSwish: lerp(0.15, 0.7, ss(9.0, 10.0, t)), tailPhase: TAILP(t, 3.4),
+    jaw: hiss * 1.0, pupil: 0.45 - 0.35 * tense, lid: lerp(0.42, 0.3, tense), squint: 0.6 * ss(11.0, 11.4, t), tailUp: lerp(0.5, 0.42, tense), tailCurl: 0.2, tailSwish: lerp(0.15, 0.7, ss(9.0, 10.0, t)), tailPhase: TAILP(t, 3.4),
     tailPuff: ss(11.0, 11.5, t), furPuff: 0.35 * ss(11.0, 11.5, t), breathe: t * 3,
   });
   garden.update(t, v3(0, 0.2, 0));
@@ -212,7 +217,7 @@ function shot2b(t) {
   placeCat(ginger, s, {
     t, walk: s.walk, phase: s.phase, stride: 0.15, sit, ...look, headPitch: look.headPitch - 0.1 * m + 0.25 * pet, headRoll: 0.25 * pet * Math.sin(t * 2.5),
     jaw: m, earFwd: 1, pupil: 0.65, tailUp: lerp(0.95, 0.8, sit), tailCurl: 0.75, tailSwish: 0.1, tailPhase: TAILP(t),
-    lid: 0.45 * pet, breathe: t * 2.4, blink: blinkAt(t, [14.2]),
+    squint: pet, pupil: 0.9, lid: 0.05, breathe: t * 2.4,
   });
   garden.update(t, v3(0.8, 0.3, 1.1));
   const c = S2bcam(t);
@@ -221,10 +226,10 @@ function shot2b(t) {
 
 // ---- shot 3a: kitchen, meow → the person looks → food ----
 const S3cam = spline([
-  [16.9, 3.92, 0.24, -1.08, 4.3, 0.3, -0.35], [19.6, 3.95, 0.25, -1.06, 4.33, 0.36, -0.4],
-  [20.9, 3.7, 0.5, -1.15, 4.32, 0.2, -0.62], [22.4, 3.72, 0.48, -1.12, 4.32, 0.18, -0.64],
+  [16.9, 4.95, 0.27, -0.38, 4.22, 0.3, -0.5], [19.6, 4.92, 0.28, -0.36, 4.22, 0.33, -0.5],
+  [20.9, 4.62, 0.42, -0.06, 4.36, 0.16, -0.66], [22.4, 4.62, 0.44, -0.08, 4.36, 0.15, -0.68],
 ]);
-const K3 = walker([[16.9, 4.18, -0.5, 2.3], [21.75, 4.18, -0.5, 2.3], [22.2, 4.3, -0.6, 2.2], [22.4, 4.31, -0.61, 2.2]]);
+const K3 = walker([[16.9, 4.18, -0.5, 1.75], [21.3, 4.18, -0.5, 1.8], [21.75, 4.18, -0.5, 2.2], [22.2, 4.3, -0.6, 2.2], [22.4, 4.31, -0.61, 2.2]]);
 const S3h = spline([ // t, yaw, spine, headPitch, pour(0/1)
   [16.9, Math.PI, 0.1, 0.3, 0], [19.8, Math.PI, 0.1, 0.3, 0], [20.6, Math.PI + 0.75, 0.25, 0.75, 0], [21.1, Math.PI + 0.75, 0.95, 0.8, 0], [22.4, Math.PI + 0.75, 1.0, 0.85, 1],
 ]);
@@ -257,8 +262,8 @@ function shot3a(t) {
   placeCat(ginger, s, {
     t, walk: s.walk, phase: s.phase, stride: 0.15, sit, ...look, headPitch: look.headPitch - 0.1 * m + 0.35 * ss(22.0, 22.3, t),
     crouch: 0.7 * ss(22.05, 22.35, t), reach: ss(22.05, 22.35, t), jaw: m + 0.15 * ss(22.2, 22.3, t) * Math.max(0, Math.sin(t * 22)),
-    earFwd: 1, pupil: 0.75, tailUp: lerp(0.8, 0.9, ss(21.6, 22.0, t)), tailCurl: 0.7, tailSwish: 0.2, tailPhase: TAILP(t, 2.8), tailWrap: 0.6 * sit,
-    breathe: t * 2.4, blink: blinkAt(t, [17.8, 20.4]),
+    earFwd: 1, pupil: 1, lid: 0.04, squint: 0.7 * ss(22.15, 22.35, t), tailUp: lerp(0.8, 0.9, ss(21.6, 22.0, t)), tailCurl: 0.7, tailSwish: 0.2, tailPhase: TAILP(t, 2.8), tailWrap: 0.6 * sit,
+    breathe: t * 2.4,
   });
   const c = S3cam(t);
   return { scene: house.scene, set: 'house', cam: [c[0], c[1], c[2]], look: [c[3], c[4], c[5]], fov: 40,
@@ -287,8 +292,8 @@ function shot3b(t) {
   const m = voice(t);
   placeCat(ginger, s, {
     t, walk: s.walk, phase: s.phase, stride: 0.15, sit, ...look, headPitch: look.headPitch - 0.1 * m, bend: 0.4 * window01(t, 23.7, 24.9, 0.35),
-    jaw: m, earFwd: 1, pupil: 0.8 - 0.4 * open, tailUp: 0.85, tailCurl: 0.8, tailSwish: 0.18, tailPhase: TAILP(t, 2.6), tailWrap: 0.5 * sit,
-    breathe: t * 2.4, blink: blinkAt(t, [23.2]),
+    jaw: m, earFwd: 1, pupil: 0.8 - 0.4 * open, lid: 0.3 * (1 - ss(25.7, 26.0, t)), tailUp: 0.85, tailCurl: 0.8, tailSwish: 0.18, tailPhase: TAILP(t, 2.6), tailWrap: 0.5 * sit,
+    breathe: t * 2.4,
   });
   const c = S3bcam(t);
   return { scene: house.scene, set: 'house', cam: [c[0], c[1], c[2]], look: [c[3], c[4], c[5]], fov: 42, focus: v3(s.x, 0.3, s.z), aperture: 13,
@@ -306,8 +311,8 @@ function shot4a(t) {
   let look = mixA(lookAngles(s, 1, camP), lookAngles(s, 1, v3(4.42, 0.03, -0.75)), window01(t, 27.7, 28.6, 0.3));
   const m = voice(t);
   placeCat(ginger, s, {
-    t, sit: 1, ...look, headPitch: look.headPitch - 0.15 * m, jaw: m * 1.1, earFwd: 1, pupil: 0.95, tailUp: 0.6, tailCurl: 0.4, tailSwish: 0.35, tailPhase: TAILP(t, 3), tailWrap: 0.7,
-    breathe: t * 2.6, blink: blinkAt(t, [28.9]),
+    t, sit: 1, ...look, headPitch: look.headPitch - 0.15 * m, jaw: m * 1.1, earFwd: 1, pupil: 1, lid: 0, tailUp: 0.6, tailCurl: 0.4, tailSwish: 0.35, tailPhase: TAILP(t, 3), tailWrap: 0.7,
+    breathe: t * 2.6,
   });
   human.root.position.set(100, 0, 100);
   return { scene: house.scene, set: 'house', cam: [c[0], c[1], c[2]], look: [c[3], c[4], c[5]], fov: 38, focus: v3(4.33, 0.3, -0.45), aperture: 12,
@@ -325,7 +330,7 @@ function shot4b(t) {
   const m = voice(t);
   placeCat(ginger, s, {
     t, walk: s.walk, phase: s.phase, stride: 0.15, bend: -0.9 * clamp(near), headYaw: -0.55 * clamp(near), headRoll: -0.35 * clamp(near), headPitch: 0.1 - 0.15 * m,
-    jaw: m * 0.6, lid: 0.35 * clamp(near), earFwd: 0.6, tailUp: 1.0, tailCurl: 0.95, tailSwish: 0.25, tailPhase: TAILP(t, 1.4), breathe: t * 2.4,
+    jaw: m * 0.6, squint: clamp(near * 1.2), lid: 0.05, earFwd: 0.6, tailUp: 1.0, tailCurl: 0.95, tailSwish: 0.25, tailPhase: TAILP(t, 1.4), breathe: t * 2.4,
   });
   const camP = v3(s.x * 0.6 + 0.05, 0.32, 1.12);
   return { scene: house.scene, set: 'house', cam: camP.toArray(), look: [s.x * 0.6 + 0.12, 0.34, -0.1], fov: 40, focus: v3(s.x + 0.2, 0.3, 0.0), aperture: 14,
@@ -342,8 +347,8 @@ function shot4c(t) {
   look = mixA(look, lookAngles(s, 1, v3(-3.85, 1.0, -1.05)), window01(t, 35.4, 36.9, 0.4));
   const m = voice(t);
   placeCat(ginger, s, {
-    t, sit: 1, ...look, headPitch: look.headPitch - 0.2 * m, jaw: m * 1.1, earFwd: 1, pupil: 0.8, tailUp: 0.55, tailCurl: 0.35, tailSwish: 0.45, tailPhase: TAILP(t, 3.2), tailWrap: 0.3,
-    breathe: t * 2.6, blink: blinkAt(t, [35.2, 37.3]),
+    t, sit: 1, ...look, headPitch: look.headPitch - 0.2 * m, jaw: m * 1.1, earFwd: 1, pupil: 0.85, lid: 0.12, tailUp: 0.55, tailCurl: 0.35, tailSwish: 0.45, tailPhase: TAILP(t, 3.2), tailWrap: 0.3,
+    breathe: t * 2.6,
   });
   human.root.position.set(100, 0, 100);
   return { scene: house.scene, set: 'house', cam: [c[0], c[1], c[2]], look: [c[3], c[4], c[5]], fov: 40, focus: v3(-3.62, 0.3, -0.62), aperture: 14,
@@ -370,7 +375,7 @@ function shot5(t) {
   const s = { x: 0.3, y: 0.53, z: -1.6, yaw: -0.4 };
   placeCat(ginger, s, {
     t, lie: 1, tailWrap: 1, headYaw: 0.25 + 0.05 * Math.sin(t * 0.7), headPitch: 0.25 + 0.25 * ss(44.2, 45.5, t), headRoll: 0.15,
-    earFwd: 0.4, earSide: 0.25, lid: 0.3 + slowBlink(t, [40.4, 43.4]) * 0.7 + 0.45 * ss(45.5, 47.5, t), pupil: 0.5,
+    earFwd: 0.4, earSide: 0.25, lid: 0.42 + slowBlink(t, [40.4, 43.4]) * 0.58 + 0.2 * ss(45.5, 47.5, t), squint: 0.35, pupil: 0.6,
     tailUp: 0.2, tailCurl: 0.2, tailSwish: 0.05, tailPhase: TAILP(t, 0.6), breathe: t * 2.0, purr: 1,
   });
   const c = S5cam(t);

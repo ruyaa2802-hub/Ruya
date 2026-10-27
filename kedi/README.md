@@ -1,6 +1,6 @@
 # Kediler Neden İnsanlara Miyavlıyor? 🐈
 
-Pirilumo kanalı için 48,6 saniyelik dikey (9:16, 1080×1920, 30 fps) YouTube Shorts animasyonu.
+Pirilumo kanalı için çizgi film tarzında, 48,6 saniyelik dikey (9:16, 1080×1920, 30 fps) YouTube Shorts animasyonu.
 Üretim yöntemi önceki projelerle aynı: Three.js sahnesi → kare kare render (headless Chromium) → ffmpeg.
 Anlatıcı: ElevenLabs "Uğur – Turkish Documentary Narrator". Miyav, tıslama ve mırlama sesleri ElevenLabs ses efekti modeliyle üretildi. Kalan efektler ve müzik numpy ile oluşturuldu.
 
@@ -30,11 +30,12 @@ Anlatıcı: ElevenLabs "Uğur – Turkish Documentary Narrator". Miyav, tıslama
 
 ## Dosyalar
 
-* `scene/js/cat.js` — kedi:
-  * Gövde, bacak ve kuyruk her karede yeniden kurulan yüzeylerdir (loft).
-  * Tüy görünümü için 3–6 katlı "tüy kabuğu" katmanları kullanılır.
-  * Bacaklar 2 kemikli IK ile yürüme yürüyüşü yapar. Oturma, yatma, kambur durma (tıslama) ve yana bükülme (sürünme) pozları vardır.
-  * Çene (miyav ve tıslama), göz kapakları (kırpma ve yavaş kırpma), göz bebekleri, kulak açıları ve bıyıklar hareketlidir.
+* `scene/js/toon_cat.js` — **çizgi film kedisi** (videoda kullanılan). Klasik çizgi roman tarzında özgün bir karakterdir:
+  * Görünüm: büyük yuvarlak kafa; birbirine değen iri beyaz gözler; ifadeli üst ve alt göz kapakları; kabarık yanaklar; tombul armut gövde; kısa bacaklar; turuncu tüy üstünde kalın koyu çizgiler.
+  * İfadeler: yarı kapalı keyifli bakış, mutlu kısık gözler, yalvaran iri gözler, şaşkınlık.
+  * Kendiliğinden canlılık: otomatik göz kırpma ve kulak oynatma, miyavlarken kafada ve göğüste esneme–sıkışma (squash & stretch), yürürken kalça salınımı.
+  * Bakış: kafa hedefe kısmen döner, gerisini gözbebekleri tamamlar.
+* `scene/js/cat.js` — ilk (gerçekçi) kedi modeli; artık kullanılmıyor, karşılaştırma için duruyor.
 * `scene/js/human.js` — kişi (IK ile kollar ve bacaklar, okşama ve dökme hareketleri).
 * `scene/js/house.js` — akşam ev seti: oturma odası, mutfak (mama kabı, dökülen mamalar), antre (dışa açılan kapı).
 * `scene/js/garden.js` — gün batımı bahçesi (rüzgârda sallanan çimler, çit, veranda).
