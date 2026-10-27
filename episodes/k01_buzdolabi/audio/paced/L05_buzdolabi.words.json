@@ -1,0 +1,37 @@
+[
+ {
+  "word": "GÜVENLİĞİ",
+  "start": 0.0,
+  "end": 0.54,
+  "p": 0.915,
+  "asr": "Güvenliği"
+ },
+ {
+  "word": "ÇAĞIRIN!",
+  "start": 0.54,
+  "end": 0.9,
+  "p": 0.937,
+  "asr": "çağırın,"
+ },
+ {
+  "word": "ŞÜPHELİ",
+  "start": 1.08,
+  "end": 1.52,
+  "p": 0.978,
+  "asr": "şüpheli"
+ },
+ {
+  "word": "GERİ",
+  "start": 1.52,
+  "end": 1.68,
+  "p": 0.988,
+  "asr": "geri"
+ },
+ {
+  "word": "DÖNDÜ!",
+  "start": 1.68,
+  "end": 2.1,
+  "p": 0.997,
+  "asr": "döndü."
+ }
+]

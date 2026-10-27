@@ -1,0 +1,30 @@
+[
+ {
+  "word": "Bence…",
+  "start": 0.0,
+  "end": 0.6,
+  "p": 0.747,
+  "asr": "Bence"
+ },
+ {
+  "word": "ne",
+  "start": 0.6,
+  "end": 1.28,
+  "p": 0.809,
+  "asr": "ne"
+ },
+ {
+  "word": "istediğini",
+  "start": 1.28,
+  "end": 1.82,
+  "p": 0.998,
+  "asr": "istediğini"
+ },
+ {
+  "word": "bilmiyor.",
+  "start": 1.82,
+  "end": 2.3,
+  "p": 0.991,
+  "asr": "bilmiyor."
+ }
+]

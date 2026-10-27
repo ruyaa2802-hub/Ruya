@@ -166,6 +166,101 @@ def jitter(seed=12, dur=3.0):
     return _norm(leaves * trem * shape, -16)
 
 
+def _clinks(rng, dur, n, lo=1800, hi=5200):
+    """Glass bottles knocking together."""
+    t = _t(dur)
+    x = np.zeros(len(t))
+    for _ in range(n):
+        i0 = int(rng.uniform(0, dur * 0.7) * SR)
+        tt = t[: len(t) - i0]
+        x[i0:] += sum(np.sin(2 * np.pi * f * tt) * np.exp(-tt * rng.uniform(30, 60)) for f in rng.uniform(lo, hi, 3)) \
+            * rng.uniform(0.2, 0.6)
+    return x
+
+
+def fridge_open(seed=13):
+    """Seal pops, the door swings, the bottles in the door clink."""
+    rng = np.random.default_rng(seed)
+    t = _t(1.1)
+    pop = _band(rng.standard_normal(len(t)), 150, 1500) * np.exp(-((t - 0.04) ** 2) / 0.0006)
+    thump = np.sin(2 * np.pi * (90 + 40 * np.exp(-t * 30)) * t) * np.exp(-t * 25) * 0.7
+    air = _band(rng.standard_normal(len(t)), 500, 4000) * np.exp(-((t - 0.25) ** 2) / 0.02) * 0.25
+    x = pop + thump + air + _clinks(rng, 1.1, 5) * 0.5
+    return _norm(_room(x, 0.35, 0.25, seed), -6)
+
+
+def fridge_close(seed=14):
+    rng = np.random.default_rng(seed)
+    t = _t(0.9)
+    thud = np.sin(2 * np.pi * (75 + 35 * np.exp(-t * 35)) * t) * np.exp(-t * 18)
+    slap = _band(rng.standard_normal(len(t)), 200, 2500) * np.exp(-t * 60) * 0.6
+    x = thud + slap + _clinks(rng, 0.9, 6) * 0.45
+    return _norm(_room(x, 0.35, 0.3, seed), -4)
+
+
+def fridge_hum(dur=40.0, seed=15):
+    """Compressor drone: mains hum, its harmonics and a little airy noise."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    x = sum(np.sin(2 * np.pi * f * t + rng.uniform(0, 6)) * a for f, a in ((50, 1.0), (100, 0.6), (150, 0.25),
+                                                                          (200, 0.12)))
+    x *= 1 + 0.08 * np.sin(2 * np.pi * 0.23 * t)
+    x += _band(rng.standard_normal(len(t)), 200, 1200) * 0.15
+    return _norm(x, -30)
+
+
+def footsteps(seed=16, steps=5, gap=0.42):
+    """Slippers shuffling on tiles."""
+    rng = np.random.default_rng(seed)
+    dur = steps * gap + 0.4
+    t = _t(dur)
+    x = np.zeros(len(t))
+    for k in range(steps):
+        i0 = int((k * gap + rng.uniform(-0.03, 0.03)) * SR)
+        tt = t[: len(t) - i0]
+        scuff = _band(rng.standard_normal(len(tt)), 600, 5000) * np.exp(-((tt - 0.09) ** 2) / 0.003)
+        pad = np.sin(2 * np.pi * 110 * tt) * np.exp(-tt * 35) * 0.5
+        x[i0:] += (scuff * 0.6 + pad) * rng.uniform(0.7, 1.0)
+    return _norm(_room(x, 0.4, 0.3, seed), -12)
+
+
+def rattle(seed=17, dur=1.6):
+    """The door trembles: bottles chattering in the door bins, a panel buzzing."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    x = _clinks(rng, dur, 26, 1500, 5000)
+    buzz = np.sign(np.sin(2 * np.pi * 21 * t)) * _band(rng.standard_normal(len(t)), 100, 600) * 0.3
+    x = (x + buzz) * np.minimum(1, t / 0.05) * np.minimum(1, (dur - t) / 0.3)
+    return _norm(x, -10)
+
+
+def siren(seed=18, dur=3.2):
+    """Security alarm: two-tone, slightly distorted, with a fast warble."""
+    t = _t(dur)
+    f = np.where((t * 2.6) % 1 < 0.5, 960.0, 720.0) * (1 + 0.012 * np.sin(2 * np.pi * 11 * t))
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    x = np.tanh(2.5 * (np.sin(ph) + 0.35 * np.sin(2 * ph)))
+    x *= np.minimum(1, t / 0.03) * np.minimum(1, (dur - t) / 0.15)
+    return _norm(_band(x, 300, 6000), -8)
+
+
+def bloop(seed=19):
+    """Cartoon eyes popping open."""
+    t = _t(0.22)
+    f = 300 + 900 * (t / 0.22) ** 1.5
+    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 12)
+    return _norm(x, -12)
+
+
+def thunk(seed=20):
+    """Cheese set back down on a glass shelf."""
+    rng = np.random.default_rng(seed)
+    t = _t(0.5)
+    body = np.sin(2 * np.pi * (160 + 50 * np.exp(-t * 40)) * t) * np.exp(-t * 30)
+    glass = sum(np.sin(2 * np.pi * f * t) * np.exp(-t * 25) for f in (3100, 4720)) * 0.25
+    return _norm(body + glass + _band(rng.standard_normal(len(t)), 300, 3000) * np.exp(-t * 80) * 0.3, -8)
+
+
 def room_tone(dur, seed=7):
     rng = np.random.default_rng(seed)
     x = np.cumsum(rng.standard_normal(int(SR * dur)))
@@ -175,7 +270,9 @@ def room_tone(dur, seed=7):
 
 EFFECTS = {"door_slam": door_slam, "keys": keys, "rustle": rustle, "rustle_long": lambda: rustle(8, 1.4),
            "poof": poof, "whoosh": whoosh, "sniff": sniff, "chatter": chatter, "clink": clink, "ding": ding,
-           "jitter": jitter}
+           "jitter": jitter, "fridge_open": fridge_open, "fridge_close": fridge_close,
+           "fridge_hum": fridge_hum, "footsteps": footsteps, "rattle": rattle, "siren": siren, "bloop": bloop,
+           "thunk": thunk}
 
 
 def write_all(folder):

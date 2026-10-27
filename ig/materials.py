@@ -373,6 +373,41 @@ def coffee_cold(name="coffee_cold"):
     return mat
 
 
+def glass(name, color=(0.9, 0.97, 1.0), roughness=0.03):
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    nb.principled(**{"Base Color": _rgba(color), "Roughness": roughness, "Transmission Weight": 1.0, "IOR": 1.45})
+    return mat
+
+
+def skin(name, color=(0.86, 0.62, 0.5)):
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    nb.principled(**{"Base Color": _rgba(color), "Roughness": 0.45, "Subsurface Weight": 0.15,
+                     "Subsurface Radius": (0.02, 0.008, 0.005)})
+    return mat
+
+
+def cheese(name="cheese_kasar", color=(0.98, 0.76, 0.2)):
+    """Yellow cheese with round eyes (holes) in object space."""
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    tc = nb.n("ShaderNodeTexCoord")
+    vor = nb.n("ShaderNodeTexVoronoi", {"Vector": tc.outputs["Object"], "Scale": 38.0, "Randomness": 0.9})
+    hole = nb.n("ShaderNodeMapRange", {"Value": vor.outputs["Distance"], 1: 0.2, 2: 0.14, 3: 0.0, 4: 1.0},
+                interpolation_type="SMOOTHSTEP").outputs[0]
+    noise = nb.n("ShaderNodeTexNoise", {"Vector": tc.outputs["Object"], "Scale": 60.0, "Detail": 3.0})
+    c = nb.mix(_rgba(color), _rgba(tuple(x * 0.8 for x in color)), nb.math("MULTIPLY", noise.outputs[0], 0.4))
+    c = nb.mix(c, (0.78, 0.5, 0.1, 1), hole)
+    bump = nb.n("ShaderNodeBump", {"Strength": 0.6, "Distance": 0.004, "Height": nb.math("SUBTRACT", 1.0, hole)})
+    nb.principled(**{"Base Color": c, "Roughness": 0.45, "Subsurface Weight": 0.25,
+                     "Subsurface Radius": (0.01, 0.006, 0.002), "Normal": bump.outputs[0]})
+    return mat
+
+
 def bisque(name, color=(0.82, 0.68, 0.52)):
     """Unglazed fired clay (a mug's foot ring)."""
     mat, nb = _new(name)
@@ -381,6 +416,44 @@ def bisque(name, color=(0.82, 0.68, 0.52)):
     noise = nb.n("ShaderNodeTexNoise", {"Scale": 300.0, "Detail": 2.0})
     bump = nb.n("ShaderNodeBump", {"Strength": 0.25, "Height": noise.outputs[0]})
     nb.principled(**{"Base Color": _rgba(color), "Roughness": 0.85, "Normal": bump.outputs[0]})
+    return mat
+
+
+def tiles(name, a, b=None, size=0.3, grout=(0.55, 0.55, 0.52), plane="xy", subway=False, roughness=0.2):
+    """Glazed tiles in object space (meters): a checkerboard of a/b, or offset subway bricks (b=None).
+
+    plane: the two object axes the tiles lie in ("xy" floor, "xz" wall).
+    """
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    tc = nb.n("ShaderNodeTexCoord")
+    sep = nb.n("ShaderNodeSeparateXYZ", {0: tc.outputs["Object"]})
+    u = sep.outputs[0]
+    v = sep.outputs[1] if plane == "xy" else sep.outputs[2]
+    w, h = (size, size / 2) if subway else (size, size)
+    row = nb.math("FLOOR", nb.math("DIVIDE", v, h))
+    if subway:                                   # every other row shifted by half a brick
+        u = nb.math("ADD", u, nb.math("MULTIPLY", nb.math("MODULO", row, 2.0), w / 2))
+    col = nb.math("FLOOR", nb.math("DIVIDE", u, w))
+    fu = nb.math("FRACT", nb.math("DIVIDE", u, w))
+    fv = nb.math("FRACT", nb.math("DIVIDE", v, h))
+    gw = 0.004
+    edge_u = nb.math("MINIMUM", nb.math("MULTIPLY", fu, w), nb.math("MULTIPLY", nb.math("SUBTRACT", 1.0, fu), w))
+    edge_v = nb.math("MINIMUM", nb.math("MULTIPLY", fv, h), nb.math("MULTIPLY", nb.math("SUBTRACT", 1.0, fv), h))
+    edge = nb.math("MINIMUM", edge_u, edge_v)
+    g = nb.n("ShaderNodeMapRange", {"Value": edge, 1: gw * 0.6, 2: gw, 3: 1.0, 4: 0.0},
+             interpolation_type="SMOOTHSTEP").outputs[0]
+    if b is None:
+        noise = nb.n("ShaderNodeTexNoise", {"Vector": tc.outputs["Object"], "Scale": 9.0, "Detail": 1.0})
+        c = nb.mix(_rgba(a), _rgba(tuple(x * 0.93 for x in a)), noise.outputs[0])
+    else:
+        checker = nb.math("MODULO", nb.math("ADD", nb.math("ADD", row, col), 1000.0), 2.0)
+        c = nb.mix(_rgba(a), _rgba(b), checker)
+    c = nb.mix(c, _rgba(grout), g)
+    rough = nb.n("ShaderNodeMapRange", {"Value": g, 3: roughness, 4: 0.8}).outputs[0]
+    bump = nb.n("ShaderNodeBump", {"Strength": 0.4, "Height": nb.math("SUBTRACT", 1.0, g)})
+    nb.principled(**{"Base Color": c, "Roughness": rough, "Normal": bump.outputs[0], "Coat Weight": 0.3})
     return mat
 
 

@@ -4,11 +4,13 @@ import math
 import bpy
 
 from . import render
-from .characters import battaniye, kupa, yastik
-from .sets import bedroom
+from .characters import battaniye, buzdolabi, kupa, peynir, sut, yastik
+from .sets import bedroom, kitchen
 from .util import collection, reset_scene
 
-CAST = {"yastik": yastik, "battaniye": battaniye, "kupa": kupa}
+CAST = {"yastik": yastik, "battaniye": battaniye, "kupa": kupa, "buzdolabi": buzdolabi, "sut": sut,
+        "peynir": peynir}
+SETS = {"bedroom": bedroom, "kitchen": kitchen}
 
 # default blocking in the bedroom
 HOME = {
@@ -19,15 +21,16 @@ HOME = {
 }
 
 
-def build(cast=("yastik", "battaniye"), preset="preview", fps=24, home=None):
+def build(cast=("yastik", "battaniye"), preset="preview", fps=24, home=None, set_name="bedroom"):
     """home: optional per-episode blocking overrides {name: dict(loc=..., rot=...)}."""
     reset_scene()
     render.setup(preset, fps)
-    bedroom.build(exclude={"mug"} if "kupa" in cast else ())   # the mug is a character now
-    bedroom.lighting()
+    room = SETS[set_name]
+    room.build(exclude={"mug"} if "kupa" in cast else ())   # the mug is a character now
+    room.lighting()
     chars = {}
     for name in cast:
         col = collection(name.capitalize())
-        chars[name] = CAST[name].build(col, **{**HOME[name], **(home or {}).get(name, {})})
+        chars[name] = CAST[name].build(col, **{**HOME.get(name, {}), **(home or {}).get(name, {})})
     bpy.context.view_layer.update()
     return chars

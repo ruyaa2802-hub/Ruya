@@ -220,8 +220,9 @@ class Timeline:
         self.duration = max(self.duration, t + dur)
         return Line(who, t, path, dur, lipsync.words(path))
 
-    def sfx(self, t, path, gain_db=0.0):
-        self.sounds.append(dict(t=t, path=path, gain=gain_db))
+    def sfx(self, t, path, gain_db=0.0, dur=None, fade=0.05):
+        """Play a sound at t; dur cuts it off (with a short fade), e.g. music that stops dead on a gag."""
+        self.sounds.append(dict(t=t, path=path, gain=gain_db, dur=dur, fade=fade))
 
     # ------------------------------------------------------------ cameras
     def shot(self, t, name, loc, target, lens=40, fstop=2.8, to_loc=None, to_target=None, dur=None,

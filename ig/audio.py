@@ -9,15 +9,18 @@ ROOM_TONE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 def mix(tl, out_wav, t0=0.0, t1=None):
     """Mix dialogue + sfx of a timeline into one stereo 48 kHz wav covering [t0, t1]."""
     t1 = t1 if t1 is not None else tl.duration
-    items = [(ln["t"], ln["path"], 0.0) for ln in tl.lines] + [(s["t"], s["path"], s["gain"]) for s in tl.sounds]
+    items = [(ln["t"], ln["path"], 0.0, None, 0.0) for ln in tl.lines] + \
+        [(s["t"], s["path"], s["gain"], s.get("dur"), s.get("fade", 0.05)) for s in tl.sounds]
     items = [it for it in items if it[0] < t1]
     args, chains = ["ffmpeg", "-v", "error", "-y"], []
-    for i, (t, path, gain) in enumerate(items):
+    for i, (t, path, gain, cut, fade) in enumerate(items):
         args += ["-i", path]
         delay = max(0.0, t - t0)
         trim = max(0.0, t0 - t)
-        chains.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=start={trim:.3f},"
-                      f"asetpts=PTS-STARTPTS,volume={gain:.1f}dB,adelay={int(delay * 1000)}:all=1[a{i}]")
+        end = f":end={trim + cut:.3f}" if cut else ""
+        tail = f",afade=t=out:st={max(0.0, cut - fade):.3f}:d={fade:.3f}" if cut else ""
+        chains.append(f"[{i}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=start={trim:.3f}{end},"
+                      f"asetpts=PTS-STARTPTS{tail},volume={gain:.1f}dB,adelay={int(delay * 1000)}:all=1[a{i}]")
     n = len(items)
     if os.path.exists(ROOM_TONE):
         args += ["-stream_loop", "-1", "-i", ROOM_TONE]
@@ -110,9 +113,12 @@ def finish(src_mp4, dst_mp4, ass=None, title=None, title_start=None):
         vf.append(f"subtitles={ass}:fontsdir={FONTS_DIR}")
     if title and title_start is not None:
         fade = f"if(lt(t,{title_start}),0,min(1,(t-{title_start})/0.4))"
-        text = title.replace(":", "\\:")
-        vf.append(f"drawtext=fontfile={FONT}:text='{text}':fontcolor=white:fontsize=h/18:"
-                  f"x=(w-text_w)/2:y=h*0.16:alpha='{fade}':borderw=6:bordercolor=black@0.85")
+        lines = title.split("\n")                     # long titles: one drawtext per line, sized to fit
+        size = f"min(h/18\\,w*0.9/{0.68 * max(len(x) for x in lines):.2f})"
+        for i, line in enumerate(lines):
+            text = line.replace(":", "\\:")
+            vf.append(f"drawtext=fontfile={FONT}:text='{text}':fontcolor=white:fontsize={size}:"
+                      f"x=(w-text_w)/2:y=h*0.16+{i}*h/15:alpha='{fade}':borderw=6:bordercolor=black@0.85")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src_mp4, "-vf", ",".join(vf) or "null", "-c:v", "libx264",
                     "-preset", "slow", "-crf", "17", "-c:a", "copy", "-movflags", "+faststart", dst_mp4], check=True)
     return dst_mp4

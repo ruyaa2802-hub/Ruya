@@ -1,0 +1,107 @@
+[
+ {
+  "word": "Beni",
+  "start": 0.0,
+  "end": 0.28,
+  "p": 0.703,
+  "asr": "Beni"
+ },
+ {
+  "word": "üç",
+  "start": 0.28,
+  "end": 0.6,
+  "p": 0.752,
+  "asr": "üç"
+ },
+ {
+  "word": "kere",
+  "start": 0.6,
+  "end": 0.86,
+  "p": 0.996,
+  "asr": "kere"
+ },
+ {
+  "word": "eline",
+  "start": 0.86,
+  "end": 1.2,
+  "p": 0.822,
+  "asr": "eline"
+ },
+ {
+  "word": "aldı,",
+  "start": 1.2,
+  "end": 1.62,
+  "p": 0.979,
+  "asr": "aldı,"
+ },
+ {
+  "word": "üçünde",
+  "start": 1.68,
+  "end": 2.22,
+  "p": 0.612,
+  "asr": "üçünle"
+ },
+ {
+  "word": "de",
+  "start": 2.22,
+  "end": 2.3,
+  "p": 0.995,
+  "asr": "de"
+ },
+ {
+  "word": "geri",
+  "start": 2.3,
+  "end": 2.5,
+  "p": 0.981,
+  "asr": "geri"
+ },
+ {
+  "word": "koydu.",
+  "start": 2.5,
+  "end": 2.88,
+  "p": 0.988,
+  "asr": "koydu."
+ },
+ {
+  "word": "Ben",
+  "start": 3.3,
+  "end": 3.48,
+  "p": 0.915,
+  "asr": "Ben"
+ },
+ {
+  "word": "ürün",
+  "start": 3.48,
+  "end": 3.86,
+  "p": 0.965,
+  "asr": "ürün"
+ },
+ {
+  "word": "müyüm,",
+  "start": 3.86,
+  "end": 4.2,
+  "p": 0.954,
+  "asr": "müyüm"
+ },
+ {
+  "word": "deneme",
+  "start": 4.2,
+  "end": 4.82,
+  "p": 0.636,
+  "asr": "deneme"
+ },
+ {
+  "word": "sürümü",
+  "start": 4.82,
+  "end": 5.18,
+  "p": 0.831,
+  "asr": "sürümü"
+ },
+ {
+  "word": "mü?",
+  "start": 5.18,
+  "end": 5.28,
+  "p": 0.994,
+  "asr": "mü?"
+ }
+]

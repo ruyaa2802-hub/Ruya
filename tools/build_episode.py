@@ -49,7 +49,8 @@ out = os.path.abspath(args.out or os.path.join(ROOT, "renders", os.path.basename
 os.makedirs(os.path.join(out, "frames"), exist_ok=True)
 
 t_start = time.time()
-chars = stage.build(cast=ep.CAST, preset=args.preset, fps=args.fps, home=getattr(ep, "HOME", None))
+chars = stage.build(cast=ep.CAST, preset=args.preset, fps=args.fps, home=getattr(ep, "HOME", None),
+                    set_name=getattr(ep, "SET", "bedroom"))
 tl = anim.Timeline(chars, fps=args.fps)
 ep.build(tl, ep_dir)
 end = args.end if args.end is not None else tl.duration
