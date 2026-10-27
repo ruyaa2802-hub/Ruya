@@ -3,7 +3,7 @@
   "word": "Yatmak",
   "start": 0.0,
   "end": 0.48,
-  "p": 0.912
+  "p": 0.91
  },
  {
   "word": "mı?",
@@ -15,19 +15,19 @@
   "word": "Ben",
   "start": 0.98,
   "end": 1.18,
-  "p": 0.985
+  "p": 0.984
  },
  {
   "word": "mesai",
   "start": 1.18,
   "end": 1.62,
-  "p": 0.85
+  "p": 0.861
  },
  {
   "word": "değdim.",
   "start": 1.62,
   "end": 2.02,
-  "p": 0.675
+  "p": 0.692
  },
  {
   "word": "Patronu,",
@@ -37,7 +37,7 @@
  },
  {
   "word": "eski",
-  "start": 3.06,
+  "start": 3.02,
   "end": 3.34,
   "p": 0.983
  },
@@ -45,36 +45,36 @@
   "word": "sevgilisi,",
   "start": 3.34,
   "end": 3.9,
-  "p": 0.989
+  "p": 0.986
  },
  {
   "word": "kredi",
   "start": 4.18,
   "end": 4.46,
-  "p": 0.943
+  "p": 0.941
  },
  {
   "word": "kartı",
   "start": 4.46,
   "end": 4.8,
-  "p": 0.961
+  "p": 0.958
  },
  {
-  "word": "borcu.",
+  "word": "borcu,",
   "start": 4.8,
   "end": 5.16,
-  "p": 0.919
+  "p": 0.922
  },
  {
-  "word": "Hepsini",
-  "start": 5.54,
+  "word": "hepsini",
+  "start": 5.58,
   "end": 5.98,
-  "p": 0.987
+  "p": 0.99
  },
  {
   "word": "dinledim.",
   "start": 5.98,
   "end": 6.4,
-  "p": 0.998
+  "p": 0.997
  }
 ]

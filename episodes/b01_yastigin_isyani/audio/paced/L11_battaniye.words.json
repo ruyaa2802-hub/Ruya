@@ -3,24 +3,28 @@
   "word": "Seni",
   "start": 0.0,
   "end": 0.26,
-  "p": 0.831
+  "p": 0.846,
+  "asr": "Seni"
  },
  {
   "word": "kim",
   "start": 0.26,
   "end": 0.48,
-  "p": 0.989
+  "p": 0.988,
+  "asr": "kim"
  },
  {
   "word": "dinliyor",
   "start": 0.48,
   "end": 0.82,
-  "p": 0.901
+  "p": 0.893,
+  "asr": "dinliyor"
  },
  {
   "word": "peki?",
   "start": 0.82,
   "end": 1.22,
-  "p": 0.989
+  "p": 0.99,
+  "asr": "peki?"
  }
 ]

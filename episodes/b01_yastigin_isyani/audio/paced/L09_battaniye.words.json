@@ -1,14 +1,16 @@
 [
  {
-  "word": "Oy,",
+  "word": "Ayy…",
   "start": 0.0,
   "end": 0.38,
-  "p": 0.264
+  "p": 0.307,
+  "asr": "Oy,"
  },
  {
-  "word": "kıyama.",
+  "word": "kıyamam.",
   "start": 0.78,
   "end": 1.32,
-  "p": 0.764
+  "p": 0.762,
+  "asr": "kıyama."
  }
 ]

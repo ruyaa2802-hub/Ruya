@@ -1,32 +1,37 @@
 [
  {
-  "word": "Ben",
+  "word": "BEN",
   "start": 0.0,
   "end": 0.28,
-  "p": 0.871
+  "p": 0.877,
+  "asr": "Ben"
  },
  {
-  "word": "seni",
+  "word": "SENİ",
   "start": 0.28,
   "end": 0.58,
-  "p": 0.988
+  "p": 0.987,
+  "asr": "seni"
  },
  {
-  "word": "sekiz",
+  "word": "SEKİZ",
   "start": 0.58,
   "end": 1.04,
-  "p": 0.719
+  "p": 0.742,
+  "asr": "sekiz"
  },
  {
-  "word": "saattir",
+  "word": "SAATTİR",
   "start": 1.04,
   "end": 1.48,
-  "p": 0.979
+  "p": 0.978,
+  "asr": "saattir"
  },
  {
-  "word": "dinliyorum.",
+  "word": "DİNLİYORUM!",
   "start": 1.48,
   "end": 2.04,
-  "p": 0.997
+  "p": 0.997,
+  "asr": "dinliyorum!"
  }
 ]

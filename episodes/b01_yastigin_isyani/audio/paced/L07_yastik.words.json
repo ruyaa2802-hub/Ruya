@@ -3,19 +3,19 @@
   "word": "Beni",
   "start": 0.0,
   "end": 0.2,
-  "p": 0.777
+  "p": 0.769
  },
  {
   "word": "de",
   "start": 0.2,
-  "end": 0.36,
-  "p": 0.997
+  "end": 0.38,
+  "p": 0.998
  },
  {
   "word": "ters",
-  "start": 0.36,
+  "start": 0.38,
   "end": 0.6,
-  "p": 0.88
+  "p": 0.881
  },
  {
   "word": "çeviriyor.",
@@ -27,31 +27,31 @@
   "word": "Serin",
   "start": 1.16,
   "end": 1.54,
-  "p": 0.543
+  "p": 0.53
  },
  {
   "word": "tarafı",
   "start": 1.54,
   "end": 1.88,
-  "p": 0.996
+  "p": 0.997
  },
  {
   "word": "diye.",
   "start": 1.88,
   "end": 2.0,
-  "p": 0.973
+  "p": 0.97
  },
  {
   "word": "Serin",
   "start": 2.28,
   "end": 2.68,
-  "p": 0.966
+  "p": 0.968
  },
  {
   "word": "tarafım",
   "start": 2.68,
   "end": 3.0,
-  "p": 0.842
+  "p": 0.849
  },
  {
   "word": "kalmadı.",

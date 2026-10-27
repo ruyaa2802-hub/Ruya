@@ -58,10 +58,19 @@ def envelope(audio, sr=SR):
 _model = None
 
 
-def words(path, language="tr", model="small"):
-    """Word timings for an audio file, cached as <file>.words.json."""
+def _tokens(text):
+    return [t for t in text.replace("—", " ").replace("…", "… ").split() if any(c.isalpha() for c in t)]
+
+
+def words(path, language="tr", model="small", text=None):
+    """Word timings for an audio file, cached as <file>.words.json.
+
+    With `text` (the script line), recognised words are replaced by the script's
+    words when the counts match, so whispered or rare words keep correct spelling
+    for visemes and subtitles while timings still come from the audio.
+    """
     cache = os.path.splitext(path)[0] + ".words.json"
-    if os.path.exists(cache) and os.path.getmtime(cache) >= os.path.getmtime(path):
+    if os.path.exists(cache) and os.path.getmtime(cache) >= os.path.getmtime(path) and text is None:
         with open(cache) as f:
             return json.load(f)
     global _model
@@ -71,6 +80,11 @@ def words(path, language="tr", model="small"):
     segs, _info = _model.transcribe(load_audio(path), language=language, word_timestamps=True)
     out = [{"word": w.word.strip(), "start": round(w.start, 3), "end": round(w.end, 3), "p": round(w.probability, 3)}
            for s in segs for w in s.words]
+    if text:
+        script = _tokens(text)
+        if len(script) == len(out):
+            for w, t in zip(out, script):
+                w["asr"], w["word"] = w["word"], t
     with open(cache, "w") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     return out

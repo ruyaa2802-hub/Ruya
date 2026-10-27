@@ -112,12 +112,39 @@ def _plaid(nb, u, v, base, accent, accent2):
     return nb.mix(c, _rgba(accent2), nb.math("MULTIPLY", thin, 0.9))
 
 
+PALETTE = [(0.95, 0.35, 0.45), (0.25, 0.6, 0.95), (1.0, 0.78, 0.2), (0.3, 0.8, 0.55), (0.65, 0.4, 0.9)]
+
+
+def _confetti(nb, u, v, base, scale=14.0, radius=0.2):
+    """Scattered colourful dots (confetti print)."""
+    vec = nb.n("ShaderNodeCombineXYZ", {0: u, 1: v, 2: 0.0}).outputs[0]
+    vor = nb.n("ShaderNodeTexVoronoi", {"Vector": vec, "Scale": scale, "Randomness": 0.85},
+               voronoi_dimensions="2D", feature="F1")
+    mask = nb.n("ShaderNodeMapRange", {"Value": vor.outputs["Distance"], 1: radius + 0.025, 2: radius,
+                                       3: 0.0, 4: 1.0}, interpolation_type="SMOOTHSTEP").outputs[0]
+    pick = nb.n("ShaderNodeSeparateColor", {0: vor.outputs["Color"]}).outputs[0]
+    ramp = nb.n("ShaderNodeValToRGB", {"Fac": pick})
+    ramp.color_ramp.interpolation = "CONSTANT"
+    els = ramp.color_ramp.elements
+    els[0].position, els[0].color = 0.0, _rgba(PALETTE[0])
+    els[1].position, els[1].color = 0.2, _rgba(PALETTE[1])
+    for i, c in enumerate(PALETTE[2:]):
+        e = els.new(0.4 + 0.2 * i)
+        e.color = _rgba(c)
+    return nb.mix(_rgba(base), ramp.outputs[0], mask)
+
+
 def _pattern(nb, pattern, u, v, base, accent, accent2):
     if pattern == "pinstripe":
         stripe = nb.band(u, 0.028, 0.0035, 0.0008)
         return nb.mix(_rgba(base), _rgba(accent), nb.math("MULTIPLY", stripe, 0.85))
+    if pattern == "stripes":
+        stripe = nb.band(u, 0.11, 0.045, 0.002)
+        return nb.mix(_rgba(base), _rgba(accent), stripe)
     if pattern == "plaid":
         return _plaid(nb, u, v, base, accent, accent2)
+    if pattern == "confetti":
+        return _confetti(nb, u, v, base)
     return _rgba(base)
 
 
@@ -137,7 +164,9 @@ def fabric(name, base, pattern=None, accent=(0.2, 0.3, 0.5), accent2=(0.9, 0.85,
         return mat
     if mapping == "object":
         sep = nb.n("ShaderNodeSeparateXYZ", {0: nb.n("ShaderNodeTexCoord").outputs["Object"]})
-        u, v = sep.outputs[0], nb.math("ADD", sep.outputs[1], sep.outputs[2])
+        # skewed planar mapping: varies on top, front and side faces alike
+        u = nb.math("ADD", sep.outputs[0], nb.math("MULTIPLY", sep.outputs[1], 0.7))
+        v = nb.math("ADD", sep.outputs[1], sep.outputs[2])
         color = _pattern(nb, pattern, u, v, base, accent, accent2)
     elif mapping == "triplanar":
         rest = nb.n("ShaderNodeSeparateXYZ",
@@ -326,4 +355,56 @@ def mouth_inner(name="mouth_inner"):
     c = nb.mix((0.018, 0.003, 0.004, 1), (0.36, 0.07, 0.08, 1), t)
     c = nb.mix(c, (0.16, 0.03, 0.035, 1), nb.math("MULTIPLY", edge, 0.5))
     nb.principled(**{"Base Color": c, "Roughness": 0.6, "Specular IOR Level": 0.2})
+    return mat
+
+
+def kilim(name="kilim"):
+    """Turkish kilim: navy field, red/cream diamonds, orange bands (object space, meters)."""
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    sep = nb.n("ShaderNodeSeparateXYZ", {0: nb.n("ShaderNodeTexCoord").outputs["Object"]})
+    x, y = sep.outputs[0], sep.outputs[1]
+    fx = nb.math("FRACT", nb.math("DIVIDE", x, 0.24))
+    fy = nb.math("FRACT", nb.math("DIVIDE", nb.math("ADD", y, 0.12), 0.24))
+    dd = nb.math("ADD", nb.math("ABSOLUTE", nb.math("SUBTRACT", fx, 0.5)),
+                 nb.math("ABSOLUTE", nb.math("SUBTRACT", fy, 0.5)))
+    big = nb.n("ShaderNodeMapRange", {"Value": dd, 1: 0.34, 2: 0.31, 3: 0.0, 4: 1.0}).outputs[0]
+    ring = nb.n("ShaderNodeMapRange", {"Value": dd, 1: 0.24, 2: 0.21, 3: 0.0, 4: 1.0}).outputs[0]
+    core = nb.n("ShaderNodeMapRange", {"Value": dd, 1: 0.11, 2: 0.08, 3: 0.0, 4: 1.0}).outputs[0]
+    band = nb.band(nb.math("ADD", y, 0.0), 0.24, 0.03, 0.003)
+    c = nb.mix((0.05, 0.08, 0.22, 1), (0.75, 0.1, 0.08, 1), big)
+    c = nb.mix(c, (0.93, 0.85, 0.68, 1), ring)
+    c = nb.mix(c, (0.95, 0.5, 0.1, 1), core)
+    c = nb.mix(c, (0.95, 0.55, 0.12, 1), nb.math("MULTIPLY", band, nb.math("SUBTRACT", 1.0, big)))
+    noise = nb.n("ShaderNodeTexNoise", {"Scale": 60.0, "Detail": 1.0})
+    bump = nb.n("ShaderNodeBump", {"Strength": 0.25, "Height": noise.outputs[0]})
+    nb.principled(**{"Base Color": c, "Roughness": 0.95, "Sheen Weight": 0.6, "Normal": bump.outputs[0]})
+    return mat
+
+
+def poster_sunset(name="poster_sunset"):
+    """Flat illustrated poster: gradient sky, sun, two rows of hills (object space of a 0.5x0.7 m board)."""
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    sep = nb.n("ShaderNodeSeparateXYZ", {0: nb.n("ShaderNodeTexCoord").outputs["Object"]})
+    x, z = sep.outputs[0], sep.outputs[2]
+    sky_t = nb.n("ShaderNodeMapRange", {"Value": z, 1: -0.1, 2: 0.33, 3: 0.0, 4: 1.0}).outputs[0]
+    ramp = nb.n("ShaderNodeValToRGB", {"Fac": sky_t})
+    els = ramp.color_ramp.elements
+    els[0].color = (1.0, 0.62, 0.25, 1)
+    els[1].color = (0.42, 0.25, 0.62, 1)
+    mid = els.new(0.5)
+    mid.color = (0.98, 0.38, 0.45, 1)
+    dx, dz = nb.math("SUBTRACT", x, 0.06), nb.math("SUBTRACT", z, 0.02)
+    r = nb.math("SQRT", nb.math("ADD", nb.math("MULTIPLY", dx, dx), nb.math("MULTIPLY", dz, dz)))
+    sun = nb.n("ShaderNodeMapRange", {"Value": r, 1: 0.115, 2: 0.105, 3: 0.0, 4: 1.0}).outputs[0]
+    c = nb.mix(ramp.outputs[0], (1.0, 0.88, 0.35, 1), sun)
+    for base, amp, freq, ph, col in ((-0.05, 0.05, 9.0, 0.4, (0.12, 0.45, 0.45)),
+                                     (-0.15, 0.04, 13.0, 2.0, (0.05, 0.28, 0.32))):
+        hill = nb.math("ADD", base, nb.math("MULTIPLY", nb.math("SINE", nb.math("ADD", nb.math("MULTIPLY", x, freq), ph)), amp))
+        m = nb.n("ShaderNodeMapRange", {"Value": nb.math("SUBTRACT", hill, z), 1: -0.003, 2: 0.003, 3: 0.0, 4: 1.0}).outputs[0]
+        c = nb.mix(c, _rgba(col), m)
+    nb.principled(**{"Base Color": c, "Roughness": 0.55})
     return mat

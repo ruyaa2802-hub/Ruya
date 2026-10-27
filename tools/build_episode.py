@@ -21,7 +21,7 @@ sys.path.insert(0, ROOT)
 
 import bpy  # noqa: E402
 
-from ig import anim, audio, stage  # noqa: E402
+from ig import anim, audio, stage, subtitles  # noqa: E402
 
 ap = argparse.ArgumentParser()
 ap.add_argument("episode")
@@ -87,11 +87,13 @@ size = tuple(int(x) for x in args.size.split("x")) if args.size else None
 mp4 = audio.encode(os.path.join(out, "frames", "f_%04d.png"), args.fps, wav,
                    os.path.join(out, os.path.basename(out) + ".mp4"), size, start_number=f0)
 texts = getattr(ep, "LINES", {})
+ass = None
 if texts:
     audio.srt(tl, os.path.splitext(mp4)[0] + ".srt", texts, f0 / args.fps)
+    ass = subtitles.build_ass(tl.lines, texts, os.path.splitext(mp4)[0] + ".ass", f0 / args.fps)
 title = getattr(ep, "TITLE", None)
-if title and f1 + 1 >= int(tl.duration * args.fps) - 1:
-    final = os.path.splitext(mp4)[0] + "_final.mp4"
-    audio.title_card(mp4, final, title, tl.duration - f0 / args.fps - 1.3, 1.3)
-    mp4 = final
+ends_episode = f1 + 1 >= int(tl.duration * args.fps) - 1
+final = os.path.splitext(mp4)[0] + "_final.mp4"
+audio.finish(mp4, final, ass, title if ends_episode else None, tl.duration - f0 / args.fps - 1.3)
+mp4 = final
 print(f"[build] wrote {mp4} (total {time.time() - t_start:.0f}s)", flush=True)

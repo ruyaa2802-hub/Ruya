@@ -4,3 +4,4 @@ numpy
 scipy                 # SFX synthesis filters
 soundfile
 faster-whisper==1.2.1 # word timings for lip sync (Turkish)
+fonttools             # only to regenerate assets/fonts/Nunito-Black.ttf from the variable font

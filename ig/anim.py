@@ -62,7 +62,7 @@ class Line:
 
         Robust to re-recorded audio: acting stays on the word, not on a fixed second.
         """
-        norm = lambda w: w.replace("İ", "i").replace("I", "ı").lower().strip(".,!?…\"' ")
+        norm = lambda w: w.replace("İ", "i").replace("I", "ı").lower().strip(".,!?…\"'“”‘’—- ")
         hits = [w for w in self.words if norm(w["word"]).startswith(norm(prefix))]
         if len(hits) <= nth:
             raise KeyError(f"{self.path}: no word '{prefix}' #{nth} in {[w['word'] for w in self.words]}")

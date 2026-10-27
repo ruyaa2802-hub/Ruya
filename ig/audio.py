@@ -97,17 +97,22 @@ def srt(tl, path, texts, t0=0.0):
     return path
 
 
-FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+FONTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "fonts")
+FONT = os.path.join(FONTS_DIR, "Nunito-Black.ttf")
+if not os.path.exists(FONT):
+    FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 
-def title_card(src_mp4, dst_mp4, title, start, dur, fps=24):
-    """Fade the series title in over the last seconds (soft shadow, lower third)."""
-    fade = f"if(lt(t,{start}),0,min(1,(t-{start})/0.4))"
-    text = title.replace(":", "\\:")
-    vf = (f"drawtext=fontfile={FONT}:text='{text}':fontcolor=white:fontsize=h/22:"
-          f"x=(w-text_w)/2:y=h*0.66:alpha='{fade}':shadowcolor=black@0.6:shadowx=3:shadowy=3,"
-          f"drawbox=x=iw*0.3:y=ih*0.66+ih/22+18:w=iw*0.4:h=4:color=white@0.85:t=fill:"
-          f"enable='gte(t,{start + 0.2})'")
-    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src_mp4, "-vf", vf, "-c:v", "libx264", "-preset", "slow",
-                    "-crf", "17", "-c:a", "copy", "-movflags", "+faststart", dst_mp4], check=True)
+def finish(src_mp4, dst_mp4, ass=None, title=None, title_start=None):
+    """Final pass: burn the captions (ASS) and fade in the series title at the end."""
+    vf = []
+    if ass:
+        vf.append(f"subtitles={ass}:fontsdir={FONTS_DIR}")
+    if title and title_start is not None:
+        fade = f"if(lt(t,{title_start}),0,min(1,(t-{title_start})/0.4))"
+        text = title.replace(":", "\\:")
+        vf.append(f"drawtext=fontfile={FONT}:text='{text}':fontcolor=white:fontsize=h/18:"
+                  f"x=(w-text_w)/2:y=h*0.16:alpha='{fade}':borderw=6:bordercolor=black@0.85")
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", src_mp4, "-vf", ",".join(vf) or "null", "-c:v", "libx264",
+                    "-preset", "slow", "-crf", "17", "-c:a", "copy", "-movflags", "+faststart", dst_mp4], check=True)
     return dst_mp4

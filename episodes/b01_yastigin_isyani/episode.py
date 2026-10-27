@@ -7,7 +7,9 @@ question nobody asks a pillow.
 
 Dialogue (audio/paced/*.wav; voices: ElevenLabs eleven_v4 – Yastık = "Orhan",
 Battaniye = "Gözde"):
-  L01 YASTIK      Gitti mi? … Gitti. Oh be.
+  L01 YASTIK      (fısıltı) Gittiler mi?
+  L01b BATTANİYE  (fısıltı, gülümseyerek) Gittiler.
+  L01c YASTIK     Oh be…
   L02 BATTANİYE   Sen niye yoruldun? Bütün gece yatan SENSİN!
   L03 YASTIK      Yatmak mı? Ben mesaideydim! Patronu, eski sevgilisi, kredi kartı borcu… hepsini dinledim.
   L04 BATTANİYE   Ben de dinlerdim… beni yere atmasa! Gece üç kere attı. ÜÇ!
@@ -24,10 +26,12 @@ import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CAST = ("yastik", "battaniye")
-PACING = {"L01_yastik": 0.55}          # max pause per line for tools/prep_lines.py
+PACING = {"L01c_yastik": 0.55}         # max pause per line for tools/prep_lines.py
 TITLE = "İNSANLAR GİDİNCE"
 LINES = {                               # subtitle text (episode.srt) – the audio is the source of truth
-    "L01_yastik": "Gitti mi?… Gitti. Oh be.",
+    "L01_yastik": "Gittiler mi?",
+    "L01b_battaniye": "Gittiler.",
+    "L01c_yastik": "Oh be…",
     "L02_battaniye": "Sen niye yoruldun? Bütün gece yatan SENSİN!",
     "L03_yastik": "Yatmak mı? Ben mesaideydim! Patronu, eski sevgilisi, kredi kartı borcu… hepsini dinledim.",
     "L04_battaniye": "Ben de dinlerdim… beni yere atmasa! Gece üç kere attı. ÜÇ!",
@@ -56,9 +60,8 @@ def build(tl, ep):
     S = lambda f: os.path.join(ROOT, "assets", "sfx", f)
     Y, B = "yastik", "battaniye"
 
-    # ---------------------------------------------------------------- 1. the owner leaves
+    # ---------------------------------------------------------------- 1. the owner leaves: "Gittiler mi?"
     tl.eyes_closed(Y, 0.0, 0.7)
-    tl.eyes_closed(B, 0.0, 4.6)
     tl.expr(B, 0.0, "neutral", 0.01, m_frown=0.15)
     tl.sfx(0.0, S("keys.wav"), -4)
     tl.sfx(0.3, S("door_slam.wav"), -1)
@@ -66,26 +69,39 @@ def build(tl, ep):
     tl.pulse(B, 0.38, 0.3, squash=-0.06)
     tl.set(Y, 0.65, 0.1, lid_u_L=0.95, lid_l_L=0.4)          # one eye peeks first
     tl.look(Y, 0.75, DOOR, 0.12, head=0.2)
-    tl.set(Y, 1.1, 0.15, lid_u_L=0.0, lid_l_L=0.0)
     tl.expr(Y, 0.85, "neutral", 0.25, brow_up=0.35, lid_u=-0.15)
 
-    l01 = tl.say(Y, 0.85, A("L01_yastik"), intensity=0.85)
-    tl.set(Y, 1.05, 0.4, lean_f=0.06)
+    l01 = tl.say(Y, 0.85, A("L01_yastik"), intensity=0.8, bob=0.5)      # whispered
+    tl.set(Y, 0.95, 0.4, lean_f=0.06)
     tl.look(Y, l01.find("mi"), DOOR, 0.1, head=0.15, up=0.05)
-    tl.expr(Y, l01.find("gitti", 1) - 0.1, "relief", 0.35)
-    tl.look(Y, l01.find("gitti", 1), (0.6, -1.5, 0.8), 0.3)
-    tl.set(Y, l01.find("gitti", 1), 0.4, lean_f=0.0)
-    oh = l01.find("oh")                                            # "Oh be": deflate, corners flop
+
+    # the blanket peeks too and whispers back, smiling: "Gittiler."
+    tl.eyes_closed(B, 0.0, l01.end - 0.3)
+    tl.set(B, l01.end - 0.35, 0.1, lid_u_R=0.95, lid_l_R=0.4)
+    tl.look(B, l01.end - 0.3, Y, 0.25, head=0.4)
+    tl.set(B, l01.end + 0.05, 0.15, lid_u_R=0.0, lid_l_R=0.0)
+    tl.expr(B, l01.end - 0.2, "smug", 0.3, lid_u=0.15)
+    l01b = tl.say(B, l01.end + 0.12, A("L01b_battaniye"), intensity=0.8, bob=0.5)
+    tl.set(Y, l01.end, 0.15, lid_u_L=0.0, lid_l_L=0.0)
+    tl.look(Y, l01b.t - 0.1, B, 0.25, head=0.35)
+
+    # both drop the act: "Oh be…"
+    l01c = tl.say(Y, l01b.end + 0.12, A("L01c_yastik"), bob=0.6)
+    oh = l01c.find("oh")                                           # deflate, corners flop
+    tl.expr(Y, oh - 0.1, "relief", 0.35)
     tl.set(Y, oh, 0.7, "out", squash=-0.08, arm_L_raise=-0.3, arm_R_raise=-0.3, arm_L_fold=0.15, arm_R_fold=0.15)
     tl.set(Y, oh, 0.7, "out", nod=-0.14, lid_u=0.4)
+    tl.look_cam(Y, oh, 0.4)
     tl.sfx(oh + 0.05, S("poof.wav"), -10)
+    tl.expr(B, oh, "relief", 0.4)
+    tl.set(B, oh, 0.6, "out", squash=-0.06)
 
-    # ---------------------------------------------------------------- 2. the blanket objects
-    t = l01.end + 0.02
-    tl.set(B, t - 0.15, 0.12, blink=0.0)
+    # ---------------------------------------------------------------- 2. that sigh was a bit much
+    t = l01c.end + 0.02
     tl.expr(B, t - 0.1, "offended", 0.25)
     tl.look(B, t, Y, 0.3, head=0.5)
     tl.hop(B, t, 0.03, 0.3, 0.12)
+    tl.set(B, t, 0.3, squash=0.0)
     tl.sfx(t, S("rustle.wav"), -8)
     l02 = tl.say(B, t + 0.15, A("L02_battaniye"))
     tl.set(B, l02.t, 0.3, lean_f=-0.1)
@@ -198,7 +214,10 @@ def build(tl, ep):
     two = ((2.05, -2.9, 1.2), (0.5, 0.2, 0.5))                # blanket in front on the floor, pillow up on the bed
     bed_two = ((0.04, -1.6, 1.1), (0.04, 0.6, 0.8))           # from the foot of the bed: side by side
     tl.face_shot(0.0, "cam_cu_y", Y, dist=1.45, yaw=-12, height=0.1, lens=28, push=0.2, dur=l01.end)
-    tl.shot(l01.end, "cam_two", *two, lens=30, fstop=4.0, to_loc=(1.85, -2.6, 1.12), dur=l02.dur + 0.4, focus=B)
+    tl.shot(l01.end - 0.05, "cam_two", *two, lens=30, fstop=4.0, focus=B)                    # "Gittiler."
+    tl.face_shot(l01c.t - 0.05, "cam_cu_y0", Y, dist=1.3, yaw=-10, height=0.08, lens=28)    # "Oh be…"
+    tl.shot(l02.t - 0.1, "cam_two", *two, lens=30, fstop=4.0, to_loc=(1.85, -2.6, 1.12), dur=l02.dur + 0.4,
+            focus=B)
     tl.face_shot(l03.t - 0.05, "cam_cu_y", Y, dist=1.45, yaw=-15, height=0.06, lens=28, push=0.12, dur=l03.dur)
     tl.face_shot(l04.t - 0.05, "cam_cu_b", B, dist=1.25, yaw=12, height=0.18, lens=26, push=0.1, dur=l04.dur)
     tl.face_shot(l05.t - 0.1, "cam_cu_y2", Y, dist=1.0, yaw=0, height=0.04, lens=30)

@@ -193,10 +193,10 @@ def _tassels(points, direction, length=0.055, width=0.0055, seed=0.0):
 
 
 def build(col=None, loc=(0, 0, 0), rot=(0, 0, 0)):
-    plaid = M.fabric("battaniye_plaid", (0.42, 0.035, 0.035), pattern="plaid", accent=(0.03, 0.13, 0.08),
+    plaid = M.fabric("battaniye_plaid", (0.55, 0.04, 0.04), pattern="plaid", accent=(0.03, 0.17, 0.1),
                      accent2=(0.9, 0.72, 0.35), roughness=0.92, sheen=0.35, weave=0.002, bump=0.12,
                      wrinkle=0.03, fuzz=0.15, mapping="triplanar")
-    solid = M.fabric("battaniye_lid", (0.40, 0.035, 0.035), roughness=0.92, sheen=0.35, fuzz=0.15)
+    solid = M.fabric("battaniye_lid", (0.5, 0.04, 0.04), roughness=0.92, sheen=0.35, fuzz=0.15)
     lip = M.fabric("battaniye_lip", (0.28, 0.03, 0.04), roughness=0.85, sheen=0.8)
     brow = M.fabric("battaniye_brow", (0.12, 0.05, 0.03), roughness=0.8, sheen=0.5, bump=0.6)
     fringe_mat = M.fabric("battaniye_fringe", (0.93, 0.85, 0.66), roughness=0.9, sheen=0.8)

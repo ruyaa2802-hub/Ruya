@@ -1,7 +1,7 @@
 """YASTIK – the exhausted pillow who listens to everything.
 
-Design: plump cream cotton pillowcase with thin dusty-blue pinstripes and a
-blue piped seam. Pinched corners double as hands. Heavy, half-lidded grey-blue
+Design: plump sky-blue cotton pillowcase with thin white pinstripes and a
+coral piped seam. Pinched corners double as hands. Heavy, half-lidded grey-blue
 eyes and stitched brows give the permanently tired, dry look.
 """
 import math
@@ -94,12 +94,12 @@ def _build_mesh(col):
 
 
 def build(col=None, loc=(0, 0, 0), rot=(0, 0, 0)):
-    case = M.fabric("yastik_case", (0.90, 0.86, 0.78), pattern="pinstripe", accent=(0.36, 0.5, 0.68),
+    case = M.fabric("yastik_case", (0.42, 0.68, 0.93), pattern="pinstripe", accent=(0.97, 0.97, 0.95),
                     sheen=0.5, wrinkle=0.03)
-    piping = M.fabric("yastik_piping", (0.30, 0.42, 0.6), sheen=0.4)
-    lip = M.fabric("yastik_lip", (0.3, 0.39, 0.54), sheen=0.3)
-    brow = M.fabric("yastik_brow", (0.25, 0.3, 0.4), sheen=0.3, weave=0.0012, bump=0.5)
-    lid = M.fabric("yastik_lid", (0.88, 0.82, 0.74), sheen=0.5)
+    piping = M.fabric("yastik_piping", (0.98, 0.55, 0.3), sheen=0.4)
+    lip = M.fabric("yastik_lip", (0.12, 0.2, 0.42), sheen=0.3)
+    brow = M.fabric("yastik_brow", (0.1, 0.16, 0.35), sheen=0.3, weave=0.0012, bump=0.5)
+    lid = M.fabric("yastik_lid", (0.4, 0.66, 0.91), sheen=0.5)
 
     body, tri = _build_mesh(col)
     body.data.materials.append(case)

@@ -3,66 +3,77 @@
   "word": "Ben",
   "start": 0.0,
   "end": 0.28,
-  "p": 0.792
+  "p": 0.783,
+  "asr": "Ben"
  },
  {
   "word": "de",
   "start": 0.28,
   "end": 0.44,
-  "p": 0.918
+  "p": 0.936,
+  "asr": "de"
  },
  {
-  "word": "dinlerdim.",
+  "word": "dinlerdim…",
   "start": 0.44,
-  "end": 1.0,
-  "p": 0.974
+  "end": 1.02,
+  "p": 0.974,
+  "asr": "dinlerdim,"
  },
  {
-  "word": "Beni",
-  "start": 1.38,
+  "word": "beni",
+  "start": 1.4,
   "end": 1.7,
-  "p": 0.971
+  "p": 0.981,
+  "asr": "beni"
  },
  {
   "word": "yere",
   "start": 1.7,
   "end": 1.94,
-  "p": 0.977
+  "p": 0.977,
+  "asr": "yere"
  },
  {
-  "word": "atmasa,",
+  "word": "atmasa!",
   "start": 1.94,
-  "end": 2.72,
-  "p": 0.964
+  "end": 2.78,
+  "p": 0.959,
+  "asr": "atmasa,"
  },
  {
-  "word": "gece",
-  "start": 2.88,
+  "word": "Gece",
+  "start": 2.86,
   "end": 3.14,
-  "p": 0.949
+  "p": 0.954,
+  "asr": "gece"
  },
  {
   "word": "üç",
   "start": 3.14,
   "end": 3.48,
-  "p": 0.761
+  "p": 0.709,
+  "asr": "üç"
  },
  {
   "word": "kere",
   "start": 3.48,
   "end": 3.78,
-  "p": 0.992
+  "p": 0.991,
+  "asr": "kere"
  },
  {
   "word": "attı.",
   "start": 3.78,
-  "end": 4.2,
-  "p": 0.98
+  "end": 4.22,
+  "p": 0.981,
+  "asr": "attı."
  },
  {
-  "word": "Üç!",
+  "word": "ÜÇ!",
   "start": 4.44,
   "end": 4.8,
-  "p": 0.932
+  "p": 0.91,
+  "asr": "Üç!"
  }
 ]

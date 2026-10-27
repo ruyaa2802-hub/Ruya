@@ -6,7 +6,7 @@ karakterler, Türkçe dudak senkronu, kamera kurgusu, ses miksajı ve 9:16 MP4 �
 
 | Bölüm | Süre | Çıktı |
 |---|---|---|
-| B01 — Yastığın İsyanı | ~36 sn | `renders/b01_yastigin_isyani_episode/…_final.mp4` |
+| B01 — Yastığın İsyanı | ~36 sn | `renders/b01_yastigin_isyani/b01_yastigin_isyani_final.mp4` |
 
 ## Kurulum
 
@@ -37,9 +37,14 @@ GPU gerekmez; Blender, PyPI'daki resmî `bpy` paketiyle Python modülü olarak �
 .venv/bin/python tools/build_episode.py episodes/b01_yastigin_isyani --preset final --blend
 ```
 
-Çıktılar `renders/<bölüm>_<script>/` altında: kareler, `mix.wav`, `.mp4`, `_final.mp4`
-(seri jeneriğiyle), `.srt` (YouTube'a ayrı yüklenebilecek Türkçe altyazı) ve istenirse
-elle düzenlenebilir `episode.blend`.
+Çıktılar `renders/<bölüm>_<script>/` altında: kareler, `mix.wav`, `.mp4` (yazısız),
+`_final.mp4` (gömülü Türkçe altyazı + seri jeneriği), `.ass` / `.srt` altyazı dosyaları ve
+istenirse elle düzenlenebilir `episode.blend`.
+
+**Altyazı (`ig/subtitles.py`):** replik metni (`LINES`) kelime zamanlarına hizalanır, en
+fazla 3 kelimelik parçalar halinde gösterilir; söylenen kelime konuşan karakterin rengine
+döner (Yastık mavi, Battaniye sarı). Yazı tipi `assets/fonts/Nunito-Black.ttf` (SIL OFL,
+Nunito değişken fontundan `fontTools` ile üretildi; tam Türkçe karakter desteği).
 
 **Render süresi (4 çekirdekli CPU, GPU yok):** ~14 sn/kare → 36 sn'lik bölüm ≈ 3,5 saat.
 GPU'lu bir makinede aynı betik `--preset hq` (1080x1920, 64 örnek) ile kare başına birkaç
@@ -80,7 +85,8 @@ ig/
   expressions.py   ifade ön ayarları (tired, sarcastic, shout, touched…)
   anim.py          zaman çizelgesi: set/expr/look/hop/move/shake/say/sfx/shot → keyframe
   lipsync.py       Türkçe dudak senkronu
-  audio.py         miksaj (-14 LUFS), tempo, MP4, SRT, jenerik
+  audio.py         miksaj (-14 LUFS), tempo, MP4, SRT, altyazı+jenerik son geçişi
+  subtitles.py     Shorts altyazısı (ASS, karaoke renk, pop animasyonu)
   sfx.py           sentez ses efektleri (kapı, anahtar, hışırtı, puf, vuuş, burun çekme)
   render.py        Cycles ön ayarları, karaktere göre kamera
 tools/             build_episode, prep_lines, split_lines, still (look-dev)

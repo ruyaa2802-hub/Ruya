@@ -22,13 +22,14 @@ ap.add_argument("--tempo", type=float, default=1.08)
 ap.add_argument("--pause", type=float, default=0.35)
 args = ap.parse_args()
 
-overrides = {}
+overrides, texts = {}, {}
 script = os.path.join(args.episode, "episode.py")
 if os.path.exists(script):
     spec = importlib.util.spec_from_file_location("ep", script)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     overrides = getattr(mod, "PACING", {})
+    texts = getattr(mod, "LINES", {})
 
 out_dir = os.path.join(args.episode, "audio", "paced")
 os.makedirs(out_dir, exist_ok=True)
@@ -39,6 +40,6 @@ for src in sorted(glob.glob(os.path.join(args.episode, "audio", "L*.wav"))):
     audio.tighten(src, dst, overrides.get(lid, args.pause), args.tempo)
     d = lipsync.duration(dst)
     total += d
-    words = lipsync.words(dst)
+    words = lipsync.words(dst, text=texts.get(lid))
     print(f"{lid}: {lipsync.duration(src):.2f}s -> {d:.2f}s  " + " ".join(f"{w['word']}@{w['start']:.2f}" for w in words))
 print(f"total {total:.2f}s")

@@ -21,7 +21,8 @@ Bölümler arası tutarlılık için tek kaynak. Kodda karşılığı olan her �
 ## Karakterler
 
 ### YASTIK (`ig/characters/yastik.py`)
-- Krem pamuk kılıf, ince toz mavisi çizgiler, mavi biye. Köşeleri el olarak kullanır.
+- Gök mavisi pamuk kılıf, ince beyaz çizgiler, mercan biye; lacivert kaş ve dudak.
+  Köşeleri el olarak kullanır.
 - Gri-mavi, ağır kapaklı gözler (`rest_lid_u=0.38`): kalıcı yorgunluk.
 - Kişilik: herkesin dertlerini dinleyen yorgun "terapist"; kuru, alaycı, kısa cümleler.
   Patladığında büyük patlar.
@@ -37,15 +38,22 @@ Bölümler arası tutarlılık için tek kaynak. Kodda karşılığı olan her �
 
 ### Yeni karakter eklerken
 - Yüzü `FaceSpec` ile kur; göz boyutu gövdeye göre ~%15 genişlik, gözler arası ~1,5 göz çapı.
-- Renk paletinde diğer karakterlerle karışmayan bir ana renk seç (krem/mavi ve bordo/yeşil dolu).
+- Renk paletinde diğer karakterlerle karışmayan bir ana renk seç (gök mavisi/mercan ve bordo/yeşil dolu).
 - Kanal adları ortak (`ig/characters/base.py` → `CHANNELS`); ifade ön ayarları `ig/expressions.py`.
 - Ses: `creative_list_voices(languages=["tr"])` ile seç, voice_id'yi buraya yaz.
 
 ## Mekân
 
-Yatak odası (`ig/sets/bedroom.py`): sabah güneşi soldaki pencereden, adaçayı yeşili duvar,
-ceviz yatak, meşe parke, petrol mavisi halı. Komodindeki turuncu kupa ve lamba sonraki
-bölümlerin karakterleri olabilir.
+Yatak odası (`ig/sets/bedroom.py`): yaşanmış, renkli bir oda. Ayçiçeği sarısı duvar, nane
+yeşili pencere duvarı, turuncu çizgili perdeler, konfeti puantiyeli çarşaf, yatak başlığında
+ip lambalar, gün batımı posteri, notlu mantar pano, kitaplı raf ve plastik ördek, köşede iri
+yapraklı saksı, lacivert kilim, pembe terlikler. Komodindeki turuncu kupa, saksı ve ördek
+sonraki bölümlerin karakterleri olabilir.
+
+## Altyazı
+
+Her bölümde gömülü altyazı vardır (`ig/subtitles.py`): ekranın %72 yüksekliğinde (Shorts
+arayüzünün üstünde), en fazla 3 kelime, söylenen kelime konuşanın renginde.
 
 ## Bölüm fikirleri (sıradaki)
 
