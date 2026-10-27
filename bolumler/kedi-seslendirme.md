@@ -8,9 +8,9 @@ saniyeye göre ayarlandı. Aynı metin `kedi-seslendirme.srt` dosyasında altyaz
 
 | # | Başlangıç | Bitiş | Aşama | Seslendirme |
 |---|-----------|-------|-------|-------------|
-| 1 | 0.3 | 3.0 | Boş kâğıt | Beyaz kâğıda sıfırdan gerçekçi bir kedi portresi çiziyoruz. |
-| 2 | 3.2 | 7.9 | Yapım çizgileri | Önce büyük şekilleri hafifçe yerleştir. Sert bir kalemle, neredeyse hiç bastırmadan. |
-| 3 | 8.1 | 12.9 | Oranlar | Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Kedide bu mesafe yaklaşık bir göz genişliğidir. |
+| 1 | 0.3 | 3.0 | Boş kâğıt | Sıfırdan gerçekçi bir kedi portresi çiziyoruz. |
+| 2 | 3.2 | 7.9 | Yapım çizgileri | Önce büyük şekilleri hafifçe yerleştir. Sert kalemle, bastırmadan. |
+| 3 | 8.1 | 12.9 | Oranlar | Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Arada bir göz genişliği olsun. |
 | 4 | 13.1 | 18.9 | Konturlar | Şimdi gözü, burnu ve ağzı netleştir. Gözdeki parlak noktanın yerini baştan boş bırak. |
 | 5 | 19.1 | 24.9 | Tüy kümeleri | Tüyleri tek tek çizmek yerine büyüme yönlerini takip et. Burundan dışarı doğru, kümeler halinde. |
 | 6 | 25.1 | 30.9 | Orta tonlar | Koyu gölgeleri hemen doldurma; önce orta tonları oluştur. Formu katman katman kur. |
@@ -20,9 +20,9 @@ saniyeye göre ayarlandı. Aynı metin `kedi-seslendirme.srt` dosyasında altyaz
 ## Düz metin (kopyalamak için)
 
 ```
-Beyaz kâğıda sıfırdan gerçekçi bir kedi portresi çiziyoruz.
-Önce büyük şekilleri hafifçe yerleştir. Sert bir kalemle, neredeyse hiç bastırmadan.
-Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Kedide bu mesafe yaklaşık bir göz genişliğidir.
+Sıfırdan gerçekçi bir kedi portresi çiziyoruz.
+Önce büyük şekilleri hafifçe yerleştir. Sert kalemle, bastırmadan.
+Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Arada bir göz genişliği olsun.
 Şimdi gözü, burnu ve ağzı netleştir. Gözdeki parlak noktanın yerini baştan boş bırak.
 Tüyleri tek tek çizmek yerine büyüme yönlerini takip et. Burundan dışarı doğru, kümeler halinde.
 Koyu gölgeleri hemen doldurma; önce orta tonları oluştur. Formu katman katman kur.

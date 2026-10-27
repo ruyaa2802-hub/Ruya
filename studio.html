@@ -95,9 +95,9 @@
       <p class="note" id="recNote"></p>
       <p class="note"><b>Kare kare, kayıpsız MP4:</b> <code>node tools/render-video.mjs</code> komutu bu sayfayı arka planda açar,
         her kareyi tek tek çizer ve ücretsiz <b>ffmpeg</b> ile 1080×1920 / 30 fps MP4 üretir (gerçek zamanlı kayıttaki kare atlama sorunu olmaz).</p>
-      <p class="note"><b>Ses:</b> Bu sistem ses dosyası üretmez. “Sesli önizleme” yalnızca tarayıcının kendi Türkçe sesini
-        hoparlörden çalar; kayda <b>girmez</b>. Seslendirmeyi aşağıdaki zamanlı metinle kendin kaydedip
-        (telefon, Audacity, CapCut) videonun altına ekleyebilirsin.</p>
+      <p class="note"><b>Ses:</b> Tarayıcı kaydı sessizdir; “Sesli önizleme” yalnızca hoparlörden çalar, kayda <b>girmez</b>.
+        Sesli video için <code>tools/seslendir.py</code> ücretsiz ve çevrimdışı Piper Türkçe sesiyle her cümleyi kendi
+        saniyesinde başlatıp MP4'e ekler. İstersen kendi sesini kaydedip aynı zamanlamayla da kullanabilirsin.</p>
     </div>
 
     <div class="card">
@@ -702,9 +702,9 @@ KS.register({
   ],
   // Seslendirme: her cümlenin başlangıç/bitiş saniyesi. caption = ekranda görünen kısa yazı.
   narration: [
-    { t0: 0.3,  t1: 3.0,  text: 'Beyaz kâğıda sıfırdan gerçekçi bir kedi portresi çiziyoruz.', caption: '' },
-    { t0: 3.2,  t1: 7.9,  text: 'Önce büyük şekilleri hafifçe yerleştir. Sert bir kalemle, neredeyse hiç bastırmadan.', caption: 'Önce büyük şekilleri hafifçe yerleştir.' },
-    { t0: 8.1,  t1: 12.9, text: 'Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Kedide bu mesafe yaklaşık bir göz genişliğidir.', caption: 'Gözlerin hizasını ve aralarındaki mesafeyi kontrol et.' },
+    { t0: 0.3,  t1: 3.0,  text: 'Sıfırdan gerçekçi bir kedi portresi çiziyoruz.', caption: '' },
+    { t0: 3.2,  t1: 7.9,  text: 'Önce büyük şekilleri hafifçe yerleştir. Sert kalemle, bastırmadan.', caption: 'Önce büyük şekilleri hafifçe yerleştir.' },
+    { t0: 8.1,  t1: 12.9, text: 'Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Arada bir göz genişliği olsun.', caption: 'Gözlerin hizasını ve aralarındaki mesafeyi kontrol et.' },
     { t0: 13.1, t1: 18.9, text: 'Şimdi gözü, burnu ve ağzı netleştir. Gözdeki parlak noktanın yerini baştan boş bırak.', caption: 'Göz, burun ve ağzı netleştir; parlak noktayı boş bırak.' },
     { t0: 19.1, t1: 24.9, text: 'Tüyleri tek tek çizmek yerine büyüme yönlerini takip et. Burundan dışarı doğru, kümeler halinde.', caption: 'Tüyleri tek tek çizmek yerine büyüme yönlerini takip et.' },
     { t0: 25.1, t1: 30.9, text: 'Koyu gölgeleri hemen doldurma; önce orta tonları oluştur. Formu katman katman kur.', caption: 'Koyu gölgeleri hemen doldurma; önce orta tonları oluştur.' },

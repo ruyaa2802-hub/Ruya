@@ -1,14 +1,14 @@
 1
 00:00:00,300 --> 00:00:03,000
-Beyaz kâğıda sıfırdan gerçekçi bir kedi portresi çiziyoruz.
+Sıfırdan gerçekçi bir kedi portresi çiziyoruz.
 
 2
 00:00:03,200 --> 00:00:07,900
-Önce büyük şekilleri hafifçe yerleştir. Sert bir kalemle, neredeyse hiç bastırmadan.
+Önce büyük şekilleri hafifçe yerleştir. Sert kalemle, bastırmadan.
 
 3
 00:00:08,100 --> 00:00:12,900
-Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Kedide bu mesafe yaklaşık bir göz genişliğidir.
+Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Arada bir göz genişliği olsun.
 
 4
 00:00:13,100 --> 00:00:18,900
