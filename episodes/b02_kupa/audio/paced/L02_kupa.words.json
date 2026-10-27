@@ -1,0 +1,30 @@
+[
+ {
+  "word": "G-gittiler…",
+  "start": 0.0,
+  "end": 1.34,
+  "p": 0.902,
+  "asr": "Gittiler."
+ },
+ {
+  "word": "beni",
+  "start": 1.86,
+  "end": 2.18,
+  "p": 0.955,
+  "asr": "Beni"
+ },
+ {
+  "word": "yine",
+  "start": 2.18,
+  "end": 2.42,
+  "p": 0.964,
+  "asr": "yine"
+ },
+ {
+  "word": "unuttular.",
+  "start": 2.42,
+  "end": 3.02,
+  "p": 0.976,
+  "asr": "unuttular."
+ }
+]

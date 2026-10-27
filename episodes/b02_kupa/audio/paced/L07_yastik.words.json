@@ -1,0 +1,30 @@
+[
+ {
+  "word": "Kahve",
+  "start": 0.0,
+  "end": 0.42,
+  "p": 0.935,
+  "asr": "Kahve"
+ },
+ {
+  "word": "değil,",
+  "start": 0.42,
+  "end": 0.58,
+  "p": 0.989,
+  "asr": "değil,"
+ },
+ {
+  "word": "çorba",
+  "start": 0.82,
+  "end": 1.22,
+  "p": 0.969,
+  "asr": "çorba"
+ },
+ {
+  "word": "olmuşsun.",
+  "start": 1.22,
+  "end": 1.66,
+  "p": 0.979,
+  "asr": "olmuşsun."
+ }
+]

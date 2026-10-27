@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Arkamda",
+  "start": 0.0,
+  "end": 0.54,
+  "p": 0.924,
+  "asr": "Arkamda"
+ },
+ {
+  "word": "ne",
+  "start": 0.54,
+  "end": 0.68,
+  "p": 0.929,
+  "asr": "ne"
+ },
+ {
+  "word": "yazıyor?",
+  "start": 0.68,
+  "end": 1.04,
+  "p": 0.987,
+  "asr": "yazıyor?"
+ },
+ {
+  "word": "“Önce",
+  "start": 1.42,
+  "end": 1.8,
+  "p": 0.975,
+  "asr": "Önce"
+ },
+ {
+  "word": "kahve!”",
+  "start": 1.8,
+  "end": 2.28,
+  "p": 0.988,
+  "asr": "kahve!"
+ },
+ {
+  "word": "Önce!",
+  "start": 2.54,
+  "end": 3.06,
+  "p": 0.985,
+  "asr": "Önce!"
+ },
+ {
+  "word": "Sonra",
+  "start": 3.24,
+  "end": 3.52,
+  "p": 0.701,
+  "asr": "Sonra"
+ },
+ {
+  "word": "değil!",
+  "start": 3.52,
+  "end": 3.84,
+  "p": 0.972,
+  "asr": "değil!"
+ }
+]

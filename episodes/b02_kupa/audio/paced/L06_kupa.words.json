@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Üç",
+  "start": 0.0,
+  "end": 0.34,
+  "p": 0.808,
+  "asr": "Üç"
+ },
+ {
+  "word": "kere!",
+  "start": 0.34,
+  "end": 0.66,
+  "p": 0.827,
+  "asr": "kere"
+ },
+ {
+  "word": "Isıttı,",
+  "start": 0.66,
+  "end": 1.66,
+  "p": 0.707,
+  "asr": "ısıttı,"
+ },
+ {
+  "word": "unuttu.",
+  "start": 1.74,
+  "end": 2.28,
+  "p": 0.739,
+  "asr": "unuttu."
+ },
+ {
+  "word": "Isıttı,",
+  "start": 2.48,
+  "end": 3.14,
+  "p": 0.791,
+  "asr": "ısıttı,"
+ },
+ {
+  "word": "unuttu.",
+  "start": 3.32,
+  "end": 3.8,
+  "p": 0.923,
+  "asr": "unuttu."
+ },
+ {
+  "word": "Isıttı…",
+  "start": 4.22,
+  "end": 4.88,
+  "p": 0.903,
+  "asr": "ısıttı,"
+ },
+ {
+  "word": "UNUTTU!",
+  "start": 5.06,
+  "end": 5.74,
+  "p": 0.93,
+  "asr": "unuttu!"
+ }
+]

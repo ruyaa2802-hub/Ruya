@@ -1,0 +1,16 @@
+[
+ {
+  "word": "Gittiler",
+  "start": 0.0,
+  "end": 0.42,
+  "p": 0.681,
+  "asr": "Gidiler"
+ },
+ {
+  "word": "mi?",
+  "start": 0.42,
+  "end": 0.64,
+  "p": 0.994,
+  "asr": "mi?"
+ }
+]

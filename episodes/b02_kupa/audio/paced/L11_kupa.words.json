@@ -1,0 +1,44 @@
+[
+ {
+  "word": "Dökmüyor",
+  "start": 0.0,
+  "end": 0.52,
+  "p": 0.921,
+  "asr": "Dökmüyor"
+ },
+ {
+  "word": "mu?",
+  "start": 0.52,
+  "end": 0.7,
+  "p": 0.973,
+  "asr": "mu?"
+ },
+ {
+  "word": "Dünkü",
+  "start": 1.14,
+  "end": 1.42,
+  "p": 0.936,
+  "asr": "Dünkü"
+ },
+ {
+  "word": "kahvemi",
+  "start": 1.42,
+  "end": 1.88,
+  "p": 0.757,
+  "asr": "kahvemi"
+ },
+ {
+  "word": "saksıya",
+  "start": 1.88,
+  "end": 2.36,
+  "p": 0.741,
+  "asr": "saksıya"
+ },
+ {
+  "word": "döktü.",
+  "start": 2.36,
+  "end": 2.7,
+  "p": 0.975,
+  "asr": "döktü."
+ }
+]

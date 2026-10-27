@@ -358,6 +358,32 @@ def mouth_inner(name="mouth_inner"):
     return mat
 
 
+def coffee_cold(name="coffee_cold"):
+    """Coffee that went cold hours ago: dark and glossy, with a dull skin on top."""
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    noise = nb.n("ShaderNodeTexNoise", {"Scale": 38.0, "Detail": 6.0, "Roughness": 0.6})
+    film = nb.n("ShaderNodeMapRange", {"Value": noise.outputs[0], 1: 0.48, 2: 0.6, 3: 0.0, 4: 1.0},
+                interpolation_type="SMOOTHSTEP").outputs[0]
+    c = nb.mix((0.04, 0.02, 0.009, 1), (0.27, 0.17, 0.1, 1), film)
+    rough = nb.n("ShaderNodeMapRange", {"Value": film, 3: 0.05, 4: 0.5}).outputs[0]
+    bump = nb.n("ShaderNodeBump", {"Strength": 0.12, "Height": noise.outputs[0]})
+    nb.principled(**{"Base Color": c, "Roughness": rough, "Normal": bump.outputs[0]})
+    return mat
+
+
+def bisque(name, color=(0.82, 0.68, 0.52)):
+    """Unglazed fired clay (a mug's foot ring)."""
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    noise = nb.n("ShaderNodeTexNoise", {"Scale": 300.0, "Detail": 2.0})
+    bump = nb.n("ShaderNodeBump", {"Strength": 0.25, "Height": noise.outputs[0]})
+    nb.principled(**{"Base Color": _rgba(color), "Roughness": 0.85, "Normal": bump.outputs[0]})
+    return mat
+
+
 def kilim(name="kilim"):
     """Turkish kilim: navy field, red/cream diamonds, orange bands (object space, meters)."""
     mat, nb = _new(name)

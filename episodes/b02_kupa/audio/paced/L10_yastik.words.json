@@ -1,0 +1,30 @@
+[
+ {
+  "word": "En",
+  "start": 0.0,
+  "end": 0.16,
+  "p": 0.679,
+  "asr": "En"
+ },
+ {
+  "word": "azından",
+  "start": 0.16,
+  "end": 0.54,
+  "p": 0.998,
+  "asr": "azından"
+ },
+ {
+  "word": "seni",
+  "start": 0.54,
+  "end": 0.74,
+  "p": 0.994,
+  "asr": "seni"
+ },
+ {
+  "word": "dökmüyor.",
+  "start": 0.74,
+  "end": 1.22,
+  "p": 0.964,
+  "asr": "dökmüyor."
+ }
+]

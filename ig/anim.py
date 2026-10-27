@@ -81,6 +81,7 @@ class Timeline:
         self.duration = 0.0
         self.blink_off = {n: [] for n in chars}
         self.springs = {n: 1.0 for n in chars}
+        self.props = {}
         bpy.context.view_layer.update()
         self.rest_face = {n: c.face.anchor.matrix_world.copy() for n, c in chars.items()}
 
@@ -134,6 +135,13 @@ class Timeline:
 
     def look_cam(self, who, t, dur=0.2):
         self.set(who, t, dur, gaze_x=0.0, gaze_y=0.0, twist=0.0)
+
+    # ------------------------------------------------------------ set dressing
+    def prop(self, obj, fn, t0=-1e9, t1=1e9):
+        """Animate a set object: fn(t) -> {"rotation_euler": (dx, dy, dz), ...}, added to its rest pose."""
+        if obj not in self.props:
+            self.props[obj] = ({p: tuple(getattr(obj, p)) for p in ("location", "rotation_euler", "scale")}, [])
+        self.props[obj][1].append((fn, t0, t1))
 
     # ------------------------------------------------------------ additive layers
     def layer(self, who, fn, t0=-1e9, t1=1e9):
@@ -325,6 +333,15 @@ class Timeline:
                 c.apply(values[n][idx])
                 for obj, path in c.keyable():
                     obj.keyframe_insert(path, frame=f)
+            for obj, (rest, fns) in self.props.items():
+                pose = {p: list(v) for p, v in rest.items()}
+                for fn, t0, t1 in fns:
+                    if t0 <= t <= t1:
+                        for p, d in fn(t).items():
+                            pose[p] = [a + b for a, b in zip(pose[p], d)]
+                for p, v in pose.items():
+                    setattr(obj, p, v)
+                    obj.keyframe_insert(p, frame=f)
             s = self._shot_at(t)
             if s and s.get("rel") and not s.get("resolved"):
                 r = s["rel"]

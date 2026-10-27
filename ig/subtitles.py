@@ -14,7 +14,7 @@ FONTS_DIR = os.path.join(ROOT, "assets", "fonts")
 FONT = "Nunito Black"
 
 # speaker colours as (R, G, B); text is white until the word is spoken
-SPEAKERS = {"yastik": (120, 200, 255), "battaniye": (255, 196, 64)}
+SPEAKERS = {"yastik": (120, 200, 255), "battaniye": (255, 196, 64), "kupa": (255, 150, 70)}
 DEFAULT = (255, 230, 120)
 
 

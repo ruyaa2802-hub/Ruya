@@ -1,0 +1,23 @@
+[
+ {
+  "word": "Yine",
+  "start": 0.0,
+  "end": 0.3,
+  "p": 0.867,
+  "asr": "Yine"
+ },
+ {
+  "word": "mi",
+  "start": 0.3,
+  "end": 0.4,
+  "p": 0.997,
+  "asr": "mi"
+ },
+ {
+  "word": "soğudun?",
+  "start": 0.4,
+  "end": 0.9,
+  "p": 0.924,
+  "asr": "soğudun?"
+ }
+]

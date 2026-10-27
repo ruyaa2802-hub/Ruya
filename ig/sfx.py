@@ -112,6 +112,60 @@ def sniff(seed=6):
     return _norm(_band(rng.standard_normal(len(t)), 1500, 7000) * env, -14)
 
 
+def _ceramic_hit(tt, rng, bright=1.0):
+    """One small ceramic tap: a few inharmonic modes with fast decay plus a wooden knock."""
+    modes = sum(np.sin(2 * np.pi * f * bright * tt + rng.uniform(0, 6)) * np.exp(-tt * d) * a
+                for f, d, a in ((2650, 55, 1.0), (4120, 70, 0.6), (6390, 90, 0.35), (1180, 40, 0.3)))
+    knock = np.sin(2 * np.pi * 420 * tt) * np.exp(-tt * 120) * 0.6
+    return modes + knock
+
+
+def chatter(seed=9, dur=1.2):
+    """A cold mug's teeth chattering: fast irregular ceramic rattles on the nightstand."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    x = np.zeros(len(t))
+    c = 0.0
+    while c < dur - 0.03:
+        i0 = int(c * SR)
+        tt = t[: len(t) - i0]
+        x[i0:] += _ceramic_hit(tt, rng, rng.uniform(0.92, 1.08)) * rng.uniform(0.4, 1.0)
+        c += rng.uniform(0.045, 0.075)
+    x *= np.minimum(1.0, (dur - t) / 0.25)                  # dies away
+    return _norm(_room(_band(x, 300, 9000), 0.3, 0.25, seed), -12)
+
+
+def clink(seed=10):
+    """Mug landing on the nightstand."""
+    rng = np.random.default_rng(seed)
+    t = _t(0.5)
+    x = _ceramic_hit(t, rng, 0.95)
+    x[int(0.06 * SR):] += _ceramic_hit(t[: len(t) - int(0.06 * SR)], rng, 1.0) * 0.25   # little bounce
+    return _norm(_room(x, 0.3, 0.2, seed), -8)
+
+
+def ding(seed=11):
+    """Microwave bell from the kitchen: bright, inharmonic, a bit far away."""
+    rng = np.random.default_rng(seed)
+    t = _t(1.6)
+    x = sum(np.sin(2 * np.pi * f * t + rng.uniform(0, 6)) * np.exp(-t * d) * a
+            for f, d, a in ((2380, 2.6, 1.0), (2392, 2.6, 0.7), (5210, 4.5, 0.35), (6870, 6.0, 0.18)))
+    x *= 1 - np.exp(-t * 900)
+    x = _band(x, 400, 7000)
+    return _norm(_room(x, 0.9, 0.55, seed), -10)
+
+
+def jitter(seed=12, dur=3.0):
+    """Over-caffeinated plant: leaves rattling at a manic, buzzing rate."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    leaves = _band(rng.standard_normal(len(t)), 1200, 7000)
+    trem = 0.55 + 0.45 * np.sign(np.sin(2 * np.pi * 17 * t + 0.4 * np.sin(2 * np.pi * 2.3 * t)))
+    trem = np.convolve(trem, np.ones(96) / 96, mode="same")
+    shape = np.minimum(1.0, t / 0.08) * np.minimum(1.0, (dur - t) / 0.3)
+    return _norm(leaves * trem * shape, -16)
+
+
 def room_tone(dur, seed=7):
     rng = np.random.default_rng(seed)
     x = np.cumsum(rng.standard_normal(int(SR * dur)))
@@ -120,7 +174,8 @@ def room_tone(dur, seed=7):
 
 
 EFFECTS = {"door_slam": door_slam, "keys": keys, "rustle": rustle, "rustle_long": lambda: rustle(8, 1.4),
-           "poof": poof, "whoosh": whoosh, "sniff": sniff}
+           "poof": poof, "whoosh": whoosh, "sniff": sniff, "chatter": chatter, "clink": clink, "ding": ding,
+           "jitter": jitter}
 
 
 def write_all(folder):

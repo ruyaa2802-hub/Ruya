@@ -1,0 +1,86 @@
+[
+ {
+  "word": "Sabah",
+  "start": 0.0,
+  "end": 0.46,
+  "p": 0.921,
+  "asr": "Sabah"
+ },
+ {
+  "word": "yedide",
+  "start": 0.46,
+  "end": 0.88,
+  "p": 0.776,
+  "asr": "7'de"
+ },
+ {
+  "word": "doldurdu.",
+  "start": 0.88,
+  "end": 1.38,
+  "p": 0.98,
+  "asr": "doldurdu."
+ },
+ {
+  "word": "“Bir",
+  "start": 1.62,
+  "end": 1.86,
+  "p": 0.511,
+  "asr": "Bir"
+ },
+ {
+  "word": "yudum",
+  "start": 1.86,
+  "end": 2.1,
+  "p": 0.973,
+  "asr": "yudum"
+ },
+ {
+  "word": "alıp",
+  "start": 2.1,
+  "end": 2.28,
+  "p": 0.993,
+  "asr": "alıp"
+ },
+ {
+  "word": "çıkıyorum”",
+  "start": 2.28,
+  "end": 2.72,
+  "p": 0.978,
+  "asr": "çıkıyorum"
+ },
+ {
+  "word": "dedi.",
+  "start": 2.72,
+  "end": 2.94,
+  "p": 0.947,
+  "asr": "dedi."
+ },
+ {
+  "word": "Bir",
+  "start": 3.28,
+  "end": 3.5,
+  "p": 0.88,
+  "asr": "Bir"
+ },
+ {
+  "word": "yudum!",
+  "start": 3.5,
+  "end": 4.1,
+  "p": 0.997,
+  "asr": "yudum."
+ },
+ {
+  "word": "Hâlâ",
+  "start": 4.2,
+  "end": 4.7,
+  "p": 0.888,
+  "asr": "Hala"
+ },
+ {
+  "word": "bekliyorum!",
+  "start": 4.7,
+  "end": 5.32,
+  "p": 0.993,
+  "asr": "bekliyorum."
+ }
+]

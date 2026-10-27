@@ -1,0 +1,86 @@
+[
+ {
+  "word": "Ama",
+  "start": 0.0,
+  "end": 0.24,
+  "p": 0.81,
+  "asr": "Ama"
+ },
+ {
+  "word": "yine",
+  "start": 0.24,
+  "end": 0.46,
+  "p": 0.987,
+  "asr": "yine"
+ },
+ {
+  "word": "de…",
+  "start": 0.46,
+  "end": 0.92,
+  "p": 0.977,
+  "asr": "de"
+ },
+ {
+  "word": "dolapta",
+  "start": 0.92,
+  "end": 1.7,
+  "p": 0.799,
+  "asr": "dolaptı"
+ },
+ {
+  "word": "on",
+  "start": 1.7,
+  "end": 1.92,
+  "p": 0.395,
+  "asr": "on"
+ },
+ {
+  "word": "kupa",
+  "start": 1.92,
+  "end": 2.2,
+  "p": 0.941,
+  "asr": "kupa"
+ },
+ {
+  "word": "var.",
+  "start": 2.2,
+  "end": 2.48,
+  "p": 0.996,
+  "asr": "var."
+ },
+ {
+  "word": "Her",
+  "start": 2.9,
+  "end": 3.12,
+  "p": 0.967,
+  "asr": "Her"
+ },
+ {
+  "word": "sabah",
+  "start": 3.12,
+  "end": 3.52,
+  "p": 0.989,
+  "asr": "sabah"
+ },
+ {
+  "word": "ilk",
+  "start": 3.52,
+  "end": 3.7,
+  "p": 0.97,
+  "asr": "ilk"
+ },
+ {
+  "word": "beni",
+  "start": 3.7,
+  "end": 3.92,
+  "p": 0.991,
+  "asr": "beni"
+ },
+ {
+  "word": "seçiyor.",
+  "start": 3.92,
+  "end": 4.36,
+  "p": 0.982,
+  "asr": "seçiyor."
+ }
+]

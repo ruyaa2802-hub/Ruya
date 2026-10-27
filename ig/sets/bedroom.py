@@ -16,6 +16,8 @@ from ..util import add_subsurf, collection, link, mesh_object
 MATTRESS_TOP = 0.55
 BED_X, BED_Y = 0.78, 1.02          # half sizes
 HEADBOARD_Y = 1.04
+NIGHTSTAND = (BED_X + 0.36, 0.78, 0.55)     # centre x, y and top height
+PLANT = (-1.38, 1.22)
 
 
 def box(name, size, loc, mat, col, bevel=0.0, segs=2, subsurf=False):
@@ -130,7 +132,8 @@ def _leaf(length, width, bend):
     return verts, faces
 
 
-def build():
+def build(exclude=()):
+    """exclude: names of props to leave out (e.g. "mug" when the mug is a character)."""
     col = collection("Set")
     floor_m = M.wood("floor_oak", light=(0.66, 0.45, 0.26), dark=(0.38, 0.21, 0.1), roughness=0.4,
                      planks=True, scale=1.2, coat=0.35)
@@ -239,27 +242,27 @@ def build():
     # big leafy plant in the window corner
     pot_m = M.ceramic("pot_terracotta", (0.78, 0.38, 0.22), roughness=0.5)
     _lathe("plant_pot", [(0.0, 0.0), (0.15, 0.0), (0.18, 0.36), (0.2, 0.37), (0.2, 0.4), (0.18, 0.4),
-                         (0.17, 0.34), (0.0, 0.34)], pot_m, col, (-1.38, 1.22, 0.0))
+                         (0.17, 0.34), (0.0, 0.34)], pot_m, col, (*PLANT, 0.0))
     leaf_m = M.plastic("leaf_green", (0.12, 0.42, 0.14), 0.45)
-    verts, faces = [], []
+    # one object per leaf, origin at its base, so episodes can make the plant move
+    px, py = PLANT
     for k in range(9):
         a = 2 * math.pi * k / 9 + 0.3
         lv, lf = _leaf(0.38 + 0.08 * math.sin(k * 2.1), 0.13, 0.5 + 0.2 * math.sin(k))
         tilt = 0.9 - 0.25 * (k % 3)
-        o = len(verts)
+        verts = []
         for x, y, z in lv:
             # pitch the leaf up by `tilt`, then yaw around the pot
             y2, z2 = y * math.cos(tilt) - z * math.sin(tilt), y * math.sin(tilt) + z * math.cos(tilt)
-            verts.append((-1.38 + x * math.cos(a) - y2 * math.sin(a), 1.22 + x * math.sin(a) + y2 * math.cos(a),
-                          0.42 + 0.12 * (k % 3) + z2))
-        faces += [tuple(i + o for i in f) for f in lf]
-    leaves = mesh_object("plant_leaves", verts, faces, col=col)
-    leaves.data.materials.append(leaf_m)
-    leaves.modifiers.new("Solidify", "SOLIDIFY").thickness = 0.004
-    add_subsurf(leaves, 1, 1)
+            verts.append((x * math.cos(a) - y2 * math.sin(a), x * math.sin(a) + y2 * math.cos(a), z2))
+        leaf = mesh_object(f"plant_leaf_{k}", verts, lf, col=col)
+        leaf.location = (px, py, 0.42 + 0.12 * (k % 3))
+        leaf.data.materials.append(leaf_m)
+        leaf.modifiers.new("Solidify", "SOLIDIFY").thickness = 0.004
+        add_subsurf(leaf, 1, 1)
 
     # ---------------------------------------------------------------- nightstand + props
-    nx_, ny_ = BED_X + 0.36, 0.78
+    nx_, ny_ = NIGHTSTAND[:2]
     box("nightstand", (0.48, 0.42, 0.55), (nx_, ny_, 0.275), stand_m, col, bevel=0.012)
     box("drawer_line", (0.44, 0.005, 0.004), (nx_, ny_ - 0.212, 0.36), M.plastic("gap", (0.05, 0.04, 0.03)), col)
     knob = cylinder("knob", 0.016, 0.03, (nx_, ny_ - 0.225, 0.43), M.metal("brass", (0.85, 0.65, 0.35), 0.25),
@@ -271,20 +274,22 @@ def build():
     shade = _lathe("lamp_shade", [(0.13, 0.0), (0.12, 0.04), (0.108, 0.08), (0.096, 0.12), (0.085, 0.16)],
                    M.lampshade("shade", (0.98, 0.9, 0.72)), col, (nx_ + 0.1, ny_ + 0.06, 0.78))
     shade.modifiers.new("Solidify", "SOLIDIFY").thickness = 0.004
-    mug_m = M.ceramic("mug_ceramic", (0.92, 0.4, 0.22))
-    _lathe("mug", [(0.0, 0.002), (0.038, 0.0), (0.042, 0.01), (0.043, 0.095), (0.039, 0.098),
-                   (0.036, 0.09), (0.035, 0.02), (0.0, 0.02)], mug_m, col, (nx_ - 0.1, ny_ - 0.06, 0.55))
-    bpy.ops.mesh.primitive_torus_add(major_radius=0.026, minor_radius=0.007,
-                                     location=(nx_ - 0.1 + 0.045, ny_ - 0.06, 0.6), rotation=(math.pi / 2, 0, 0))
-    handle = bpy.context.active_object
-    handle.name = "mug_handle"
-    for c in handle.users_collection:
-        c.objects.unlink(handle)
-    link(handle, col)
-    handle.data.materials.append(mug_m)
-    handle.data.shade_smooth()
-    cylinder("coffee", 0.034, 0.002, (nx_ - 0.1, ny_ - 0.06, 0.62), M.plastic("coffee", (0.08, 0.04, 0.02), 0.08),
-             col, verts=32)
+    if "mug" not in exclude:
+        mug_m = M.ceramic("mug_ceramic", (0.92, 0.4, 0.22))
+        _lathe("mug", [(0.0, 0.002), (0.038, 0.0), (0.042, 0.01), (0.043, 0.095), (0.039, 0.098),
+                       (0.036, 0.09), (0.035, 0.02), (0.0, 0.02)], mug_m, col, (nx_ - 0.1, ny_ - 0.06, 0.55))
+        bpy.ops.mesh.primitive_torus_add(major_radius=0.026, minor_radius=0.007,
+                                         location=(nx_ - 0.1 + 0.045, ny_ - 0.06, 0.6),
+                                         rotation=(math.pi / 2, 0, 0))
+        handle = bpy.context.active_object
+        handle.name = "mug_handle"
+        for c in handle.users_collection:
+            c.objects.unlink(handle)
+        link(handle, col)
+        handle.data.materials.append(mug_m)
+        handle.data.shade_smooth()
+        cylinder("coffee", 0.034, 0.002, (nx_ - 0.1, ny_ - 0.06, 0.62),
+                 M.plastic("coffee", (0.08, 0.04, 0.02), 0.08), col, verts=32)
     clock = box("clock", (0.11, 0.06, 0.08), (nx_ + 0.12, ny_ - 0.13, 0.59), M.plastic("clock", (0.98, 0.42, 0.5)),
                 col, bevel=0.02, segs=3)
     clock.rotation_euler = (0, 0, math.radians(-25))
