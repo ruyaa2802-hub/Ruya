@@ -20,4 +20,6 @@ EXPR = {
                 "m_round": 0.25, "tilt": -0.12},
     "smug": {"lid_u": 0.3, "brow_up_L": 0.4, "m_smile": 0.6, "m_sneer": 0.3},
     "happy": {"brow_up": 0.4, "squint": 0.4, "m_smile": 1.0, "m_open": 0.2},
+    "fond": {"lid_u": 0.2, "brow_up": 0.3, "brow_ang": -0.3, "m_smile": 0.6, "m_sneer": 0.15, "tilt": 0.08},
+    "wistful": {"brow_up": 0.5, "brow_ang": -0.5, "lid_u": 0.2, "m_smile": 0.35, "gaze_y": 0.15},
 }

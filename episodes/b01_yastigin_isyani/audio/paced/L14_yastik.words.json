@@ -1,0 +1,37 @@
+[
+ {
+  "word": "Dağınıklar,",
+  "start": 0.0,
+  "end": 1.16,
+  "p": 0.733,
+  "asr": "Dağınıklar,"
+ },
+ {
+  "word": "söylenirler,",
+  "start": 1.32,
+  "end": 1.92,
+  "p": 0.939,
+  "asr": "söylenirler,"
+ },
+ {
+  "word": "teşekkür",
+  "start": 2.18,
+  "end": 2.44,
+  "p": 0.822,
+  "asr": "teşekkür"
+ },
+ {
+  "word": "bile",
+  "start": 2.44,
+  "end": 2.82,
+  "p": 0.999,
+  "asr": "bile"
+ },
+ {
+  "word": "etmezler…",
+  "start": 2.82,
+  "end": 3.36,
+  "p": 0.988,
+  "asr": "etmezler."
+ }
+]

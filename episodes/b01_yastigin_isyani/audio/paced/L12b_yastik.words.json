@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Ama",
+  "start": 0.0,
+  "end": 0.24,
+  "p": 0.847,
+  "asr": "Ama"
+ },
+ {
+  "word": "akşam",
+  "start": 0.24,
+  "end": 0.6,
+  "p": 0.984,
+  "asr": "akşam"
+ },
+ {
+  "word": "başını",
+  "start": 0.6,
+  "end": 0.92,
+  "p": 0.991,
+  "asr": "başını"
+ },
+ {
+  "word": "bana",
+  "start": 0.92,
+  "end": 1.1,
+  "p": 0.984,
+  "asr": "bana"
+ },
+ {
+  "word": "koyunca…",
+  "start": 1.1,
+  "end": 1.66,
+  "p": 0.992,
+  "asr": "koyunca"
+ },
+ {
+  "word": "her",
+  "start": 1.66,
+  "end": 2.24,
+  "p": 0.655,
+  "asr": "her"
+ },
+ {
+  "word": "şeye",
+  "start": 2.24,
+  "end": 2.54,
+  "p": 0.85,
+  "asr": "şeye"
+ },
+ {
+  "word": "değiyor.",
+  "start": 2.54,
+  "end": 2.94,
+  "p": 0.981,
+  "asr": "değiyor."
+ }
+]

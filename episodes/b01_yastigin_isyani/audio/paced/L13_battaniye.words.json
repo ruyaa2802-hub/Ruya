@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Beni",
+  "start": 0.72,
+  "end": 1.28,
+  "p": 0.688,
+  "asr": "Beni"
+ },
+ {
+  "word": "yere",
+  "start": 1.28,
+  "end": 1.54,
+  "p": 0.923,
+  "asr": "yere"
+ },
+ {
+  "word": "atıyor",
+  "start": 1.54,
+  "end": 1.9,
+  "p": 0.968,
+  "asr": "atıyor"
+ },
+ {
+  "word": "ama…",
+  "start": 1.9,
+  "end": 2.18,
+  "p": 0.987,
+  "asr": "ama"
+ },
+ {
+  "word": "üşüyünce",
+  "start": 2.18,
+  "end": 3.2,
+  "p": 0.903,
+  "asr": "üşüyünce"
+ },
+ {
+  "word": "ilk",
+  "start": 3.2,
+  "end": 3.4,
+  "p": 0.988,
+  "asr": "ilk"
+ },
+ {
+  "word": "beni",
+  "start": 3.4,
+  "end": 3.58,
+  "p": 0.986,
+  "asr": "beni"
+ },
+ {
+  "word": "arıyor.",
+  "start": 3.58,
+  "end": 3.98,
+  "p": 0.995,
+  "asr": "arıyor."
+ }
+]

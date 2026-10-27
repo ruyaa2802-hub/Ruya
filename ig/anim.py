@@ -6,6 +6,7 @@ regular Blender keyframes so the .blend stays editable by hand.
 """
 import math
 import random
+import zlib
 
 import bpy
 import numpy as np
@@ -250,7 +251,7 @@ class Timeline:
         return out
 
     def _blinks(self, who, length):
-        rng = random.Random(hash(who) & 0xFFFF)
+        rng = random.Random(zlib.crc32(who.encode()))          # stable across runs (str hash is salted)
         t, times = rng.uniform(0.5, 2.0), []
         while t < length:
             if not any(a <= t <= b for a, b in self.blink_off[who]):
@@ -259,7 +260,7 @@ class Timeline:
         return times
 
     def _saccades(self, who, length):
-        rng = random.Random((hash(who) >> 4) & 0xFFFF)
+        rng = random.Random(zlib.crc32(who.encode()) >> 4)
         t, out = 0.3, []
         while t < length:
             out.append((t, rng.uniform(-0.05, 0.05), rng.uniform(-0.03, 0.03)))
