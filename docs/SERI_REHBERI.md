@@ -36,9 +36,20 @@ Bölümler arası tutarlılık için tek kaynak. Kodda karşılığı olan her �
 - Ses: ElevenLabs "Gözde" (`rtnDjO8siSxeTEeTVczO`), etiketler: `[dramatically]`, `[outraged]`,
   `[softly]`, `[gently]`.
 
+### KUPA (`ig/characters/kupa.py`)
+- Büyük, sırlı taş kupa: dışı canlı turuncu, içi ve daldırma kenarı krem, sırsız taban halkası.
+  Kulp tek kolu. Sırtında krem harflerle "ÖNCE KAHVE" yazar; dönüp gösterir.
+- Kahverengi "kahve" gözler, koyu kahve sır kaşlar. İçinde saatlerdir soğumuş, üstü zar
+  bağlamış kahve.
+- Kişilik: unutulmuş, telaşlı, alıngan ama sahibine aşık; soğuk kalınca tıkır tıkır titrer.
+- Ses: ElevenLabs "Ali – Mad Man" (`xROJDAAwVXltxzeQxuFL`), etiketler: `[shivering]`,
+  `[frustrated]`, `[exasperated]`, `[softly]`, `[whispers]`.
+- Yüz yastık ölçeğinde tasarlanıp `FACE_SCALE = 0.45` ile küçültülür.
+
 ### Yeni karakter eklerken
 - Yüzü `FaceSpec` ile kur; göz boyutu gövdeye göre ~%15 genişlik, gözler arası ~1,5 göz çapı.
-- Renk paletinde diğer karakterlerle karışmayan bir ana renk seç (gök mavisi/mercan ve bordo/yeşil dolu).
+- Renk paletinde diğer karakterlerle karışmayan bir ana renk seç (gök mavisi/mercan, bordo/yeşil ve
+  turuncu/krem dolu).
 - Kanal adları ortak (`ig/characters/base.py` → `CHANNELS`); ifade ön ayarları `ig/expressions.py`.
 - Ses: `creative_list_voices(languages=["tr"])` ile seç, voice_id'yi buraya yaz.
 
@@ -53,13 +64,23 @@ sonraki bölümlerin karakterleri olabilir.
 ## Altyazı
 
 Her bölümde gömülü altyazı vardır (`ig/subtitles.py`): ekranın %72 yüksekliğinde (Shorts
-arayüzünün üstünde), en fazla 3 kelime, söylenen kelime konuşanın renginde.
+arayüzünün üstünde), en fazla 3 kelime, söylenen kelime konuşanın renginde (Yastık mavi,
+Battaniye sarı, Kupa turuncu).
+
+## Bölümler
+
+1. **B01 — Yastığın İsyanı** (Yastık, Battaniye): "Ben seni sekiz saattir dinliyorum!" ve
+   insanlarına söylenip yine de onları sevdikleri içten final.
+2. **B02 — Soğudum** (Kupa, Yastık): sabah yedide doldurulup üç kez ısıtılıp üç kez unutulan
+   kupa; dünkü kahvenin saksıya döküldüğü ortaya çıkar, saksı üç gündür uyumuyor.
+
+Her bölüm "Gittiler mi?" ile açılır, kapıda anahtar sesiyle herkesin "eşya"ya dönmesiyle biter.
 
 ## Bölüm fikirleri (sıradaki)
 
-1. **Kupa** — "Beni sabah doldurup öğlene kadar unutuyor. Soğudum, Ahmet. Soğudum."
+1. **Saksı** — B02'den kafeinli; "Bana sadece misafir gelince su veriyor… bir de dünkü kahve."
 2. **Ayakkabılar** — sağ teki sol tekin hep önden gitmesinden şikâyetçi; günlük 12.000 adım.
-3. **Saksı** — sulanmamaktan; "Bana sadece misafir gelince su veriyor."
+3. **Kupa'nın dönüşü** — bulaşık makinesinde bir gece.
 4. **Telefon** — sırları bilir, söylemez… ama ekran görüntüsü alır.
 5. **Eski oyuncak** — dolabın en üst rafından; duygusal final.
 6. **Çoraplar** — çamaşır makinesindeki kayıp tekler: bir dedektif hikâyesi.

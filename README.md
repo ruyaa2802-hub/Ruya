@@ -6,7 +6,8 @@ karakterler, Türkçe dudak senkronu, kamera kurgusu, ses miksajı ve 9:16 MP4 �
 
 | Bölüm | Süre | Çıktı |
 |---|---|---|
-| B01 — Yastığın İsyanı | ~36 sn | `renders/b01_yastigin_isyani/b01_yastigin_isyani_final.mp4` |
+| B01 — Yastığın İsyanı | ~38 sn | `renders/b01_v4/b01_v4_final.mp4` |
+| B02 — Soğudum (Kupa) | ~41 sn | `renders/b02_v1/b02_v1_final.mp4` |
 
 ## Kurulum
 
@@ -83,11 +84,12 @@ ig/
     battaniye.py   BATTANİYE
   sets/bedroom.py  yatak odası seti + ışık
   expressions.py   ifade ön ayarları (tired, sarcastic, shout, touched…)
-  anim.py          zaman çizelgesi: set/expr/look/hop/move/shake/say/sfx/shot → keyframe
+  anim.py          zaman çizelgesi: set/expr/look/hop/move/shake/say/sfx/shot/prop → keyframe
   lipsync.py       Türkçe dudak senkronu
   audio.py         miksaj (-14 LUFS), tempo, MP4, SRT, altyazı+jenerik son geçişi
   subtitles.py     Shorts altyazısı (ASS, karaoke renk, pop animasyonu)
-  sfx.py           sentez ses efektleri (kapı, anahtar, hışırtı, puf, vuuş, burun çekme)
+  sfx.py           sentez ses efektleri (kapı, anahtar, hışırtı, puf, vuuş, burun çekme,
+                   seramik tıkırtı, mikrodalga "ding", kafeinli yaprak titremesi)
   render.py        Cycles ön ayarları, karaktere göre kamera
 tools/             build_episode, prep_lines, split_lines, still (look-dev)
 episodes/<bölüm>/  episode.py (senaryo+oyunculuk+kamera), test5s.py, audio/
@@ -109,15 +111,20 @@ gaze_x/y, blink, lid_u/l, squint, brow_up/ang (+_L/_R), m_open/wide/round/press/
 4. `tools/still.py` ile ifade/poz sayfası render et ve kontrol et.
 
 Yüz sistemi yüzeye ışın izlemeyle oturduğu için kupa, ayakkabı, saksı gibi her gövde
-şekline uyar; böylece tüm seride aynı tasarım dili korunur.
+şekline uyar; böylece tüm seride aynı tasarım dili korunur. Küçük eşyalarda yüzü yastık
+ölçeğinde tasarla ve yüz çapasını küçült (`kupa.py`: `FACE_SCALE`); vizem ve kaş
+hareketleri orantılı kalır.
+
+Setteki bir objeyi (ör. saksının yaprakları) oynatmak için `tl.prop(obj, fn, t0, t1)`:
+`fn(t)` dinlenme pozuna eklenecek `{"rotation_euler": (...)}` döndürür.
 
 ### Yeni bölüm
 
-`episodes/b02_<ad>/episode.py` oluştur (`CAST`, `LINES`, `PACING`, `TITLE`, `build(tl, ep)`).
+`episodes/bNN_<ad>/episode.py` oluştur (`CAST`, `LINES`, `PACING`, `TITLE`, `build(tl, ep)`).
 Oyunculuk vuruşlarını saniyeye değil kelimeye bağla: `line.find("ayağ")`. Böylece ses
 yeniden üretilse bile kurgu kendini ayarlar.
 
 ## Sonraki bölüm fikirleri
 
-Kahve kupası (sette komodinin üstünde zaten duruyor), ayakkabılar, saksı bitkisi, telefon,
-eski oyuncak, çamaşır makinesindeki kayıp çoraplar.
+Saksı bitkisi (B02'de kafeinli olduğu ortaya çıktı), ayakkabılar, telefon, eski oyuncak,
+çamaşır makinesindeki kayıp çoraplar.
