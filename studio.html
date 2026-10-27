@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karakalem Stüdyosu</title>
+<style>
+  :root {
+    --bg: #17181b; --panel: #202226; --line: #33363c; --text: #e9e7e2; --muted: #9a9ca3;
+    --accent: #d9b48a; --accent-2: #8fa9c4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, "DejaVu Sans", sans-serif; }
+  #app { display: flex; gap: 24px; padding: 16px; min-height: 100vh; align-items: flex-start; justify-content: center; }
+  #stageWrap { position: relative; flex: 0 0 auto; }
+  #screen { display: block; height: calc(100vh - 32px); max-height: 1920px; width: auto; aspect-ratio: 9 / 16;
+    border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,.45); background: #2a2725; }
+  #loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 15px; }
+  #panel { width: 400px; max-width: 100%; display: flex; flex-direction: column; gap: 14px; }
+  #panel h1 { font-size: 20px; margin: 4px 0 0; letter-spacing: .2px; }
+  #panel h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+  .sub { color: var(--muted); font-size: 13px; margin: 2px 0 0; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button { font: inherit; font-size: 14px; color: var(--text); background: #2c2f35; border: 1px solid #41454d;
+    border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+  button:hover { background: #353942; }
+  button.primary { background: var(--accent); color: #1b1712; border-color: var(--accent); font-weight: 600; }
+  button:disabled { opacity: .5; cursor: default; }
+  label.chk { font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  #time { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); margin-left: auto; }
+  #timeline { position: relative; height: 46px; margin-top: 10px; cursor: pointer; user-select: none; touch-action: none; }
+  #timeline .seg { position: absolute; top: 0; height: 26px; border-radius: 4px; background: #2d3036; border: 1px solid #3b3f46;
+    font-size: 10px; color: var(--muted); display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; }
+  #timeline .seg.on { background: #3a3428; border-color: #6b5a40; color: var(--accent); }
+  #timeline .cue { position: absolute; top: 31px; height: 6px; border-radius: 3px; background: #3b4a5c; }
+  #timeline .cue.on { background: var(--accent-2); }
+  #playhead { position: absolute; top: -3px; bottom: 0; width: 2px; background: #fff; border-radius: 1px; pointer-events: none; }
+  #stageName { font-size: 13px; margin-top: 4px; color: var(--text); min-height: 18px; }
+  .script { font-size: 13px; line-height: 1.5; margin: 0; padding: 0; list-style: none; max-height: 290px; overflow: auto; }
+  .script li { padding: 6px 0; border-bottom: 1px solid #2b2e33; }
+  .script li.on { color: var(--accent); }
+  .script .tc { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12px; display: block; }
+  .note { font-size: 12.5px; color: var(--muted); line-height: 1.5; margin: 6px 0 0; }
+  .note b { color: var(--text); font-weight: 600; }
+  #recStatus { font-size: 12.5px; color: var(--accent); min-height: 16px; margin-top: 6px; }
+  textarea#copyBuf { position: absolute; left: -9999px; }
+  /* export mode: canvas only, 1:1 */
+  body.export #panel { display: none; }
+  body.export #app { padding: 0; }
+  body.export #screen { height: 1920px; width: 1080px; border-radius: 0; box-shadow: none; }
+  @media (max-width: 900px) {
+    #app { flex-direction: column; align-items: center; padding: 16px; }
+    #screen { height: auto; width: min(100%, 56vh); }
+    #panel { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="stageWrap">
+    <canvas id="screen" width="1080" height="1920"></canvas>
+    <div id="loading">Çizim verisi hazırlanıyor…</div>
+  </div>
+  <aside id="panel">
+    <div>
+      <h1>Karakalem Stüdyosu</h1>
+      <p class="sub" id="epTitle"></p>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <button id="btnPlay" class="primary" disabled>Başlat</button>
+        <button id="btnRestart" disabled>Yeniden başlat</button>
+        <span id="time">0.0 / 0.0 sn</span>
+      </div>
+      <div id="timeline"><div id="playhead"></div></div>
+      <div id="stageName"></div>
+      <div class="row" style="margin-top:8px">
+        <label class="chk"><input type="checkbox" id="optCaptions" checked> Ekran yazıları</label>
+        <label class="chk"><input type="checkbox" id="optLoop"> Döngü</label>
+        <label class="chk"><input type="checkbox" id="optTTS"> Sesli önizleme (tarayıcı)</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Dışa aktarma</h2>
+      <div class="row">
+        <button id="btnRecord" disabled>Videoyu tarayıcıda kaydet</button>
+        <button id="btnSrt" disabled>Altyazı (.srt)</button>
+      </div>
+      <div id="recStatus"></div>
+      <p class="note" id="recNote"></p>
+      <p class="note"><b>Kare kare, kayıpsız MP4:</b> <code>node tools/render-video.mjs</code> komutu bu sayfayı arka planda açar,
+        her kareyi tek tek çizer ve ücretsiz <b>ffmpeg</b> ile 1080×1920 / 30 fps MP4 üretir (gerçek zamanlı kayıttaki kare atlama sorunu olmaz).</p>
+      <p class="note"><b>Ses:</b> Bu sistem ses dosyası üretmez. “Sesli önizleme” yalnızca tarayıcının kendi Türkçe sesini
+        hoparlörden çalar; kayda <b>girmez</b>. Seslendirmeyi aşağıdaki zamanlı metinle kendin kaydedip
+        (telefon, Audacity, CapCut) videonun altına ekleyebilirsin.</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">Seslendirme metni</h2>
+        <button id="btnCopy">Kopyala</button>
+      </div>
+      <ul class="script" id="script" style="margin-top:8px"></ul>
+    </div>
+  </aside>
+</div>
+<textarea id="copyBuf"></textarea>
+
+<!-- =====================================================================
+     MOTOR (bölümden bağımsız): kâğıt, grafit kalem, silgi, harmanlama,
+     zamanlayıcı, kamera, ekran yazıları, oynatıcı.
+     ===================================================================== -->
+<script>
+'use strict';
+const KS = (() => {
+  const TAU = Math.PI * 2;
+  const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const smooth = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+  const easeIO = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  // ---------- deterministik rastgelelik ve gürültü ----------
+  function rng(seed) {
+    let s = seed >>> 0;
+    const f = () => { s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    f.range = (a, b) => a + (b - a) * f();
+    f.pm = a => (f() * 2 - 1) * a;
+    return f;
+  }
+  function hash2(x, y, seed) {
+    let h = Math.imul(x, 374761393) + Math.imul(y, 668265263) + Math.imul(seed, 1442695041) | 0;
+    h = Math.imul(h ^ h >>> 13, 1274126177); h ^= h >>> 16; return (h >>> 0) / 4294967296;
+  }
+  function vnoise(x, y, seed = 0, period = 0) {
+    let xi = Math.floor(x), yi = Math.floor(y); const xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const P = period, wx = i => P ? ((i % P) + P) % P : i;
+    const a = hash2(wx(xi), wx(yi), seed), b = hash2(wx(xi + 1), wx(yi), seed);
+    const c = hash2(wx(xi), wx(yi + 1), seed), d = hash2(wx(xi + 1), wx(yi + 1), seed);
+    return lerp(lerp(a, b, u), lerp(c, d, u), v);
+  }
+  function fbm(x, y, seed = 0, oct = 3) {
+    let s = 0, a = .5, f = 1, n = 0;
+    for (let i = 0; i < oct; i++) { s += a * vnoise(x * f, y * f, seed + i * 17); n += a; a *= .5; f *= 2; }
+    return s / n;
+  }
+
+  // ---------- geometri ----------
+  function catmull(pts, n = 8) {
+    const L = pts.length; if (L < 3) return pts.map(p => [p[0], p[1]]);
+    const out = [];
+    for (let i = 0; i < L - 1; i++) {
+      const p1 = pts[i], p2 = pts[i + 1];
+      const p0 = i > 0 ? pts[i - 1] : [2 * p1[0] - p2[0], 2 * p1[1] - p2[1]];
+      const p3 = i + 2 < L ? pts[i + 2] : [2 * p2[0] - p1[0], 2 * p2[1] - p1[1]];
+      for (let j = 0; j < n; j++) {
+        const t = j / n, t2 = t * t, t3 = t2 * t;
+        const f = k => .5 * (2 * p1[k] + (-p0[k] + p2[k]) * t + (2 * p0[k] - 5 * p1[k] + 4 * p2[k] - p3[k]) * t2 + (-p0[k] + 3 * p1[k] - 3 * p2[k] + p3[k]) * t3);
+        out.push([f(0), f(1)]);
+      }
+    }
+    out.push([pts[L - 1][0], pts[L - 1][1]]);
+    return out;
+  }
+  const closedCatmull = (pts, n = 8) => catmull([pts[pts.length - 1], ...pts, pts[0], pts[1]], n).slice(n, -n);
+  function bezier(p0, p1, p2, p3, n = 24) {
+    const out = [];
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, m = 1 - t;
+      out.push([m*m*m*p0[0] + 3*m*m*t*p1[0] + 3*m*t*t*p2[0] + t*t*t*p3[0], m*m*m*p0[1] + 3*m*m*t*p1[1] + 3*m*t*t*p2[1] + t*t*t*p3[1]]);
+    }
+    return out;
+  }
+  function resample(poly, step) {
+    const out = [[poly[0][0], poly[0][1]]]; let need = step;
+    for (let i = 1; i < poly.length; i++) {
+      let ax = poly[i - 1][0], ay = poly[i - 1][1]; const bx = poly[i][0], by = poly[i][1];
+      let seg = Math.hypot(bx - ax, by - ay);
+      while (seg >= need) { const t = need / seg; ax += (bx - ax) * t; ay += (by - ay) * t; out.push([ax, ay]); seg -= need; need = step; }
+      need -= seg;
+    }
+    const l = poly[poly.length - 1], o = out[out.length - 1];
+    if (Math.hypot(l[0] - o[0], l[1] - o[1]) > step * .3 || out.length < 2) out.push([l[0], l[1]]);
+    if (out.length < 2) out.push([l[0] + .01, l[1]]);
+    return out;
+  }
+  function ellipsePts(cx, cy, rx, ry, a0 = 0, a1 = TAU, n = 48) {
+    const out = []; for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; out.push([cx + rx * Math.cos(a), cy + ry * Math.sin(a)]); } return out;
+  }
+  function pointInPoly(x, y, poly) {
+    let c = false;
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const [xi, yi] = poly[i], [xj, yj] = poly[j];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c;
+    }
+    return c;
+  }
+  function distSeg(px, py, ax, ay, bx, by) {
+    const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy;
+    let t = l2 ? ((px - ax) * dx + (py - ay) * dy) / l2 : 0; t = clamp(t, 0, 1);
+    return Math.hypot(px - ax - dx * t, py - ay - dy * t);
+  }
+  function distPolyline(x, y, pl) {
+    let d = 1e9; for (let i = 1; i < pl.length; i++) d = Math.min(d, distSeg(x, y, pl[i-1][0], pl[i-1][1], pl[i][0], pl[i][1])); return d;
+  }
+  function bbox(pts, pad = 0) {
+    let a = 1e9, b = 1e9, c = -1e9, d = -1e9;
+    for (const p of pts) { a = Math.min(a, p[0]); b = Math.min(b, p[1]); c = Math.max(c, p[0]); d = Math.max(d, p[1]); }
+    return [a - pad, b - pad, c + pad, d + pad];
+  }
+  const inBox = (x, y, b) => x >= b[0] && y >= b[1] && x <= b[2] && y <= b[3];
+  // Çizgiyi bir koşulun doğru olduğu parçalara böler (ör. göz içinde kalan kısım).
+  function clipRuns(pts, inside, minLen = 2) {
+    const runs = []; let cur = [];
+    for (const p of pts) { if (inside(p[0], p[1])) cur.push(p); else { if (cur.length >= minLen) runs.push(cur); cur = []; } }
+    if (cur.length >= minLen) runs.push(cur);
+    return runs;
+  }
+  // Çokgen içine paralel tarama çizgileri (çapraz tarama için iki açıyla çağrılır).
+  function hatch(poly, angDeg, spacing) {
+    const a = angDeg * Math.PI / 180, ux = Math.cos(a), uy = Math.sin(a), nx = -uy, ny = ux;
+    let mn = 1e9, mx = -1e9; for (const p of poly) { const o = p[0] * nx + p[1] * ny; mn = Math.min(mn, o); mx = Math.max(mx, o); }
+    const out = [];
+    for (let o = mn + spacing * .5; o < mx; o += spacing) {
+      const xs = [];
+      for (let i = 0; i < poly.length; i++) {
+        const A = poly[i], B = poly[(i + 1) % poly.length];
+        const oa = A[0] * nx + A[1] * ny - o, ob = B[0] * nx + B[1] * ny - o;
+        if ((oa < 0) !== (ob < 0)) { const t = oa / (oa - ob); xs.push((A[0] + (B[0] - A[0]) * t) * ux + (A[1] + (B[1] - A[1]) * t) * uy); }
+      }
+      xs.sort((p, q) => p - q);
+      for (let k = 0; k + 1 < xs.length; k += 2)
+        out.push([[nx * o + ux * xs[k], ny * o + uy * xs[k]], [nx * o + ux * xs[k + 1], ny * o + uy * xs[k + 1]]]);
+    }
+    return out;
+  }
+
+  // ---------- kalem darbesi hazırlığı ----------
+  // Darbe verisi: { layer:'cons'|'ink'|'erase'|'mask', pts, w, a, grade, taper:[giriş,çıkış], press:[...], t0, dur }
+  // Noktalar darbe yönünde sıralıdır: ilk nokta kalemin kâğıda değdiği yerdir.
+  const STEP = 1.6, LV = 8;
+  function prep(s) {
+    const P = resample(s.raw ? s.pts : catmull(s.pts, 8), s.step || STEP);
+    const n = P.length, segs = n - 1, xy = new Float32Array(n * 2);
+    for (let i = 0; i < n; i++) { xy[2 * i] = P[i][0]; xy[2 * i + 1] = P[i][1]; }
+    const q = new Uint8Array(segs), [ti, to] = s.taper || [.12, .3];
+    const eo = x => 1 - (1 - x) * (1 - x);
+    for (let k = 0; k < segs; k++) {
+      const u = (k + .5) / segs; let f = 1;
+      if (ti > 0) f *= eo(Math.min(1, u / ti));
+      if (to > 0) f *= eo(Math.min(1, (1 - u) / to));
+      if (s.press) { const pp = s.press, x = u * (pp.length - 1), i = Math.min(pp.length - 2, Math.floor(x)); f *= lerp(pp[i], pp[i + 1], x - i); }
+      q[k] = Math.round((.12 + .88 * clamp(f, 0, 1)) * (LV - 1));
+    }
+    s.xy = xy; s.q = q; s.segs = segs; s.len = segs * (s.step || STEP); s.d = 0;
+    if (s.w == null) s.w = 1.2; if (s.a == null) s.a = .5;
+    return s;
+  }
+  // Darbeleri bir zaman penceresine sırayla yerleştirir (tek kalem, sırayla çizer).
+  function sequence(strokes, t0, t1, opt = {}) {
+    const lift = opt.lift ?? 10, par = opt.par ?? 1;
+    let total = 0; for (const s of strokes) { if (!s.len) prep(s); total += s.len + lift; }
+    const k = (t1 - t0) / Math.max(total, 1e-6); let cum = 0;
+    for (const s of strokes) {
+      s.t0 = t0 + cum * k; s.dur = Math.max(1e-4, s.len * k * par);
+      if (s.t0 + s.dur > t1 + .25) s.dur = Math.max(1e-4, t1 + .25 - s.t0);
+      cum += s.len + lift;
+    }
+    return strokes;
+  }
+
+  // ---------- kâğıt dokusu ve grafit kalem desenleri ----------
+  const TILE = 512;
+  function makeTooth(seed) {
+    const T = new Float32Array(TILE * TILE), R = rng(seed);
+    for (let y = 0; y < TILE; y++) for (let x = 0; x < TILE; x++) {
+      const n1 = vnoise(x / 2.2, y / 2.2, seed, TILE / 2.2 | 0);
+      const n2 = vnoise(x / 6, y / 6, seed + 5, TILE / 6 | 0);
+      const n3 = vnoise(x / 24, y / 9, seed + 9, 0);
+      T[y * TILE + x] = n1 * .5 + n2 * .35 + n3 * .15;
+    }
+    // kâğıt lifleri: ince, kıvrık izler
+    for (let f = 0; f < 260; f++) {
+      let x = R() * TILE, y = R() * TILE, a = R() * TAU; const len = 10 + R() * 50, s = R() < .5 ? .14 : -.1;
+      for (let i = 0; i < len; i++) {
+        a += R.pm(.25); x += Math.cos(a); y += Math.sin(a);
+        const xi = ((x | 0) % TILE + TILE) % TILE, yi = ((y | 0) % TILE + TILE) % TILE;
+        T[yi * TILE + xi] = clamp(T[yi * TILE + xi] + s, 0, 1);
+      }
+    }
+    let mn = 1, mx = 0; for (const v of T) { mn = Math.min(mn, v); mx = Math.max(mx, v); }
+    for (let i = 0; i < T.length; i++) T[i] = (T[i] - mn) / (mx - mn);
+    return T;
+  }
+  const GRADES = {
+    H:  { cover: .52, rgb: [78, 80, 86] },
+    HB: { cover: .66, rgb: [58, 59, 64] },
+    '2B': { cover: .78, rgb: [44, 44, 49] },
+    '4B': { cover: .88, rgb: [31, 31, 35] },
+    '6B': { cover: .96, rgb: [19, 19, 22] },
+  };
+  function gradeTile(T, g) {
+    const c = document.createElement('canvas'); c.width = c.height = TILE;
+    const x = c.getContext('2d'), im = x.createImageData(TILE, TILE), thr = 1 - g.cover;
+    for (let i = 0; i < T.length; i++) {
+      const a = smooth(thr - .2, thr + .2, T[i]);
+      im.data[4*i] = g.rgb[0]; im.data[4*i+1] = g.rgb[1]; im.data[4*i+2] = g.rgb[2]; im.data[4*i+3] = a * 255;
+    }
+    x.putImageData(im, 0, 0); return c;
+  }
+
+  // ---------- kamera ----------
+  function cameraAt(keys, t) {
+    if (t <= keys[0].t) return keys[0];
+    for (let i = 1; i < keys.length; i++) if (t <= keys[i].t) {
+      const a = keys[i - 1], b = keys[i], u = easeIO((t - a.t) / (b.t - a.t));
+      return { x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), z: Math.exp(lerp(Math.log(a.z), Math.log(b.z), u)) };
+    }
+    return keys[keys.length - 1];
+  }
+
+  // =====================================================================
+  //  Çizim motoru
+  // =====================================================================
+  class Renderer {
+    constructor(ep, built, opts = {}) {
+      this.ep = ep; this.W = ep.world.w; this.H = ep.world.h; this.S = opts.scale || 2;
+      const mk = (w, h) => { const c = document.createElement('canvas'); c.width = Math.round(w); c.height = Math.round(h); return c; };
+      const { W, H, S } = this;
+      this.T = makeTooth(ep.paperSeed || 11);
+      this.patternsSrc = {}; for (const k in GRADES) this.patternsSrc[k] = gradeTile(this.T, GRADES[k]);
+      this.paper = mk(W * S, H * S); this.desk = mk((W + 1200) * .5, (H + 1200) * .5);
+      this.cons = mk(W * S, H * S); this.ink = mk(W * S, H * S); this.erasure = mk(W, H);
+      this.paintPaper(); this.paintDesk();
+      this.pat = { cons: {}, ink: {} };
+      for (const L of ['cons', 'ink']) { const c = this[L].getContext('2d'); for (const k in GRADES) this.pat[L][k] = c.createPattern(this.patternsSrc[k], 'repeat'); }
+      // harmanlama (kâğıt silgisi / stump) katmanları
+      this.blends = (built.blends || []).map(b => this.makeBlend(b));
+      this.strokes = built.strokes.map(s => (s.xy ? s : prep(s))).filter(s => s.t0 != null).sort((a, b) => a.t0 - b.t0);
+      this.lastEnd = this.strokes.reduce((m, s) => Math.max(m, s.t0 + s.dur), 0);
+      this.tool = { x: W * 1.4, y: H * 1.3, lift: 1, kind: 'pencil', vis: 0 };
+      this.reset();
+    }
+    paintPaper() {
+      const { W, H, S, T } = this, c = this.paper.getContext('2d');
+      const tile = document.createElement('canvas'); tile.width = tile.height = TILE;
+      const tx = tile.getContext('2d'), im = tx.createImageData(TILE, TILE);
+      for (let i = 0; i < T.length; i++) {
+        const k = .962 + .038 * T[i];
+        im.data[4*i] = 246 * k; im.data[4*i+1] = 243 * k; im.data[4*i+2] = 236 * k; im.data[4*i+3] = 255;
+      }
+      tx.putImageData(im, 0, 0);
+      c.fillStyle = c.createPattern(tile, 'repeat'); c.fillRect(0, 0, W * S, H * S);
+      // yumuşak ışık: sol üstten gelen pencere ışığı
+      const g = c.createRadialGradient(W * S * .2, H * S * .1, 50, W * S * .45, H * S * .5, H * S * .95);
+      g.addColorStop(0, 'rgba(255,253,248,0.10)'); g.addColorStop(.6, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(60,50,40,0.10)');
+      c.fillStyle = g; c.fillRect(0, 0, W * S, H * S);
+    }
+    paintDesk() {
+      const { W, H } = this, c = this.desk.getContext('2d'), k = .5, M = 600;
+      c.scale(k, k); c.translate(M, M);
+      const g = c.createLinearGradient(-M, -M, W + M, H + M);
+      g.addColorStop(0, '#4a4440'); g.addColorStop(1, '#2a2623');
+      c.fillStyle = g; c.fillRect(-M, -M, W + 2 * M, H + 2 * M);
+      const R = rng(3);
+      for (let i = 0; i < 900; i++) { // masa yüzeyindeki ince damar izleri
+        const y = R() * (H + 2 * M) - M; c.strokeStyle = `rgba(${R() < .5 ? '0,0,0' : '255,240,220'},${R() * .014})`;
+        c.lineWidth = 1 + R() * 3; c.beginPath(); c.moveTo(-M, y); c.bezierCurveTo(W * .3, y + R.pm(20), W * .7, y + R.pm(20), W + M, y + R.pm(10)); c.stroke();
+      }
+      // defterin alttaki sayfaları ve gölgesi
+      c.save(); c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 50; c.shadowOffsetX = 18; c.shadowOffsetY = 26;
+      c.fillStyle = '#dcd6cb'; c.fillRect(6, 8, W, H); c.restore();
+      c.fillStyle = '#e4ded3'; c.fillRect(3, 4, W, H);
+    }
+    makeBlend(b) {
+      const { W, H } = this, mk = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+      const r = b.res || .5, tw = Math.round(W * r), th = Math.round(H * r);
+      const small = mk(tw, th), sx = small.getContext('2d'), im = sx.createImageData(tw, th), col = b.rgb || [40, 40, 45];
+      for (let y = 0; y < th; y++) for (let x = 0; x < tw; x++) {
+        const a = clamp(b.tone((x + .5) / r, (y + .5) / r), 0, 1), i = 4 * (y * tw + x);
+        im.data[i] = col[0]; im.data[i+1] = col[1]; im.data[i+2] = col[2]; im.data[i+3] = a * 255;
+      }
+      sx.putImageData(im, 0, 0);
+      const tone = mk(W, H), tc = tone.getContext('2d');
+      tc.filter = `blur(${b.blur ?? 2.5}px)`; tc.imageSmoothingQuality = 'high'; tc.drawImage(small, 0, 0, W, H); tc.filter = 'none';
+      // grafit kâğıdın çukurlarına tam girmez: dokuyu tona da işle
+      const holes = mk(TILE, TILE), hx = holes.getContext('2d'), hi = hx.createImageData(TILE, TILE);
+      for (let i = 0; i < this.T.length; i++) { hi.data[4*i+3] = (1 - this.T[i]) * 120; }
+      hx.putImageData(hi, 0, 0);
+      tc.globalCompositeOperation = 'destination-out';
+      const p = tc.createPattern(holes, 'repeat'); if (p.setTransform) p.setTransform(new DOMMatrix([.5, 0, 0, .5, 0, 0]));
+      tc.fillStyle = p; tc.fillRect(0, 0, W, H); tc.globalCompositeOperation = 'source-over';
+      return { tone, mask: mk(Math.round(W * .25), Math.round(H * .25)), comp: mk(W, H), dirty: true };
+    }
+    reset() {
+      for (const c of [this.cons, this.ink, this.erasure]) c.getContext('2d').clearRect(0, 0, c.width, c.height);
+      for (const b of this.blends) { b.mask.getContext('2d').clearRect(0, 0, b.mask.width, b.mask.height); b.dirty = true; }
+      for (const s of this.strokes) s.d = 0;
+      this.next = 0; this.active = []; this.t = 0; this.last = null; this.toolInit = false;
+    }
+    ctxFor(s) {
+      if (s.layer === 'cons' || s.layer === 'ink') {
+        const c = this[s.layer].getContext('2d');
+        c.globalCompositeOperation = 'source-over'; c.strokeStyle = this.pat[s.layer][s.grade || 'HB'];
+        c.lineCap = 'butt'; c.lineJoin = 'round'; return [c, this.S];
+      }
+      if (s.layer === 'erase') {
+        const c = this.ink.getContext('2d'); c.globalCompositeOperation = 'destination-out'; c.strokeStyle = '#000';
+        c.lineCap = 'round'; c.lineJoin = 'round'; return [c, this.S];
+      }
+      if (s.layer === 'mask') {
+        const b = this.blends[s.blend]; b.dirty = true; const c = b.mask.getContext('2d');
+        c.globalCompositeOperation = 'source-over'; c.strokeStyle = '#000'; c.lineCap = 'round'; c.lineJoin = 'round'; return [c, .25];
+      }
+    }
+    drawSegs(s, from, to) {
+      const [c, sc] = this.ctxFor(s), xy = s.xy, q = s.q;
+      const draw = (c, sc, extra) => {
+        let k = from;
+        while (k < to) {
+          const lv = q[k]; let e = k + 1; while (e < to && q[e] === lv) e++;
+          const f = lv / (LV - 1);
+          c.globalAlpha = clamp(s.a * (.25 + .75 * f) * (extra || 1), 0, 1);
+          c.lineWidth = Math.max(.7, s.w * (.4 + .6 * f) * sc);
+          c.beginPath(); c.moveTo(xy[2*k] * sc, xy[2*k+1] * sc);
+          for (let j = k + 1; j <= e; j++) c.lineTo(xy[2*j] * sc, xy[2*j+1] * sc);
+          c.stroke(); k = e;
+        }
+      };
+      draw(c, sc);
+      c.globalAlpha = 1; c.globalCompositeOperation = 'source-over';
+      if (s.layer === 'erase') { // silgi harmanlanmış tonu da kaldırır
+        const e = this.erasure.getContext('2d'); e.strokeStyle = '#000'; e.lineCap = 'round'; e.lineJoin = 'round';
+        draw(e, 1); e.globalAlpha = 1;
+        for (const b of this.blends) b.dirty = true;
+      }
+    }
+    advance(t) {
+      const st = this.strokes;
+      while (this.next < st.length && st[this.next].t0 <= t) this.active.push(st[this.next++]);
+      for (const s of this.active) {
+        const target = t >= s.t0 + s.dur ? s.segs : Math.floor(clamp((t - s.t0) / s.dur, 0, 1) * s.segs);
+        if (target > s.d) { this.drawSegs(s, s.d, target); s.d = target; }
+      }
+      this.active = this.active.filter(s => s.d < s.segs);
+      this.t = t;
+      // kalemin ucu: en son başlayan darbenin ilerlediği nokta
+      const L = this.next > 0 ? st[this.next - 1] : null;
+      if (L) { const i = Math.min(L.d, L.segs); this.last = { x: L.xy[2*i], y: L.xy[2*i+1], kind: L.layer, drawing: t < L.t0 + L.dur + .05, end: L.t0 + L.dur }; }
+    }
+    seek(t) { if (t < this.t) this.reset(); this.advance(t); }
+    updateTool(t, dt) {
+      const T = this.tool, L = this.last;
+      let tx = this.W * 1.25, ty = this.H * 1.15, lift = 1, kind = T.kind;
+      if (L && t < L.end + .7 && t < this.lastEnd + .3) {
+        tx = L.x; ty = L.y; lift = L.drawing ? 0 : .6;
+        kind = L.kind === 'erase' ? 'eraser' : 'pencil';
+      }
+      const k = this.toolInit && dt > 0 ? 1 - Math.exp(-dt * 22) : 1;
+      T.x = lerp(T.x, tx, k); T.y = lerp(T.y, ty, k); T.lift = lerp(T.lift, lift, Math.min(1, k * 1.5)); T.kind = kind;
+      this.toolInit = true;
+    }
+    composite(ctx, cam, consAlpha) {
+      const { W, H, S } = this, k = cam.z * (1080 / (W + 80));
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#2b2724'; ctx.fillRect(0, 0, 1080, 1920);
+      ctx.setTransform(k, 0, 0, k, 540 - cam.x * k, 960 - cam.y * k);
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(this.desk, -600, -600, W + 1200, H + 1200);
+      ctx.drawImage(this.paper, 0, 0, W, H);
+      this.drawRings(ctx);
+      if (consAlpha > .002) { ctx.globalAlpha = consAlpha; ctx.drawImage(this.cons, 0, 0, W, H); ctx.globalAlpha = 1; }
+      for (const b of this.blends) {
+        if (b.dirty) {
+          const c = b.comp.getContext('2d'); c.globalCompositeOperation = 'source-over'; c.clearRect(0, 0, W, H);
+          c.drawImage(b.tone, 0, 0); c.globalCompositeOperation = 'destination-in'; c.imageSmoothingQuality = 'high';
+          c.drawImage(b.mask, 0, 0, W, H); c.globalCompositeOperation = 'destination-out'; c.drawImage(this.erasure, 0, 0);
+          c.globalCompositeOperation = 'source-over'; b.dirty = false;
+        }
+        ctx.drawImage(b.comp, 0, 0, W, H);
+      }
+      ctx.drawImage(this.ink, 0, 0, W, H);
+      return k;
+    }
+    drawRings(ctx) { // spiral defter halkaları
+      for (let x = 50; x < this.W - 20; x += 46) {
+        ctx.fillStyle = '#3a3633'; ctx.beginPath(); ctx.ellipse(x, 24, 6.5, 7.5, 0, 0, TAU); ctx.fill();
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#2e2c2b'; ctx.lineWidth = 7; ctx.beginPath(); ctx.moveTo(x - 1, 26); ctx.quadraticCurveTo(x - 10, -18, x + 7, -30); ctx.stroke();
+        ctx.strokeStyle = '#8e8a86'; ctx.lineWidth = 3.2; ctx.beginPath(); ctx.moveTo(x - 1, 24); ctx.quadraticCurveTo(x - 9, -17, x + 6, -29); ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 1.1; ctx.beginPath(); ctx.moveTo(x - 4, 8); ctx.quadraticCurveTo(x - 9, -14, x + 3, -26); ctx.stroke();
+      }
+    }
+  }
+
+  // ---------- araçlar: kurşun kalem ve silgi ----------
+  function drawPencil(ctx, x, y, z, lift) {
+    const s = z * 1.05;
+    ctx.save(); ctx.translate(x, y);
+    // gölge (ışık sol üstten): kalem kalktıkça gölge uzaklaşır
+    ctx.save(); ctx.translate((26 + lift * 34) * s, (20 + lift * 26) * s); ctx.rotate(-1.0); ctx.scale(s, s);
+    ctx.filter = `blur(${Math.round(6 + lift * 6)}px)`; ctx.fillStyle = 'rgba(20,15,10,.28)';
+    ctx.beginPath(); ctx.moveTo(10, 0); ctx.lineTo(64, -14); ctx.lineTo(760, -14); ctx.lineTo(760, 14); ctx.lineTo(64, 14); ctx.closePath(); ctx.fill();
+    ctx.filter = 'none'; ctx.restore();
+    ctx.translate(-lift * 6 * s, -lift * 9 * s); ctx.rotate(-1.0); ctx.scale(s, s);
+    // grafit uç
+    let g = ctx.createLinearGradient(0, -4, 0, 4); g.addColorStop(0, '#5a5a60'); g.addColorStop(.5, '#2a2a2e'); g.addColorStop(1, '#141416');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(16, -4.2); ctx.lineTo(16, 4.2); ctx.closePath(); ctx.fill();
+    // açılmış ahşap
+    g = ctx.createLinearGradient(0, -15, 0, 15); g.addColorStop(0, '#f0d2ad'); g.addColorStop(.45, '#d9b48a'); g.addColorStop(1, '#9c7552');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(16, -4.2); ctx.lineTo(64, -15); ctx.lineTo(64, 15); ctx.lineTo(16, 4.2); ctx.closePath(); ctx.fill();
+    // altıgen gövde: üç yüz
+    const faces = [[-15, -5, '#5d7088'], [-5, 5, '#3e4f63'], [5, 15, '#27323f']];
+    for (const [a, b, c] of faces) {
+      ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(64, a); ctx.lineTo(760, a); ctx.lineTo(760, b); ctx.lineTo(64, b);
+      // yontma kenarı: dalgalı geçiş
+      ctx.quadraticCurveTo(58, (a + b) / 2, 64, a); ctx.fill();
+    }
+    ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.fillRect(70, -13.5, 690, 2);
+    ctx.fillStyle = '#d9c38e'; ctx.font = '600 11px Arial, sans-serif'; ctx.fillText('KARAKALEM  2B', 420, 4);
+    ctx.fillStyle = '#1d242d'; ctx.fillRect(760, -15, 10, 30);
+    ctx.restore();
+  }
+  function drawEraser(ctx, x, y, z, lift) {
+    const s = z * 1.05;
+    ctx.save(); ctx.translate(x, y);
+    ctx.save(); ctx.translate((24 + lift * 30) * s, (20 + lift * 24) * s); ctx.rotate(-1.0); ctx.scale(s, s);
+    ctx.filter = 'blur(8px)'; ctx.fillStyle = 'rgba(20,15,10,.25)'; ctx.fillRect(0, -18, 420, 36); ctx.filter = 'none'; ctx.restore();
+    ctx.translate(-lift * 6 * s, -lift * 9 * s); ctx.rotate(-1.0); ctx.scale(s, s);
+    let g = ctx.createLinearGradient(0, -14, 0, 14); g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#cfcac2');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, -10); ctx.quadraticCurveTo(0, -14, 6, -14); ctx.lineTo(70, -14); ctx.lineTo(70, 14); ctx.lineTo(6, 14); ctx.quadraticCurveTo(0, 14, 0, 10); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = 'rgba(80,80,85,.35)'; ctx.fillRect(0, -6, 3, 12);
+    g = ctx.createLinearGradient(0, -16, 0, 16); g.addColorStop(0, '#b6c2cc'); g.addColorStop(1, '#5d6d7c');
+    ctx.fillStyle = g; ctx.fillRect(70, -16, 380, 32);
+    ctx.fillStyle = 'rgba(255,255,255,.3)'; ctx.fillRect(74, -14, 372, 3);
+    ctx.restore();
+  }
+
+  // ---------- ekran yazıları ----------
+  const FONT = 'Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, "DejaVu Sans", sans-serif';
+  function wrap(ctx, text, maxW) {
+    const words = text.split(' '), lines = []; let cur = '';
+    for (const w of words) { const t = cur ? cur + ' ' + w : w; if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; }
+    if (cur) lines.push(cur); return lines;
+  }
+  function roundRect(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+  function drawCaption(ctx, text, alpha, y) {
+    ctx.save(); ctx.globalAlpha = alpha; ctx.font = `700 50px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const lines = wrap(ctx, text, 880), lh = 64, h = lines.length * lh + 40;
+    const w = Math.min(980, Math.max(...lines.map(l => ctx.measureText(l).width)) + 72);
+    ctx.fillStyle = 'rgba(22,21,20,.78)'; roundRect(ctx, 540 - w / 2, y - h / 2, w, h, 26); ctx.fill();
+    ctx.fillStyle = '#fbf8f2';
+    lines.forEach((l, i) => ctx.fillText(l, 540, y - (lines.length - 1) * lh / 2 + i * lh + 2));
+    ctx.restore();
+  }
+  function drawPill(ctx, text, alpha) {
+    ctx.save(); ctx.globalAlpha = alpha; ctx.font = `600 30px ${FONT}`; ctx.textBaseline = 'middle';
+    const w = ctx.measureText(text).width + 44;
+    ctx.fillStyle = 'rgba(22,21,20,.66)'; roundRect(ctx, 540 - w / 2, 112, w, 56, 28); ctx.fill();
+    ctx.fillStyle = '#e9d3b4'; ctx.textAlign = 'center'; ctx.fillText(text, 540, 141);
+    ctx.restore();
+  }
+  function drawTitle(ctx, a, b, alpha, y) {
+    ctx.save(); ctx.globalAlpha = alpha; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#26262a'; ctx.font = `800 82px ${FONT}`; ctx.fillText(a, 540, y);
+    ctx.fillStyle = '#5b5852'; ctx.font = `500 42px ${FONT}`; ctx.fillText(b, 540, y + 82);
+    ctx.restore();
+  }
+
+  function drawEndCard(ctx, a, b, alpha, y) {
+    ctx.save(); ctx.globalAlpha = alpha; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = `800 64px ${FONT}`; const w = Math.max(ctx.measureText(a).width, (ctx.font = `500 36px ${FONT}`, ctx.measureText(b).width)) + 90;
+    ctx.fillStyle = 'rgba(22,21,20,.8)'; roundRect(ctx, 540 - w / 2, y - 80, w, 160, 28); ctx.fill();
+    ctx.fillStyle = '#fbf8f2'; ctx.font = `800 64px ${FONT}`; ctx.fillText(a, 540, y - 22);
+    ctx.fillStyle = '#e9d3b4'; ctx.font = `500 36px ${FONT}`; ctx.fillText(b, 540, y + 42);
+    ctx.restore();
+  }
+
+  // =====================================================================
+  //  Oynatıcı: zaman, kamera, yazılar, kayıt
+  // =====================================================================
+  class Player {
+    constructor(canvas, ep) {
+      this.canvas = canvas; this.ctx = canvas.getContext('2d'); this.ep = ep;
+      this.t = 0; this.playing = false; this.showCaptions = true; this.loop = false; this.listeners = [];
+      const built = ep.build(api);
+      this.r = new Renderer(ep, built);
+      this.duration = ep.duration;
+    }
+    on(f) { this.listeners.push(f); }
+    emit() { for (const f of this.listeners) f(this); }
+    stageAt(t) { return this.ep.stages.find(s => t >= s.t0 && t < s.t1) || this.ep.stages[this.ep.stages.length - 1]; }
+    cueAt(t) { return this.ep.narration.find(c => t >= c.t0 && t < c.t1); }
+    renderAt(t, dt = 0) {
+      t = clamp(t, 0, this.duration);
+      const jump = t < this.r.t || dt === 0;
+      this.r.seek(t);
+      this.r.updateTool(t, jump ? 0 : dt);
+      this.t = t; this.draw();
+    }
+    draw() {
+      const ctx = this.ctx, ep = this.ep, t = this.t, cam = cameraAt(ep.camera, t);
+      const k = this.r.composite(ctx, cam, ep.consAlpha ? ep.consAlpha(t) : 1);
+      const T = this.r.tool;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      if (T.x < this.r.W * 1.2) {
+        const sx = 540 + (T.x - cam.x) * k, sy = 960 + (T.y - cam.y) * k;
+        (T.kind === 'eraser' ? drawEraser : drawPencil)(ctx, sx, sy, cam.z, T.lift);
+      }
+      // başlık ve kapanış kartı
+      const ti = ep.titleCard; if (ti) {
+        const a = smooth(ti.t0, ti.t0 + .5, t) * (1 - smooth(ti.t1 - .6, ti.t1, t));
+        if (a > 0) drawTitle(ctx, ti.title, ti.subtitle, a, ti.y || 860);
+      }
+      const en = ep.endCard; if (en) {
+        const a = smooth(en.t0, en.t0 + .6, t);
+        if (a > 0) drawEndCard(ctx, en.title, en.subtitle, a, en.y || 1560);
+      }
+      if (this.showCaptions) {
+        const st = this.stageAt(t);
+        if (st.pill) drawPill(ctx, st.pill, smooth(st.t0, st.t0 + .3, t) * (1 - smooth(st.t1 - .25, st.t1, t)));
+        const c = this.cueAt(t);
+        if (c && c.caption) drawCaption(ctx, c.caption, smooth(c.t0, c.t0 + .25, t) * (1 - smooth(c.t1 - .25, c.t1, t)), ep.captionY || 1560);
+      }
+    }
+    play() {
+      if (this.t >= this.duration) this.renderAt(0);
+      this.playing = true; let prev = performance.now();
+      const tick = now => {
+        if (!this.playing) return;
+        const dt = Math.min(.1, (now - prev) / 1000); prev = now;
+        let t = this.t + dt;
+        if (t >= this.duration) {
+          if (this.loop && !this.recording) { this.renderAt(0); this.emit(); this.raf = requestAnimationFrame(tick); return; }
+          this.renderAt(this.duration, dt); this.playing = false; this.emit(); this.onEnd && this.onEnd(); return;
+        }
+        this.renderAt(t, dt); this.emit(); this.raf = requestAnimationFrame(tick);
+      };
+      this.raf = requestAnimationFrame(tick); this.emit();
+    }
+    pause() { this.playing = false; cancelAnimationFrame(this.raf); this.emit(); }
+    restart() { this.pause(); this.renderAt(0); this.emit(); }
+  }
+
+  // Bölümlerin kullandığı yardımcılar
+  const api = { TAU, clamp, lerp, smooth, rng, vnoise, fbm, catmull, closedCatmull, bezier, resample, ellipsePts,
+    pointInPoly, distSeg, distPolyline, bbox, inBox, clipRuns, hatch, sequence, prep };
+
+  const episodes = {};
+  return { api, Player, Renderer, cameraAt, episodes, register: ep => (episodes[ep.id] = ep) };
+})();
+</script>
+
+<!-- =====================================================================
+     BÖLÜM 1: GERÇEKÇİ KEDİ PORTRESİ
+     Yeni bir bölüm için bu bloğun kopyası yeterlidir: konu, aşamalar,
+     kamera, anlatım ve build() içindeki çizim katmanları değiştirilir.
+     ===================================================================== -->
+<script>
+'use strict';
+KS.register({
+  id: 'kedi',
+  title: 'Gerçekçi Kedi Portresi',
+  subtitle: 'Karakalem · sıfırdan 8 adımda',
+  duration: 42,
+  world: { w: 1000, h: 1500 },
+  paperSeed: 11,
+  stages: [
+    { t0: 0,    t1: 3,    name: '1. Boş, dokulu eskiz kâğıdı' },
+    { t0: 3,    t1: 8,    name: '2. Baş ve kulakların yapım çizgileri', pill: 'ADIM 1 · Büyük şekiller' },
+    { t0: 8,    t1: 13,   name: '3. Oran çizgileri ve göz konumu',      pill: 'ADIM 2 · Oranlar' },
+    { t0: 13,   t1: 19,   name: '4. Göz, burun ve ağız konturları',     pill: 'ADIM 3 · Konturlar' },
+    { t0: 19,   t1: 25,   name: '5. Yüz çevresindeki tüy kümeleri',     pill: 'ADIM 4 · Tüy kümeleri' },
+    { t0: 25,   t1: 31,   name: '6. Açık ve orta tonlu gölgeler',       pill: 'ADIM 5 · Orta tonlar' },
+    { t0: 31,   t1: 37.5, name: '7. Koyu tonlar, yansımalar, detaylar', pill: 'ADIM 6 · Koyular ve ışık' },
+    { t0: 37.5, t1: 42.01, name: '8. Final' },
+  ],
+  camera: [
+    { t: 0,    x: 500, y: 750, z: 1.0 },
+    { t: 3,    x: 500, y: 750, z: 1.0 },
+    { t: 8,    x: 500, y: 690, z: 1.12 },
+    { t: 12.6, x: 500, y: 665, z: 1.2 },
+    { t: 14.0, x: 500, y: 650, z: 1.8 },   // göz çizilirken göz bölgesi
+    { t: 16.3, x: 500, y: 652, z: 1.8 },
+    { t: 17.5, x: 500, y: 770, z: 1.62 },  // burun ve ağız
+    { t: 18.7, x: 500, y: 775, z: 1.58 },
+    { t: 20.0, x: 345, y: 760, z: 1.5 },   // yanak tüyleri
+    { t: 22.6, x: 335, y: 790, z: 1.48 },
+    { t: 24.6, x: 500, y: 720, z: 1.12 },
+    { t: 30.4, x: 500, y: 705, z: 1.2 },
+    { t: 31.7, x: 500, y: 652, z: 1.85 },  // koyu göz detayları
+    { t: 33.4, x: 500, y: 665, z: 1.72 },
+    { t: 34.8, x: 500, y: 720, z: 1.15 },
+    { t: 37.4, x: 500, y: 730, z: 1.06 },
+    { t: 40.4, x: 500, y: 735, z: 0.93 },  // final: hafif geri çekilme
+    { t: 42,   x: 500, y: 735, z: 0.93 },
+  ],
+  // Seslendirme: her cümlenin başlangıç/bitiş saniyesi. caption = ekranda görünen kısa yazı.
+  narration: [
+    { t0: 0.3,  t1: 3.0,  text: 'Beyaz kâğıda sıfırdan gerçekçi bir kedi portresi çiziyoruz.', caption: '' },
+    { t0: 3.2,  t1: 7.9,  text: 'Önce büyük şekilleri hafifçe yerleştir. Sert bir kalemle, neredeyse hiç bastırmadan.', caption: 'Önce büyük şekilleri hafifçe yerleştir.' },
+    { t0: 8.1,  t1: 12.9, text: 'Gözlerin hizasını ve aralarındaki mesafeyi kontrol et. Kedide bu mesafe yaklaşık bir göz genişliğidir.', caption: 'Gözlerin hizasını ve aralarındaki mesafeyi kontrol et.' },
+    { t0: 13.1, t1: 18.9, text: 'Şimdi gözü, burnu ve ağzı netleştir. Gözdeki parlak noktanın yerini baştan boş bırak.', caption: 'Göz, burun ve ağzı netleştir; parlak noktayı boş bırak.' },
+    { t0: 19.1, t1: 24.9, text: 'Tüyleri tek tek çizmek yerine büyüme yönlerini takip et. Burundan dışarı doğru, kümeler halinde.', caption: 'Tüyleri tek tek çizmek yerine büyüme yönlerini takip et.' },
+    { t0: 25.1, t1: 30.9, text: 'Koyu gölgeleri hemen doldurma; önce orta tonları oluştur. Formu katman katman kur.', caption: 'Koyu gölgeleri hemen doldurma; önce orta tonları oluştur.' },
+    { t0: 31.1, t1: 37.4, text: 'En koyu alanları ve parlak noktaları en son tamamla. Işığı silgiyle geri aç, bıyıkları tek hamlede çek.', caption: 'En koyu alanları ve parlak noktaları en son tamamla.' },
+    { t0: 37.6, t1: 41.8, text: 'Sabırla, katman katman. Sen de dene ve çizimini paylaş!', caption: '' },
+  ],
+  titleCard: { t0: 0, t1: 3.0, title: 'Gerçekçi Kedi Portresi', subtitle: 'Karakalem · sıfırdan 8 adımda', y: 820 },
+  endCard: { t0: 38.4, title: 'Sen de dene!', subtitle: 'Kâğıt, HB–2B–6B kalem ve bir silgi yeter', y: 1590 },
+  captionY: 1580,
+  // Yapım çizgileri sonda yoğurma silgisiyle hafifçe alınır
+  consAlpha: t => t < 25 ? 1 : t < 30 ? 1 - .62 * (t - 25) / 5 : Math.max(.1, .38 - .28 * (t - 30) / 5),
+
+  build(K) {
+    const { TAU, clamp, lerp, smooth, rng, fbm, catmull, closedCatmull, bezier, ellipsePts, pointInPoly,
+      distPolyline, bbox, inBox, clipRuns, hatch, sequence, resample } = K;
+    const MX = p => [1000 - p[0], p[1]];
+    const norm = (x, y) => { const l = Math.hypot(x, y) || 1; return [x / l, y / l]; };
+    const ell = (x, y, cx, cy, rx, ry) => { const d = ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2; return d >= 1 ? 0 : (1 - d) * (1 - d); };
+    const strokes = [];
+    let TUFTS = [];
+    const add = (arr, t0, t1, opt) => { sequence(arr, t0, t1, opt); strokes.push(...arr); return arr; };
+
+    // ================= ANATOMİ (tek kaynak: tüm aşamalar buradan türetilir) =================
+    function makeEye(cx, cy, side) { // side: -1 sol göz (dış köşe solda), +1 sağ göz
+      const outer = [cx + side * 60, cy - 10], inner = [cx - side * 57, cy + 13], notch = [cx - side * 68, cy + 27];
+      const upper = bezier(outer, [cx + side * 40, cy - 62], [cx - side * 30, cy - 66], inner, 44);
+      const lower = bezier(outer, [cx + side * 35, cy + 52], [cx - side * 35, cy + 56], inner, 44);
+      const poly = upper.concat(lower.slice(1, -1).reverse());
+      const ic = [cx - side * 2, cy + 4], ir = 46, pw = 12.5, ph = 37;
+      const pupil = [];
+      for (let i = 0; i < 64; i++) { const th = i / 64 * TAU, c = Math.cos(th); pupil.push([ic[0] + pw * Math.sign(c) * Math.pow(Math.abs(c), 1.3), ic[1] + ph * Math.sin(th)]); }
+      return { cx, cy, side, outer, inner, notch, upper, lower, poly, ic, ir, pupil, box: bbox(poly, 2),
+        hl: [ic[0] - 15, ic[1] - 21], hr: 9.5, hl2: [ic[0] + 15, ic[1] + 21], hr2: 3.4 };
+    }
+    const EYES = [makeEye(385, 640, -1), makeEye(615, 640, 1)];
+    const inEye = (E, x, y) => inBox(x, y, E.box) && pointInPoly(x, y, E.poly);
+    const inPupil = (E, x, y) => Math.abs(x - E.ic[0]) < 14 && Math.abs(y - E.ic[1]) < 38 && pointInPoly(x, y, E.pupil);
+    const inHL = (E, x, y, m = 0) => Math.hypot(x - E.hl[0], y - E.hl[1]) < E.hr + m || Math.hypot(x - E.hl2[0], y - E.hl2[1]) < E.hr2 + m;
+
+    const NOSE = closedCatmull([[468, 744], [500, 738], [532, 744], [537, 753], [526, 768], [509, 783], [500, 789], [491, 783], [474, 768], [463, 753]], 6);
+    const NOSE_BOX = bbox(NOSE, 2);
+    const NOSTRIL_L = [[489, 766], [480, 768], [474, 774], [473, 782]];
+    const NOSTRIL_R = NOSTRIL_L.map(MX);
+    const PHILTRUM = [[500, 789], [500, 798], [500, 807]];
+    const LIP_L = [[500, 807], [493, 815], [483, 819], [471, 820], [461, 818]];
+    const LIP_R = LIP_L.map(MX);
+    const JAW = [[476, 834], [489, 840], [500, 841], [511, 840], [524, 834]];
+    const CHIN = [[458, 862], [478, 872], [500, 875], [522, 872], [542, 862]];
+    const PAD_L = [[476, 772], [448, 780], [425, 798], [419, 822], [431, 841], [456, 848]];
+    const BRIDGE_L = [[452, 676], [461, 700], [466, 724], [468, 741]];
+
+    // Siluet (baş + kulaklar + göğüs): sol yarı tasarlanır, sağ yarı aynalanır.
+    const SIL_L = [[500, 428], [462, 431], [428, 442], [392, 402], [352, 354], [320, 310], [303, 290], [293, 297], [286, 332],
+      [278, 392], [268, 452], [258, 500], [238, 556], [217, 632], [207, 704], [220, 782], [256, 852], [248, 930], [226, 1020], [202, 1110], [182, 1225]];
+    const SIL = closedCatmull([...SIL_L, [500, 1240], ...SIL_L.slice(1).reverse().map(MX)], 6);
+    const EAR_L = closedCatmull([[428, 442], [392, 402], [352, 354], [320, 310], [303, 290], [293, 297], [286, 332], [278, 392], [268, 452], [258, 500], [300, 486], [360, 462]], 6);
+    const EAR_R = EAR_L.map(MX);
+    const PINNA_L = closedCatmull([[313, 325], [301, 366], [294, 425], [295, 474], [340, 466], [385, 452], [410, 446], [380, 406], [344, 362]], 6);
+    const PINNA_R = PINNA_L.map(MX);
+    const TIP_L = [303, 292], TIP_R = MX(TIP_L);
+
+    // Bölge haritası (hızlı içerde/dışarda testi için yarı çözünürlükte boyanır)
+    const RG = { w: 500, h: 750 }, rc = document.createElement('canvas'); rc.width = RG.w; rc.height = RG.h;
+    const rx = rc.getContext('2d'); rx.scale(.5, .5);
+    const fillReg = (poly, v) => { rx.fillStyle = `rgb(${v},0,0)`; rx.beginPath(); poly.forEach((p, i) => i ? rx.lineTo(p[0], p[1]) : rx.moveTo(p[0], p[1])); rx.closePath(); rx.fill(); };
+    fillReg(SIL, 1); fillReg(EAR_L, 2); fillReg(EAR_R, 2); fillReg(PINNA_L, 3); fillReg(PINNA_R, 3);
+    fillReg(EYES[0].poly, 4); fillReg(EYES[1].poly, 4); fillReg(NOSE, 5);
+    const RD = rx.getImageData(0, 0, RG.w, RG.h).data;
+    const region = (x, y) => { const i = (y * .5 | 0) * RG.w + (x * .5 | 0); return x < 0 || y < 0 || x >= 1000 || y >= 1500 ? 0 : RD[4 * i]; };
+    const inSil = (x, y) => region(x, y) > 0;
+
+    // ================= TON HARİTASI: tekir desen + ışık (sol üstten) =================
+    const STR_L = [
+      { p: [[471, 452], [468, 500], [470, 548], [478, 592]], a: .36, w: 8 },
+      { p: [[441, 462], [432, 510], [436, 556], [450, 594]], a: .42, w: 9 },
+      { p: [[406, 474], [392, 520], [387, 560], [394, 592]], a: .32, w: 9 },
+      { p: [[372, 500], [352, 535], [342, 572]], a: .24, w: 10 },
+      { p: [[322, 630], [296, 645], [266, 668], [238, 702]], a: .5, w: 7 },    // dış göz köşesinden çıkan çizgi
+      { p: [[342, 704], [302, 722], [262, 752], [234, 790]], a: .38, w: 10 },
+      { p: [[364, 760], [322, 792], [290, 830], [262, 864]], a: .28, w: 11 },
+      { p: [[282, 556], [258, 600], [238, 646]], a: .28, w: 12 },
+      { p: [[296, 928], [360, 958], [430, 974], [500, 979]], a: .28, w: 13 },  // gerdanlık
+      { p: [[262, 1036], [350, 1062], [430, 1076], [500, 1080]], a: .22, w: 15 },
+    ];
+    const STRIPES = [...STR_L, ...STR_L.map(s => ({ ...s, p: s.p.map(MX) })),
+      { p: [[500, 446], [500, 500], [500, 556], [500, 594]], a: .3, w: 7 }];
+    for (const s of STRIPES) { s.d = catmull(s.p, 6); s.box = bbox(s.d, s.w * 3); }
+
+    const chestFade = (x, y) => (1 - smooth(990 + 40 * Math.sin(x / 37), 1195, y)) * (1 - .7 * smooth(220, 330, Math.abs(x - 500)) * smooth(940, 1120, y));
+    function eyeV(E, x, y) {
+      if (inPupil(E, x, y)) return .97;
+      const dx = x - E.ic[0], dy = y - E.ic[1], r = Math.hypot(dx, dy);
+      if (r > E.ir) return .62;
+      let v = .44 + .3 * Math.exp(-(((r - E.ir + 2) / 5) ** 2));
+      v += .5 * Math.max(0, 1 - distPolyline(x, y, E.upper) / 24);        // üst kapağın irise düşen gölgesi
+      v -= .14 * Math.max(0, 1 - Math.hypot(dx - 13, dy - 19) / 26);        // ışığın karşı tarafta irisi aydınlatması
+      v += (fbm(x / 3, y / 3, 41) - .5) * .12;
+      return clamp(v, 0, 1);
+    }
+    function noseV(x, y) {
+      let v = .56 + .25 * smooth(744, 788, y);
+      const d = Math.min(distPolyline(x, y, NOSTRIL_L), distPolyline(x, y, NOSTRIL_R)); v += .45 * Math.max(0, 1 - d / 5);
+      v -= .32 * Math.max(0, 1 - Math.hypot(x - 484, y - 751) / 15);
+      return clamp(v + (fbm(x / 2.5, y / 2.5, 7) - .5) * .15, 0, 1);
+    }
+    function pinnaV(x, y) {
+      const left = x < 500, bx = left ? 352 : 648, tip = left ? TIP_L : TIP_R;
+      const t = clamp((y - tip[1]) / 170, 0, 1);
+      let v = .3 + .35 * t + .25 * Math.max(0, 1 - Math.hypot(x - bx, y - 448) / 60);
+      return clamp(v + (fbm(x / 9, y / 9, 13) - .5) * .2, 0, 1);
+    }
+    function V(x, y) { // kürk tonu (0 = kâğıt beyazı, 1 = en koyu)
+      const reg = region(x, y); if (!reg) return 0;
+      let v = .37 + .12 * smooth(430, 820, x) - .05 * smooth(560, 360, y) + .05 * smooth(500, 180, x) * .0;
+      for (const s of STRIPES) if (inBox(x, y, s.box)) { const d = distPolyline(x, y, s.d); v += s.a * Math.exp(-((d / s.w) ** 2)); }
+      v -= .34 * ell(x, y, 452, 810, 54, 38) + .34 * ell(x, y, 548, 810, 54, 38);   // bıyık yastıkları açık
+      v -= .3 * ell(x, y, 500, 866, 64, 32) + .2 * ell(x, y, 500, 780, 40, 40);      // çene ve burun altı
+      v -= .2 * ell(x, y, 500, 1010, 170, 115);                                       // göğüs
+      v -= .14 * ell(x, y, 380, 584, 50, 20) + .14 * ell(x, y, 620, 584, 50, 20);     // kaş açıklığı
+      for (const E of EYES) if (x > E.box[0] - 24 && x < E.box[2] + 24 && y > E.box[1] - 24 && y < E.box[3] + 24) {
+        const d = distPolyline(x, y, E.poly.concat([E.poly[0]]));
+        v += .55 * Math.exp(-((d / 3.6) ** 2)) - .26 * Math.exp(-(((d - 11) / 6) ** 2)); // koyu göz çizgisi + açık çerçeve
+      }
+      v += .3 * ell(x, y, 500, 914, 125, 30);                                          // çene altı gölgesi
+      v += .12 * Math.max(0, 1 - Math.min(distPolyline(x, y, BRIDGE_L), distPolyline(x, y, BRIDGE_L.map(MX))) / 14);
+      const er = Math.hypot((x - 500) / 300, (y - 690) / 258);
+      v += .15 * smooth(.74, 1.0, er) * smooth(905, 820, y);                           // form kenara dönerken koyulaşır
+      if (reg === 2) v = .42 + .1 * smooth(430, 700, x);                                // kulak arkası
+      v += (fbm(x / 20, y / 20, 3) - .5) * .24;
+      return clamp(v, 0, 1) * chestFade(x, y);
+    }
+    const fullV = (x, y) => { const r = region(x, y);
+      if (r === 4) return eyeV(x < 500 ? EYES[0] : EYES[1], x, y);
+      if (r === 5) return noseV(x, y); if (r === 3) return pinnaV(x, y); return V(x, y); };
+
+    // ================= TÜY BÜYÜME YÖNÜ (akış alanı) =================
+    const NOSE_C = [500, 776];
+    function flow(x, y) {
+      const reg = region(x, y);
+      if (reg === 2 || reg === 3) { const tp = x < 500 ? TIP_L : TIP_R; return norm(tp[0] - x, tp[1] - y); }
+      const dx = x - NOSE_C[0], dy = y - NOSE_C[1];
+      if (y > 905 || (y > 862 && Math.abs(dx) < 140)) return norm(dx * .28, 1);           // boyun ve göğüs aşağı akar
+      let [fx, fy] = norm(dx, dy);
+      const fh = smooth(690, 560, y); fx *= 1 - .5 * fh; fy -= .7 * fh;                   // alın: yukarı
+      const ch = smooth(650, 870, y) * smooth(110, 250, Math.abs(dx)); fy += 1.1 * ch;   // yanak: dışa ve aşağı
+      [fx, fy] = norm(fx, fy);
+      for (const E of EYES) { const ex = x - E.ic[0], ey = y - E.ic[1], r = Math.hypot(ex, ey), w = smooth(100, 60, r) * .55;
+        if (w > 0) { fx = lerp(fx, ex / r, w); fy = lerp(fy, ey / r, w); } }
+      const a = (fbm(x / 40, y / 40, 21) - .5) * .5, c = Math.cos(a), s = Math.sin(a);
+      return norm(fx * c - fy * s, fx * s + fy * c);
+    }
+    function furLen(x, y) {
+      const reg = region(x, y), dx = Math.abs(x - 500);
+      if (reg === 2) return 10; if (reg === 3) return 12;
+      const muz = 1 - smooth(55, 150, Math.hypot(x - 500, (y - 805) * 1.3));
+      const cheek = smooth(140, 290, dx) * smooth(600, 770, y);
+      const chest = smooth(870, 1000, y);
+      return Math.max(6, (y < 610 ? 11 : 15) + 26 * cheek + 34 * chest - 8 * muz);
+    }
+    const blocked = (x, y) => { const r = region(x, y); if (r === 4 || r === 5 || r === 0) return true;
+      for (const E of EYES) if (inBox(x, y, [E.box[0] - 4, E.box[1] - 4, E.box[2] + 4, E.box[3] + 4]) && distPolyline(x, y, E.poly.concat([E.poly[0]])) < 3.5) return true;
+      return false; };
+    // Akış alanını takip eden tek tüy darbesi (kökten uca)
+    function hair(x, y, L, R, bend = .25) {
+      const pts = [[x, y]]; let px = x, py = y; const n = 3, b = R.pm(bend);
+      for (let i = 0; i < n; i++) { let [fx, fy] = flow(px, py); const c = Math.cos(b * i / n), s = Math.sin(b * i / n);
+        [fx, fy] = [fx * c - fy * s, fx * s + fy * c]; px += fx * L / n; py += fy * L / n; pts.push([px, py]); }
+      return pts;
+    }
+    function furField(seed, cell, accept) {
+      const R = rng(seed), out = [];
+      for (let gy = 280; gy < 1240; gy += cell) for (let gx = 160; gx < 840; gx += cell) {
+        const x = gx + R() * cell, y = gy + R() * cell;
+        if (blocked(x, y)) continue;
+        const s = accept(x, y, R); if (s) out.push(s);
+      }
+      return out;
+    }
+    const bandSort = (arr, bh = 90) => arr.sort((a, b) => { const ba = Math.floor(a.pts[0][1] / bh), bb = Math.floor(b.pts[0][1] / bh);
+      if (ba !== bb) return ba - bb; return ba % 2 ? b.pts[0][0] - a.pts[0][0] : a.pts[0][0] - b.pts[0][0]; });
+
+    // ================= AŞAMA 2: büyük şekiller (yapım çizgileri) =================
+    {
+      const R = rng(101), C = (pts, a = .42, w = 1.7) => ({ layer: 'cons', grade: 'H', pts, w, a, taper: [.2, .25] });
+      const wob = (pts, m) => pts.map(p => [p[0] + R.pm(m), p[1] + R.pm(m)]);
+      const s = [
+        C(wob(ellipsePts(500, 646, 236, 228, Math.PI * .62, Math.PI * 1.55, 14), 1.5)),           // kafatası çemberi (iki hamlede)
+        C(wob(ellipsePts(500, 646, 236, 228, Math.PI * 1.45, Math.PI * 2.62, 14), 1.5)),
+        C(wob(ellipsePts(500, 806, 92, 64, Math.PI, Math.PI * 3, 14), 1), .36, 1.5),            // ağız-burun bölgesi
+        C([[258, 506], [272, 420], [288, 340], [303, 290]], .45), C([[303, 290], [350, 346], [392, 396], [430, 442]], .45),
+        C([[742, 506], [728, 420], [712, 340], [697, 290]], .45), C([[697, 290], [650, 346], [608, 396], [570, 442]], .45),
+        C([[244, 560], [212, 640], [207, 710], [226, 790], [262, 852], [330, 902], [420, 930], [500, 940]], .3, 1.4),
+        C([[756, 560], [788, 640], [793, 710], [774, 790], [738, 852], [670, 902], [580, 930], [500, 940]], .3, 1.4),
+        C([[256, 880], [236, 980], [212, 1090], [192, 1200]], .26, 1.4), C([[744, 880], [764, 980], [788, 1090], [808, 1200]], .26, 1.4),
+      ];
+      add(s, 3.3, 7.8, { lift: 60 });
+    }
+    // ================= AŞAMA 3: oranlar, göz hizası, ölçü işaretleri =================
+    {
+      const C = (pts, a = .36, w = 1.4) => ({ layer: 'cons', grade: 'H', pts, w, a, taper: [.1, .1] });
+      const s = [
+        C([[500, 360], [500, 640], [500, 985]], .32), C([[290, 640], [500, 641], [710, 640]], .4),
+        C(ellipsePts(385, 640, 60, 44, Math.PI, Math.PI * 3, 20), .34), C(ellipsePts(615, 640, 60, 44, 0, TAU, 20), .34),
+        ...[325, 445, 555, 675].map(x => C([[x, 624], [x, 657]], .5, 1.6)),
+        C([[445, 600], [555, 600]], .3, 1.2), C([[445, 594], [445, 606]], .45), C([[555, 594], [555, 606]], .45),  // gözler arası = bir göz
+        C([[444, 768], [556, 768]], .3), C([[430, 828], [570, 828]], .28),
+        C([[468, 744], [532, 744], [500, 790], [468, 744]], .32, 1.3),
+      ];
+      add(s, 8.2, 12.8, { lift: 50 });
+    }
+    // ================= AŞAMA 4: konturlar =================
+    {
+      const I = (pts, a = .55, w = 2, g = 'HB', taper = [.12, .25]) => ({ layer: 'ink', grade: g, pts, w, a, taper, raw: true });
+      for (const [i, E] of EYES.entries()) {
+        const circ = ellipsePts(E.ic[0], E.ic[1], E.ir, E.ir, -Math.PI * .5, Math.PI * 1.5, 90);
+        const iris = clipRuns(circ, (x, y) => inEye(E, x, y) && distPolyline(x, y, E.poly) > 2.5, 3).map(r => I(r, .42, 1.4));
+        const hlc = ellipsePts(E.hl[0], E.hl[1], E.hr + 1.5, E.hr + 1.5, 0, TAU, 28);
+        const s = [I(E.upper, .62, 2.3), I(E.lower, .5, 1.9), I([E.inner, [lerp(E.inner[0], E.notch[0], .5), E.inner[1] + 8], E.notch], .5, 1.6),
+          ...iris, I(E.pupil.concat([E.pupil[0]]), .5, 1.5, 'HB', [.05, .05]), I(hlc, .22, 1, 'H', [.05, .05])];
+        add(s, i ? 14.7 : 13.2, i ? 16.3 : 14.7, { lift: 14 });
+      }
+      const C = (p, a, w) => I(catmull(p, 8), a, w);
+      add([C(NOSE.slice(0, 1).concat(NOSE), .55, 1.9), C(NOSTRIL_L, .6, 1.8), C(NOSTRIL_R, .6, 1.8)], 16.4, 17.4, { lift: 12 });
+      add([C(PHILTRUM, .55, 1.7), C(LIP_L, .55, 1.8), C(LIP_R, .55, 1.8), C(JAW, .22, 1.3), C(PAD_L, .2, 1.3), C(PAD_L.map(MX), .2, 1.3),
+        C(CHIN, .3, 1.4), C(BRIDGE_L, .18, 1.3), C(BRIDGE_L.map(MX), .18, 1.3)], 17.4, 18.9, { lift: 14 });
+    }
+    // ================= AŞAMA 5: tüy kümeleri (siluet, yanak yeleleri, kulak tüyleri) =================
+    {
+      const R = rng(505);
+      // Bir küme: kökleri içeride, uçları tek bir sivri noktada birleşen 3-5 tüy
+      function clump(base, dir, L, n, a, g = 'HB', spread = 7) {
+        const out = [], tip = [base[0] + dir[0] * L, base[1] + dir[1] * L], nx = -dir[1], ny = dir[0];
+        for (let i = 0; i < n; i++) {
+          const o = (i / (n - 1 || 1) - .5) * 2 * spread + R.pm(1.5), l0 = R.range(0, .25);
+          const r0 = [base[0] + nx * o + dir[0] * L * l0, base[1] + ny * o + dir[1] * L * l0];
+          const mid = [lerp(r0[0], tip[0], .55) + nx * o * .35, lerp(r0[1], tip[1], .55) + ny * o * .35];
+          const t = [tip[0] + R.pm(1.8), tip[1] + R.pm(1.8)];
+          out.push({ layer: 'ink', grade: g, pts: [r0, mid, t], w: R.range(1, 1.5), a: a * R.range(.75, 1.1), taper: [.08, .65] });
+        }
+        return out;
+      }
+      // siluet boyunca kenar tüyleri
+      function edgeTufts(ctrl, every, Lr, a) {
+        const path = resample(catmull(ctrl, 8), every), out = [];
+        for (let i = 1; i < path.length - 1; i++) {
+          const [x, y] = path[i], tx = path[i + 1][0] - path[i - 1][0], ty = path[i + 1][1] - path[i - 1][1];
+          let [nx, ny] = norm(ty, -tx); if (inSil(x + nx * 6, y + ny * 6)) { nx = -nx; ny = -ny; }  // dışa bakan normal
+          const [fx, fy] = flow(x - nx * 10, y - ny * 10), d = norm(nx * .55 + fx * .9, ny * .55 + fy * .9);
+          const L = R.range(Lr[0], Lr[1]), base = [x - d[0] * L * .7, y - d[1] * L * .7];
+          out.push(...clump(base, d, L, 3 + (R() * 3 | 0), a, 'HB', L * .18));
+        }
+        return out;
+      }
+      const leftEdge = edgeTufts(SIL_L.slice(11, 19), 15, [26, 44], .5);
+      const leftRuff = [];
+      for (const p of resample(catmull([[292, 590], [270, 690], [292, 790], [345, 858]], 8), 24).slice(0, -1)) {
+        const d = flow(p[0], p[1]); leftRuff.push(...clump([p[0] + R.pm(5), p[1] + R.pm(5)], d, R.range(30, 46), 4, .34));
+      }
+      // hazırlanmış alanlar (xy, zaman) kopyalanmaz; yalnızca tasarım verisi aynalanır
+      const mirrorS = arr => arr.map(({ xy, q, segs, len, d, t0, dur, ...rest }) => ({ ...rest, pts: rest.pts.map(MX) }));
+      const chin = [];
+      for (const p of resample(catmull([[372, 900], [440, 928], [500, 937], [560, 928], [628, 900]], 8), 22)) {
+        chin.push(...clump(p, flow(p[0], p[1] + 8), R.range(28, 40), 4, .3));
+      }
+      for (const row of [[[300, 990], [400, 1012], [500, 1020], [600, 1012], [700, 990]], [[280, 1080], [390, 1100], [500, 1108], [610, 1100], [720, 1080]]])
+        for (const p of resample(catmull(row, 8), 34)) chin.push(...clump([p[0] + R.pm(8), p[1] + R.pm(8)], flow(p[0], p[1]), R.range(40, 58), 4, .24 * chestFade(p[0], p[1] + 30)));
+      const top = edgeTufts([[432, 444], [466, 432], [500, 429], [534, 432], [568, 444]], 14, [12, 18], .38);
+      // kulak kenarları (kısa tüylü, düzgün) ve kulak içi uzun tüyler
+      const ears = [];
+      const ear = (ctrl, a) => ({ layer: 'ink', grade: 'HB', pts: catmull(ctrl, 8), raw: true, w: 1.8, a, taper: [.1, .2] });
+      ears.push(ear(SIL_L.slice(2, 8), .5), ear(SIL_L.slice(6, 12), .5), ear(PINNA_L.slice(0, 1).concat(resample(PINNA_L, 30)).slice(0, 7), .3));
+      const tuftPaths = [];
+      for (let i = 0; i < 9; i++) {
+        const b = [lerp(300, 396, i / 8) + R.pm(4), lerp(470, 450, i / 8) + R.pm(4)];
+        const up = R.range(85, 135), lean = lerp(-.05, .5, i / 8);
+        const p1 = [b[0] + (TIP_L[0] - b[0]) * .35 + 10, b[1] - up * .45], p2 = [p1[0] + 30 + lean * 30, p1[1] - up * .45 + R.pm(10)];
+        tuftPaths.push([b, p1, p2]);
+      }
+      for (const p of tuftPaths) { ears.push({ layer: 'ink', grade: 'HB', pts: p, w: 1.2, a: .3, taper: [.1, .7] }); }
+      const earsR = mirrorS(ears);
+      TUFTS = tuftPaths;
+
+      add([...leftEdge.sort((a, b) => a.pts[0][1] - b.pts[0][1]), ...leftRuff], 19.2, 22.4, { lift: 6 });
+      add(chin, 22.4, 23.3, { lift: 6 });
+      add([...mirrorS(leftEdge).sort((a, b) => a.pts[0][1] - b.pts[0][1]), ...mirrorS(leftRuff)], 23.3, 24.3, { lift: 6 });
+      add([...top, ...ears, ...earsR], 24.3, 24.95, { lift: 6 });
+    }
+    // ================= AŞAMA 6: orta tonlar =================
+    // a) harmanlama (stump) ile orta ton zemini — yalnızca ton haritasının orta değerleri
+    const blends = [
+      { tone: (x, y) => { const r = region(x, y); if (!r) return 0; const v = fullV(x, y);
+          return r === 4 ? v * .72 : Math.min(v, .72) * .55; }, blur: 2.2, rgb: [52, 52, 58] },
+      { tone: (x, y) => { const r = region(x, y); if (!r) return 0; const v = fullV(x, y);
+          return r === 4 ? Math.max(0, v - .4) * 1.3 : Math.max(0, v - .5) * 1.45; }, blur: 1.4, rgb: [30, 30, 34] },
+    ];
+    {
+      const m = [];
+      for (let i = 0, y = 300; y < 1240; y += 52, i++) {
+        const xs = [170, 330, 500, 670, 830], row = xs.map(x => [x, y + (i % 2 ? 26 : 0)]);
+        m.push({ layer: 'mask', blend: 0, pts: i % 2 ? row.reverse() : row, w: 84, a: 1, taper: [0, 0] });
+      }
+      add(m, 25.1, 27.5, { lift: 20 });
+      // b) çene altı ve kulak içinde hafif çapraz tarama
+      const R = rng(606), hs = [];
+      const neck = ellipsePts(500, 914, 112, 24, 0, TAU, 30);
+      for (const [ang, sp] of [[28, 4.4], [-34, 5]])
+        for (const [a, b] of hatch(neck, ang + R.pm(3), sp)) hs.push({ layer: 'ink', grade: 'HB', pts: [a, [lerp(a[0], b[0], .5) + R.pm(2), lerp(a[1], b[1], .5) + R.pm(2)], b], w: 1, a: .09, taper: [.35, .35] });
+      for (const P of [PINNA_L, PINNA_R]) for (const [ang, sp] of [[70, 4], [115, 4.4]])
+        for (const [a, b] of hatch(P, ang, sp)) { const v = pinnaV((a[0] + b[0]) / 2, (a[1] + b[1]) / 2); hs.push({ layer: 'ink', grade: 'HB', pts: [a, b], w: 1, a: .2 * v, taper: [.15, .15] }); }
+      add(hs, 27.5, 28.1, { lift: 3 });
+      // c) orta tonlu tüy katmanı: yoğunluk ve basınç ton haritasından, yön akış alanından
+      const fur = furField(707, 4, (x, y, R) => {
+        const v = V(x, y), L = furLen(x, y) * R.range(.75, 1.25), sp = clamp(L * .3, 3.4, 11);
+        if (R() > (16 / (sp * sp)) * (.3 + .7 * v) * chestFade(x, y)) return null;
+        return { layer: 'ink', grade: 'HB', pts: hair(x, y, L, R), w: R.range(.9, 1.35), a: .1 + .4 * v, taper: [.1, .6] };
+      });
+      add(bandSort(fur), 28.1, 31.0, { lift: 1 });
+    }
+    // ================= AŞAMA 7: koyular, göz detayları, silgi ile ışıklar =================
+    {
+      const R = rng(808);
+      // gözler
+      const eyeStrokes = [], eyeMask = [];
+      for (const E of EYES) {
+        eyeMask.push({ layer: 'mask', blend: 1, pts: [[E.cx + 70, E.cy - 8], [E.cx, E.cy + 2], [E.cx - 70, E.cy - 4]], w: 120, a: 1, taper: [0, 0] });
+        const inside = (x, y) => inEye(E, x, y) && !inHL(E, x, y, 1.5);
+        for (const [ang, sp, a] of [[84, 1.5, .9], [96, 1.7, .7], [60, 2.2, .45]])
+          for (const [p, q] of hatch(E.pupil, ang, sp)) for (const run of clipRuns(resample([p, q], 1.5), inside, 2))
+            eyeStrokes.push({ layer: 'ink', grade: '6B', pts: run, raw: true, w: 2, a, taper: [.1, .1] });
+        for (let i = 0; i < 110; i++) { // irisin ışınsal lifleri
+          const th = i / 110 * TAU + R.pm(.03), r0 = R.range(12, 18), r1 = E.ir - R.range(1, 9);
+          const line = resample([[E.ic[0] + Math.cos(th) * r0, E.ic[1] + Math.sin(th) * r0], [E.ic[0] + Math.cos(th) * r1, E.ic[1] + Math.sin(th) * r1]], 1.5);
+          for (const run of clipRuns(line, (x, y) => inside(x, y) && !inPupil(E, x, y), 3))
+            eyeStrokes.push({ layer: 'ink', grade: '2B', pts: run, raw: true, w: R.range(.8, 1.25), a: R.range(.25, .5), taper: [.2, .4] });
+        }
+        for (let k = 0; k < 3; k++) { // limbus halkası
+          const c = ellipsePts(E.ic[0], E.ic[1], E.ir - 1 - k * 1.3, E.ir - 1 - k * 1.3, 0, TAU, 120);
+          for (const run of clipRuns(c, inside, 3)) eyeStrokes.push({ layer: 'ink', grade: '4B', pts: run, raw: true, w: 2, a: .45 - k * .1, taper: [.1, .1] });
+        }
+        for (let k = 0; k < 8; k++) { // üst kapak gölgesi
+          const off = E.upper.map(p => [p[0], p[1] + 2 + k * 2.6]);
+          for (const run of clipRuns(resample(off, 1.5), inside, 3)) eyeStrokes.push({ layer: 'ink', grade: '4B', pts: run, raw: true, w: 2.6, a: .5 * (1 - k / 8.5), taper: [.15, .15] });
+        }
+        eyeStrokes.push({ layer: 'ink', grade: '6B', pts: E.upper, raw: true, w: 5.4, a: .95, taper: [.06, .12] },
+          { layer: 'ink', grade: '6B', pts: E.upper.map(p => [p[0], p[1] - 1.6]), raw: true, w: 3, a: .8, taper: [.2, .2] },
+          { layer: 'ink', grade: '6B', pts: E.lower, raw: true, w: 3.8, a: .88, taper: [.08, .12] },
+          { layer: 'ink', grade: '6B', pts: [E.inner, [lerp(E.inner[0], E.notch[0], .5), E.inner[1] + 8], E.notch], w: 4.2, a: .9, taper: [0, .5] },
+          { layer: 'ink', grade: '4B', pts: [E.outer, [E.outer[0] + E.side * 9, E.outer[1] + 2], [E.outer[0] + E.side * 18, E.outer[1] + 7]], w: 3.4, a: .75, taper: [0, .7] });
+      }
+      add(eyeMask, 31.1, 31.5, { lift: 30 });
+      add(eyeStrokes, 31.5, 33.4, { lift: 1.5 });
+      // burun, ağız, bıyık yastıkları
+      const nm = [{ layer: 'mask', blend: 1, pts: [[440, 760], [560, 770], [440, 800], [560, 840], [450, 880]], w: 70, a: 1, taper: [0, 0] }];
+      const ns = [];
+      for (const [p, q] of hatch(NOSE, 18, 2)) for (const run of clipRuns(resample([p, q], 1.5), (x, y) => region(x, y) === 5, 2)) {
+        const m = run[run.length >> 1]; ns.push({ layer: 'ink', grade: '2B', pts: run, raw: true, w: 1.8, a: .55 * noseV(m[0], m[1]), taper: [.1, .1] }); }
+      for (const n of [NOSTRIL_L, NOSTRIL_R]) ns.push({ layer: 'ink', grade: '6B', pts: n, w: 4.6, a: .92, taper: [.1, .4] }, { layer: 'ink', grade: '6B', pts: n, w: 2.6, a: .8 });
+      ns.push({ layer: 'ink', grade: '4B', pts: NOSE.slice(10, 32), raw: true, w: 2.2, a: .6, taper: [.2, .2] },
+        { layer: 'ink', grade: '6B', pts: PHILTRUM, w: 2.6, a: .85, taper: [.05, .3] },
+        { layer: 'ink', grade: '6B', pts: LIP_L, w: 3, a: .85, taper: [.05, .3] }, { layer: 'ink', grade: '6B', pts: LIP_R, w: 3, a: .85, taper: [.05, .3] },
+        { layer: 'ink', grade: '2B', pts: JAW, w: 2, a: .3, taper: [.35, .35] });
+      for (const side of [-1, 1]) for (let r = 0; r < 4; r++) for (let i = 0; i < 4 - (r === 3 ? 1 : 0); i++) {
+        const x = 500 + side * (34 + i * 11 + r * 2.5), y = 794 + r * 10 + i * 1.5;
+        ns.push({ layer: 'ink', grade: '4B', pts: [[x - .8, y], [x + .8, y + .4]], w: 3.4, a: .7, taper: [0, 0] });
+      }
+      add(nm, 33.4, 33.6, { lift: 10 });
+      add(ns, 33.6, 34.3, { lift: 3 });
+      // koyu harmanlama + koyu tüyler (çizgiler ve form gölgeleri)
+      const dm = [];
+      for (let i = 0, y = 320; y < 1180; y += 60, i++) {
+        const row = [180, 340, 500, 660, 820].map(x => [x, y + (i % 2 ? 30 : 0)]);
+        dm.push({ layer: 'mask', blend: 1, pts: i % 2 ? row.reverse() : row, w: 92, a: 1, taper: [0, 0] });
+      }
+      add(dm, 34.3, 34.85, { lift: 20 });
+      const dark = furField(909, 3.6, (x, y, R) => {
+        const v = V(x, y); if (v < .5) return null;
+        const L = furLen(x, y) * R.range(.7, 1.15), sp = clamp(L * .3, 3.2, 10);
+        if (R() > (13 / (sp * sp)) * (v - .44) * 2.4) return null;
+        return { layer: 'ink', grade: v > .7 ? '6B' : '4B', pts: hair(x, y, L, R, .3), w: R.range(1.1, 1.7), a: .25 + .7 * (v - .5), taper: [.1, .6] };
+      });
+      add(bandSort(dark, 120), 34.85, 35.9, { lift: 1 });
+      // silgi: göz ışıkları, burun parlaklığı, kulak tüyleri, açık kürk kılları, bıyıklar
+      const er = [];
+      for (const E of EYES) {
+        er.push({ layer: 'erase', pts: [[E.hl[0] - .6, E.hl[1]], [E.hl[0] + .6, E.hl[1]]], w: E.hr * 2, a: 1, taper: [0, 0] },
+          { layer: 'erase', pts: [[E.hl2[0] - .3, E.hl2[1]], [E.hl2[0] + .3, E.hl2[1]]], w: E.hr2 * 2, a: .95, taper: [0, 0] });
+      }
+      er.push({ layer: 'erase', pts: [[476, 751], [486, 747], [495, 747]], w: 5.5, a: .65, taper: [.2, .4] },
+        { layer: 'erase', pts: [[506, 746], [518, 748]], w: 3.5, a: .4, taper: [.3, .4] });
+      for (const p of TUFTS) for (const pp of [p, p.map(MX)]) er.push({ layer: 'erase', pts: pp.map(q => [q[0] + 1.5, q[1]]), w: 2.4, a: .85, taper: [.1, .6] });
+      const lifts = furField(1001, 9, (x, y, R) => {
+        const v = V(x, y); if (v < .45 || y > 1000 || region(x, y) !== 1) return null;
+        if (R() > .14) return null;
+        return { layer: 'erase', pts: hair(x, y, furLen(x, y) * .8, R), w: 1.5, a: .55, taper: [.1, .6] };
+      });
+      er.push(...bandSort(lifts, 150));
+      add(er, 35.9, 36.5, { lift: 2 });
+      // bıyıklar: kökten uca tek hamle. Silgi koyu kürkte beyaz çizgi açar, kalem kâğıtta ince gri çizgi bırakır.
+      const wh = [];
+      const whisker = (root, ang, L, droop) => { const d = a => [Math.cos(a), Math.sin(a)];
+        const a0 = ang * Math.PI / 180, dr = droop * Math.PI / 180;
+        const p1 = [root[0] + d(a0)[0] * L * .33, root[1] + d(a0)[1] * L * .33];
+        const p2 = [p1[0] + d(a0 + dr * .5)[0] * L * .33, p1[1] + d(a0 + dr * .5)[1] * L * .33];
+        const p3 = [p2[0] + d(a0 + dr)[0] * L * .34, p2[1] + d(a0 + dr)[1] * L * .34];
+        return [root, p1, p2, p3]; };
+      const WR = rng(1213);
+      const angs = [-17, -8, 1, 10, 19, 28, 37];
+      for (const side of [-1, 1]) angs.forEach((g, i) => {
+        const root = [500 + side * (40 + (i % 4) * 9), 796 + Math.floor(i / 2) * 9];
+        const ang = side < 0 ? 180 - g : g, pts = whisker(root, ang + WR.pm(2), WR.range(330, 420), side * (8 + WR.range(0, 8)));
+        wh.push({ layer: 'erase', pts, w: 3.2, a: .95, taper: [.05, .5] },
+          { layer: 'ink', grade: '2B', pts, w: 1.3, a: .62, taper: [.05, .3], press: [.18, .2, .3, .7, .85, .6] });
+      });
+      for (const E of EYES) for (let i = 0; i < 3; i++) {
+        const root = [E.cx + E.side * (8 + i * 14), E.cy - 58 - i * 3];
+        const pts = whisker(root, E.side < 0 ? 240 - i * 9 : -60 + i * 9, WR.range(110, 150), E.side * 10);
+        wh.push({ layer: 'erase', pts, w: 2.6, a: .9, taper: [.05, .5] }, { layer: 'ink', grade: '2B', pts, w: 1.1, a: .5, taper: [.05, .3], press: [.2, .3, .7, .8] });
+      }
+      add(wh, 36.5, 37.4, { lift: 18 });
+    }
+    return { strokes, blends };
+  },
+});
+</script>
+
+<!-- =====================================================================
+     UYGULAMA: arayüz, zaman çizelgesi, kayıt, altyazı
+     ===================================================================== -->
+<script>
+'use strict';
+(async () => {
+  const qs = new URLSearchParams(location.search);
+  const ep = KS.episodes[qs.get('bolum') || 'kedi'];
+  if (qs.has('export')) document.body.classList.add('export');
+  const $ = id => document.getElementById(id);
+  const canvas = $('screen');
+  await new Promise(r => setTimeout(r, 30)); // "hazırlanıyor" yazısı görünsün
+  const t0 = performance.now();
+  const player = new KS.Player(canvas, ep);
+  const buildMs = Math.round(performance.now() - t0);
+  player.renderAt(qs.has('t') ? +qs.get('t') : 0);
+  $('loading').remove();
+  window.studio = { player, ep, buildMs, renderAt: (t, dt) => player.renderAt(t, dt), strokeCount: player.r.strokes.length };
+
+  const fmt = t => t.toFixed(1);
+  const fmtSrt = t => { const ms = Math.round(t * 1000), h = ms / 3600000 | 0, m = ms / 60000 % 60 | 0, s = ms / 1000 % 60 | 0;
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')},${String(ms % 1000).padStart(3, '0')}`; };
+  $('epTitle').textContent = `Bölüm: ${ep.title} · ${ep.duration} sn · 1080×1920 · ${player.r.strokes.length.toLocaleString('tr-TR')} kalem darbesi`;
+
+  // zaman çizelgesi
+  const tl = $('timeline'), D = ep.duration;
+  const segEls = ep.stages.map(s => { const d = document.createElement('div'); d.className = 'seg';
+    d.style.left = (s.t0 / D * 100) + '%'; d.style.width = `calc(${(s.t1 - s.t0) / D * 100}% - 2px)`;
+    d.textContent = s.name.split('.')[0]; d.title = s.name; tl.appendChild(d); return d; });
+  const cueEls = ep.narration.map(c => { const d = document.createElement('div'); d.className = 'cue';
+    d.style.left = (c.t0 / D * 100) + '%'; d.style.width = ((c.t1 - c.t0) / D * 100) + '%'; tl.appendChild(d); return d; });
+  const scriptEls = ep.narration.map(c => { const li = document.createElement('li');
+    li.innerHTML = `<span class="tc">${fmt(c.t0)} – ${fmt(c.t1)} sn</span>`; li.appendChild(document.createTextNode(c.text)); $('script').appendChild(li); return li; });
+
+  let lastCue = null;
+  const ui = p => {
+    $('playhead').style.left = (p.t / D * 100) + '%';
+    $('time').textContent = `${fmt(p.t)} / ${fmt(D)} sn`;
+    const st = p.stageAt(p.t); $('stageName').textContent = st.name;
+    ep.stages.forEach((s, i) => segEls[i].classList.toggle('on', s === st));
+    const cue = p.cueAt(p.t);
+    ep.narration.forEach((c, i) => { cueEls[i].classList.toggle('on', c === cue); scriptEls[i].classList.toggle('on', c === cue); });
+    $('btnPlay').textContent = p.playing ? 'Duraklat' : (p.t >= D ? 'Tekrar oynat' : (p.t > 0 ? 'Devam et' : 'Başlat'));
+    if ($('optTTS').checked && p.playing && cue && cue !== lastCue && 'speechSynthesis' in window) {
+      speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(cue.text); u.lang = 'tr-TR'; u.rate = 1.08;
+      const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.toLowerCase().startsWith('tr')); if (v) u.voice = v;
+      speechSynthesis.speak(u);
+    }
+    lastCue = cue;
+  };
+  player.on(ui); ui(player);
+
+  const seekFromEvent = e => { const r = tl.getBoundingClientRect(); const t = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * D;
+    const was = player.playing; player.pause(); player.renderAt(t); ui(player); if (was) player.play(); };
+  let drag = false;
+  tl.addEventListener('pointerdown', e => { drag = true; tl.setPointerCapture(e.pointerId); seekFromEvent(e); });
+  tl.addEventListener('pointermove', e => drag && seekFromEvent(e));
+  tl.addEventListener('pointerup', () => drag = false);
+
+  for (const b of ['btnPlay', 'btnRestart', 'btnRecord', 'btnSrt']) $(b).disabled = false;
+  $('btnPlay').onclick = () => { if (player.playing) { player.pause(); speechSynthesis?.cancel?.(); } else player.play(); };
+  $('btnRestart').onclick = () => { speechSynthesis?.cancel?.(); player.restart(); player.play(); };
+  $('optCaptions').onchange = e => { player.showCaptions = e.target.checked; player.draw(); };
+  $('optLoop').onchange = e => { player.loop = e.target.checked; };
+  $('optTTS').onchange = e => { if (!e.target.checked) speechSynthesis?.cancel?.(); };
+  if (!('speechSynthesis' in window)) { $('optTTS').disabled = true; }
+
+  // panoya kopyalama
+  const scriptText = ep.narration.map(c => `[${fmt(c.t0)} – ${fmt(c.t1)} sn] ${c.text}`).join('\n');
+  $('btnCopy').onclick = async () => {
+    try { await navigator.clipboard.writeText(scriptText); }
+    catch { const b = $('copyBuf'); b.value = scriptText; b.select(); document.execCommand('copy'); }
+    $('btnCopy').textContent = 'Kopyalandı'; setTimeout(() => $('btnCopy').textContent = 'Kopyala', 1500);
+  };
+  const download = (blob, name) => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); };
+  $('btnSrt').onclick = () => {
+    const srt = ep.narration.map((c, i) => `${i + 1}\n${fmtSrt(c.t0)} --> ${fmtSrt(c.t1)}\n${c.text}\n`).join('\n');
+    download(new Blob([srt], { type: 'text/plain;charset=utf-8' }), `${ep.id}-seslendirme.srt`);
+  };
+
+  // gerçek zamanlı tarayıcı kaydı (MediaRecorder)
+  const types = ['video/mp4;codecs=avc1.640028', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+  const mime = window.MediaRecorder && canvas.captureStream ? types.find(t => MediaRecorder.isTypeSupported(t)) : null;
+  $('recNote').innerHTML = mime
+    ? `Bu tarayıcı <b>${mime.split(';')[0]}</b> kaydedebiliyor. Kayıt animasyonu baştan, gerçek zamanlı oynatır (${D} sn); bilgisayar yavaşsa kare atlayabilir. Kayıtta ses yoktur.`
+    : 'Bu tarayıcı tuval kaydını (MediaRecorder) desteklemiyor. Ücretsiz alternatif: aşağıdaki komutla kare kare MP4 üret ya da OBS Studio ile ekran kaydı al.';
+  if (!mime) $('btnRecord').disabled = true;
+  $('btnRecord').onclick = () => {
+    if (player.recording) return;
+    speechSynthesis?.cancel?.(); $('optTTS').checked = false;
+    const rec = new MediaRecorder(canvas.captureStream(30), { mimeType: mime, videoBitsPerSecond: 12e6 }), chunks = [];
+    rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+    rec.onstop = () => { player.recording = false; $('btnRecord').disabled = false;
+      const ext = mime.includes('mp4') ? 'mp4' : 'webm';
+      download(new Blob(chunks, { type: mime.split(';')[0] }), `${ep.id}-portresi.${ext}`);
+      $('recStatus').textContent = `Kayıt bitti: ${ep.id}-portresi.${ext} indirildi.`; };
+    player.recording = true; player.loop = false; $('optLoop').checked = false; $('btnRecord').disabled = true;
+    player.restart(); rec.start(500); $('recStatus').textContent = 'Kaydediliyor… sekmeyi açık ve önde tut.';
+    player.onEnd = () => { player.onEnd = null; setTimeout(() => rec.stop(), 300); };
+    player.play();
+  };
+})();
+</script>
+</body>
+</html>
