@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Kediler Neden İnsanlara Miyavlıyor?</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', 'Noto Color Emoji', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  .chip { left: 50%; top: 200px; background: rgba(28, 18, 10, 0.62); border: 2px solid rgba(255, 220, 170, 0.35); border-radius: 22px; padding: 12px 26px;
+    color: #fff; font-weight: 700; font-size: 34px; white-space: nowrap; text-align: center; }
+  .chip small { display: block; font-size: 25px; font-weight: 600; color: #f1dcc0; margin-top: 3px; }
+  .lab { font-size: 46px; font-weight: 800; padding: 14px 32px; border-width: 3px; border-color: #ffbf6b; }
+  #bl { top: 312px; font-size: 30px; border-color: rgba(255,255,255,0.3); }
+  #outro { left: 50%; top: 250px; text-align: center; white-space: nowrap; }
+  #outro .q { font-family: 'Inter Display', 'Inter', 'Noto Color Emoji', sans-serif; font-weight: 800; font-size: 76px; color: #fff; line-height: 1.1;
+    text-shadow: 0 4px 22px rgba(0,0,0,0.75), 0 0 2px rgba(0,0,0,0.8); }
+  #outro .brand { display: inline-flex; align-items: center; gap: 14px; margin-top: 22px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 800; font-size: 42px; color: #fff; text-shadow: 0 3px 12px rgba(0,0,0,0.75); }
+  #outro .brand img { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #fff; }
+  #sub { text-wrap: balance; left: 50%; bottom: 440px; max-width: 920px; width: max-content; text-align: center; font-weight: 700; font-size: 44px; line-height: 1.22;
+    color: #fff; background: rgba(20, 12, 6, 0.58); padding: 8px 24px 11px; border-radius: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.7); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <div id="c2a" class="o chip">Kendi aralarında<small>koku · beden dili · tıslama, hırlama</small></div>
+    <div id="c2b" class="o chip">İnsanlara: miyav 🗣️</div>
+    <div id="c3" class="o chip">🔁 Öğrenilen iletişim<small>miyav → ilgi, kapı, mama</small></div>
+    <div id="lab1" class="o chip lab">🍽️ Açlık</div>
+    <div id="lab2" class="o chip lab">💛 İlgi isteği</div>
+    <div id="lab3" class="o chip lab">🚪 Sahibini çağırma</div>
+    <div id="bl" class="o chip">👀 Beden dili + ortam = anlam</div>
+    <div id="outro" class="o"><div class="q">Yorumlara yaz 🐈</div><div class="brand"><img src="./assets/logo.png" alt="">Pirilumo</div></div>
+    <div id="sub" class="o"></div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
