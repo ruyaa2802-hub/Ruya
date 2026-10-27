@@ -1,8 +1,8 @@
-"""İNSANLAR GİDİNCE – Bölüm 1: "Yastığın İsyanı" (≈35 s, 9:16)
+"""İNSANLAR GİDİNCE – Bölüm 1: "Yastığın İsyanı" (≈38 s, 9:16)
 
 Owner leaves. The pillow drops the act; the blanket, thrown on the floor
-again, has complaints of her own. The complaints escalate until the pillow
-admits what really got to him last night – and the blanket asks the one
+again, thinks he has it easy – until he tells her about his night. She hops
+up beside him, he admits what really got to him, and she asks the one
 question nobody asks a pillow.
 
 Dialogue (audio/paced/*.wav; voices: ElevenLabs eleven_v4 – Yastık = "Orhan",
@@ -12,20 +12,19 @@ Battaniye = "Gözde"):
   L01c YASTIK     Oh be…
   L02 BATTANİYE   Sen niye yoruldun? Bütün gece yatan SENSİN!
   L03 YASTIK      Yatmak mı? Ben mesaideydim! Patronu, eski sevgilisi, kredi kartı borcu… hepsini dinledim.
-  L04 BATTANİYE   Ben de dinlerdim… beni yere atmasa! Gece üç kere attı. ÜÇ!
-  L05 YASTIK      Terlemiştir.
-  L06 BATTANİYE   Sonra üşüdü, geri çekti… AYAĞIYLA! Ben battaniye miyim, yo-yo mu?!
+  (Battaniye sözsüz zıplayıp yatağa, yastığın yanına çıkar)
   L08 YASTIK      Dün gece yüzünü bana gömüp ağladı. "Kimse beni anlamıyor" dedi.
   L09 BATTANİYE   Ayy… kıyamam.
   L10 YASTIK      BEN SENİ SEKİZ SAATTİR DİNLİYORUM!
   L11 BATTANİYE   Seni kim dinliyor peki?
   L12 YASTIK      (iç çeker) Kimse… Ama akşam başını bana koyunca… her şeye değiyor.
-  L13 BATTANİYE   Beni yere atıyor ama… üşüyünce ilk beni arıyor.
   L14 YASTIK      Dağınıklar, söylenirler, teşekkür bile etmezler…
   L15 BATTANİYE   …ama bizimkiler.
   (kapıda anahtar sesi)
   L16 BATTANİYE   (fısıltı) Geliyor!   — ikisi de anında "eşya" olur
-  (L07 "Beni de ters çeviriyor, serin tarafı diye…" is recorded but cut for length.)
+  Recorded but cut for length (kept in LINES for subtitles if they come back):
+  L04–L06 (the blanket's floor/"yo-yo" complaint), L07 "Beni de ters çeviriyor, serin tarafı diye…",
+  L13 BATTANİYE "Beni yere atıyor ama… üşüyünce ilk beni arıyor."
 """
 import math
 import os
@@ -138,49 +137,22 @@ def build(tl, ep):
     tl.look(Y, l03.find("hepsi"), B, 0.3, head=0.35)
     tl.set(Y, l03.find("hepsi"), 0.6, "out", arm_R_raise=-0.2, arm_R_fold=0.0, squash=-0.05, lean_f=0.0)
 
-    # ---------------------------------------------------------------- 4. the blanket's drama
-    l04 = tl.say(B, l03.end + 0.1, A("L04_battaniye"))
-    tl.expr(B, l04.t, "dramatic", 0.3)
-    tl.set(B, l04.t, 0.5, arm_R_raise=0.0, lean_f=0.0)
-    tl.set(B, l04.find("beni") - 0.1, 0.35, "back", arm_L_raise=1.5, arm_L_fold=1.0, arm_L_curl=1.0)  # back of hand to brow
-    tl.set(B, l04.find("beni") - 0.1, 0.35, tilt=0.25, nod=-0.15)
-    tl.set(B, l04.find("gece") - 0.1, 0.3, arm_L_raise=0.3, arm_L_fold=0.2, arm_L_curl=0.2, tilt=0.0, nod=0.0)
-    tl.look(B, l04.find("gece"), Y, 0.2, head=0.5)
-    tl.expr(B, l04.find("üç", 1) - 0.15, "angry", 0.15, brow_up=0.3)
-    tl.hop(B, l04.find("üç", 1) - 0.05, 0.07, 0.35, 0.18)                           # "ÜÇ!"
-    tl.set(B, l04.find("üç", 1) - 0.1, 0.15, "back", arm_R_raise=1.6, arm_R_curl=-0.4)
-    tl.shake(B, l04.find("üç", 1), 0.5, "tilt", 0.08, 7)
+    # ---------------------------------------------------------------- 4. no words: she hops up to sit with him
+    up = l03.end + 0.15
+    tl.expr(B, up - 0.3, "touched", 0.35, m_smile=0.1)                  # his list softened her
+    tl.set(B, up - 0.12, 0.12, squash=-0.12)
+    tl.set(B, up, 0.55, "inout", pos_x=BED_SPOT[0], pos_y=BED_SPOT[1])
+    tl.set(B, up, 0.55, "linear", turn=BED_TURN)
+    tl.layer(B, lambda tt: _arc(tt, up, 0.55, BED_SPOT[2], 0.45), up, 1e9)
+    tl.set(B, up, 0.4, arm_L_raise=1.4, arm_R_raise=1.4, arm_L_curl=0.6, arm_R_curl=0.6)
+    tl.sfx(up, S("whoosh.wav"), -6)
+    tl.sfx(up + 0.55, S("poof.wav"), -6)
+    tl.set(B, up + 0.55, 0.3, arm_L_raise=0.4, arm_R_raise=0.4, arm_L_curl=0.0, arm_R_curl=0.0)
+    tl.look(B, up + 0.6, Y, 0.25, head=0.25)
+    tl.look(Y, up + 0.2, B, 0.3, head=0.45)
 
-    l05 = tl.say(Y, l04.end + 0.06, A("L05_yastik"), bob=0.2)   # deadpan: nothing moves
-    tl.expr(Y, l05.t - 0.15, "deadpan", 0.2, lid_u=0.5)
-    tl.look(Y, l05.t - 0.15, B, 0.1, head=0.0)
-    tl.set(B, l05.t + 0.1, 0.3, arm_R_raise=0.6, arm_R_curl=0.0)
-    tl.expr(B, l05.end, "offended", 0.2, brow_up=0.8)
-
-    # ---------------------------------------------------------------- 5. yanked by the foot – onto the bed
-    l06 = tl.say(B, l05.end + 0.18, A("L06_battaniye"))
-    tl.expr(B, l06.t, "annoyed", 0.25)
-    tl.move(B, l06.t + 0.1, 0.9, dx=0.25, dy=-0.12, hops=2, height=0.03)    # shuffles back, "geri çekti"
-    yank = l06.find("ayağ") - 0.25                                                 # "AYAĞIYLA!"
-    tl.expr(B, yank, "surprised", 0.1)
-    tl.set(B, yank - 0.12, 0.12, squash=-0.12)
-    tl.set(B, yank, 0.55, "inout", pos_x=BED_SPOT[0], pos_y=BED_SPOT[1])
-    tl.set(B, yank, 0.55, "linear", turn=BED_TURN)
-    tl.layer(B, lambda tt: _arc(tt, yank, 0.55, BED_SPOT[2], 0.45), yank, 1e9)
-    tl.set(B, yank, 0.4, arm_L_raise=1.4, arm_R_raise=1.4, arm_L_curl=0.6, arm_R_curl=0.6)
-    tl.sfx(yank, S("whoosh.wav"), -4)
-    tl.sfx(yank + 0.55, S("poof.wav"), -6)
-    tl.set(B, yank + 0.55, 0.3, arm_L_raise=0.4, arm_R_raise=0.4, arm_L_curl=0.0, arm_R_curl=0.0)
-    tl.expr(B, yank + 0.6, "angry", 0.2)
-    tl.look(B, yank + 0.6, Y, 0.25, head=0.25)
-    for k in range(2):                                                      # "yo-yo mu?!" – bounces like one
-        tl.hop(B, l06.find("yo") + 0.05 + k * 0.3, 0.09, 0.28, 0.16)
-    tl.look(Y, yank + 0.05, B, 0.3, head=0.45)
-    tl.expr(Y, yank, "surprised", 0.12)
-    tl.expr(Y, yank + 0.8, "deadpan", 0.4)
-
-    # ---------------------------------------------------------------- 6. what really happened last night
-    l08 = tl.say(Y, l06.end + 0.3, A("L08_yastik"), intensity=0.9, bob=0.5)
+    # ---------------------------------------------------------------- 5. what really happened last night
+    l08 = tl.say(Y, up + 1.0, A("L08_yastik"), intensity=0.9, bob=0.5)
     tl.expr(Y, l08.t - 0.2, "sad", 0.5)
     tl.look(Y, l08.t - 0.2, (0.0, -0.6, 0.55), 0.5, head=0.3)        # looks down at the dent in the bed
     tl.set(Y, l08.t, 0.8, nod=0.12, squash=-0.03)
@@ -190,7 +162,7 @@ def build(tl, ep):
     l09 = tl.say(B, l08.end + 0.1, A("L09_battaniye"), bob=0.6)
     tl.set(B, l09.t, 0.5, arm_L_raise=0.9, arm_L_fold=1.2, arm_L_curl=0.8, tilt=-0.18)  # hand on heart
 
-    # ---------------------------------------------------------------- 7. the outburst
+    # ---------------------------------------------------------------- 6. the outburst
     l10 = tl.say(Y, l09.end + 0.05, A("L10_yastik"), intensity=1.15, bob=1.6)
     tl.expr(Y, l10.t - 0.08, "shout", 0.1)
     tl.set(Y, l10.t - 0.12, 0.12, "back", lean_f=0.14, arm_L_raise=0.9, arm_R_raise=0.9, nod=0.0)
@@ -201,7 +173,7 @@ def build(tl, ep):
     tl.expr(Y, l10.end, "deadpan", 0.3, brow_ang=0.5)
     tl.set(B, l10.end + 0.1, 0.4, lean_f=0.0, squash=0.0, arm_L_raise=0.3)
 
-    # ---------------------------------------------------------------- 8. the question nobody asks a pillow
+    # ---------------------------------------------------------------- 7. the question nobody asks a pillow
     l11 = tl.say(B, l10.end + 0.4, A("L11_battaniye"), intensity=0.8, bob=0.4)
     tl.expr(B, l11.t - 0.2, "touched", 0.4, m_smile=0.15)
     tl.set(B, l11.t, 0.6, tilt=-0.15, lean_f=0.06)
@@ -210,7 +182,7 @@ def build(tl, ep):
     tl.shake(Y, l11.end + 0.05, 0.5, "m_frown", 0.25, 11, decay=False)                  # lip wobble
     tl.sfx(l11.end + 0.2, S("sniff.wav"), -8)
 
-    # ---------------------------------------------------------------- 9. ...and yet, it's worth it
+    # ---------------------------------------------------------------- 8. ...and yet, it's worth it
     l12 = tl.say(Y, l11.end + 0.4, A("L12_yastik"), intensity=0.8, bob=0.3)            # "Kimse…"
     tl.look(Y, l12.t, (-0.3, -0.3, 0.6), 0.5, head=0.3)                                 # looks down
     tl.set(Y, l12.t, 0.6, nod=0.12, squash=-0.04)
@@ -221,16 +193,10 @@ def build(tl, ep):
     tl.look(Y, l12b.find("her"), B, 0.4, head=0.35)
     tl.expr(Y, l12b.find("değiyor") - 0.2, "touched", 0.5, m_smile=0.5)
     tl.expr(B, l12b.find("koyunca"), "touched", 0.6)
+    tl.expr(B, l12b.find("değiyor"), "fond", 0.4)                                       # reaction shot
+    tl.set(B, l12b.find("değiyor"), 0.5, arm_L_raise=0.9, arm_L_fold=1.2, arm_L_curl=0.8)  # hand on heart
 
-    l13 = tl.say(B, l12b.end + 0.25, A("L13_battaniye"), bob=0.7)                     # "Beni yere atıyor ama…"
-    tl.expr(B, l13.t, "fond", 0.3)
-    tl.set(B, l13.t, 0.3, tilt=0.0, lean_f=0.0)
-    tl.set(B, l13.find("üşüyünce") - 0.1, 0.4, arm_L_raise=0.9, arm_L_fold=1.2, arm_L_curl=0.8, tilt=-0.15)
-    tl.expr(B, l13.find("arıyor") - 0.2, "happy", 0.4)
-    tl.look(Y, l13.t, B, 0.3, head=0.35)
-    tl.expr(Y, l13.find("üşüyünce"), "fond", 0.4)
-
-    l14 = tl.say(Y, l13.end + 0.15, A("L14_yastik"), bob=0.8)                         # "Dağınıklar, söylenirler…"
+    l14 = tl.say(Y, l12b.end + 0.35, A("L14_yastik"), bob=0.8)                        # "Dağınıklar, söylenirler…"
     tl.expr(Y, l14.t, "fond", 0.3, lid_u=0.3)
     for i, w in enumerate(("dağınık", "söylen", "teşekkür")):                           # counts on his corner again
         tl.set(Y, l14.find(w) - 0.05, 0.12, "back", arm_R_raise=0.5 + 0.2 * i, arm_R_fold=0.3)
@@ -250,7 +216,7 @@ def build(tl, ep):
     tl.expr(Y, l15.find("bizim"), "happy", 0.4, squint=0.5)
     tl.set(Y, l15.find("bizim"), 0.5, tilt=0.12, squash=-0.03)
 
-    # ---------------------------------------------------------------- 10. ...and they're back
+    # ---------------------------------------------------------------- 9. ...and they're back
     keys = l15.end + 0.35
     tl.sfx(keys, S("keys.wav"), -2)
     for who in (Y, B):
@@ -281,16 +247,15 @@ def build(tl, ep):
     tl.shot(l02.t - 0.1, "cam_two", *two, lens=30, fstop=4.0, to_loc=(1.85, -2.6, 1.12), dur=l02.dur + 0.4,
             focus=B)
     tl.face_shot(l03.t - 0.05, "cam_cu_y", Y, dist=1.45, yaw=-15, height=0.06, lens=28, push=0.12, dur=l03.dur)
-    tl.face_shot(l04.t - 0.05, "cam_cu_b", B, dist=1.25, yaw=12, height=0.18, lens=26, push=0.1, dur=l04.dur)
-    tl.face_shot(l05.t - 0.1, "cam_cu_y2", Y, dist=1.0, yaw=0, height=0.04, lens=30)
-    tl.shot(l06.t - 0.05, "cam_wide", *wide, lens=24, fstop=4.5, to_loc=(2.2, -2.75, 1.28), dur=l06.dur, focus=B)
+    tl.shot(up - 0.2, "cam_wide", *wide, lens=24, fstop=4.5, to_loc=(2.2, -2.75, 1.28), dur=1.0, focus=B)
     tl.face_shot(l08.t - 0.3, "cam_cu_y", Y, dist=1.3, yaw=-14, height=0.06, lens=28, push=0.18, dur=l08.dur)
     tl.shot(l09.t - 0.05, "cam_bed_two", *bed_two, lens=22, fstop=4.0, focus=B)
     tl.face_shot(l10.t - 0.04, "cam_shout", Y, dist=0.8, yaw=-8, height=0.02, lens=30, shake=0.006)
     tl.shot(l10.end + 0.3, "cam_bed_two", *bed_two, lens=22, fstop=4.0, focus=Y)
+    react = l12b.find("her") - 0.1                                     # "…her şeye değiyor" plays on her face
     tl.face_shot(l12.t - 0.1, "cam_cu_y5", Y, dist=1.35, yaw=-12, height=0.06, lens=28, push=0.15,
-                 dur=l12b.end - l12.t)
-    tl.face_shot(l13.t - 0.05, "cam_cu_b2", B, dist=1.25, yaw=10, height=0.12, lens=26, push=0.08, dur=l13.dur)
+                 dur=react - l12.t)
+    tl.face_shot(react, "cam_cu_b2", B, dist=1.25, yaw=10, height=0.12, lens=26, push=0.08, dur=l14.t - react)
     tl.face_shot(l14.t - 0.05, "cam_cu_y6", Y, dist=1.45, yaw=-15, height=0.06, lens=28)
     tl.shot(l15.t - 0.1, "cam_bed_two", *bed_two, lens=22, fstop=4.0, to_loc=(0.04, -1.25, 1.04),
             dur=tl.duration - l15.t, focus=Y)
