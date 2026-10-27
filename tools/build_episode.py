@@ -36,6 +36,8 @@ ap.add_argument("--fps", type=int, default=24)
 ap.add_argument("--frames", default=None, help="render only these frames, e.g. 0,36,72 (for look checks)")
 ap.add_argument("--dry", action="store_true", help="bake and print the line/shot schedule, no render")
 ap.add_argument("--resume", action="store_true", help="skip frames that already exist (continue a stopped render)")
+ap.add_argument("--no-persistent", action="store_true",
+                help="rebuild the render scene every frame (persistent data can drop keyframed props to black)")
 args = ap.parse_args()
 
 ep_dir = os.path.abspath(args.episode)
@@ -65,6 +67,8 @@ if args.blend:
     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(out, "episode.blend"))
 
 sc = bpy.context.scene
+if args.no_persistent:
+    sc.render.use_persistent_data = False
 sc.render.filepath = os.path.join(out, "frames", "f_")
 if args.frames:
     for f in [int(x) for x in args.frames.split(",")]:

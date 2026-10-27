@@ -116,7 +116,9 @@ Yüz sistemi yüzeye ışın izlemeyle oturduğu için kupa, ayakkabı, saksı g
 hareketleri orantılı kalır.
 
 Setteki bir objeyi (ör. saksının yaprakları) oynatmak için `tl.prop(obj, fn, t0, t1)`:
-`fn(t)` dinlenme pozuna eklenecek `{"rotation_euler": (...)}` döndürür.
+`fn(t)` dinlenme pozuna eklenecek `{"rotation_euler": (...)}` döndürür. Cycles'ın kalıcı
+sahne verisi (persistent data) bu objeleri bazı karelerde siyah çizebiliyor; o kareleri
+`--no-persistent --frames ...` ile yeniden render et.
 
 ### Yeni bölüm
 
