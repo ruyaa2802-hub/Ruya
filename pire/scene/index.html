@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Bir Pire Kendi Boyunun 100 Katı Üzerine Nasıl Zıplar?</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', 'Noto Color Emoji', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  .chip { left: 50%; top: 200px; background: rgba(16, 12, 10, 0.62); border: 2px solid rgba(255, 220, 170, 0.35); border-radius: 22px; padding: 12px 26px;
+    color: #fff; font-weight: 700; font-size: 36px; white-space: nowrap; text-align: center; }
+  .chip small { display: block; font-size: 26px; font-weight: 600; color: #f0dcc0; margin-top: 4px; }
+  .tag { background: rgba(16, 12, 10, 0.6); color: #fff; font-weight: 700; font-size: 30px; padding: 6px 15px; border-radius: 12px; white-space: nowrap; border: 2px solid rgba(255,255,255,0.35); }
+  .tag.m { border-color: #ff7a6e; } .tag.r { border-color: #5cc8ff; } .tag.a { border-color: #ffb35a; } .tag.k { border-color: #ffe066; } .tag.p { border-color: #9cf0b0; }
+  .speed { left: 56px; top: 120px; font-size: 26px; font-weight: 700; letter-spacing: 0.04em; color: #fff; background: rgba(16,12,10,0.55); border-radius: 10px; padding: 6px 14px; }
+  .speed i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #ff5a4e; margin-right: 10px; vertical-align: 1px; }
+  #hook { left: 50%; top: 1010px; text-align: center; font-family: 'Inter Display', 'Inter', sans-serif; color: #fff; text-shadow: 0 4px 24px rgba(0,0,0,0.8); }
+  #hook b { display: block; font-size: 150px; font-weight: 900; line-height: 1; color: #ffd27a; }
+  #hook span { font-size: 40px; font-weight: 700; }
+  #outro { left: 50%; top: 250px; text-align: center; white-space: nowrap; }
+  #outro .q { font-family: 'Inter Display', 'Inter', 'Noto Color Emoji', sans-serif; font-weight: 800; font-size: 62px; color: #fff; line-height: 1.12;
+    text-shadow: 0 4px 22px rgba(0,0,0,0.75), 0 0 2px rgba(0,0,0,0.8); }
+  #outro .brand { display: inline-flex; align-items: center; gap: 14px; margin-top: 22px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 800; font-size: 40px; color: #fff; text-shadow: 0 3px 12px rgba(0,0,0,0.75); }
+  #outro .brand img { width: 76px; height: 76px; border-radius: 50%; border: 4px solid #fff; }
+  #sub { text-wrap: balance; left: 50%; bottom: 440px; max-width: 920px; width: max-content; text-align: center; font-weight: 600; font-size: 44px; line-height: 1.22;
+    color: #fff; background: rgba(16, 10, 6, 0.58); padding: 8px 24px 11px; border-radius: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.7); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <div id="slow" class="o speed"><i></i>AĞIR ÇEKİM</div>
+    <div id="real" class="o speed"><i style="background:#9cf0b0"></i>GERÇEK HIZ</div>
+    <div id="hook" class="o"><b>≈100×</b><span>kendi boyunun</span></div>
+    <div id="size" class="o chip">Kedi piresi ≈ 1–3 mm<small>Boy, türe ve bireye göre değişir</small></div>
+    <div id="repr" class="o chip">Temsili: ~3 mm boy → ~30 cm ≈ 100×<small>Ölçülen değerler türe ve bireye göre değişir</small></div>
+    <div id="mech" class="o chip">Kas yavaşça kasılır, kilit tutar<small>Enerji esnek yapılarda ve iskelette birikir</small></div>
+    <div id="rel" class="o chip">Kilit açılır → yay boşalır<small>Enerji yaklaşık 1 milisaniyede bacağa aktarılır</small></div>
+    <div id="wingc" class="o chip">Pirelerin kanadı yoktur<small>Hareket için sıçramaya güvenirler</small></div>
+    <div id="hostc" class="o chip">Konakçı: kedi tüyü<small>Temsili makro görünüm</small></div>
+    <div id="l1mm" class="o tag">1 mm</div>
+    <div id="lFlea" class="o tag">Pire ≈ 2,5 mm</div>
+    <div id="l3mm" class="o tag">~3 mm</div>
+    <div id="l30" class="o tag a">30 cm</div>
+    <div id="l0" class="o tag">0</div>
+    <div id="lMus" class="o tag m">Kas</div>
+    <div id="lRes" class="o tag r">Esnek yapı (resilin)</div>
+    <div id="lArc" class="o tag a">Dış iskelet (göğüs yayı)</div>
+    <div id="lCatch" class="o tag k">Kilit</div>
+    <div id="lPush" class="o tag p">İtme: bacak ucu → zemin</div>
+    <div id="lWing" class="o tag">Kanat yok</div>
+    <div id="outro" class="o"><div class="q">Doğanın en küçük<br>akrobatlarından biri!</div><div class="brand"><img src="./assets/logo.png" alt="">Pirilumo</div></div>
+    <div id="sub" class="o"></div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
