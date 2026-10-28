@@ -1,0 +1,72 @@
+[
+ {
+  "word": "Sen",
+  "start": 0.0,
+  "end": 0.18,
+  "p": 0.373,
+  "asr": "Sen"
+ },
+ {
+  "word": "yine",
+  "start": 0.18,
+  "end": 0.34,
+  "p": 0.993,
+  "asr": "yine"
+ },
+ {
+  "word": "şanslısın!",
+  "start": 0.34,
+  "end": 0.98,
+  "p": 0.827,
+  "asr": "şanslasın,"
+ },
+ {
+  "word": "Bana",
+  "start": 1.04,
+  "end": 1.22,
+  "p": 0.879,
+  "asr": "bana"
+ },
+ {
+  "word": "bakıp",
+  "start": 1.22,
+  "end": 1.58,
+  "p": 0.996,
+  "asr": "bakıp"
+ },
+ {
+  "word": "“Bu",
+  "start": 1.58,
+  "end": 1.78,
+  "p": 0.608,
+  "asr": "bu"
+ },
+ {
+  "word": "çekirdekli”",
+  "start": 1.78,
+  "end": 2.3,
+  "p": 0.981,
+  "asr": "çekirdekli,"
+ },
+ {
+  "word": "deyip",
+  "start": 2.42,
+  "end": 2.66,
+  "p": 0.777,
+  "asr": "deyip"
+ },
+ {
+  "word": "yüzünü",
+  "start": 2.66,
+  "end": 2.88,
+  "p": 0.992,
+  "asr": "yüzünü"
+ },
+ {
+  "word": "çevirdi.",
+  "start": 2.88,
+  "end": 3.2,
+  "p": 0.952,
+  "asr": "çevirdi."
+ }
+]

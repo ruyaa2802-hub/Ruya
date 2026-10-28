@@ -4,12 +4,12 @@ import math
 import bpy
 
 from . import render
-from .characters import battaniye, buzdolabi, kupa, peynir, sut, yastik
+from .characters import battaniye, buzdolabi, kupa, peynir, sut, tahin, yastik, zeytin
 from .sets import bedroom, kitchen
 from .util import collection, reset_scene
 
 CAST = {"yastik": yastik, "battaniye": battaniye, "kupa": kupa, "buzdolabi": buzdolabi, "sut": sut,
-        "peynir": peynir}
+        "peynir": peynir, "zeytin": zeytin, "tahin": tahin}
 SETS = {"bedroom": bedroom, "kitchen": kitchen}
 
 # default blocking in the bedroom
@@ -32,5 +32,8 @@ def build(cast=("yastik", "battaniye"), preset="preview", fps=24, home=None, set
     for name in cast:
         col = collection(name.capitalize())
         chars[name] = CAST[name].build(col, **{**HOME.get(name, {}), **(home or {}).get(name, {})})
+    for obj in bpy.context.scene.objects:          # light passes through glass (see materials.glass)
+        if any(slot.material and slot.material.get("glass") for slot in getattr(obj, "material_slots", [])):
+            obj.visible_shadow = False
     bpy.context.view_layer.update()
     return chars

@@ -3,49 +3,49 @@
   "word": "Hayırdır",
   "start": 0.0,
   "end": 0.62,
-  "p": 0.981,
+  "p": 0.979,
   "asr": "Hayırdır"
  },
  {
   "word": "yine?",
   "start": 0.62,
-  "end": 0.88,
-  "p": 0.936,
+  "end": 0.86,
+  "p": 0.935,
   "asr": "yine?"
  },
  {
   "word": "Bu",
   "start": 1.36,
   "end": 1.44,
-  "p": 0.983,
+  "p": 0.984,
   "asr": "Bu"
  },
  {
   "word": "gece",
   "start": 1.44,
   "end": 1.62,
-  "p": 0.994,
+  "p": 0.995,
   "asr": "gece"
  },
  {
   "word": "dördüncü",
   "start": 1.62,
-  "end": 1.9,
-  "p": 0.801,
-  "asr": "4."
+  "end": 2.18,
+  "p": 0.829,
+  "asr": "dördüncü"
  },
  {
   "word": "gelişin.",
-  "start": 2.38,
-  "end": 2.8,
-  "p": 0.824,
+  "start": 2.18,
+  "end": 2.68,
+  "p": 0.987,
   "asr": "gelişin."
  },
  {
   "word": "İçeride",
-  "start": 3.04,
+  "start": 3.1,
   "end": 3.46,
-  "p": 0.979,
+  "p": 0.978,
   "asr": "İçeride"
  },
  {
@@ -59,14 +59,14 @@
   "word": "bir",
   "start": 3.62,
   "end": 3.76,
-  "p": 0.976,
+  "p": 0.98,
   "asr": "bir"
  },
  {
   "word": "şey",
   "start": 3.76,
   "end": 3.92,
-  "p": 0.685,
+  "p": 0.675,
   "asr": "şey"
  },
  {
@@ -80,7 +80,7 @@
   "word": "doğuracağım?",
   "start": 4.04,
   "end": 4.48,
-  "p": 0.851,
+  "p": 0.881,
   "asr": "doğuracağım?"
  }
 ]

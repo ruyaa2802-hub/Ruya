@@ -1,0 +1,72 @@
+[
+ {
+  "word": "Gençler…",
+  "start": 0.0,
+  "end": 0.56,
+  "p": 0.87,
+  "asr": "Gençler"
+ },
+ {
+  "word": "gürültü",
+  "start": 0.56,
+  "end": 1.04,
+  "p": 0.853,
+  "asr": "gürültü"
+ },
+ {
+  "word": "yapmayın.",
+  "start": 1.04,
+  "end": 1.5,
+  "p": 0.998,
+  "asr": "yapmayın."
+ },
+ {
+  "word": "Ben",
+  "start": 1.74,
+  "end": 2.04,
+  "p": 0.897,
+  "asr": "Ben"
+ },
+ {
+  "word": "bu",
+  "start": 2.04,
+  "end": 2.26,
+  "p": 0.952,
+  "asr": "bu"
+ },
+ {
+  "word": "dolaba",
+  "start": 2.26,
+  "end": 2.64,
+  "p": 0.875,
+  "asr": "dolaba"
+ },
+ {
+  "word": "girdiğimde…",
+  "start": 2.64,
+  "end": 3.28,
+  "p": 0.829,
+  "asr": "girdiğimde"
+ },
+ {
+  "word": "süt",
+  "start": 3.28,
+  "end": 3.52,
+  "p": 0.727,
+  "asr": "süt"
+ },
+ {
+  "word": "daha",
+  "start": 3.52,
+  "end": 3.72,
+  "p": 0.996,
+  "asr": "daha"
+ },
+ {
+  "word": "inekteydi.",
+  "start": 3.72,
+  "end": 4.36,
+  "p": 0.928,
+  "asr": "inekteydi."
+ }
+]

@@ -374,9 +374,12 @@ def coffee_cold(name="coffee_cold"):
 
 
 def glass(name, color=(0.9, 0.97, 1.0), roughness=0.03):
+    """Clear glass. Tagged so the stage can stop it casting shadows (caustics are off, so a glass
+    bottle would otherwise leave whatever is inside it black)."""
     mat, nb = _new(name)
     if nb is None:
         return mat
+    mat["glass"] = True
     nb.principled(**{"Base Color": _rgba(color), "Roughness": roughness, "Transmission Weight": 1.0, "IOR": 1.45})
     return mat
 
@@ -405,6 +408,45 @@ def cheese(name="cheese_kasar", color=(0.98, 0.76, 0.2)):
     bump = nb.n("ShaderNodeBump", {"Strength": 0.6, "Distance": 0.004, "Height": nb.math("SUBTRACT", 1.0, hole)})
     nb.principled(**{"Base Color": c, "Roughness": 0.45, "Subsurface Weight": 0.25,
                      "Subsurface Radius": (0.01, 0.006, 0.002), "Normal": bump.outputs[0]})
+    return mat
+
+
+def milk(name="milk"):
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    nb.principled(**{"Base Color": (0.97, 0.95, 0.87, 1), "Roughness": 0.25, "Subsurface Weight": 0.4,
+                     "Subsurface Radius": (0.02, 0.02, 0.025)})
+    return mat
+
+
+def mottled(name, color, dark, scale=60.0, roughness=0.15, coat=0.6):
+    """Glossy, slightly blotchy organic surface (olives, fruit) in object space."""
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    tc = nb.n("ShaderNodeTexCoord")
+    noise = nb.n("ShaderNodeTexNoise", {"Vector": tc.outputs["Object"], "Scale": scale, "Detail": 4.0})
+    c = nb.mix(_rgba(color), _rgba(dark), nb.math("MULTIPLY", noise.outputs[0], 0.7))
+    bump = nb.n("ShaderNodeBump", {"Strength": 0.05, "Height": noise.outputs[0]})
+    nb.principled(**{"Base Color": c, "Roughness": roughness, "Coat Weight": coat, "Coat Roughness": 0.08,
+                     "Subsurface Weight": 0.1, "Normal": bump.outputs[0]})
+    return mat
+
+
+def dusty(name, color, dust=(0.62, 0.6, 0.56), amount=0.55, roughness=0.5, metallic=0.0):
+    """Something that has sat untouched for years: patchy grey dust over the base colour."""
+    mat, nb = _new(name)
+    if nb is None:
+        return mat
+    tc = nb.n("ShaderNodeTexCoord")
+    noise = nb.n("ShaderNodeTexNoise", {"Vector": tc.outputs["Object"], "Scale": 90.0, "Detail": 6.0})
+    m = nb.n("ShaderNodeMapRange", {"Value": noise.outputs[0], 1: 1 - amount, 2: 1 - amount + 0.12, 3: 0.0,
+                                    4: 1.0}).outputs[0]
+    c = nb.mix(_rgba(color), _rgba(dust), m)
+    rough = nb.n("ShaderNodeMapRange", {"Value": m, 3: roughness, 4: 0.95}).outputs[0]
+    met = nb.n("ShaderNodeMapRange", {"Value": m, 3: metallic, 4: 0.0}).outputs[0]
+    nb.principled(**{"Base Color": c, "Roughness": rough, "Metallic": met})
     return mat
 
 

@@ -3,24 +3,24 @@
   "word": "Bence",
   "start": 0.0,
   "end": 0.6,
-  "p": 0.749
+  "p": 0.76
  },
  {
   "word": "ne",
   "start": 0.6,
   "end": 1.28,
-  "p": 0.821
+  "p": 0.825
  },
  {
   "word": "istediğini",
   "start": 1.28,
   "end": 1.82,
-  "p": 0.998
+  "p": 0.997
  },
  {
   "word": "bilmiyor.",
   "start": 1.82,
   "end": 2.3,
-  "p": 0.992
+  "p": 0.991
  }
 ]

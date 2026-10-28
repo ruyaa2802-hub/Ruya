@@ -3,35 +3,35 @@
   "word": "Kardeşim,",
   "start": 0.0,
   "end": 0.66,
-  "p": 0.895,
+  "p": 0.903,
   "asr": "Kardeşim"
  },
  {
   "word": "acıktıysan",
   "start": 0.66,
   "end": 1.46,
-  "p": 0.895,
+  "p": 0.892,
   "asr": "acıktıysan"
  },
  {
   "word": "ye!",
   "start": 1.46,
   "end": 1.66,
-  "p": 0.934,
+  "p": 0.937,
   "asr": "ye"
  },
  {
   "word": "Beni",
   "start": 1.66,
   "end": 2.24,
-  "p": 0.252,
+  "p": 0.25,
   "asr": "beni"
  },
  {
   "word": "açıp",
   "start": 2.24,
   "end": 2.66,
-  "p": 0.87,
+  "p": 0.862,
   "asr": "açıp"
  },
  {
@@ -45,14 +45,14 @@
   "word": "hayatını",
   "start": 2.88,
   "end": 3.32,
-  "p": 0.994,
+  "p": 0.995,
   "asr": "hayatını"
  },
  {
   "word": "sorgulama!",
   "start": 3.32,
   "end": 3.9,
-  "p": 0.982,
+  "p": 0.981,
   "asr": "sorgulama."
  }
 ]

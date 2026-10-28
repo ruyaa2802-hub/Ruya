@@ -2,15 +2,15 @@
  {
   "word": "Beni",
   "start": 0.0,
-  "end": 0.28,
-  "p": 0.703,
+  "end": 0.26,
+  "p": 0.688,
   "asr": "Beni"
  },
  {
   "word": "üç",
-  "start": 0.28,
+  "start": 0.26,
   "end": 0.6,
-  "p": 0.752,
+  "p": 0.748,
   "asr": "üç"
  },
  {
@@ -24,77 +24,77 @@
   "word": "eline",
   "start": 0.86,
   "end": 1.2,
-  "p": 0.822,
+  "p": 0.829,
   "asr": "eline"
  },
  {
   "word": "aldı,",
   "start": 1.2,
-  "end": 1.62,
-  "p": 0.979,
+  "end": 1.64,
+  "p": 0.982,
   "asr": "aldı,"
  },
  {
   "word": "üçünde",
   "start": 1.68,
   "end": 2.22,
-  "p": 0.612,
+  "p": 0.622,
   "asr": "üçünle"
  },
  {
   "word": "de",
   "start": 2.22,
   "end": 2.3,
-  "p": 0.995,
+  "p": 0.994,
   "asr": "de"
  },
  {
   "word": "geri",
   "start": 2.3,
   "end": 2.5,
-  "p": 0.981,
+  "p": 0.979,
   "asr": "geri"
  },
  {
   "word": "koydu.",
   "start": 2.5,
   "end": 2.88,
-  "p": 0.988,
+  "p": 0.985,
   "asr": "koydu."
  },
  {
   "word": "Ben",
   "start": 3.3,
   "end": 3.48,
-  "p": 0.915,
+  "p": 0.912,
   "asr": "Ben"
  },
  {
   "word": "ürün",
   "start": 3.48,
   "end": 3.86,
-  "p": 0.965,
+  "p": 0.966,
   "asr": "ürün"
  },
  {
   "word": "müyüm,",
   "start": 3.86,
   "end": 4.2,
-  "p": 0.954,
+  "p": 0.948,
   "asr": "müyüm"
  },
  {
   "word": "deneme",
   "start": 4.2,
   "end": 4.82,
-  "p": 0.636,
+  "p": 0.641,
   "asr": "deneme"
  },
  {
   "word": "sürümü",
   "start": 4.82,
   "end": 5.18,
-  "p": 0.831,
+  "p": 0.839,
   "asr": "sürümü"
  },
  {

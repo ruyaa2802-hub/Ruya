@@ -42,9 +42,75 @@ def _part(name, size, center, mat, col, bev=0.0, segs=3):
     return obj
 
 
+def _jar(name, x, y, z, r, h, glass_c, fill_c, lid_c, col, fill=0.85):
+    """A jar: tinted glass, its contents and a lid."""
+    out = [_lathe(name, [(0.0, 0.0), (r, 0.0), (r * 1.02, h * 0.92), (r * 0.85, h), (0.0, h)],
+                  M.glass(name + "_glass", glass_c, roughness=0.06), col, (x, y, z), segs=32),
+           _lathe(name + "_fill", [(0.0, 0.003), (r * 0.94, 0.003), (r * 0.96, h * fill), (0.0, h * fill)],
+                  M.plastic(name + "_fill", fill_c, 0.4), col, (x, y, z), segs=32),
+           _lathe(name + "_lid", [(0.0, 0.0), (r * 0.9, 0.0), (r * 0.92, 0.022), (0.0, 0.024)],
+                  M.metal(name + "_lid", lid_c, 0.3), col, (x, y, z + h - 0.004), segs=32)]
+    return out
+
+
+def _stock(col, inside):
+    """Everything else in a lived-in Turkish fridge (the cast stands in front)."""
+    top, low = SHELVES[1] + 0.006, SHELVES[0] + 0.006
+    items = []
+    # top shelf, back row: jam, kaymak, sucuk, honey, white cheese; a tall water bottle in the corner
+    items += _jar("jam", -0.07, 0.17, top, 0.04, 0.1, (0.95, 0.9, 0.9), (0.55, 0.05, 0.08), (0.9, 0.25, 0.2), col)
+    items += _jar("honey", 0.27, 0.05, top, 0.034, 0.09, (1.0, 0.95, 0.8), (0.85, 0.5, 0.08), (0.95, 0.75, 0.2), col)
+    items.append(_part("kaymak_dish", (0.12, 0.08, 0.035), (0.07, 0.13, top + 0.0175),
+                       M.plastic("kaymak_box", (0.92, 0.92, 0.88), 0.35), col, 0.008))
+    items.append(_part("beyaz_peynir", (0.09, 0.06, 0.035), (-0.02, 0.03, top + 0.026),
+                       M.plastic("white_cheese", (0.96, 0.95, 0.9), 0.55), col, 0.006))
+    items.append(_lathe("cheese_plate", [(0.0, 0.0), (0.07, 0.0), (0.075, 0.008), (0.0, 0.006)],
+                        M.ceramic("plate_blue", (0.3, 0.5, 0.8)), col, (-0.02, 0.03, top), segs=32))
+    items.append(_blobs("sucuk", [((0.17 + 0.03 * math.cos(a), 0.18 + 0.05 * math.sin(a), top + 0.018),
+                                   (0.018, 0.018, 0.018)) for a in [i * 0.35 for i in range(9)]],
+                        M.plastic("sucuk_red", (0.45, 0.08, 0.06), 0.45), col, rings=6, segs=10, subsurf=1))
+    items.append(_lathe("water_bottle", [(0.0, 0.0), (0.04, 0.0), (0.042, 0.22), (0.02, 0.27), (0.015, 0.3),
+                                         (0.0, 0.3)], M.glass("water_plastic", (0.75, 0.9, 1.0), roughness=0.1),
+                        col, (-0.27, 0.21, top), segs=32))
+    # bottom shelf: ayran cups, a plate of dolma, leftovers in a box
+    for k, x in enumerate((-0.07, 0.0)):
+        items.append(_lathe(f"ayran_{k}", [(0.0, 0.0), (0.026, 0.0), (0.032, 0.075), (0.0, 0.075)],
+                            M.plastic("ayran_cup", (0.95, 0.95, 0.97), 0.3), col, (x, -0.17, low), segs=24))
+        items.append(_lathe(f"ayran_{k}_lid", [(0.0, 0.0), (0.033, 0.0), (0.033, 0.003), (0.0, 0.003)],
+                            M.metal("ayran_foil", (0.2, 0.45, 0.85), 0.35), col, (x, -0.17, low + 0.075), segs=24))
+    items.append(_lathe("dolma_plate", [(0.0, 0.0), (0.075, 0.0), (0.08, 0.01), (0.0, 0.008)],
+                        M.ceramic("plate_white", (0.93, 0.92, 0.88)), col, (0.22, -0.13, low), segs=32))
+    items.append(_blobs("dolma", [((0.22 + dx, -0.13 + dy, low + 0.022), (0.016, 0.034, 0.014))
+                                  for dx, dy in ((-0.035, 0.0), (0.0, 0.01), (0.035, 0.0), (-0.018, -0.03),
+                                                 (0.018, -0.03))],
+                        M.mottled("dolma_leaf", (0.2, 0.3, 0.1), (0.12, 0.2, 0.05), scale=120.0), col, rings=6,
+                        segs=12, subsurf=1))
+    items.append(_part("leftovers", (0.13, 0.1, 0.07), (0.24, 0.16, low + 0.035),
+                       M.glass("box_plastic", (0.95, 0.95, 0.95), roughness=0.3), col, 0.01))
+    items.append(_part("leftovers_lid", (0.135, 0.105, 0.012), (0.24, 0.16, low + 0.076),
+                       M.plastic("box_lid", (0.25, 0.65, 0.4), 0.4), col, 0.004))
+    items.append(_part("leftovers_food", (0.11, 0.08, 0.04), (0.24, 0.16, low + 0.024),
+                       M.plastic("pilav", (0.92, 0.85, 0.65), 0.7), col))
+    # crisper: cucumbers, a lettuce, lemons; a watermelon wedge on its lid
+    items.append(_blobs("cucumbers", [((0.0, -0.02, 0.13), (0.11, 0.022, 0.022)), ((0.02, 0.05, 0.13),
+                                                                                    (0.1, 0.02, 0.02))],
+                        M.mottled("cucumber", (0.18, 0.35, 0.1), (0.1, 0.22, 0.05)), col, rings=8, segs=12,
+                        subsurf=1))
+    items.append(_blobs("lettuce", [((0.2, 0.05, 0.17), (0.08, 0.08, 0.07)), ((0.17, 0.0, 0.2), (0.05, 0.05, 0.04))],
+                        M.mottled("lettuce", (0.45, 0.7, 0.2), (0.3, 0.5, 0.12), scale=30.0), col, rings=10,
+                        segs=14, subsurf=1))
+    items.append(_blobs("lemons", [((-0.24, 0.1, 0.13), (0.035, 0.028, 0.028)), ((-0.25, 0.02, 0.13),
+                                                                               (0.035, 0.028, 0.028))],
+                        M.mottled("lemon_skin", (0.95, 0.8, 0.1), (0.85, 0.65, 0.05)), col, rings=10, segs=14,
+                        subsurf=1))
+    rind = M.mottled("melon_rind", (0.15, 0.4, 0.12), (0.06, 0.22, 0.05), scale=25.0)
+    items.append(_blobs("watermelon", [((0.0, 0.05, 0.312), (0.12, 0.08, 0.1))], rind, col, rings=8, segs=16))
+    return items
+
+
 def build(col=None, loc=(0, 0, 0), rot=(0, 0, 0)):
     enamel = M.ceramic("fridge_enamel", (0.6, 0.8, 0.88), roughness=0.18)
-    inside = M.plastic("fridge_inside", (0.9, 0.93, 0.95), 0.3)
+    inside = M.plastic("fridge_inside", (0.62, 0.69, 0.74), 0.3)
     chrome = M.metal("chrome", (0.92, 0.92, 0.94), 0.1)
     rubber = M.plastic("gasket", (0.08, 0.09, 0.1), 0.6)
     glass = M.glass("shelf_glass", (0.85, 0.95, 1.0))
@@ -152,8 +218,9 @@ def build(col=None, loc=(0, 0, 0), rot=(0, 0, 0)):
     interior.append(_lathe("pot_lid", [(0.0, 0.0), (0.12, 0.0), (0.08, 0.02), (0.012, 0.03), (0.0, 0.035)], pot_m,
                            col, (0.05, 0.06, SHELVES[0] + 0.11), segs=32))
     interior.append(_lathe("yoghurt", [(0.0, 0.0), (0.06, 0.0), (0.07, 0.1), (0.0, 0.1)],
-                           M.plastic("yoghurt_tub", (0.95, 0.95, 0.97), 0.4), col, (-0.2, -0.05, SHELVES[0] + 0.006),
+                           M.plastic("yoghurt_tub", (0.95, 0.95, 0.97), 0.4), col, (-0.22, 0.13, SHELVES[0] + 0.006),
                            segs=32))
+    interior += _stock(col, inside)
     for o in interior:
         o.parent = arm
 

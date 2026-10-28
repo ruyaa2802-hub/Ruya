@@ -1,0 +1,44 @@
+[
+ {
+  "word": "Evlat…",
+  "start": 0.0,
+  "end": 0.44,
+  "p": 0.866,
+  "asr": "Evlat"
+ },
+ {
+  "word": "tarih",
+  "start": 0.44,
+  "end": 0.82,
+  "p": 0.663,
+  "asr": "tarih"
+ },
+ {
+  "word": "dediğin,",
+  "start": 0.82,
+  "end": 1.24,
+  "p": 0.919,
+  "asr": "dediğin"
+ },
+ {
+  "word": "sadece",
+  "start": 1.24,
+  "end": 1.58,
+  "p": 0.864,
+  "asr": "sadece"
+ },
+ {
+  "word": "bir",
+  "start": 1.58,
+  "end": 2.04,
+  "p": 0.948,
+  "asr": "bir"
+ },
+ {
+  "word": "rakamdır.",
+  "start": 2.04,
+  "end": 2.54,
+  "p": 0.699,
+  "asr": "hakkamdır."
+ }
+]
