@@ -1,0 +1,234 @@
+{
+ "replikler": [
+  {
+   "kod": "r1",
+   "karakter": "RÜYA",
+   "metin": "Gitti mi?",
+   "baslangic": 5.19,
+   "bitis": 6.17
+  },
+  {
+   "kod": "a1",
+   "karakter": "ARAS",
+   "metin": "Seni bekliyordum.",
+   "baslangic": 7.45,
+   "bitis": 8.78
+  },
+  {
+   "kod": "r2",
+   "karakter": "RÜYA",
+   "metin": "Bizi öğrenirlerse her şey biter.",
+   "baslangic": 13.28,
+   "bitis": 16.11
+  },
+  {
+   "kod": "a2",
+   "karakter": "ARAS",
+   "metin": "Seni kaybetmekten başka hiçbir şeyden korkmuyorum.",
+   "baslangic": 17.07,
+   "bitis": 20.92
+  },
+  {
+   "kod": "l1",
+   "karakter": "LALİN",
+   "metin": "Demek beni değil, onu seçtin…",
+   "baslangic": 31.21,
+   "bitis": 33.35
+  },
+  {
+   "kod": "m1",
+   "karakter": "MERT",
+   "metin": "Bunu neden bana gönderiyorsun?",
+   "baslangic": 45.99,
+   "bitis": 48.24
+  },
+  {
+   "kod": "l2",
+   "karakter": "LALİN",
+   "metin": "Çünkü bu daha başlangıç.",
+   "baslangic": 48.86,
+   "bitis": 50.63
+  },
+  {
+   "kod": "l3",
+   "karakter": "LALİN",
+   "metin": "Şimdi sıra sende, Rüya.",
+   "baslangic": 79.09,
+   "bitis": 80.76
+  }
+ ],
+ "sfx": [
+  {
+   "ad": "door",
+   "sn": 0.35
+  },
+  {
+   "ad": "hum_on",
+   "sn": 1.2
+  },
+  {
+   "ad": "bulb",
+   "sn": 1.3
+  },
+  {
+   "ad": "bulb",
+   "sn": 1.42
+  },
+  {
+   "ad": "bulb",
+   "sn": 1.55
+  },
+  {
+   "ad": "bulb",
+   "sn": 1.66
+  },
+  {
+   "ad": "bulb",
+   "sn": 1.8
+  },
+  {
+   "ad": "bulb",
+   "sn": 1.9
+  },
+  {
+   "ad": "bulb",
+   "sn": 2.06
+  },
+  {
+   "ad": "bulb",
+   "sn": 2.2
+  },
+  {
+   "ad": "bulb",
+   "sn": 2.35
+  },
+  {
+   "ad": "bulb",
+   "sn": 2.5
+  },
+  {
+   "ad": "bulb",
+   "sn": 2.62
+  },
+  {
+   "ad": "bulb",
+   "sn": 2.78
+  },
+  {
+   "ad": "bulb",
+   "sn": 2.9
+  },
+  {
+   "ad": "drawer",
+   "sn": 3.1
+  },
+  {
+   "ad": "thump",
+   "sn": 6.55
+  },
+  {
+   "ad": "step",
+   "sn": 7.9
+  },
+  {
+   "ad": "step",
+   "sn": 8.35
+  },
+  {
+   "ad": "step",
+   "sn": 8.8
+  },
+  {
+   "ad": "step",
+   "sn": 9.25
+  },
+  {
+   "ad": "whoosh",
+   "sn": 9.7
+  },
+  {
+   "ad": "clank",
+   "sn": 26.45
+  },
+  {
+   "ad": "rumble",
+   "sn": 26.4
+  },
+  {
+   "ad": "whoosh",
+   "sn": 27.9
+  },
+  {
+   "ad": "breath",
+   "sn": 33.6
+  },
+  {
+   "ad": "phone_unlock",
+   "sn": 38.4
+  },
+  {
+   "ad": "call_blip",
+   "sn": 40.3
+  },
+  {
+   "ad": "flash",
+   "sn": 42.0
+  },
+  {
+   "ad": "wake",
+   "sn": 42.05
+  },
+  {
+   "ad": "ping",
+   "sn": 43.3
+  },
+  {
+   "ad": "whoosh",
+   "sn": 52.8
+  },
+  {
+   "ad": "ping2",
+   "sn": 58.55
+  },
+  {
+   "ad": "whoosh",
+   "sn": 64.8
+  },
+  {
+   "ad": "buzz",
+   "sn": 67.3
+  },
+  {
+   "ad": "buzz",
+   "sn": 67.95
+  },
+  {
+   "ad": "ping",
+   "sn": 68.3
+  },
+  {
+   "ad": "sparkle",
+   "sn": 73.0
+  },
+  {
+   "ad": "plink",
+   "sn": 75.2
+  },
+  {
+   "ad": "riser",
+   "sn": 72.0
+  },
+  {
+   "ad": "flicker",
+   "sn": 77.0
+  },
+  {
+   "ad": "boom",
+   "sn": 80.9
+  },
+  {
+   "ad": "lights_out",
+   "sn": 82.0
+  }
+ ]
+}

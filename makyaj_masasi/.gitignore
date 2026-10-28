@@ -1,0 +1,6 @@
+out/bg_cache.png
+out/orgfront_cache.png
+out/mix.wav
+out/stem_*.wav
+out/mix_master.wav
+src/__pycache__/
