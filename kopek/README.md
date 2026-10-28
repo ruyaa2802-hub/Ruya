@@ -68,7 +68,9 @@ for i in 0 1 2 3; do node render.cjs --format vertical --from $(echo "$i*12.625"
 ffmpeg -f concat -safe 0 -i <(for i in 0 1 2 3; do echo "file '$PWD/out/parts/part$i.mp4'"; done) -c copy out/video_vertical_noaudio.mp4
 python3 audio/make_audio.py
 ffmpeg -i out/video_vertical_noaudio.mp4 -i out/soundtrack.wav -map 0:v -map 1:a -c:v libx264 -preset slow -crf 19 -pix_fmt yuv420p \
-  -af "volume=XdB,alimiter=limit=0.891:level=false" -c:a aac -b:a 192k -ar 48000 -movflags +faststart -shortest out/kopek-ayna-koku_shorts.mp4
+  -af "volume=1.4dB,alimiter=limit=0.891:level=false" -c:a aac -b:a 192k -ar 48000 -movflags +faststart -shortest out/kopek-ayna-koku_shorts.mp4
 ```
+
+Sonuç −16,1 LUFS, tepe −1,3 dBFS (ebur128).
 
 Test kareleri: `node render.cjs --format vertical --stills 4.2,8.8,19.8,26.8,36,49.5`
