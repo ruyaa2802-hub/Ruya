@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Köpekler Aynada Kendini Neden Tanımıyor?</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', 'Noto Color Emoji', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  .chip { left: 50%; top: 200px; background: rgba(16, 12, 10, 0.62); border: 2px solid rgba(255, 225, 180, 0.35); border-radius: 22px; padding: 12px 26px;
+    color: #fff; font-weight: 700; font-size: 36px; white-space: nowrap; text-align: center; }
+  .chip small { display: block; font-size: 26px; font-weight: 600; color: #f0dcc0; margin-top: 3px; }
+  .chip b.ok { color: #9cf0b0; } .chip b.no { color: #ff9a8a; }
+  #repr { top: 150px; font-size: 26px; font-weight: 600; padding: 8px 18px; border-radius: 14px; border-color: rgba(255,255,255,0.25); color: #e8eef5; }
+  .tag { background: rgba(16, 12, 10, 0.58); color: #fff; font-weight: 700; font-size: 28px; padding: 6px 14px; border-radius: 12px; white-space: nowrap; border: 2px solid rgba(255,255,255,0.3); }
+  .tag.g { border-color: #7dffd0; } .tag.t { border-color: #ffb84d; } .tag.m { border-color: #c58cff; } .tag.y { border-color: #ffd27a; }
+  .tag.a { border-color: #ffcc55; font-size: 30px; }
+  #outro { left: 50%; top: 260px; text-align: center; white-space: nowrap; }
+  #outro .q { font-family: 'Inter Display', 'Inter', 'Noto Color Emoji', sans-serif; font-weight: 800; font-size: 64px; color: #fff; line-height: 1.12;
+    text-shadow: 0 4px 22px rgba(0,0,0,0.75), 0 0 2px rgba(0,0,0,0.8); }
+  #outro .brand { display: inline-flex; align-items: center; gap: 14px; margin-top: 22px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 800; font-size: 40px; color: #fff; text-shadow: 0 3px 12px rgba(0,0,0,0.75); }
+  #outro .brand img { width: 76px; height: 76px; border-radius: 50%; border: 4px solid #fff; }
+  #sub { text-wrap: balance; left: 50%; bottom: 440px; max-width: 920px; width: max-content; text-align: center; font-weight: 700; font-size: 44px; line-height: 1.22;
+    color: #fff; background: rgba(16, 10, 6, 0.58); padding: 8px 24px 11px; border-radius: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.7); }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <div id="noscent" class="o chip">Aynada: görüntü <b class="ok">✓</b> · koku <b class="no">✗</b></div>
+    <div id="nobody" class="o chip">Aynanın arkasında köpek yok</div>
+    <div id="facts" class="o chip">👃 Köpekte ~300 milyon koku reseptörü<small>İnsanda yalnızca ~6 milyon</small></div>
+    <div id="repr" class="o chip">Kokular gözle görülmez · temsili gösterim</div>
+    <div id="test" class="o chip">🪞 Ayna testi ≠ 👃 koku testi<small>İkisi farklı şeyleri ölçebilir</small></div>
+    <div id="lOlf" class="o tag a">Koku alma bölgesi</div>
+    <div id="lBulb" class="o tag a">Koku soğancığı (beyin)</div>
+    <div id="lAir" class="o tag">Hava akışı</div>
+    <div id="sGrass" class="o tag g">Çimen</div>
+    <div id="sTree" class="o tag t">Ağaç dibi</div>
+    <div id="sMark" class="o tag m">Başka bir köpek</div>
+    <div id="cOwn" class="o tag y">Kendi kokusu</div>
+    <div id="cMod" class="o tag m">Kendi kokusu + yabancı koku</div>
+    <div id="outro" class="o"><div class="q">Köpeklerin dünyası<br>kokularla dolu! 🐾</div><div class="brand"><img src="./assets/logo.png" alt="">Pirilumo</div></div>
+    <div id="sub" class="o"></div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
