@@ -50,7 +50,7 @@ function serve() {
       const t0 = Date.now();
       await page.evaluate((t) => window.renderAt(t), t);
       const file = path.join(ROOT, `out/stills/${VERT ? 'v_' : ''}t_${t.toFixed(2)}.png`);
-      await page.screenshot({ path: file, clip });
+      await page.screenshot({ path: file, clip, timeout: 0 });
       console.log('still', t, file, `${Date.now() - t0}ms`);
     }
   } else {
@@ -67,7 +67,7 @@ function serve() {
       const t = f / FPS;
       const cue = await page.evaluate((t) => window.renderAt(t), t);
       cues.push(cue);
-      const buf = await page.screenshot({ type: 'jpeg', quality: 95, clip });
+      const buf = await page.screenshot({ type: 'jpeg', quality: 95, clip, timeout: 0 });
       if (!ff.stdin.write(buf)) await new Promise((r) => ff.stdin.once('drain', r));
       if ((f - f0) % 30 === 0) {
         const el = (Date.now() - tStart) / 1000, done = f - f0 + 1;
