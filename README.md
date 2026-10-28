@@ -8,7 +8,7 @@ karakterler, Türkçe dudak senkronu, kamera kurgusu, ses miksajı ve 9:16 MP4 �
 |---|---|---|
 | B01 — Yastığın İsyanı | ~38 sn | `renders/b01_v4/b01_v4_final.mp4` |
 | B02 — Soğudum (Kupa) | ~41 sn | `renders/b02_v1/b02_v1_final.mp4` |
-| K01 — Gece Yarısı Buzdolabı Toplantısı (mutfak) | ~35 sn | `renders/k01_v1/k01_v1_final.mp4` |
+| K01 — Gece Yarısı Buzdolabı Toplantısı (mutfak) | ~51 sn | `renders/k01_v2/k01_v2_final.mp4` |
 
 ## Kurulum
 

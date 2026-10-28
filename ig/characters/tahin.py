@@ -51,7 +51,8 @@ def build(col=None, loc=(0, 0, 0), rot=(0, 0, 0)):
     ink = M.plastic("tahin_ink", (0.45, 0.22, 0.1), 0.7)
     white = M.fabric("tahin_white", (0.93, 0.92, 0.9), sheen=0.8, fuzz=0.4, wrinkle=0.0)
 
-    rings = [(0.0, R - 0.005, R - 0.005), (0.004, R, R), (0.11, R, R), (0.115, R - 0.004, R - 0.004)]
+    rings = [(0.0, R - 0.005, R - 0.005), (0.004, R, R)] + [(0.01 * k, R, R) for k in range(1, 12)] + \
+        [(0.115, R - 0.004, R - 0.004)]
     jar = rounded_tube("tahin_jar", rings, segs=48, n=2.0, col=col)
     jar.data.materials.append(glass)
     # contents: paste up to 0.09, then the separated oil on top
@@ -63,7 +64,8 @@ def build(col=None, loc=(0, 0, 0), rot=(0, 0, 0)):
     lid_o = rounded_tube("tahin_lid", [(0.11, R + 0.003, R + 0.003), (0.13, R + 0.003, R + 0.003),
                                        (0.133, R, R)], segs=48, n=2.0, col=col)
     lid_o.data.materials.append(lid)
-    label = rounded_tube("tahin_label", [(LABEL[0], R + 0.0012, R + 0.0012), (LABEL[1], R + 0.0012, R + 0.0012)],
+    label = rounded_tube("tahin_label", [(LABEL[0] + (LABEL[1] - LABEL[0]) * k / 12, R + 0.0012, R + 0.0012)
+                                         for k in range(13)],     # dense rings: it bends with the jar
                          segs=48, n=2.0, col=col, cap_bottom=False, cap_top=False)
     label.data.materials.append(paper)
     words = text_mesh("tahin_text", "TAHİN", 0.016, FONT, col, extrude=0.0002)

@@ -405,6 +405,17 @@ def build(tl, ep):
         target.keyframe_insert("color", frame=F_(t_turn) + 1)
     prefs.keyframe_new_interpolation_type = interp
 
+    # ================================================================ render budget
+    # the stocked fridge is heavy on a 4-core CPU: no subsurface scattering except the milk, one diffuse
+    # bounce and 10 samples – side by side with the full settings the difference is not visible
+    cy = bpy.context.scene.cycles
+    cy.samples, cy.adaptive_threshold, cy.diffuse_bounces = 10, 0.1, 1
+    for mat in bpy.data.materials:
+        if mat.node_tree and mat.name != "milk":
+            for n in mat.node_tree.nodes:
+                if n.type == "BSDF_PRINCIPLED" and not n.inputs["Subsurface Weight"].is_linked:
+                    n.inputs["Subsurface Weight"].default_value = 0.0
+
     # ================================================================ cameras (9:16)
     tl.shot(t_clock, "cam_clock", (0.62, 0.3, 1.17), (0.92, 0.755, 1.125), lens=45, fstop=2.0,
             to_loc=(0.72, 0.42, 1.16), dur=t_wake - 0.05)
