@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="vendor/gsap.min.js"></script>
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      html, body { width:1920px; height:1080px; overflow:hidden; background:#f4ead5; }
+      #root { position:relative; width:1920px; height:1080px; overflow:hidden; font-family:"Helvetica Neue",Arial,sans-serif; }
+      #track { position:absolute; left:0; top:0; width:5800px; height:1080px;
+        background:linear-gradient(#fbf3e1 0,#f3e6c8 780px,#f3e6c8 100%); }
+      #floor { position:absolute; left:0; top:790px; width:5800px; height:290px;
+        background:repeating-conic-gradient(#efe8da 0 25%,#d6ccb8 0 50%) 0 0/180px 180px; }
+      #floor::before { content:""; position:absolute; left:0; top:0; width:100%; height:14px; background:#a9967a; }
+      .panel { position:absolute; top:176px; height:590px; background:#e6d2ac; border-radius:10px; box-shadow:inset 0 0 0 8px #c9b183; }
+      .plank { position:absolute; height:16px; background:#b98f55; border-radius:4px; box-shadow:0 8px 0 rgba(0,0,0,.12); }
+      .it { position:absolute; }
+      .fruit { width:78px; height:78px; border-radius:50%; }
+      .fruit::after { content:""; position:absolute; left:34px; top:-10px; width:10px; height:16px; background:#3a7d2a; border-radius:50% 0 50% 0; }
+      .apple { background:#d62d2d; box-shadow:inset -8px -8px 0 rgba(0,0,0,.18), inset 10px 10px 0 -2px rgba(255,255,255,.22); }
+      .orange { background:#f28a1d; box-shadow:inset -8px -8px 0 rgba(0,0,0,.16), inset 10px 10px 0 -2px rgba(255,255,255,.28); }
+      .banana { width:116px; height:56px; background:#ffd83b; border-radius:0 0 60px 60px/0 0 56px 56px; border-bottom:6px solid #d4a514; }
+      .milk { width:58px; height:112px; background:linear-gradient(#fff 0 45%,#4a90e2 45% 72%,#fff 72%); border:4px solid #c8d6ea; border-radius:6px 6px 4px 4px; }
+      .milk::before { content:""; position:absolute; left:-4px; top:-14px; width:58px; height:14px; background:#fff; border:4px solid #c8d6ea; border-radius:6px 6px 0 0; }
+      .yogurt { width:62px; height:72px; background:linear-gradient(#fff 0 22%,var(--c) 22%); border:4px solid #e2d9cc; border-radius:6px 6px 16px 16px; }
+      .bread { width:124px; height:72px; background:linear-gradient(#e0a560,#c27e35); border-radius:60px 60px 14px 14px; border:4px solid #8a5a22; }
+      .baguette { width:150px; height:30px; background:linear-gradient(#e7b574,#cf9150); border-radius:15px; border:4px solid #8a5a22; }
+      .cereal { width:84px; height:128px; border-radius:8px; border:4px solid rgba(0,0,0,.25); }
+      .cereal b { position:absolute; left:14px; top:34px; width:48px; height:48px; border-radius:50%; background:#fff3; border:5px solid #fff8; }
+      .jar { width:68px; height:90px; background:var(--c); border:4px solid rgba(0,0,0,.25); border-radius:10px; }
+      .jar::before { content:""; position:absolute; left:-4px; top:-18px; width:68px; height:18px; background:#f5f5f5; border:4px solid rgba(0,0,0,.2); border-radius:6px; }
+      .candy { width:74px; height:96px; background:linear-gradient(#ffffffaa,#ffffff55); border:5px solid #fff; border-radius:10px 10px 18px 18px; box-shadow:0 0 0 3px rgba(0,0,0,.08); }
+      .candy::after { content:""; position:absolute; left:8px; top:30px; width:44px; height:44px; border-radius:50%; background:var(--c); box-shadow:18px -18px 0 -8px #ffd166,-6px 24px 0 -10px #7c5cff; }
+      .rope { position:absolute; top:0; width:6px; height:154px; background:#7a6a55; }
+      .sign { position:absolute; top:150px; width:340px; height:80px; border-radius:14px; color:#fff; font-size:34px; font-weight:800; letter-spacing:.04em;
+        display:flex; align-items:center; justify-content:center; box-shadow:0 8px 0 rgba(0,0,0,.18), inset 0 0 0 6px rgba(255,255,255,.35); }
+      .light { position:absolute; top:6px; width:240px; height:16px; background:#fffbe6; border-radius:8px; box-shadow:0 0 40px 14px rgba(255,248,200,.85); }
+      .char { position:absolute; transform-origin:50% 100%; }
+      .char img { display:block; width:100%; height:100%; }
+      #mom { left:404px; top:329px; width:432px; height:720px; }
+      #damla { left:826px; top:508px; width:348px; height:522px; }
+      .shadow { position:absolute; height:34px; border-radius:50%; background:rgba(60,40,20,.22); }
+      #shMom { left:430px; top:980px; width:380px; }
+      #shDamla { left:850px; top:996px; width:300px; }
+      .bubble { position:absolute; padding:22px 32px; background:#fff; border:6px solid #3d1f10; border-radius:34px; font-size:44px; font-weight:800; color:#3d1f10; opacity:0; transform-origin:0 100%; }
+      .bubble::after { content:""; position:absolute; bottom:-30px; width:34px; height:34px; background:#fff; border-right:6px solid #3d1f10; border-bottom:6px solid #3d1f10; transform:rotate(45deg) skew(10deg,10deg); }
+      #bDamla { left:900px; top:370px; }
+      #bDamla::after { left:60px; }
+      #bMom { left:120px; top:238px; transform-origin:100% 100%; }
+      #bMom::after { right:70px; }
+      #title { position:absolute; left:0; top:14px; width:1920px; text-align:center; opacity:1; }
+      #title span { display:inline-block; padding:18px 48px; background:#ffffffee; border:6px solid #3d1f10; border-radius:40px; font-size:64px; font-weight:900; color:#3d1f10; letter-spacing:-.01em; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12" data-width="1920" data-height="1080">
+      <div id="track" class="clip" data-layout-allow-overflow data-start="0" data-duration="12" data-track-index="0">
+      <div id="floor"></div>
+      <div class="panel" style="left:12px;width:976px"></div>
+      <div class="plank" style="left:12px;width:976px;top:360px"></div>
+      <div class="it baguette" style="left:45px;top:326px;transform:rotate(6deg)"></div>
+      <div class="it baguette" style="left:215px;top:326px;transform:rotate(-8deg)"></div>
+      <div class="it baguette" style="left:385px;top:326px;transform:rotate(6deg)"></div>
+      <div class="it baguette" style="left:555px;top:326px;transform:rotate(-8deg)"></div>
+      <div class="it baguette" style="left:725px;top:326px;transform:rotate(6deg)"></div>
+      <div class="plank" style="left:12px;width:976px;top:540px"></div>
+      <div class="it bread" style="left:45px;top:468px"></div>
+      <div class="it bread" style="left:180px;top:468px"></div>
+      <div class="it bread" style="left:315px;top:468px"></div>
+      <div class="it bread" style="left:450px;top:468px"></div>
+      <div class="it bread" style="left:585px;top:468px"></div>
+      <div class="it bread" style="left:720px;top:468px"></div>
+      <div class="it bread" style="left:855px;top:468px"></div>
+      <div class="plank" style="left:12px;width:976px;top:720px"></div>
+      <div class="it bread" style="left:45px;top:648px"></div>
+      <div class="it bread" style="left:180px;top:648px"></div>
+      <div class="it bread" style="left:315px;top:648px"></div>
+      <div class="it bread" style="left:450px;top:648px"></div>
+      <div class="it bread" style="left:585px;top:648px"></div>
+      <div class="it bread" style="left:720px;top:648px"></div>
+      <div class="it bread" style="left:855px;top:648px"></div>
+      <div class="rope" style="left:400px"></div><div class="rope" style="left:600px"></div>
+      <div class="sign" style="left:330px;background:#a85a10">EKMEK</div>
+      <div class="panel" style="left:1012px;width:876px"></div>
+      <div class="plank" style="left:1012px;width:876px;top:360px"></div>
+      <div class="it cereal" style="left:1045px;top:232px;background:#e8504a"><b></b></div>
+      <div class="it cereal" style="left:1150px;top:232px;background:#f2b632"><b></b></div>
+      <div class="it cereal" style="left:1255px;top:232px;background:#1f7a3a"><b></b></div>
+      <div class="it cereal" style="left:1360px;top:232px;background:#2a64a0"><b></b></div>
+      <div class="it cereal" style="left:1465px;top:232px;background:#8c59c9"><b></b></div>
+      <div class="it cereal" style="left:1570px;top:232px;background:#e8504a"><b></b></div>
+      <div class="it cereal" style="left:1675px;top:232px;background:#f2b632"><b></b></div>
+      <div class="it cereal" style="left:1780px;top:232px;background:#1f7a3a"><b></b></div>
+      <div class="plank" style="left:1012px;width:876px;top:540px"></div>
+      <div class="it cereal" style="left:1045px;top:412px;background:#f2b632"><b></b></div>
+      <div class="it cereal" style="left:1150px;top:412px;background:#1f7a3a"><b></b></div>
+      <div class="it cereal" style="left:1255px;top:412px;background:#2a64a0"><b></b></div>
+      <div class="it cereal" style="left:1360px;top:412px;background:#8c59c9"><b></b></div>
+      <div class="it cereal" style="left:1465px;top:412px;background:#e8504a"><b></b></div>
+      <div class="it cereal" style="left:1570px;top:412px;background:#f2b632"><b></b></div>
+      <div class="it cereal" style="left:1675px;top:412px;background:#1f7a3a"><b></b></div>
+      <div class="it cereal" style="left:1780px;top:412px;background:#2a64a0"><b></b></div>
+      <div class="plank" style="left:1012px;width:876px;top:720px"></div>
+      <div class="it jar" style="left:1045px;top:630px;--c:#c0392b"></div>
+      <div class="it jar" style="left:1140px;top:630px;--c:#e67e22"></div>
+      <div class="it jar" style="left:1235px;top:630px;--c:#8e5a2b"></div>
+      <div class="it jar" style="left:1330px;top:630px;--c:#d35400"></div>
+      <div class="it jar" style="left:1425px;top:630px;--c:#c0392b"></div>
+      <div class="it jar" style="left:1520px;top:630px;--c:#e67e22"></div>
+      <div class="it jar" style="left:1615px;top:630px;--c:#8e5a2b"></div>
+      <div class="it jar" style="left:1710px;top:630px;--c:#d35400"></div>
+      <div class="rope" style="left:1350px"></div><div class="rope" style="left:1550px"></div>
+      <div class="sign" style="left:1280px;background:#2a64a0">KAHVALTI</div>
+      <div class="panel" style="left:1912px;width:1376px"></div>
+      <div class="plank" style="left:1912px;width:1376px;top:360px"></div>
+      <div class="it fruit orange" style="left:1945px;top:280px"></div>
+      <div class="it fruit orange" style="left:2037px;top:280px"></div>
+      <div class="it fruit orange" style="left:2129px;top:280px"></div>
+      <div class="it fruit orange" style="left:2221px;top:280px"></div>
+      <div class="it fruit orange" style="left:2313px;top:280px"></div>
+      <div class="it fruit orange" style="left:2405px;top:280px"></div>
+      <div class="it fruit orange" style="left:2497px;top:280px"></div>
+      <div class="it fruit orange" style="left:2589px;top:280px"></div>
+      <div class="it fruit orange" style="left:2681px;top:280px"></div>
+      <div class="it fruit orange" style="left:2773px;top:280px"></div>
+      <div class="it fruit orange" style="left:2865px;top:280px"></div>
+      <div class="it fruit orange" style="left:2957px;top:280px"></div>
+      <div class="it fruit orange" style="left:3049px;top:280px"></div>
+      <div class="it fruit orange" style="left:3141px;top:280px"></div>
+      <div class="plank" style="left:1912px;width:1376px;top:540px"></div>
+      <div class="it fruit apple" style="left:1945px;top:460px"></div>
+      <div class="it fruit apple" style="left:2037px;top:460px"></div>
+      <div class="it fruit apple" style="left:2129px;top:460px"></div>
+      <div class="it fruit apple" style="left:2221px;top:460px"></div>
+      <div class="it fruit apple" style="left:2313px;top:460px"></div>
+      <div class="it fruit apple" style="left:2405px;top:460px"></div>
+      <div class="it fruit apple" style="left:2497px;top:460px"></div>
+      <div class="it fruit apple" style="left:2589px;top:460px"></div>
+      <div class="it fruit apple" style="left:2681px;top:460px"></div>
+      <div class="it fruit apple" style="left:2773px;top:460px"></div>
+      <div class="it fruit apple" style="left:2865px;top:460px"></div>
+      <div class="it fruit apple" style="left:2957px;top:460px"></div>
+      <div class="it fruit apple" style="left:3049px;top:460px"></div>
+      <div class="it fruit apple" style="left:3141px;top:460px"></div>
+      <div class="plank" style="left:1912px;width:1376px;top:720px"></div>
+      <div class="it banana" style="left:1945px;top:662px;transform:rotate(4deg)"></div>
+      <div class="it banana" style="left:2070px;top:662px;transform:rotate(-6deg)"></div>
+      <div class="it banana" style="left:2195px;top:662px;transform:rotate(4deg)"></div>
+      <div class="it banana" style="left:2320px;top:662px;transform:rotate(-6deg)"></div>
+      <div class="it banana" style="left:2445px;top:662px;transform:rotate(4deg)"></div>
+      <div class="it banana" style="left:2570px;top:662px;transform:rotate(-6deg)"></div>
+      <div class="it banana" style="left:2695px;top:662px;transform:rotate(4deg)"></div>
+      <div class="it banana" style="left:2820px;top:662px;transform:rotate(-6deg)"></div>
+      <div class="it banana" style="left:2945px;top:662px;transform:rotate(4deg)"></div>
+      <div class="it banana" style="left:3070px;top:662px;transform:rotate(-6deg)"></div>
+      <div class="rope" style="left:2500px"></div><div class="rope" style="left:2700px"></div>
+      <div class="sign" style="left:2430px;background:#1f7a3a">MEYVE & SEBZE</div>
+      <div class="panel" style="left:3312px;width:1376px"></div>
+      <div class="plank" style="left:3312px;width:1376px;top:360px"></div>
+      <div class="it milk" style="left:3345px;top:248px"></div>
+      <div class="it milk" style="left:3423px;top:248px"></div>
+      <div class="it milk" style="left:3501px;top:248px"></div>
+      <div class="it milk" style="left:3579px;top:248px"></div>
+      <div class="it milk" style="left:3657px;top:248px"></div>
+      <div class="it milk" style="left:3735px;top:248px"></div>
+      <div class="it milk" style="left:3813px;top:248px"></div>
+      <div class="it milk" style="left:3891px;top:248px"></div>
+      <div class="it milk" style="left:3969px;top:248px"></div>
+      <div class="it milk" style="left:4047px;top:248px"></div>
+      <div class="it milk" style="left:4125px;top:248px"></div>
+      <div class="it milk" style="left:4203px;top:248px"></div>
+      <div class="it milk" style="left:4281px;top:248px"></div>
+      <div class="it milk" style="left:4359px;top:248px"></div>
+      <div class="it milk" style="left:4437px;top:248px"></div>
+      <div class="it milk" style="left:4515px;top:248px"></div>
+      <div class="plank" style="left:3312px;width:1376px;top:540px"></div>
+      <div class="it yogurt" style="left:3345px;top:468px;--c:#ff9ec4"></div>
+      <div class="it yogurt" style="left:3429px;top:468px;--c:#ffd166"></div>
+      <div class="it yogurt" style="left:3513px;top:468px;--c:#9be3c0"></div>
+      <div class="it yogurt" style="left:3597px;top:468px;--c:#a8c8ff"></div>
+      <div class="it yogurt" style="left:3681px;top:468px;--c:#ff9ec4"></div>
+      <div class="it yogurt" style="left:3765px;top:468px;--c:#ffd166"></div>
+      <div class="it yogurt" style="left:3849px;top:468px;--c:#9be3c0"></div>
+      <div class="it yogurt" style="left:3933px;top:468px;--c:#a8c8ff"></div>
+      <div class="it yogurt" style="left:4017px;top:468px;--c:#ff9ec4"></div>
+      <div class="it yogurt" style="left:4101px;top:468px;--c:#ffd166"></div>
+      <div class="it yogurt" style="left:4185px;top:468px;--c:#9be3c0"></div>
+      <div class="it yogurt" style="left:4269px;top:468px;--c:#a8c8ff"></div>
+      <div class="it yogurt" style="left:4353px;top:468px;--c:#ff9ec4"></div>
+      <div class="it yogurt" style="left:4437px;top:468px;--c:#ffd166"></div>
+      <div class="it yogurt" style="left:4521px;top:468px;--c:#9be3c0"></div>
+      <div class="plank" style="left:3312px;width:1376px;top:720px"></div>
+      <div class="it milk" style="left:3345px;top:608px"></div>
+      <div class="it milk" style="left:3423px;top:608px"></div>
+      <div class="it milk" style="left:3501px;top:608px"></div>
+      <div class="it milk" style="left:3579px;top:608px"></div>
+      <div class="it milk" style="left:3657px;top:608px"></div>
+      <div class="it milk" style="left:3735px;top:608px"></div>
+      <div class="it milk" style="left:3813px;top:608px"></div>
+      <div class="it milk" style="left:3891px;top:608px"></div>
+      <div class="it milk" style="left:3969px;top:608px"></div>
+      <div class="it milk" style="left:4047px;top:608px"></div>
+      <div class="it milk" style="left:4125px;top:608px"></div>
+      <div class="it milk" style="left:4203px;top:608px"></div>
+      <div class="it milk" style="left:4281px;top:608px"></div>
+      <div class="it milk" style="left:4359px;top:608px"></div>
+      <div class="it milk" style="left:4437px;top:608px"></div>
+      <div class="it milk" style="left:4515px;top:608px"></div>
+      <div class="rope" style="left:3900px"></div><div class="rope" style="left:4100px"></div>
+      <div class="sign" style="left:3830px;background:#2f5bb0">SÜT ÜRÜNLERİ</div>
+      <div class="panel" style="left:4712px;width:976px"></div>
+      <div class="plank" style="left:4712px;width:976px;top:360px"></div>
+      <div class="it candy" style="left:4745px;top:264px;--c:#ff5fa2"></div>
+      <div class="it candy" style="left:4833px;top:264px;--c:#7c5cff"></div>
+      <div class="it candy" style="left:4921px;top:264px;--c:#2fc4b2"></div>
+      <div class="it candy" style="left:5009px;top:264px;--c:#ffb52e"></div>
+      <div class="it candy" style="left:5097px;top:264px;--c:#ff6b6b"></div>
+      <div class="it candy" style="left:5185px;top:264px;--c:#ff5fa2"></div>
+      <div class="it candy" style="left:5273px;top:264px;--c:#7c5cff"></div>
+      <div class="it candy" style="left:5361px;top:264px;--c:#2fc4b2"></div>
+      <div class="it candy" style="left:5449px;top:264px;--c:#ffb52e"></div>
+      <div class="it candy" style="left:5537px;top:264px;--c:#ff6b6b"></div>
+      <div class="plank" style="left:4712px;width:976px;top:540px"></div>
+      <div class="it candy" style="left:4745px;top:444px;--c:#7c5cff"></div>
+      <div class="it candy" style="left:4833px;top:444px;--c:#2fc4b2"></div>
+      <div class="it candy" style="left:4921px;top:444px;--c:#ffb52e"></div>
+      <div class="it candy" style="left:5009px;top:444px;--c:#ff6b6b"></div>
+      <div class="it candy" style="left:5097px;top:444px;--c:#ff5fa2"></div>
+      <div class="it candy" style="left:5185px;top:444px;--c:#7c5cff"></div>
+      <div class="it candy" style="left:5273px;top:444px;--c:#2fc4b2"></div>
+      <div class="it candy" style="left:5361px;top:444px;--c:#ffb52e"></div>
+      <div class="it candy" style="left:5449px;top:444px;--c:#ff6b6b"></div>
+      <div class="it candy" style="left:5537px;top:444px;--c:#ff5fa2"></div>
+      <div class="plank" style="left:4712px;width:976px;top:720px"></div>
+      <div class="it candy" style="left:4745px;top:624px;--c:#2fc4b2"></div>
+      <div class="it candy" style="left:4833px;top:624px;--c:#ffb52e"></div>
+      <div class="it candy" style="left:4921px;top:624px;--c:#ff6b6b"></div>
+      <div class="it candy" style="left:5009px;top:624px;--c:#ff5fa2"></div>
+      <div class="it candy" style="left:5097px;top:624px;--c:#7c5cff"></div>
+      <div class="it candy" style="left:5185px;top:624px;--c:#2fc4b2"></div>
+      <div class="it candy" style="left:5273px;top:624px;--c:#ffb52e"></div>
+      <div class="it candy" style="left:5361px;top:624px;--c:#ff6b6b"></div>
+      <div class="it candy" style="left:5449px;top:624px;--c:#ff5fa2"></div>
+      <div class="it candy" style="left:5537px;top:624px;--c:#7c5cff"></div>
+      <div class="rope" style="left:5100px"></div><div class="rope" style="left:5300px"></div>
+      <div class="sign" style="left:5030px;background:#b02a6e">ŞEKERLEME</div>
+      <div class="light" style="left:100px"></div>
+      <div class="light" style="left:520px"></div>
+      <div class="light" style="left:940px"></div>
+      <div class="light" style="left:1360px"></div>
+      <div class="light" style="left:1780px"></div>
+      <div class="light" style="left:2200px"></div>
+      <div class="light" style="left:2620px"></div>
+      <div class="light" style="left:3040px"></div>
+      <div class="light" style="left:3460px"></div>
+      <div class="light" style="left:3880px"></div>
+      <div class="light" style="left:4300px"></div>
+      <div class="light" style="left:4720px"></div>
+      <div class="light" style="left:5140px"></div>
+      <div class="light" style="left:5560px"></div>
+      </div>
+      <div id="mom" class="char clip" data-start="0" data-duration="12" data-track-index="3"><img src="characters/anne.svg" alt="Anne" /></div>
+      <div id="damla" class="char clip" data-start="0" data-duration="12" data-track-index="4"><img src="characters/damla.svg" alt="Damla" /></div>
+      <div id="bDamla" class="bubble clip" data-start="0" data-duration="12" data-track-index="5">Anne, bak! Elma!</div>
+      <div id="bMom" class="bubble clip" data-start="0" data-duration="12" data-track-index="6">Tamam kızım, alalım.</div>
+      <div id="title" class="clip" data-start="0" data-duration="12" data-track-index="7"><span>Damla ve Annesi Markette</span></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // aisle scrolls: walk, stop at fruit shelf, walk on
+      tl.fromTo("#track", { x: 0 }, { x: -1700, duration: 5, ease: "power2.out" }, 0);
+      tl.to("#track", { x: -3550, duration: 4, ease: "power1.inOut" }, 8);
+
+      // walking bob (two characters, offset phase)
+      function walk(sel, from, to, amp, rot, phase) {
+        const step = 0.4; let k = 0;
+        for (let t = from + phase; t < to; t += step, k++) {
+          const dir = k % 2 ? 1 : -1;
+          tl.to(sel, { y: -amp, rotation: rot * dir, duration: step / 2, ease: "sine.out" }, t);
+          tl.to(sel, { y: 0, rotation: rot * dir * 0.3, duration: step / 2, ease: "sine.in" }, t + step / 2);
+        }
+        tl.to(sel, { y: 0, rotation: 0, duration: 0.2, ease: "power2.out" }, to);
+      }
+      walk("#mom", 0, 4.6, 12, 1.6, 0);
+      walk("#damla", 0, 4.6, 18, 3, 0.2);
+      walk("#mom", 8, 11.6, 12, 1.6, 0);
+      walk("#damla", 8, 11.6, 18, 3, 0.2);
+
+      // title card fades after intro
+      tl.to("#title", { opacity: 0, y: -30, duration: 0.6, ease: "power2.in" }, 2.4);
+
+      // stop at fruit: Damla jumps and talks, mom answers
+      tl.to("#damla", { y: -60, scaleY: 1.04, duration: 0.25, ease: "power2.out" }, 5.1);
+      tl.to("#damla", { y: 0, scaleY: 1, duration: 0.3, ease: "bounce.out" }, 5.35);
+      tl.to("#damla", { y: -40, duration: 0.22, ease: "power2.out" }, 6.0);
+      tl.to("#damla", { y: 0, duration: 0.3, ease: "bounce.out" }, 6.22);
+      tl.fromTo("#bDamla", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 5.2);
+      tl.to("#bDamla", { opacity: 0, scale: 0.9, duration: 0.3 }, 7.0);
+      tl.to("#mom", { rotation: -3, duration: 0.5, ease: "sine.inOut" }, 6.3);
+      tl.fromTo("#bMom", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2)" }, 6.6);
+      tl.to("#bMom", { opacity: 0, scale: 0.9, duration: 0.3 }, 7.8);
+      tl.to("#mom", { rotation: 0, duration: 0.3 }, 7.7);
+
+      // end fade
+      tl.to("#root", { opacity: 0, duration: 0.5, ease: "power1.in" }, 11.5);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
