@@ -63,41 +63,42 @@
       <ellipse cx="448" cy="340" rx="20" ry="28"/>
     </g>
 
-    <!-- head (chubby) -->
+    <!-- head (chubby, cute) -->
     <path fill="#f9cfae" stroke="#a8643f" stroke-width="6"
-      d="M150 320 C150 215 220 175 300 175 C380 175 450 215 450 320
-         C455 395 410 460 300 460 C190 460 145 395 150 320Z"/>
-
+      d="M145 330 C145 215 215 172 300 172 C385 172 455 215 455 330
+         C462 400 420 462 300 462 C180 462 138 400 145 330Z"/>
     <!-- cheeks -->
-    <ellipse cx="205" cy="385" rx="46" ry="34" fill="url(#cheek)"/>
-    <ellipse cx="395" cy="385" rx="46" ry="34" fill="url(#cheek)"/>
-
-    <!-- eyes -->
-    <g>
-      <ellipse cx="240" cy="335" rx="30" ry="38" fill="#fff" stroke="#3d1f10" stroke-width="5"/>
-      <ellipse cx="360" cy="335" rx="30" ry="38" fill="#fff" stroke="#3d1f10" stroke-width="5"/>
-      <ellipse cx="244" cy="340" rx="21" ry="27" fill="#5a3418"/>
-      <ellipse cx="356" cy="340" rx="21" ry="27" fill="#5a3418"/>
-      <circle cx="246" cy="342" r="12" fill="#1b0d05"/>
-      <circle cx="354" cy="342" r="12" fill="#1b0d05"/>
-      <circle cx="252" cy="330" r="8" fill="#fff"/>
-      <circle cx="360" cy="330" r="8" fill="#fff"/>
-      <circle cx="238" cy="352" r="4" fill="#fff"/>
-      <circle cx="346" cy="352" r="4" fill="#fff"/>
-      <!-- lashes -->
-      <path d="M212 318 C206 312 202 308 198 306 M216 308 C212 300 210 296 207 292" stroke="#3d1f10" stroke-width="5" fill="none"/>
-      <path d="M388 318 C394 312 398 308 402 306 M384 308 C388 300 390 296 393 292" stroke="#3d1f10" stroke-width="5" fill="none"/>
+    <ellipse cx="190" cy="398" rx="52" ry="38" fill="url(#cheek)"/>
+    <ellipse cx="410" cy="398" rx="52" ry="38" fill="url(#cheek)"/>
+    <g stroke="#ff7a8a" stroke-width="5" opacity=".8" fill="none">
+      <path d="M170 392 l10 -10 M186 396 l10 -10 M202 400 l10 -10"/>
+      <path d="M398 400 l10 -10 M414 396 l10 -10 M430 392 l10 -10"/>
     </g>
-    <!-- brows -->
-    <path d="M212 285 C228 270 252 270 266 282 M334 282 C348 270 372 270 388 285" stroke="#4a2814" stroke-width="7" fill="none"/>
 
-    <!-- nose -->
-    <path d="M292 388 C298 394 306 394 310 388" stroke="#a8643f" stroke-width="5" fill="none"/>
+    <!-- eyes: big, low, sparkly -->
+    <g>
+      <ellipse cx="232" cy="352" rx="38" ry="46" fill="#fff" stroke="#3d1f10" stroke-width="5"/>
+      <ellipse cx="368" cy="352" rx="38" ry="46" fill="#fff" stroke="#3d1f10" stroke-width="5"/>
+      <ellipse cx="236" cy="358" rx="28" ry="35" fill="#6a3d1c"/>
+      <ellipse cx="364" cy="358" rx="28" ry="35" fill="#6a3d1c"/>
+      <ellipse cx="236" cy="362" rx="17" ry="22" fill="#1b0d05"/>
+      <ellipse cx="364" cy="362" rx="17" ry="22" fill="#1b0d05"/>
+      <circle cx="248" cy="340" r="12" fill="#fff"/>
+      <circle cx="376" cy="340" r="12" fill="#fff"/>
+      <circle cx="224" cy="376" r="6" fill="#fff"/>
+      <circle cx="352" cy="376" r="6" fill="#fff"/>
+      <path d="M196 328 C188 322 184 316 180 312 M200 318 C195 310 192 304 190 298" stroke="#3d1f10" stroke-width="5" fill="none"/>
+      <path d="M404 328 C412 322 416 316 420 312 M400 318 C405 310 408 304 410 298" stroke="#3d1f10" stroke-width="5" fill="none"/>
+    </g>
+    <!-- brows: soft, raised -->
+    <path d="M204 292 C220 280 242 280 258 290 M342 290 C358 280 380 280 396 292" stroke="#4a2814" stroke-width="6" fill="none"/>
 
-    <!-- mouth: open smile -->
-    <path d="M262 415 C280 450 320 450 338 415 C320 422 280 422 262 415Z" fill="#a8243a" stroke="#6b1222" stroke-width="5"/>
-    <path d="M276 432 C290 445 310 445 324 432 C312 438 288 438 276 432Z" fill="#ff7a8a"/>
-    <path d="M272 417 H328 V424 H272Z" fill="#fff" opacity=".95"/>
+    <!-- tiny nose -->
+    <ellipse cx="300" cy="396" rx="7" ry="5" fill="#e9a37c"/>
+
+    <!-- small happy mouth -->
+    <path d="M276 418 C284 440 316 440 324 418 C312 424 288 424 276 418Z" fill="#a8243a" stroke="#6b1222" stroke-width="5"/>
+    <path d="M287 431 C294 438 306 438 313 431 C306 427 294 427 287 431Z" fill="#ff7a8a"/>
 
     <!-- hair front: bangs + sides -->
     <path id="hair-front" fill="#6b3b22" stroke="#3d1f10" stroke-width="6"
