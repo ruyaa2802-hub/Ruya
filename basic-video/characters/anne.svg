@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1000" width="600" height="1000">
+  <defs>
+    <radialGradient id="cheek" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f08a8a" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#f08a8a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g id="anne" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="300" cy="965" rx="165" ry="16" fill="#000" opacity=".12"/>
+
+    <!-- ponytail (back) -->
+    <path id="ponytail" fill="#5a2f1a" stroke="#32170b" stroke-width="6"
+      d="M395 125 C470 110 520 170 505 250 C495 320 520 380 490 450
+         C478 490 450 500 440 470 C432 420 440 380 420 330
+         C400 290 405 250 392 215 C380 175 380 145 395 125Z"/>
+    <path d="M470 180 C490 240 470 320 480 400" stroke="#85502e" stroke-width="7" fill="none" opacity=".6"/>
+
+    <!-- legs: jeans -->
+    <path fill="#4d78b8" stroke="#2a4a80" stroke-width="6"
+      d="M200 590 H400 C410 700 405 820 395 915 H312 L300 700 L288 915 H205 C195 820 190 700 200 590Z"/>
+    <path d="M300 600 V700" stroke="#2a4a80" stroke-width="5"/>
+    <path d="M212 612 H388" stroke="#a9c3e8" stroke-width="5" stroke-dasharray="2 10"/>
+    <!-- pockets / patch -->
+    <path d="M222 640 Q250 640 255 668" stroke="#2a4a80" stroke-width="4" fill="none"/>
+    <path d="M378 640 Q350 640 345 668" stroke="#2a4a80" stroke-width="4" fill="none"/>
+    <rect x="318" y="760" width="38" height="38" rx="5" fill="#6a93d0" stroke="#2a4a80" stroke-width="4" stroke-dasharray="6 4"/>
+    <!-- cuffs -->
+    <path d="M205 900 H288 M312 900 H395" stroke="#2a4a80" stroke-width="5"/>
+
+    <!-- shoes -->
+    <g stroke="#3b2a22" stroke-width="6" fill="#f2efe8">
+      <path d="M198 925 C198 900 292 900 292 925 C302 952 198 956 198 925Z"/>
+      <path d="M308 925 C308 900 402 900 402 925 C412 952 308 956 308 925Z"/>
+    </g>
+    <path d="M208 942 H284 M316 942 H392" stroke="#3b2a22" stroke-width="6"/>
+
+    <!-- arms (behind tee sleeves) -->
+    <g stroke="#a8643f" stroke-width="6" fill="#f3c19a">
+      <path d="M190 405 C160 470 158 540 168 590 C182 604 206 600 212 584 C212 530 222 480 238 440Z"/>
+      <path d="M410 405 C440 470 442 540 432 590 C418 604 394 600 388 584 C388 530 378 480 362 440Z"/>
+    </g>
+
+    <!-- t-shirt (teal) -->
+    <path fill="#2fa59a" stroke="#176b63" stroke-width="6"
+      d="M232 372 C195 382 168 410 164 450 C180 480 205 480 222 462 L214 600
+         C260 616 340 616 386 600 L378 462 C395 480 420 480 436 450
+         C432 410 405 382 368 372 C350 400 250 400 232 372Z"/>
+    <!-- tee wrinkle lines (tired, lived-in) -->
+    <path d="M250 520 C270 530 290 530 310 522 M262 550 C280 556 300 556 322 548" stroke="#176b63" stroke-width="4" fill="none" opacity=".5"/>
+
+    <!-- neck -->
+    <rect x="276" y="318" width="48" height="70" rx="18" fill="#f3c19a" stroke="#a8643f" stroke-width="6"/>
+    <path d="M266 376 C285 408 315 408 334 376" fill="#f3c19a" stroke="#176b63" stroke-width="6"/>
+
+    <!-- ears -->
+    <g fill="#f3c19a" stroke="#a8643f" stroke-width="6">
+      <ellipse cx="208" cy="215" rx="14" ry="22"/>
+      <ellipse cx="392" cy="215" rx="14" ry="22"/>
+    </g>
+
+    <!-- hair back cap -->
+    <path fill="#5a2f1a" stroke="#32170b" stroke-width="6"
+      d="M200 205 C185 105 250 62 300 62 C350 62 415 105 400 205 Z"/>
+
+    <!-- face: long oval -->
+    <path fill="#f7cba6" stroke="#a8643f" stroke-width="6"
+      d="M205 200 C205 120 250 92 300 92 C350 92 395 120 395 200
+         C398 270 360 340 300 346 C240 340 202 270 205 200Z"/>
+
+    <!-- tired eye bags -->
+    <path d="M232 236 C246 246 262 246 274 238 M326 238 C338 246 354 246 368 236" stroke="#b78577" stroke-width="5" fill="none" opacity=".8"/>
+    <!-- soft cheeks -->
+    <ellipse cx="236" cy="262" rx="30" ry="20" fill="url(#cheek)"/>
+    <ellipse cx="364" cy="262" rx="30" ry="20" fill="url(#cheek)"/>
+
+    <!-- eyes: half-lidded, kind -->
+    <g>
+      <path d="M228 214 C240 196 266 196 278 214 C266 232 240 232 228 214Z" fill="#fff" stroke="#32170b" stroke-width="5"/>
+      <path d="M322 214 C334 196 360 196 372 214 C360 232 334 232 322 214Z" fill="#fff" stroke="#32170b" stroke-width="5"/>
+      <circle cx="254" cy="214" r="12" fill="#5a3418"/>
+      <circle cx="348" cy="214" r="12" fill="#5a3418"/>
+      <circle cx="254" cy="215" r="6.5" fill="#1b0d05"/>
+      <circle cx="348" cy="215" r="6.5" fill="#1b0d05"/>
+      <circle cx="258" cy="210" r="3.5" fill="#fff"/>
+      <circle cx="352" cy="210" r="3.5" fill="#fff"/>
+      <!-- heavy upper lids -->
+      <path d="M225 212 C238 190 268 190 281 212 C268 202 238 202 225 212Z" fill="#e7b08a" stroke="#32170b" stroke-width="4"/>
+      <path d="M319 212 C332 190 362 190 375 212 C362 202 332 202 319 212Z" fill="#e7b08a" stroke="#32170b" stroke-width="4"/>
+    </g>
+    <!-- brows: slight worry but firm -->
+    <path d="M222 182 C240 170 262 172 278 180 M322 180 C338 172 360 170 378 182" stroke="#3d1f10" stroke-width="7" fill="none"/>
+
+    <!-- nose -->
+    <path d="M296 238 C292 258 290 268 298 272 C304 274 310 274 314 270" stroke="#a8643f" stroke-width="5" fill="none"/>
+
+    <!-- mouth: gentle determined smile -->
+    <path d="M270 298 C288 314 312 314 330 298" stroke="#9a2a3a" stroke-width="8" fill="none"/>
+    <path d="M266 296 C268 292 270 292 272 294 M328 294 C330 292 332 292 334 296" stroke="#a8643f" stroke-width="4" fill="none"/>
+
+    <!-- hair front: swept bangs pulled back -->
+    <path fill="#5a2f1a" stroke="#32170b" stroke-width="6"
+      d="M200 205 C192 112 250 64 305 66 C362 66 410 112 400 205
+         C392 160 372 132 345 122 C320 150 260 150 232 125 C216 142 204 170 200 205Z"/>
+    <path d="M240 88 C270 76 320 76 350 90" stroke="#85502e" stroke-width="7" fill="none" opacity=".6"/>
+    <!-- hair tie -->
+    <rect x="388" y="130" width="26" height="14" rx="6" transform="rotate(-25 401 137)" fill="#e0457b" stroke="#a02a58" stroke-width="4"/>
+    </g>
+</svg>
