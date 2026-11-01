@@ -1,0 +1,49 @@
+{
+  "seri": "İnsanlar Gidince",
+  "ilk_bolum": "Katlanmayanların İsyanı",
+  "stil": "High-end Pixar / Illumination style 3D, cozy messy living room at night, warm floor-lamp light, mustard velvet sofa.",
+  "ana_kadro_gorseli": {
+    "dosya": "../katlanmayanlarin_isyani/el3d/img/master_A.png",
+    "elevenlabs_gorsel_id": "1KhvNQKj2Yawwz7wzXzk"
+  },
+  "elevenlabs_akis": "https://elevenlabs.io/app/flows/Yf7rwpPXUJI46RA9wJ6F",
+  "kullanim": "Yeni bölümde görsel üretirken ilgili PNG'yi (veya elevenlabs_gorsel_id'yi) referans görsel olarak bağla ve \"tasarim\" metnini prompta ekle; seslendirmede voice_id'yi kullan.",
+  "karakterler": [
+    {
+      "dosya": "gomlek_bey.png",
+      "ad": "Gömlek Bey",
+      "kisilik": "Sinirli, kendini önemli gören, kırışıklarından şikâyet eden beyaz gömlek. Bağırarak konuşur, sonra bıkkın bir ifadeyle kameraya bakar.",
+      "tasarim": "Wrinkled white button-up dress shirt with collar, big expressive cartoon eyes with thick angry eyebrows, black curled handlebar mustache, fabric sleeves used as arms. Pixar/Illumination style 3D.",
+      "ses": {
+        "ad": "Orhan - Expressive Istanbul Actor",
+        "voice_id": "y6X1mFgtBqHFtQwrOezf",
+        "model": "eleven_v4"
+      },
+      "elevenlabs_gorsel_id": "dJB1LDR5IvUHyHULJD2N"
+    },
+    {
+      "dosya": "tisort.png",
+      "ad": "Tişört",
+      "kisilik": "Umursamaz, alaycı, genç. Yerde tembel tembel yatar, iğneleyici konuşur.",
+      "tasarim": "Mustard-yellow t-shirt with the word \"BOŞVER\" printed on the chest, sleepy half-closed sarcastic eyes, smirk, a grey sock stuck on his shoulder, short sleeves used as arms. Pixar/Illumination style 3D.",
+      "ses": {
+        "ad": "Ali - Mad Man",
+        "voice_id": "xROJDAAwVXltxzeQxuFL",
+        "model": "eleven_v4"
+      },
+      "elevenlabs_gorsel_id": "c1RuvgMM91rdUe2gr5Ae"
+    },
+    {
+      "dosya": "pembe_corap.png",
+      "ad": "Pembe Çorap (Kırmızı Çorap)",
+      "kisilik": "Dramatik, telaşlı, dedikoducu. Eşini kaybetmiş; her şeye \"Ay!\" diye şaşırır.",
+      "tasarim": "Tall pinkish-red and white striped sock with long eyelashes, big green eyes, expressive dramatic face, small sock arms, often hands on cheeks. Pixar/Illumination style 3D.",
+      "ses": {
+        "ad": "Gözde",
+        "voice_id": "rtnDjO8siSxeTEeTVczO",
+        "model": "eleven_v4"
+      },
+      "elevenlabs_gorsel_id": "OgCqblbVaWx02xmz4EmY"
+    }
+  ]
+}
