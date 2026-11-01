@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=1080, height=1920">
+<title>Eşya Meclisi - Ayakkabılık</title>
+<style>
+  html,body{margin:0;background:#1b1426;}
+  #root{position:relative;width:1080px;height:1920px;overflow:hidden;background:#1b1426;font-family:'Nunito',sans-serif;}
+  #stage{position:absolute;left:0;top:0;width:1080px;height:2300px;transform-origin:0 0;}
+  .abs{position:absolute;}
+  #wall{left:0;top:0;width:1080px;height:1260px;background:linear-gradient(#f6e6c9,#ead2a8);}
+  #wallpaper{left:0;top:0;width:1080px;height:1260px;opacity:.5;background:repeating-linear-gradient(90deg,transparent 0 78px,rgba(190,140,90,.18) 78px 82px);}
+  #floor{left:0;top:1250px;width:1080px;height:1100px;background:repeating-linear-gradient(0deg,#b97f4d 0 110px,#a9703f 110px 114px);}
+  #floorshade{left:0;top:1250px;width:1080px;height:260px;background:linear-gradient(rgba(40,20,10,.45),rgba(40,20,10,0));}
+  #rug{left:150px;top:1420px;width:780px;height:300px;border-radius:50%;background:radial-gradient(#ff9a7a,#d9544a 70%,#a53a3a);box-shadow:0 10px 0 rgba(0,0,0,.18);}
+  .char{position:absolute;width:340px;height:340px;transform-origin:50% 96%;}
+  .char svg{display:block;overflow:visible;}
+  #cab{left:40px;top:500px;width:1000px;height:790px;}
+  .board{position:absolute;left:0;width:1000px;background:linear-gradient(#e0a870,#b97a45);border:5px solid #6a3f22;box-sizing:border-box;border-radius:10px;}
+  .side{position:absolute;top:0;width:44px;height:790px;background:linear-gradient(90deg,#c88c55,#9a6234);border:5px solid #6a3f22;box-sizing:border-box;border-radius:8px;}
+  .back{position:absolute;left:40px;width:920px;background:linear-gradient(#5b3820,#7a4d2c);box-shadow:inset 0 30px 40px rgba(0,0,0,.35);}
+  #door{left:170px;top:0;width:740px;height:540px;background:linear-gradient(#8a5430,#6a3f22);border:14px solid #4c2c16;box-sizing:border-box;border-radius:6px 6px 0 0;}
+  #glass{left:320px;top:90px;width:440px;height:230px;background:linear-gradient(#bfe6ff,#e8f6ff);border:12px solid #4c2c16;box-sizing:border-box;border-radius:8px;overflow:hidden;}
+  #glass i{position:absolute;top:0;bottom:0;width:8px;background:#4c2c16;}
+  #glow{left:0;top:0;width:1080px;height:1300px;opacity:0;background:radial-gradient(ellipse 60% 70% at 50% 0%,rgba(255,244,200,.95),rgba(255,230,160,.35) 55%,rgba(255,230,160,0));mix-blend-mode:screen;}
+  #shadowhum{left:200px;top:0;width:700px;height:1400px;opacity:0;}
+  #vig{position:absolute;left:0;top:0;width:1080px;height:1920px;pointer-events:none;background:radial-gradient(ellipse 75% 62% at 50% 40%,rgba(0,0,0,0) 55%,rgba(20,8,30,.55));z-index:50;}
+  #title{position:absolute;left:0;top:190px;width:1080px;text-align:center;z-index:60;}
+  #title .t{display:inline-block;font:900 62px 'Nunito',sans-serif;color:#fff;letter-spacing:2px;-webkit-text-stroke:10px #2a1840;paint-order:stroke fill;padding:6px 26px;background:#ff7a3d;border-radius:22px;box-shadow:0 8px 0 #2a1840;}
+  #title .s{margin-top:18px;font:800 34px 'Nunito',sans-serif;color:#fff3d6;-webkit-text-stroke:7px #2a1840;paint-order:stroke fill;}
+  .cap{position:absolute;left:60px;top:1128px;width:960px;z-index:70;text-align:center;}
+  .cap-in{display:inline-block;transform-origin:50% 100%;}
+  .who{display:inline-block;font:900 28px 'Nunito',sans-serif;color:#2a1840;padding:2px 18px;border-radius:14px;margin-bottom:6px;border:4px solid #2a1840;}
+  .txt{font:900 50px/1.16 'Nunito',sans-serif;color:#fff;-webkit-text-stroke:9px #2a1840;paint-order:stroke fill;text-shadow:0 5px 0 #2a1840;}
+</style></head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="47" data-width="1080" data-height="1920">
+
+  <div id="stage" class="clip" data-start="0" data-duration="47" data-track-index="1" data-layout-ignore>
+    <div id="wall" class="abs"></div><div id="wallpaper" class="abs"></div>
+    <div id="door" class="abs"></div>
+    <div id="glass" class="abs"><i style="left:140px"></i><i style="left:290px"></i></div>
+    <div class="abs" style="left:380px;top:360px;width:30px;height:30px;border-radius:50%;background:#2a1c10;border:5px solid #d4a24a"></div>
+    <div class="abs" style="left:810px;top:300px;width:34px;height:130px;border-radius:17px;background:linear-gradient(90deg,#ffe28a,#c4902a);border:4px solid #7a5418"></div>
+    <div class="abs" style="left:770px;top:210px;width:90px;height:34px;border-radius:8px;background:#d4a24a;border:4px solid #7a5418;color:#4c2c16;font:900 22px 'Nunito';text-align:center;line-height:30px">No:7</div>
+    <!-- askılık: mont ve çanta -->
+    <div class="abs" style="left:40px;top:90px;width:100px;height:14px;background:#6a3f22;border-radius:7px"></div>
+    <div class="abs" id="jacket" style="left:44px;top:100px;width:100px;height:330px;background:linear-gradient(90deg,#3a6fd8,#2b4fa8);border-radius:20px 20px 40px 40px;border:4px solid #1f3770;transform-origin:50% 0"></div>
+    <div class="abs" style="left:950px;top:90px;width:90px;height:14px;background:#6a3f22;border-radius:7px"></div>
+    <div class="abs" id="bag" style="left:958px;top:104px;width:78px;height:210px;background:linear-gradient(90deg,#ffb347,#e0852a);border-radius:12px 12px 30px 30px;border:4px solid #8a5418;transform-origin:50% 0"></div>
+    <div id="glow" class="abs"></div>
+
+    <div id="cab" class="abs">
+      <div class="back" style="top:30px;height:320px"></div><div class="back" style="top:390px;height:320px"></div>
+      <div class="side" style="left:0"></div><div class="side" style="right:0"></div>
+      <div class="board" style="top:0;height:42px"></div>
+      <div class="board" style="top:340px;height:42px"></div>
+      <div class="board" style="top:700px;height:50px"></div>
+      <div class="abs" style="left:60px;top:750px;width:46px;height:44px;background:#6a3f22;border-radius:0 0 8px 8px"></div>
+      <div class="abs" style="right:60px;top:750px;width:46px;height:44px;background:#6a3f22;border-radius:0 0 8px 8px"></div>
+    </div>
+    <!-- dolap üstü: anahtar kasesi + saksı -->
+    <div class="abs" style="left:120px;top:462px;width:140px;height:44px;border-radius:0 0 60px 60px;background:linear-gradient(#f2f2f2,#c9c9d8);border:4px solid #7b7b95"></div>
+    <div class="abs" style="left:150px;top:440px;width:24px;height:30px;border-radius:50%;border:6px solid #d4a24a"></div>
+    <div class="abs" style="left:196px;top:446px;width:24px;height:28px;border-radius:50%;border:6px solid #c0c0c8"></div>
+    <div class="abs" id="plant" style="left:830px;top:330px;width:130px;height:170px;transform-origin:50% 100%">
+      <div class="abs" style="left:10px;top:0;width:44px;height:130px;border-radius:50% 50% 50% 50%;background:#4aa84a;transform:rotate(-20deg);border:4px solid #2d6e2d"></div>
+      <div class="abs" style="left:46px;top:-18px;width:42px;height:150px;border-radius:50%;background:#5cc25c;border:4px solid #2d6e2d"></div>
+      <div class="abs" style="left:80px;top:6px;width:42px;height:126px;border-radius:50%;background:#4aa84a;transform:rotate(22deg);border:4px solid #2d6e2d"></div>
+      <div class="abs" style="left:14px;top:112px;width:102px;height:60px;background:linear-gradient(#e87a50,#b8502a);border-radius:6px 6px 22px 22px;border:4px solid #7a3016"></div>
+    </div>
+
+    <div id="ch-terlik" class="char" style="left:130px;top:873px"><svg id="terlik-svg" viewBox="0 0 400 400" width="340" height="340"><defs><radialGradient id="terlik-g" gradientUnits="userSpaceOnUse" cx="160" cy="140" r="240"><stop offset="0" stop-color="#b5d2ff"/><stop offset=".55" stop-color="#6f98f2"/><stop offset="1" stop-color="#3354b4"/></radialGradient></defs>
+  <ellipse cx="200" cy="388" rx="160" ry="14" fill="#000" opacity=".28"/>
+  <path d="M30 338 C55 378 345 378 370 338 L372 356 C345 396 55 396 28 356Z" fill="#26346f"/>
+  <path d="M42 338 C22 240 70 130 200 118 C330 130 378 240 358 338 C320 372 80 372 42 338Z" fill="url(#terlik-g)" stroke="#2a3a80" stroke-width="4"/>
+  <circle cx="40.3" cy="242.0" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="41.8" cy="226.6" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="49.0" cy="211.7" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="51.8" cy="197.3" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="66.1" cy="183.6" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="70.9" cy="170.9" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="90.4" cy="159.4" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="98.2" cy="149.2" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="120.3" cy="140.4" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="131.9" cy="133.2" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="154.4" cy="127.8" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="170.1" cy="124.1" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="190.7" cy="122.2" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="210.0" cy="122.2" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="227.7" cy="124.1" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="249.1" cy="127.8" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="263.6" cy="133.2" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="284.9" cy="140.4" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="296.3" cy="149.2" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="315.0" cy="159.4" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="324.3" cy="170.9" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="337.7" cy="183.6" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="345.6" cy="197.3" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="352.0" cy="211.7" r="18" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="358.9" cy="226.6" r="12" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/><circle cx="357.2" cy="242.0" r="15" fill="#a9c8ff" stroke="#5f84d8" stroke-width="2"/>
+  <ellipse cx="200" cy="158" rx="96" ry="26" fill="#1b2660" stroke="#a9c8ff" stroke-width="8"/>
+  <path d="M95 210 C110 170 150 150 190 148 C140 165 112 195 105 235Z" fill="#fff" opacity=".28"/>
+  <ellipse cx="108" cy="285" rx="22" ry="14" fill="#ff8fa8" opacity=".55"/><ellipse cx="292" cy="285" rx="22" ry="14" fill="#ff8fa8" opacity=".55"/>
+  
+  <g id="terlik-eyeL">
+    <ellipse cx="150" cy="228" rx="30" ry="36" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="terlik-pupL"><circle cx="150" cy="228" r="15.600000000000001" fill="#2a1c2e"/><circle cx="150" cy="228" r="9" fill="#120a14"/>
+      <circle cx="156" cy="220" r="5.1000000000000005" fill="#fff"/><circle cx="145" cy="235" r="2.6999999999999997" fill="#fff" opacity=".8"/></g>
+    <ellipse id="terlik-lidL" cx="150" cy="228" rx="32" ry="38" fill="url(#terlik-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g>
+  <g id="terlik-eyeR">
+    <ellipse cx="250" cy="228" rx="30" ry="36" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="terlik-pupR"><circle cx="250" cy="228" r="15.600000000000001" fill="#2a1c2e"/><circle cx="250" cy="228" r="9" fill="#120a14"/>
+      <circle cx="256" cy="220" r="5.1000000000000005" fill="#fff"/><circle cx="245" cy="235" r="2.6999999999999997" fill="#fff" opacity=".8"/></g>
+    <ellipse id="terlik-lidR" cx="250" cy="228" rx="32" ry="38" fill="url(#terlik-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g><g id="terlik-browL"><path d="M120 180 Q150 168 180 180" fill="none" stroke="#2a1c2e" stroke-width="7" stroke-linecap="round"/></g><g id="terlik-browR"><path d="M220 180 Q250 168 280 180" fill="none" stroke="#2a1c2e" stroke-width="7" stroke-linecap="round"/></g>
+  <path id="terlik-smile" d="M170 290 Q200 308 230 290" fill="none" stroke="#2a1c2e" stroke-width="6" stroke-linecap="round"/>
+  <g id="terlik-mouth">
+    <clipPath id="terlik-mc"><path d="M170 292 Q200 296 230 292 Q228.5 326 200 326 Q171.5 326 170 292Z"/></clipPath>
+    <path d="M170 292 Q200 296 230 292 Q228.5 326 200 326 Q171.5 326 170 292Z" fill="#4a1226" stroke="#2a1c2e" stroke-width="4" stroke-linejoin="round"/>
+    <g clip-path="url(#terlik-mc)"><ellipse cx="200" cy="326" rx="21" ry="15.3" fill="#ff7a8a"/>
+    </g>
+  </g><path id="terlik-drop" d="M355 70 C340 100 335 118 355 128 C375 118 370 100 355 70Z" fill="#8fe0ff" stroke="#2a7fa8" stroke-width="3" opacity="0"/></svg></div>
+<div id="ch-spor" class="char" style="left:590px;top:873px"><svg id="spor-svg" viewBox="0 0 400 400" width="340" height="340"><defs><radialGradient id="spor-g" gradientUnits="userSpaceOnUse" cx="160" cy="140" r="240"><stop offset="0" stop-color="#ff9a86"/><stop offset=".55" stop-color="#e83a3a"/><stop offset="1" stop-color="#a01a28"/></radialGradient></defs>
+  <ellipse cx="200" cy="388" rx="160" ry="14" fill="#000" opacity=".28"/>
+  <path d="M30 330 L372 330 C380 362 370 392 345 392 L55 392 C30 392 22 362 30 330Z" fill="#fff" stroke="#2a1c2e" stroke-width="4"/>
+  <path d="M28 362 L376 362" stroke="#e83a3a" stroke-width="8"/>
+  <path d="M42 340 C28 250 58 212 122 202 C150 196 168 150 192 120 C220 92 262 100 280 140 C298 190 352 212 362 270 C370 316 366 336 362 342Z" fill="url(#spor-g)" stroke="#2a1c2e" stroke-width="4"/>
+  <path d="M42 340 C32 280 56 242 108 236 L110 342Z" fill="#fff" stroke="#2a1c2e" stroke-width="3"/>
+  <path d="M185 125 C200 110 240 112 262 142" fill="none" stroke="#2a1c2e" stroke-width="4"/>
+  <g fill="#fff" stroke="#2a1c2e" stroke-width="3"><rect x="196" y="128" width="46" height="13" rx="6" transform="rotate(28 219 134)"/><rect x="214" y="150" width="46" height="13" rx="6" transform="rotate(34 237 156)"/><rect x="236" y="176" width="46" height="13" rx="6" transform="rotate(30 259 182)"/></g>
+  <path d="M310 250 L338 250 L320 285 L342 285 L300 340 L310 296 L292 296Z" fill="#ffd23f" stroke="#2a1c2e" stroke-width="3"/>
+  <path d="M78 258 C90 232 120 220 150 216 C112 232 98 258 96 290Z" fill="#fff" opacity=".28"/>
+  <ellipse cx="148" cy="296" rx="18" ry="11" fill="#ffb0a0" opacity=".6"/>
+  
+  <g id="spor-eyeL">
+    <ellipse cx="165" cy="244" rx="28" ry="33" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="spor-pupL"><circle cx="165" cy="244" r="14.56" fill="#2a1c2e"/><circle cx="165" cy="244" r="8.4" fill="#120a14"/>
+      <circle cx="171" cy="236" r="4.760000000000001" fill="#fff"/><circle cx="160" cy="251" r="2.52" fill="#fff" opacity=".8"/></g>
+    <ellipse id="spor-lidL" cx="165" cy="244" rx="30" ry="35" fill="url(#spor-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g>
+  <g id="spor-eyeR">
+    <ellipse cx="250" cy="244" rx="28" ry="33" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="spor-pupR"><circle cx="250" cy="244" r="14.56" fill="#2a1c2e"/><circle cx="250" cy="244" r="8.4" fill="#120a14"/>
+      <circle cx="256" cy="236" r="4.760000000000001" fill="#fff"/><circle cx="245" cy="251" r="2.52" fill="#fff" opacity=".8"/></g>
+    <ellipse id="spor-lidR" cx="250" cy="244" rx="30" ry="35" fill="url(#spor-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g><g id="spor-browL"><path d="M135 199 Q165 187 195 199" fill="none" stroke="#2a1c2e" stroke-width="7" stroke-linecap="round"/></g><g id="spor-browR"><path d="M220 199 Q250 187 280 199" fill="none" stroke="#2a1c2e" stroke-width="7" stroke-linecap="round"/></g>
+  <path id="spor-smile" d="M178 298 Q208 316 238 298" fill="none" stroke="#2a1c2e" stroke-width="6" stroke-linecap="round"/>
+  <g id="spor-mouth">
+    <clipPath id="spor-mc"><path d="M178 300 Q208 304 238 300 Q236.5 336 208 336 Q179.5 336 178 300Z"/></clipPath>
+    <path d="M178 300 Q208 304 238 300 Q236.5 336 208 336 Q179.5 336 178 300Z" fill="#4a1226" stroke="#2a1c2e" stroke-width="4" stroke-linejoin="round"/>
+    <g clip-path="url(#spor-mc)"><ellipse cx="208" cy="336" rx="21" ry="16.2" fill="#ff7a8a"/>
+    <rect x="184" y="298" width="48" height="7.92" fill="#fff"/></g>
+  </g><path id="spor-drop" d="M355 70 C340 100 335 118 355 128 C375 118 370 100 355 70Z" fill="#8fe0ff" stroke="#2a7fa8" stroke-width="3" opacity="0"/></svg></div>
+<div id="ch-topuklu" class="char" style="left:590px;top:513px"><svg id="topuklu-svg" viewBox="0 0 400 400" width="340" height="340"><defs><radialGradient id="topuklu-g" gradientUnits="userSpaceOnUse" cx="120" cy="220" r="240"><stop offset="0" stop-color="#ffb0dd"/><stop offset=".55" stop-color="#ee4aa4"/><stop offset="1" stop-color="#9c1e68"/></radialGradient></defs>
+  <ellipse cx="200" cy="388" rx="160" ry="14" fill="#000" opacity=".28"/>
+  <path d="M296 262 L336 262 L352 388 L338 388 L320 300Z" fill="#8d1a5c" stroke="#2a1c2e" stroke-width="3"/>
+  <path d="M26 352 C14 300 46 226 118 214 C176 206 214 180 252 134 C278 104 326 100 350 128 C358 170 336 214 322 250 C312 282 312 318 296 352 C200 376 100 376 26 352Z" fill="url(#topuklu-g)" stroke="#2a1c2e" stroke-width="4"/>
+  <path d="M26 352 C100 376 200 376 296 352 L296 362 C200 388 100 388 26 364Z" fill="#7a1650"/>
+  <g transform="translate(84 226)"><path d="M0 0 C-30 -26 -34 12 0 6 C34 12 30 -26 0 0Z" fill="#ff5fb8" stroke="#2a1c2e" stroke-width="3"/><circle cx="0" cy="3" r="8" fill="#ffd23f" stroke="#2a1c2e" stroke-width="2"/></g>
+  <path d="M60 300 C66 262 100 238 150 232 C106 252 86 282 84 318Z" fill="#fff" opacity=".28"/>
+  <path d="M232 160 C262 130 296 120 324 138" fill="none" stroke="#ffd0ea" stroke-width="6" opacity=".6" stroke-linecap="round"/>
+  <ellipse cx="62" cy="318" rx="16" ry="10" fill="#ffd0e6" opacity=".6"/><ellipse cx="196" cy="318" rx="16" ry="10" fill="#ffd0e6" opacity=".6"/>
+  
+  <g id="topuklu-eyeL">
+    <ellipse cx="100" cy="272" rx="26" ry="32" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="topuklu-pupL"><circle cx="100" cy="272" r="13.52" fill="#2a1c2e"/><circle cx="100" cy="272" r="7.8" fill="#120a14"/>
+      <circle cx="106" cy="264" r="4.42" fill="#fff"/><circle cx="95" cy="279" r="2.34" fill="#fff" opacity=".8"/></g>
+    <ellipse id="topuklu-lidL" cx="100" cy="272" rx="28" ry="34" fill="url(#topuklu-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g>
+  <g id="topuklu-eyeR">
+    <ellipse cx="174" cy="272" rx="26" ry="32" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="topuklu-pupR"><circle cx="174" cy="272" r="13.52" fill="#2a1c2e"/><circle cx="174" cy="272" r="7.8" fill="#120a14"/>
+      <circle cx="180" cy="264" r="4.42" fill="#fff"/><circle cx="169" cy="279" r="2.34" fill="#fff" opacity=".8"/></g>
+    <ellipse id="topuklu-lidR" cx="174" cy="272" rx="28" ry="34" fill="url(#topuklu-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g><g id="topuklu-browL"><path d="M70 228 Q100 216 130 228" fill="none" stroke="#2a1c2e" stroke-width="6" stroke-linecap="round"/></g><g id="topuklu-browR"><path d="M144 228 Q174 216 204 228" fill="none" stroke="#2a1c2e" stroke-width="6" stroke-linecap="round"/></g>
+  <g stroke="#2a1c2e" stroke-width="4" stroke-linecap="round"><path d="M66 250 L52 240 M74 242 L66 228 M200 250 L214 240 M192 242 L200 228"/></g>
+  
+  <path id="topuklu-smile" d="M112 328 Q138 346 164 328" fill="none" stroke="#2a1c2e" stroke-width="6" stroke-linecap="round"/>
+  <g id="topuklu-mouth">
+    <clipPath id="topuklu-mc"><path d="M112 330 Q138 334 164 330 Q162.7 358 138 358 Q113.3 358 112 330Z"/></clipPath>
+    <path d="M112 330 Q138 334 164 330 Q162.7 358 138 358 Q113.3 358 112 330Z" fill="#4a1226" stroke="#2a1c2e" stroke-width="4" stroke-linejoin="round"/>
+    <g clip-path="url(#topuklu-mc)"><ellipse cx="138" cy="358" rx="18.2" ry="12.6" fill="#ff7a8a"/>
+    </g>
+  </g>
+  <path d="M110 330 Q138 322 166 330 Q138 340 110 330Z" fill="#e0103c" stroke="#2a1c2e" stroke-width="3" opacity=".9" id="topuklu-lips"/><path id="topuklu-drop" d="M355 70 C340 100 335 118 355 128 C375 118 370 100 355 70Z" fill="#8fe0ff" stroke="#2a7fa8" stroke-width="3" opacity="0"/></svg></div>
+<div id="ch-cizme" class="char" style="left:130px;top:513px"><svg id="cizme-svg" viewBox="0 0 400 400" width="340" height="340"><defs><radialGradient id="cizme-g" gradientUnits="userSpaceOnUse" cx="170" cy="140" r="260"><stop offset="0" stop-color="#c98a58"/><stop offset=".55" stop-color="#8a5230"/><stop offset="1" stop-color="#4d2c18"/></radialGradient></defs>
+  <ellipse cx="200" cy="388" rx="160" ry="14" fill="#000" opacity=".28"/>
+  <path d="M118 46 C118 34 130 28 148 28 L270 28 C288 28 298 38 298 52 L306 280 C336 292 356 310 356 346 C356 372 342 386 322 386 L60 386 C34 386 22 370 24 346 C28 310 62 290 114 282Z" fill="url(#cizme-g)" stroke="#2a1c2e" stroke-width="4"/>
+  <path d="M120 40 C120 32 130 26 148 26 L270 26 C288 26 296 34 297 46 L299 92 L118 92Z" fill="#c9a074" stroke="#2a1c2e" stroke-width="4"/>
+  <path d="M124 82 L296 82" stroke="#6b4325" stroke-width="3" stroke-dasharray="9 7"/>
+  <path d="M28 358 L350 358 L352 386 L324 388 L62 388 C34 388 24 372 28 358Z" fill="#2c1a10" stroke="#2a1c2e" stroke-width="3"/>
+  <path d="M112 292 L306 292 L304 318 L110 318Z" fill="#6a3f22" stroke="#2a1c2e" stroke-width="3"/><rect x="190" y="288" width="34" height="34" rx="6" fill="#ffd23f" stroke="#2a1c2e" stroke-width="3"/><rect x="199" y="298" width="16" height="14" rx="3" fill="#8a5230"/>
+  <path d="M60 330 l16 -6 M90 340 l14 -4 M248 344 l18 -4" stroke="#4d2c18" stroke-width="3" stroke-linecap="round"/>
+  <path d="M140 120 C146 100 160 100 168 102 C162 170 160 230 166 270 C146 250 138 190 140 120Z" fill="#fff" opacity=".28"/>
+  <ellipse cx="146" cy="215" rx="16" ry="10" fill="#e8907a" opacity=".55"/><ellipse cx="282" cy="215" rx="16" ry="10" fill="#e8907a" opacity=".55"/>
+  
+  <g id="cizme-eyeL">
+    <ellipse cx="180" cy="150" rx="26" ry="32" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="cizme-pupL"><circle cx="180" cy="150" r="13.52" fill="#2a1c2e"/><circle cx="180" cy="150" r="7.8" fill="#120a14"/>
+      <circle cx="186" cy="142" r="4.42" fill="#fff"/><circle cx="175" cy="157" r="2.34" fill="#fff" opacity=".8"/></g>
+    <ellipse id="cizme-lidL" cx="180" cy="150" rx="28" ry="34" fill="url(#cizme-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g>
+  <g id="cizme-eyeR">
+    <ellipse cx="250" cy="150" rx="26" ry="32" fill="#fffdf8" stroke="#2a1c2e" stroke-width="3"/>
+    <g id="cizme-pupR"><circle cx="250" cy="150" r="13.52" fill="#2a1c2e"/><circle cx="250" cy="150" r="7.8" fill="#120a14"/>
+      <circle cx="256" cy="142" r="4.42" fill="#fff"/><circle cx="245" cy="157" r="2.34" fill="#fff" opacity=".8"/></g>
+    <ellipse id="cizme-lidR" cx="250" cy="150" rx="28" ry="34" fill="url(#cizme-g)" stroke="#2a1c2e" stroke-width="3"/>
+  </g><g id="cizme-browL"><path d="M150 106 Q180 94 210 106" fill="none" stroke="#3a2012" stroke-width="11" stroke-linecap="round"/></g><g id="cizme-browR"><path d="M220 106 Q250 94 280 106" fill="none" stroke="#3a2012" stroke-width="11" stroke-linecap="round"/></g>
+  
+  <path id="cizme-smile" d="M184 244 Q214 262 244 244" fill="none" stroke="#2a1c2e" stroke-width="6" stroke-linecap="round"/>
+  <g id="cizme-mouth">
+    <clipPath id="cizme-mc"><path d="M184 246 Q214 250 244 246 Q242.5 280 214 280 Q185.5 280 184 246Z"/></clipPath>
+    <path d="M184 246 Q214 250 244 246 Q242.5 280 214 280 Q185.5 280 184 246Z" fill="#4a1226" stroke="#2a1c2e" stroke-width="4" stroke-linejoin="round"/>
+    <g clip-path="url(#cizme-mc)"><ellipse cx="214" cy="280" rx="21" ry="15.3" fill="#ff7a8a"/>
+    </g>
+  </g>
+  <path d="M214 224 C196 208 168 214 160 232 C176 222 194 224 214 234 C234 224 252 222 268 232 C260 214 232 208 214 224Z" fill="#3a2012" stroke="#2a1c2e" stroke-width="2"/>
+  <path id="cizme-drop" d="M355 70 C340 100 335 118 355 128 C375 118 370 100 355 70Z" fill="#8fe0ff" stroke="#2a7fa8" stroke-width="3" opacity="0"/></svg></div>
+
+    <div id="floor" class="abs"></div><div id="floorshade" class="abs"></div>
+    <div id="rug" class="abs"></div>
+    <div id="shadowhum" class="abs"><svg viewBox="0 0 700 1400" width="700" height="1400" style="overflow:visible">
+      <path d="M130 0 L330 0 L300 760 C330 800 330 900 240 930 C150 930 120 840 160 790Z" fill="#120a20"/>
+      <path d="M390 0 L580 0 L540 700 C600 760 600 880 500 910 C400 910 370 820 410 760Z" fill="#120a20"/></svg></div>
+  </div>
+
+  <div id="title" class="clip" data-start="0" data-duration="3.6" data-track-index="4"><div class="t" id="title-t">EŞYA MECLİSİ</div><div class="s" id="title-s">İnsanlar gidince…</div></div>
+  <div id="cap1" class="clip cap" data-start="1.40" data-duration="6.80" data-track-index="3"><div class="cap-in" id="cap1-in"><div class="who" style="background:#8fb8ff">TERLİK</div><div class="txt">Gittiler mi? Gerçekten gittiler mi? Ay, bütün gün ezildim, belim kırıldı!</div></div></div>
+<div id="cap2" class="clip cap" data-start="8.20" data-duration="4.10" data-track-index="3"><div class="cap-in" id="cap2-in"><div class="who" style="background:#ff7a6b">SPOR AYAKKABI</div><div class="txt">Sen mi ezildin? Ben bu sabah on kilometre koştum, tabanım duman!</div></div></div>
+<div id="cap3" class="clip cap" data-start="12.30" data-duration="5.30" data-track-index="3"><div class="cap-in" id="cap3-in"><div class="who" style="background:#ff80cc">TOPUKLU</div><div class="txt">Aman Allah'ım, siz neyi dert ediyorsunuz? Ben dün gece düğünde sekiz saat dans ettim, topuğum ağlıyor!</div></div></div>
+<div id="cap4" class="clip cap" data-start="17.60" data-duration="4.80" data-track-index="3"><div class="cap-in" id="cap4-in"><div class="who" style="background:#e0a468">ÇİZME PAŞA</div><div class="txt">Susun artık! Ben kar kıyamette bile şikayet etmem!</div></div></div>
+<div id="cap5" class="clip cap" data-start="22.40" data-duration="3.50" data-track-index="3"><div class="cap-in" id="cap5-in"><div class="who" style="background:#ff7a6b">SPOR AYAKKABI</div><div class="txt">Paşa, dışarıda otuz derece var, sen neden hâlâ buradasın?</div></div></div>
+<div id="cap6" class="clip cap" data-start="25.90" data-duration="2.10" data-track-index="3"><div class="cap-in" id="cap6-in"><div class="who" style="background:#e0a468">ÇİZME PAŞA</div><div class="txt">Hazırlıklı olmak şereftir evladım!</div></div></div>
+<div id="cap7" class="clip cap" data-start="28.00" data-duration="5.00" data-track-index="3"><div class="cap-in" id="cap7-in"><div class="who" style="background:#8fb8ff">TERLİK</div><div class="txt">Ya bırakın ya, en çok ben çalışıyorum. Tuvalete bile ben gidiyorum!</div></div></div>
+<div id="cap8" class="clip cap" data-start="33.00" data-duration="1.40" data-track-index="3"><div class="cap-in" id="cap8-in"><div class="who" style="background:#ff80cc">TOPUKLU</div><div class="txt">Of, ne kadar kaba!</div></div></div>
+<div id="cap9" class="clip cap" data-start="34.40" data-duration="1.20" data-track-index="3"><div class="cap-in" id="cap9-in"><div class="who" style="background:#ff7a6b">SPOR AYAKKABI</div><div class="txt">Kapıdan ses geliyor!</div></div></div>
+<div id="cap10" class="clip cap" data-start="35.60" data-duration="4.80" data-track-index="3"><div class="cap-in" id="cap10-in"><div class="who" style="background:#e0a468">ÇİZME PAŞA</div><div class="txt">Anahtar sesi! Herkes yerine!</div></div></div>
+<div id="cap11" class="clip cap" data-start="40.40" data-duration="4.52" data-track-index="3"><div class="cap-in" id="cap11-in"><div class="who" style="background:#8fb8ff">TERLİK</div><div class="txt">Ben zaten yerdeyim. Sürekli zaten yerdeyim.</div></div></div>
+  <div id="vig"></div>
+  <audio id="master" src="assets/master.wav" data-start="0" data-duration="47" data-volume="1"></audio>
+</div>
+
+<script src="assets/gsap.min.js"></script>
+<script>
+const D = {"lines":[{"id":"01-terlik","who":"terlik","to":"spor","start":1.4,"dur":7.2995464852607705,"m":[0.01,0.03,0.03,0.06,0.3,0.71,0.8,0.44,0.12,0.04,0.05,0.26,0.68,0.96,1,1,1,1,0.99,0.89,0.73,0.73,0.82,0.7,0.43,0.23,0.12,0.05,0.03,0.01,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.01,0.03,0.07,0.21,0.54,0.88,1,1,0.95,0.71,0.34,0.19,0.33,0.6,0.77,0.55,0.19,0.05,0.19,0.55,0.83,0.84,0.8,0.78,0.66,0.58,0.55,0.34,0.09,0.03,0.21,0.55,0.76,0.84,0.93,0.99,0.98,0.85,0.59,0.39,0.3,0.25,0.2,0.13,0.07,0.03,0.01,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.01,0.1,0.29,0.47,0.58,0.6,0.54,0.42,0.26,0.13,0.06,0.04,0.07,0.16,0.38,0.71,0.78,0.45,0.19,0.29,0.63,0.92,1,0.91,0.66,0.54,0.73,0.9,0.94,0.96,0.99,0.88,0.58,0.34,0.34,0.45,0.47,0.38,0.25,0.15,0.16,0.34,0.51,0.62,0.6,0.35,0.11,0.03,0.01,0.03,0.11,0.32,0.65,0.92,0.93,0.82,0.84,0.94,0.95,0.74,0.37,0.11,0.16,0.42,0.59,0.55,0.47,0.38,0.28,0.19,0.15,0.19,0.18,0.1,0.04]},{"id":"02-spor","who":"spor","to":"terlik","start":8.2,"dur":4.3841950113378685,"m":[0.01,0.07,0.17,0.24,0.43,0.8,1,0.95,0.85,0.84,0.9,0.93,0.92,0.94,0.82,0.5,0.34,0.45,0.51,0.4,0.25,0.21,0.29,0.29,0.19,0.09,0.03,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0.09,0.28,0.59,0.89,1,1,0.93,0.79,0.7,0.59,0.39,0.34,0.55,0.75,0.71,0.74,0.9,0.83,0.5,0.2,0.28,0.67,0.9,0.89,0.72,0.4,0.25,0.46,0.73,0.85,0.89,0.93,0.94,0.77,0.41,0.24,0.42,0.53,0.3,0.12,0.32,0.63,0.66,0.43,0.26,0.15,0.13,0.28,0.46,0.5,0.32,0.1,0.02,0.09,0.42,0.76,0.72,0.67,0.87,0.99,0.95,0.91,0.82,0.58,0.39,0.4,0.37,0.31,0.29,0.24,0.16,0.09,0.03]},{"id":"03-topuklu","who":"topuklu","to":"spor","start":12.3,"dur":6.270385487528345,"m":[0.1,0.41,0.76,0.96,1,0.99,1,1,0.99,0.88,0.68,0.65,0.73,0.63,0.51,0.56,0.65,0.61,0.37,0.13,0.03,0.01,0.02,0.07,0.19,0.27,0.44,0.8,0.92,0.7,0.51,0.64,0.9,1,1,1,0.87,0.61,0.61,0.87,0.98,0.91,0.7,0.35,0.2,0.33,0.36,0.28,0.41,0.65,0.79,0.79,0.73,0.61,0.39,0.23,0.19,0.26,0.36,0.37,0.28,0.17,0.11,0.07,0.04,0.02,0.01,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.03,0.23,0.62,0.92,0.99,0.94,0.88,0.77,0.66,0.71,0.79,0.83,0.8,0.68,0.72,0.83,0.64,0.43,0.61,0.78,0.58,0.42,0.58,0.79,0.86,0.81,0.68,0.57,0.61,0.54,0.34,0.22,0.28,0.43,0.37,0.15,0.18,0.35,0.32,0.21,0.17,0.29,0.57,0.69,0.54,0.28,0.08,0.13,0.39,0.57,0.55,0.44,0.32,0.23,0.23,0.31,0.24,0.08,0.02,0.03,0.12,0.27,0.33,0.23,0.09,0.02,0.01,0.01,0.01,0.01,0.03,0.22,0.4,0.27,0.12,0.29,0.57,0.65,0.6,0.61,0.64,0.62,0.58,0.5,0.37,0.32,0.39,0.46,0.43,0.38,0.3,0.19,0.08,0.02]},{"id":"04-cizme","who":"cizme","to":"topuklu","start":17.6,"dur":5.043151927437641,"m":[0.02,0.07,0.15,0.23,0.29,0.46,0.81,0.87,0.62,0.45,0.44,0.62,0.88,0.99,1,1,1,1,1,0.83,0.42,0.13,0.07,0.14,0.28,0.3,0.15,0.05,0.03,0.02,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.05,0.17,0.25,0.36,0.63,0.91,1,0.95,0.85,0.75,0.5,0.2,0.14,0.36,0.69,0.92,0.98,0.87,0.6,0.3,0.12,0.07,0.27,0.68,0.93,0.96,0.97,0.98,0.96,0.92,0.94,0.97,0.91,0.63,0.25,0.06,0.08,0.35,0.73,0.72,0.5,0.56,0.73,0.7,0.71,0.76,0.62,0.4,0.33,0.33,0.33,0.27,0.15,0.16,0.4,0.68,0.84,0.9,0.87,0.8,0.77,0.61,0.28,0.16,0.3,0.34,0.21,0.09,0.05,0.07,0.14,0.22,0.25,0.23,0.18,0.13,0.08,0.03,0.01]},{"id":"05-spor","who":"spor","to":"cizme","start":22.4,"dur":3.1917687074829932,"m":[0.06,0.35,0.74,0.78,0.54,0.42,0.56,0.84,0.96,0.75,0.38,0.11,0.03,0.07,0.2,0.48,0.67,0.56,0.4,0.49,0.81,0.95,0.87,0.69,0.58,0.73,0.69,0.5,0.41,0.24,0.25,0.55,0.67,0.48,0.37,0.6,0.87,0.94,0.94,0.8,0.49,0.47,0.62,0.5,0.32,0.31,0.34,0.38,0.33,0.15,0.04,0.02,0.01,0.01,0.06,0.16,0.27,0.5,0.84,1,0.99,0.97,0.97,0.96,0.77,0.6,0.72,0.82,0.73,0.7,0.75,0.81,0.91,0.96,0.9,0.87,0.93,0.98,0.87,0.58,0.37,0.41,0.45,0.43,0.35,0.23,0.21,0.26,0.27,0.27,0.25,0.22,0.19,0.12,0.04]},{"id":"06-cizme","who":"cizme","to":"spor","start":25.9,"dur":2.244625850340136,"m":[0.1,0.43,0.82,0.89,0.65,0.43,0.44,0.68,0.89,0.93,0.92,0.95,0.93,0.66,0.25,0.06,0.19,0.55,0.87,0.99,1,0.99,0.94,0.89,0.86,0.87,0.92,0.88,0.63,0.3,0.17,0.27,0.31,0.38,0.7,0.91,0.85,0.81,0.88,0.8,0.47,0.16,0.05,0.12,0.36,0.6,0.64,0.67,0.66,0.58,0.49,0.34,0.24,0.3,0.41,0.44,0.44,0.43,0.32,0.17,0.13,0.19,0.19,0.13,0.08,0.04,0.02]},{"id":"07-terlik","who":"terlik","to":"topuklu","start":28,"dur":5.2759183673469385,"m":[0.03,0.18,0.45,0.74,0.94,0.9,0.66,0.57,0.75,0.86,0.83,0.9,0.82,0.46,0.16,0.27,0.68,0.95,1,1,1,1,0.99,0.98,0.95,0.86,0.63,0.3,0.09,0.05,0.18,0.5,0.78,0.89,0.94,0.88,0.58,0.29,0.32,0.57,0.72,0.52,0.2,0.05,0.22,0.65,0.95,0.98,0.85,0.56,0.3,0.24,0.3,0.34,0.31,0.27,0.25,0.24,0.25,0.22,0.19,0.27,0.36,0.36,0.34,0.29,0.23,0.2,0.16,0.1,0.06,0.03,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.01,0.12,0.41,0.62,0.64,0.75,0.93,0.95,0.83,0.72,0.71,0.7,0.51,0.23,0.22,0.51,0.66,0.51,0.48,0.68,0.75,0.69,0.7,0.63,0.44,0.49,0.72,0.8,0.78,0.81,0.74,0.49,0.34,0.31,0.21,0.18,0.29,0.33,0.32,0.3,0.23,0.17,0.17,0.15,0.11,0.06,0.02]},{"id":"08-topuklu","who":"topuklu","to":"terlik","start":33,"dur":1.2108616780045351,"m":[0.09,0.38,0.75,0.93,0.72,0.29,0.05,0.02,0.01,0.01,0.11,0.41,0.76,0.92,0.7,0.29,0.29,0.61,0.63,0.6,0.84,0.97,0.87,0.61,0.26,0.09,0.19,0.39,0.37,0.31,0.45,0.53,0.41,0.23,0.1,0.03]},{"id":"09-spor","who":"spor","to":"door","start":34.4,"dur":1.0689795918367346,"m":[0.01,0.19,0.59,0.7,0.37,0.34,0.62,0.65,0.73,0.92,0.99,0.95,0.74,0.47,0.43,0.66,0.87,0.73,0.4,0.18,0.18,0.35,0.43,0.36,0.34,0.36,0.34,0.31,0.24,0.14,0.06,0.02]},{"id":"10-cizme","who":"cizme","to":"door","start":35.6,"dur":3.5676643990929704,"m":[0.06,0.31,0.68,0.9,0.97,0.99,1,1,0.97,0.83,0.51,0.18,0.17,0.48,0.77,0.9,0.9,0.75,0.49,0.34,0.34,0.45,0.69,0.85,0.69,0.42,0.35,0.33,0.28,0.31,0.32,0.22,0.09,0.03,0.01,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.01,0.1,0.37,0.72,0.94,1,0.91,0.63,0.27,0.09,0.22,0.59,0.91,0.91,0.67,0.42,0.3,0.25,0.38,0.73,0.96,0.99,0.83,0.62,0.53,0.44,0.35,0.29,0.24,0.18,0.11,0.05,0.01]},{"id":"11-terlik","who":"terlik","to":"cam","start":40.4,"dur":4.319138321995465,"m":[0.03,0.13,0.23,0.37,0.67,0.93,0.98,0.94,0.92,0.81,0.57,0.43,0.6,0.86,0.98,0.99,0.86,0.5,0.17,0.24,0.64,0.93,1,1,0.99,0.95,0.87,0.77,0.69,0.63,0.5,0.31,0.18,0.21,0.34,0.36,0.29,0.25,0.22,0.18,0.11,0.06,0.03,0.01,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.02,0.05,0.1,0.14,0.28,0.62,0.87,0.89,0.93,0.89,0.57,0.2,0.06,0.22,0.53,0.61,0.46,0.39,0.55,0.81,0.96,0.99,0.94,0.66,0.26,0.14,0.39,0.78,0.97,0.99,0.97,0.86,0.69,0.58,0.55,0.55,0.54,0.48,0.34,0.17,0.16,0.29,0.35,0.31,0.27,0.23,0.17,0.11,0.06,0.02]}]};
+const DUR = 47;
+const POS = {terlik:[300,1050], spor:[760,1050], topuklu:[760,690], cizme:[300,690], door:[540,150], cam:[540,1150]};
+const KEYS = Object.keys(POS).slice(0,4);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)), lerp=(a,b,u)=>a+(b-a)*u;
+const ss=(x)=>{x=clamp(x);return x*x*(3-2*x);}, eoc=(x)=>1-Math.pow(1-clamp(x),3), eio=(x)=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const eob=(x)=>{x=clamp(x);const c1=1.9,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2);};
+const bump=(t,t0,d)=>{const u=(t-t0);if(u<0||u>d)return 0;return Math.sin(Math.PI*clamp(u/d));};
+const hold=(t,t0,d,a=.1,r=.25)=>clamp((t-t0)/a)*clamp((t0+d-t)/r);
+// seçilmiş sahte rastgele (tekrarlanabilir)
+function rnd(s){s=Math.sin(s*127.1+311.7)*43758.5453;return s-Math.floor(s);}
+// ---- kamera kareleri: [başlangıç, cx, cy, zoom, geçiş süresi, tür]
+const CAM=[
+ [0,540,880,1,0,'e'],
+ [1.1,330,1010,1.5,1.3,'i'],
+ [3.0,330,1000,1.75,5.2,'i'],
+ [8.05,760,1030,1.7,0.28,'o'],
+ [11.3,760,1030,2.15,0.35,'o'],
+ [12.25,760,660,1.8,0.3,'o'],
+ [16.6,760,640,2.25,0.4,'o'],
+ [17.55,330,660,1.85,0.28,'o'],
+ [19.3,330,650,2.2,0.4,'o'],
+ [22.35,760,1020,1.65,0.3,'o'],
+ [24.3,330,640,1.9,0.3,'o'],
+ [25.85,330,650,2.05,2.2,'i'],
+ [27.95,330,1020,1.7,0.3,'o'],
+ [31.2,330,1020,2.2,0.45,'o'],
+ [32.95,760,670,2.35,0.22,'o'],
+ [34.35,760,1030,1.85,0.25,'o'],
+ [35.5,540,880,1.15,0.4,'o'],
+ [36.6,540,860,1.0,0.5,'i'],
+ [39.9,330,1030,1.9,0.9,'i'],
+ [44.2,330,1030,2.3,0.6,'i'],
+ [44.9,540,900,1.0,0.5,'o']
+];
+function cam(t){
+  let cur=CAM[0].slice(1,4);
+  for(let i=1;i<CAM.length;i++){
+    const k=CAM[i]; if(t<k[0])break;
+    const prev=CAM[i-1]; const from=[prev[1],prev[2],prev[3]];
+    const u=k[4]<=0?1:clamp((t-k[0])/k[4]);
+    const e=k[5]==='o'?eoc(u):k[5]==='i'?eio(u):u;
+    cur=[lerp(from[0],k[1],e),lerp(from[1],k[2],e),lerp(from[2],k[3],e)];
+    if(u>=1)cur=[k[1],k[2],k[3]];
+  }
+  return cur;
+}
+// ---- karakter olayları [tür, başlangıç, süre]
+const EV={
+ terlik:[['yawn',1.0,0.9],['shock',8.2,0.8],['giggle',24.0,1.6],['giggle',33.3,1.6],['alert',34.4,1.4],['hop',37.2,0.5],['stare',38.05,9]],
+ spor:[['hop',8.1,0.55],['hop',12.0,0.4],['giggle',18.4,1.6],['giggle',26.2,1.8],['giggle',33.3,0.9],['alert',34.4,0.1],['hop',37.0,0.5],['stare',38.05,9]],
+ topuklu:[['roll',9.9,1.1],['shock',17.7,0.9],['angry',28.4,3.5],['hop',37.4,0.5],['stare',38.05,9],['faint',33.0,0.1]],
+ cizme:[['angry',1.8,5.5],['shake',17.6,1.4],['puff',25.9,1.6],['angry',28.4,4.0],['shake',35.6,1.2],['hop',37.1,0.5],['stare',38.05,9]]
+};
+const BASE={terlik:{lid:.4,brow:-5},spor:{lid:.05,brow:0},topuklu:{lid:.1,brow:0},cizme:{lid:.12,brow:8}};
+const BLINK={};
+KEYS.forEach((k,ci)=>{let t=1.2+ci*.7;BLINK[k]=[];let i=0;while(t<DUR){BLINK[k].push(t);t+=1.7+rnd(i*7.3+ci*3.1)*2.8;i++;}});
+// ---- bakış parçaları
+const GAZE={};
+KEYS.forEach(k=>GAZE[k]=[[0,0,-1]]);
+function dirTo(a,b){const A=POS[a],B=POS[b];const dx=B[0]-A[0],dy=B[1]-A[1];const L=Math.hypot(dx,dy)||1;return [dx/L,dy/L];}
+GAZE.terlik.push([1.15,.4,.2]);
+D.lines.forEach(l=>{
+  KEYS.forEach(k=>{
+    let tgt;
+    if(l.to==='door'){tgt=dirTo(k,'door');tgt=[tgt[0]*.5,-1];GAZE[k].push([l.start+.35,tgt[0],tgt[1]]);return;}
+    if(k===l.who){tgt=l.to==='cam'?[0,.3]:dirTo(k,l.to);GAZE[k].push([l.start+.05,tgt[0],tgt[1]]);}
+    else{tgt=dirTo(k,l.who);GAZE[k].push([l.start+.12+rnd(l.start*3+k.length)*.15,tgt[0],tgt[1]]);}
+  });
+});
+KEYS.forEach(k=>{GAZE[k].push([38.05,0,-1]);});
+GAZE.spor.push([40.9,-1,0]);GAZE.topuklu.push([41.2,-1,.2]);GAZE.cizme.push([40.8,-.5,.7]);
+KEYS.forEach(k=>GAZE[k].sort((a,b)=>a[0]-b[0]));
+function gaze(k,t){
+  const g=GAZE[k];let cur=[g[0][1],g[0][2]];
+  for(let i=1;i<g.length;i++){ if(t<g[i][0])break; const f=[g[i-1][1],g[i-1][2]]; const u=ss((t-g[i][0])/.16); cur=[lerp(f[0],g[i][1],u),lerp(f[1],g[i][2],u)]; }
+  return cur;
+}
+function speakerAt(t){let s=null;D.lines.forEach(l=>{if(t>=l.start&&t<l.start+l.dur)s=l;});return s;}
+function mouthAmt(k,t){
+  let m=0;
+  D.lines.forEach(l=>{ if(l.who!==k)return; const f=(t-l.start)*30; if(f<0||f>=l.m.length-1)return; const i=Math.floor(f); m=lerp(l.m[i],l.m[i+1],f-i); });
+  return m;
+}
+const S={}; // karakter durumu
+function rig(k,t){
+  const base=BASE[k], evs=EV[k];
+  let x=0,y=0,rot=0,sx=1,sy=1,lid=base.lid,brow=base.brow,raise=0,smileOpen=0,extraMouth=0,dropO=0;
+  const ph=KEYS.indexOf(k)*1.7;
+  // nefes
+  sy*=1+.014*Math.sin(2*Math.PI*t/2.6+ph); sx*=1-.008*Math.sin(2*Math.PI*t/2.6+ph);
+  const m=mouthAmt(k,t);
+  const sp=speakerAt(t);
+  // konuşurken beden
+  if(m>0.02||(sp&&sp.who===k)){
+    y-=7*m; sy*=1+.035*m; sx*=1-.02*m;
+    rot+=3.2*Math.sin(t*6.1+ph)*Math.min(1,m*2)+1.6*Math.sin(t*2.3);
+    raise-=.5*m; brow+=3*Math.sin(t*4+ph)*m;
+  } else if(sp){
+    // dinleyici: konuşana doğru eğil, hafif başını salla
+    const d=dirTo(k,sp.who); rot+=d[0]*3.4+1.4*Math.sin(t*2.7+ph)*Math.min(1,mouthAmt(sp.who,t)*1.5);
+    y-=2.5*Math.abs(Math.sin(t*3.1+ph))*mouthAmt(sp.who,t);
+  } else { rot+=1.4*Math.sin(t*1.1+ph); }
+  let frozen=0, staring=0;
+  evs.forEach(([ty,t0,d])=>{
+    const u=(t-t0)/d, e=hold(t,t0,d), b=bump(t,t0,d);
+    if(ty==='hop'){ y-=70*b; sy*=1+.12*Math.sin(Math.PI*clamp(u))*0+(-.12*Math.max(0,.2-u)/.2*(u>=0&&u<.2?1:0)); sx*=1+.05*b; }
+    if(ty==='shock'){ y-=26*b; rot+=-7*e*Math.cos(Math.PI*clamp(u)); sx*=1-.06*b; sy*=1+.1*b; lid=lerp(lid,-.1,e); raise-=1.2*e; extraMouth+=0; }
+    if(ty==='shake'){ if(u>=0&&u<=1){x+=9*Math.sin((t-t0)*62)*(1-u); rot+=3*Math.sin((t-t0)*48)*(1-u);} brow=lerp(brow,26,e); lid=lerp(lid,.0,e); }
+    if(ty==='giggle'){ if(u>=0&&u<=1){ const env=Math.sin(Math.PI*clamp(u)); y-=10*Math.abs(Math.sin((t-t0)*18))*env; sy*=1-.05*Math.abs(Math.sin((t-t0)*18))*env; rot+=4*Math.sin((t-t0)*14)*env; extraMouth+=.38*env*(.6+.4*Math.sin((t-t0)*18)); lid=lerp(lid,.62,e); brow=lerp(brow,-8,e);} }
+    if(ty==='puff'){ const e2=hold(t,t0,d,.25,.4); sx*=1+.1*e2; sy*=1+.12*e2; y-=10*e2; brow=lerp(brow,14,e2); raise-=.2*e2; }
+    if(ty==='angry'){ brow=lerp(brow,24,e); lid=lerp(lid,.22,e); }
+    if(ty==='roll'){ raise-=.5*e; lid=lerp(lid,.3,e); rot+=-3*e; }
+    if(ty==='alert'){ lid=lerp(lid,-.1,e); raise-=1.0*e; y-=14*b; }
+    if(ty==='yawn'){ const yb=Math.sin(Math.PI*clamp(u)); extraMouth+=.95*yb; lid=lerp(lid,.92,yb*.9); y-=6*yb; sy*=1+.03*yb; }
+    if(ty==='stare'){ const e2=clamp((t-t0)/.12); frozen=e2; staring=e2; }
+  });
+  if(frozen>0){ lid=lerp(lid,-.12,frozen); brow=lerp(brow,-14,frozen); raise=lerp(raise,-1.4,frozen); rot=lerp(rot,k==='topuklu'?-6:k==='cizme'?4:0,frozen)*1; x*=1-frozen; dropO=ss((t-38.3)/.4)*(t<47?1:0); }
+  // final: Terlik ezilir
+  if(k==='terlik'&&t>44.9){ const u=eoc((t-44.9)/.12); sy*=lerp(1,.55,u); sx*=lerp(1,1.28,u); lid=lerp(lid,.0,u); }
+  // son sahne: terlik konuşurken kıpırdamasın (sadece ağız)
+  if(k==='terlik'&&t>40.2&&t<44.8){ y=0;rot*=.1;x=0; sy=1+.01*Math.sin(t*6); sx=1; lid=lerp(lid,.3,.6); brow=lerp(brow,10,.6); }
+  // göz kırpma
+  if(!frozen){ BLINK[k].forEach(b=>{const u=(t-b)/.16; if(u>0&&u<1){lid=Math.max(lid,Math.sin(Math.PI*u)*1.0*(1-Math.max(0,lid))+Math.max(0,lid)*0);} }); }
+  const g=gaze(k,t);
+  const sh=(frozen>0?0.4:1)*0.0;
+  const mo=clamp(m+extraMouth);
+  S[k]={x,y,rot,sx,sy,lid:clamp(lid,-.2,1),brow,raise,g,mo,dropO};
+  return S[k];
+}
+function applyChar(k,t){
+  const s=rig(k,t);
+  gsap.set('#ch-'+k,{x:s.x,y:s.y,rotation:s.rot,scaleX:s.sx,scaleY:s.sy});
+  const cfg=EYE[k];
+  ['L','R'].forEach((sd,i)=>{
+    const c=cfg[i]; const lidv=clamp(s.lid,0,1);
+    gsap.set('#'+k+'-pup'+sd,{x:s.g[0]*c.rx*.42,y:s.g[1]*c.ry*.4+(s.lid>0.5?c.ry*.1:0)});
+    gsap.set('#'+k+'-lid'+sd,{scaleY:lidv,svgOrigin:c.x+' '+(c.y-c.ry-2)});
+    const a=(sd==='L'?1:-1)*s.brow;
+    gsap.set('#'+k+'-brow'+sd,{y:s.raise*14+(lidv>.4?lidv*8:0),rotation:a,svgOrigin:c.x+' '+(c.y-c.ry-18)});
+  });
+  const M=MOUTH[k];
+  gsap.set('#'+k+'-mouth',{scaleY:.05+s.mo*.95,scaleX:1-.16*s.mo,svgOrigin:M[0]+' '+M[1],opacity:s.mo>.06?1:0});
+  gsap.set('#'+k+'-smile',{opacity:s.mo>.06?0:1});
+  if(k==='topuklu')gsap.set('#topuklu-lips',{opacity:s.mo>.06?0:.9});
+  gsap.set('#'+k+'-drop',{opacity:s.dropO,y:s.dropO*14*Math.sin(t*5)*.0+(s.dropO?(t-38.3)*8%30:0)});
+}
+const EYE={terlik:[{x:150,y:228,rx:30,ry:36},{x:250,y:228,rx:30,ry:36}],spor:[{x:165,y:244,rx:28,ry:33},{x:250,y:244,rx:28,ry:33}],topuklu:[{x:100,y:272,rx:26,ry:32},{x:174,y:272,rx:26,ry:32}],cizme:[{x:180,y:150,rx:26,ry:32},{x:250,y:150,rx:26,ry:32}]};
+const MOUTH={terlik:[200,292],spor:[208,300],topuklu:[138,330],cizme:[214,246]};
+// altyazı ve diğer öğeler
+const CAPS=D.lines.map((l,i)=>({id:'#cap'+(i+1)+'-in',t0:l.start}));
+function render(t){
+  KEYS.forEach(k=>applyChar(k,t));
+  const c=cam(t); const sway=[3.5*Math.sin(t*.9),2.5*Math.sin(t*1.3+1)];
+  let sh=0; // yumruk darbesi (kamera sarsıntısı) - kapı sesinde
+  [[1.0,.5],[34.9,.5],[44.95,.6]].forEach(([t0,a])=>{const u=(t-t0);if(u>0&&u<.4)sh+=a*Math.sin(u*90)*(1-u/.4)*8;});
+  gsap.set('#stage',{scale:c[2],x:540-(c[0]+sway[0]+sh)*c[2],y:630-(c[1]+sway[1]+sh)*c[2],transformOrigin:'0 0'});
+  CAPS.forEach(cp=>{const u=(t-cp.t0)/.2; gsap.set(cp.id,{scale:u<1?.8+.2*eob(u):1,opacity:clamp(u*3+.2)});});
+  // kapı açılır: ışık + insan gölgesi
+  const gl=ss((t-38.9)/.5); gsap.set('#glow',{opacity:gl*.9*(t<44.9?1:1-ss((t-44.9)/.3)*.3)});
+  const shd=ss((t-39.2)/.8); gsap.set('#shadowhum',{opacity:shd*.55,y:lerp(-400,0,eoc((t-39.2)/1.2))+(t>44.9?60*eoc((t-44.9)/.12):0),x:lerp(40,-120,ss((t-43.8)/1.1))});
+  gsap.set('#jacket',{rotation:2.5*Math.sin(t*1.7)+(t>38.9?4*Math.sin((t-38.9)*7)*Math.exp(-(t-38.9)):0)});
+  gsap.set('#bag',{rotation:-2*Math.sin(t*1.4)});
+  gsap.set('#plant',{rotation:1.5*Math.sin(t*1.2)});
+  gsap.set('#title-t',{scale:.7+.3*eob(t/.4)});
+  gsap.set('#title',{opacity:1-ss((t-3.1)/.5)});
+}
+window.__timelines=window.__timelines||{};
+const tl=gsap.timeline({paused:true});
+const proxy={v:0};
+tl.to(proxy,{v:1,duration:DUR,ease:'none',onUpdate:()=>render(tl.time())},0);
+render(0);
+window.__timelines['main']=tl;
+</script>
+</body></html>

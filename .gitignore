@@ -1,0 +1,4 @@
+episode/.hyperframes/
+episode/renders/work-*/
+episode/renders/.*
+episode/render.log
