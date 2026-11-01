@@ -1,0 +1,5 @@
+.hyperframes/
+node_modules/
+audio/*.wav
+audio/*.npy
+renders/aksolotl-silent.mp4

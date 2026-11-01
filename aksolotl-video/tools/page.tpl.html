@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="vendor/gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0a3a60}
+#root{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:"Helvetica Neue",Arial,sans-serif}
+.layer{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.layer svg{display:block}
+#axo{position:absolute;left:140px;top:520px;width:800px;height:880px}
+#axBob{width:800px;height:880px}
+#warm{background:linear-gradient(180deg,rgba(255,206,130,.7),rgba(255,150,130,.22) 55%,rgba(255,200,160,0) 100%);opacity:0}
+#dim{background:rgba(4,28,60,.5);opacity:0}
+.row{position:absolute;left:0;width:1080px;display:flex;justify-content:center;pointer-events:none}
+.chip{opacity:0;padding:16px 38px;border-radius:999px;background:rgba(8,40,86,.86);border:5px solid #7ff0e8;color:#fff;font-weight:900;font-size:50px;letter-spacing:.02em;white-space:nowrap}
+.chip.warm{border-color:#ffd23f;color:#fff6c2}
+.chip.pink{border-color:#ff9ec4}
+.card{opacity:0;position:absolute;left:60px;width:960px;text-align:center;color:#fff;font-weight:900;line-height:1.08}
+#t1{top:110px;padding:34px 40px;border-radius:52px;background:rgba(10,44,98,.88);border:7px solid #ffd23f;font-size:76px;letter-spacing:-.01em}
+#t1 em{font-style:normal;color:#ffd23f}
+#blast{top:230px;font-size:124px;letter-spacing:.04em;text-shadow:0 0 40px #b9a4ff,0 0 80px #7a5ad8,0 8px 0 #3a2a8c}
+#final{top:150px;padding:34px 36px;border-radius:56px;background:rgba(214,58,120,.92);border:7px solid #fff;font-size:82px;letter-spacing:-.01em;text-shadow:0 5px 0 rgba(0,0,0,.18)}
+#capRow{position:absolute;left:60px;width:960px;bottom:76px;height:230px}
+.cap{position:absolute;left:0;bottom:0;width:960px;text-align:center;opacity:0}
+.cap span{display:inline-block;padding:18px 34px;border-radius:34px;background:rgba(6,28,62,.78);color:#fff;font-weight:800;font-size:49px;line-height:1.2}
+.cap.last span{background:#ffd23f;color:#3a2a8c;font-weight:900;font-size:54px;border:6px solid #fff}
+#legend{opacity:0}
+.lg{display:flex;align-items:center;gap:10px;padding:10px 20px;border-radius:999px;background:rgba(6,20,60,.8);margin:0 7px;color:#fff;font-weight:900;font-size:36px}
+.lg i{display:block;width:30px;height:30px;border-radius:50%}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="47" data-width="1080" data-height="1920">
+  <div id="bgW" class="layer clip" data-start="0" data-duration="47" data-track-index="0">%%BG%%</div>
+  <div id="dim" class="layer clip" data-start="0" data-duration="47" data-track-index="1"></div>
+  <div id="lensW" class="layer clip" data-start="0" data-duration="47" data-track-index="2">%%LENS%%
+    <svg id="ptr" class="layer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920"><g id="ptrG" opacity="0"><circle cx="614" cy="1584" r="84" fill="none" stroke="#fff" stroke-width="8" stroke-dasharray="18 14"/><path id="ptrLine" d="M614 1498 C614 1330 540 1230 540 998" stroke="#fff" stroke-width="8" stroke-dasharray="16 16" fill="none" stroke-linecap="round"/></g></svg>
+  </div>
+  <div id="axo" class="clip" data-start="0" data-duration="47" data-track-index="3"><div id="axBob">%%AXO%%</div></div>
+  <div id="fgW" class="layer clip" data-start="0" data-duration="47" data-track-index="4">%%FG%%</div>
+  <div id="warm" class="layer clip" data-start="0" data-duration="47" data-track-index="5"></div>
+  <div id="cellW" class="layer clip" data-start="0" data-duration="47" data-track-index="6">%%CELLS%%</div>
+  <div id="spW" class="layer clip" data-start="0" data-duration="47" data-track-index="7">%%SP%%</div>
+  <div id="ui" class="layer clip" data-start="0" data-duration="47" data-track-index="8">
+    <div id="t1" class="card">BU HAYVAN KAYBETTİĞİ BACAKLARINI <em>YENİDEN YAPABİLİYOR!</em></div>
+    <div id="blast" class="card">BLASTEMA</div>
+    <div id="final" class="card">DOĞANIN KENDİNİ YENİLEYEN MİNİK KAHRAMANI!</div>
+    <div class="row" style="top:1020px"><div id="chA" class="chip">1 · YARA KAPANIR</div></div>
+    <div class="row" style="top:1020px"><div id="chB" class="chip">2 · HÜCRELER ÇOĞALIR</div></div>
+    <div class="row" style="top:1020px"><div id="chC" class="chip">3 · HÜCRE KÜMESİ OLUŞUR</div></div>
+    <div class="row" style="top:1020px"><div id="chD" class="chip">4 · YENİ BACAK BÜYÜR</div></div>
+    <div class="row" style="top:128px"><div id="tc1" class="chip warm">⏩ BİRKAÇ GÜN SONRA</div></div>
+    <div class="row" style="top:128px"><div id="tc2" class="chip warm">⏩ HAFTALAR SONRA</div></div>
+    <div class="row" style="top:420px"><div id="chG" class="chip pink">DIŞ SOLUNGAÇLAR</div></div>
+    <div class="row" style="top:150px"><div id="tagM" class="chip">MEKSİKA · XOCHIMILCO</div></div>
+    <div class="row" style="top:150px"><div id="tagN" class="chip pink">NESLİ KRİTİK TEHLİKEDE</div></div>
+    <div class="row" id="legend" style="top:1400px">
+      <div class="lg"><i style="background:#f7ecd0"></i>KEMİK</div><div class="lg"><i style="background:#ff6b6b"></i>KAS</div><div class="lg"><i style="background:#ffd23f"></i>SİNİR</div><div class="lg"><i style="background:#ffa9c4"></i>DERİ</div>
+    </div>
+    <div id="capRow">%%CAPS%%</div>
+  </div>
+</div>
+<script>
+window.__timelines = window.__timelines || {};
+%%JS%%
+</script>
+</body>
+</html>
