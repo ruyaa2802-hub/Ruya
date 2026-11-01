@@ -21,3 +21,14 @@ tools/mix.sh renders/aksolotl-silent.mp4 renders/aksolotl.mp4
 ## Seslendirme
 Anlatım metni `tools/build.py` içindeki altyazı listesindedir. Seslendirme dosyaları `voice/scene1.mp3` ...
 `voice/scene5.mp3` adıyla konursa (başlangıçlar: 0.3, 7.2, 17.4, 27.2, 36.3 sn) `tools/mix.sh` otomatik ekler.
+
+## Yerel Türkçe seslendirme (kredisiz)
+`tools/voice_tr.py` açık Coqui GlowTTS + HiFi-GAN Türkçe modelini kullanır (tek kadın sesi, orta kalite).
+Modeller `github.com/coqui-ai/TTS/releases/download/v0.6.1_models/` altından indirilir
+(`tts_models--tr--common-voice--glow-tts.zip`, `vocoder_models--tr--common-voice--hifigan.zip`).
+```bash
+pip install coqui-tts torch torchaudio torchcodec six
+python tools/voice_tr.py <modeller_klasoru>   # voice/scene1..5.wav
+tools/mix.sh renders/aksolotl-silent.mp4 renders/aksolotl-kendini-yenileyen-kahraman.mp4
+```
+Daha doğal bir ses için `voice/sceneN.mp3` dosyalarını (ör. ElevenLabs) koyup `tools/mix.sh` çalıştırmak yeterlidir.
