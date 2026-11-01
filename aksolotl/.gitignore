@@ -1,0 +1,13 @@
+node_modules/
+out/stills/
+out/parts/
+logs/
+__pycache__/
+out/video_noaudio.mp4
+out/concat.txt
+out/parts_v/
+out/video_vertical_noaudio.mp4
+out/concat_v.txt
+out/brand/_bg_*.png
+out/keep/
+out/old/

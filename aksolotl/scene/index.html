@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Aksolotl – Kendini Yeniden İnşa Eden Canlı</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', 'Noto Color Emoji', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  .chip { left: 50%; top: 220px; background: rgba(8, 24, 30, 0.62); border: 2px solid rgba(160, 240, 230, 0.35); border-radius: 24px; padding: 14px 28px;
+    color: #fff; font-weight: 800; font-size: 38px; white-space: nowrap; text-align: center; backdrop-filter: blur(2px); }
+  .chip small { display: block; font-size: 28px; font-weight: 600; color: #bdf3ea; margin-top: 4px; }
+  .chip.pink { border-color: rgba(255, 170, 200, 0.6); }
+  .chip.pink small { color: #ffc6d8; }
+  #lapse { min-width: 640px; }
+  #lapse .bar { margin: 12px auto 2px; width: 560px; height: 12px; border-radius: 6px; background: rgba(255,255,255,0.2); overflow: hidden; }
+  #lapseBar { height: 100%; width: 0; background: linear-gradient(90deg, #ff9ab8, #bff6ff); border-radius: 6px; }
+  .big { left: 50%; top: 250px; text-align: center; white-space: nowrap; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; color: #fff; }
+  #blastema span { display: block; font-size: 112px; letter-spacing: 0.06em; color: #bff6ff; text-shadow: 0 0 30px rgba(140, 240, 255, 0.85), 0 6px 22px rgba(0,0,0,0.6); }
+  #blastema small { display: block; font-size: 36px; font-weight: 700; color: #ffd6ec; margin-top: 6px; text-shadow: 0 3px 10px rgba(0,0,0,0.7); }
+  #title span { display: block; font-size: 104px; letter-spacing: 0.08em; color: #ffd0dc; text-shadow: 0 0 28px rgba(255, 140, 180, 0.7), 0 6px 22px rgba(0,0,0,0.6); }
+  #title small { display: block; font-size: 42px; font-weight: 700; margin-top: 6px; text-shadow: 0 3px 12px rgba(0,0,0,0.7); }
+  #question { top: 300px; }
+  #question span { display: block; font-size: 66px; line-height: 1.12; text-shadow: 0 4px 22px rgba(0,0,0,0.75); }
+  #brand { left: 50%; top: 520px; display: flex; align-items: center; gap: 14px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 800; font-size: 40px; color: #fff; text-shadow: 0 3px 12px rgba(0,0,0,0.6); white-space: nowrap; }
+  #brand img { width: 76px; height: 76px; border-radius: 50%; border: 4px solid #fff; }
+  .tag { background: rgba(8, 24, 30, 0.7); color: #fff; font-weight: 800; font-size: 32px; padding: 7px 18px; border-radius: 999px; white-space: nowrap; border: 3px solid #fff; }
+  .tag.bone { border-color: #dfe9ff; } .tag.muscle { border-color: #ff4d5e; } .tag.nerve { border-color: #ffd84a; } .tag.vessel { border-color: #ff2a3a; }
+  .tag.bud { border-color: #bff6ff; } .tag.gill { border-color: #ff7fa0; }
+  #legend { left: 50%; top: 360px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 960px; }
+  #legend div { background: rgba(8, 10, 24, 0.6); color: #fff; font-weight: 700; font-size: 28px; padding: 6px 14px; border-radius: 14px; white-space: nowrap; }
+  #legend i { display: inline-block; width: 18px; height: 18px; border-radius: 50%; margin-right: 8px; vertical-align: -1px; }
+  #sub { text-wrap: balance; left: 50%; bottom: 430px; max-width: 900px; width: max-content; text-align: center; font-weight: 600; font-size: 46px; line-height: 1.2;
+    color: #fff; background: rgba(4, 16, 22, 0.6); padding: 8px 26px 11px; border-radius: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
+  #sub b { color: #ffb3c8; font-weight: 800; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <div id="notsf" class="o chip">Bilim kurgu değil — gerçek! 🔬</div>
+    <div id="lapse" class="o chip pink">⏱ Zaman atlamalı<small>Gerçekte birkaç hafta sürer</small><div class="bar"><div id="lapseBar"></div></div></div>
+    <div id="blastema" class="o big"><span>BLASTEMA</span><small>yaranın altında toplanan özel hücreler</small></div>
+    <div id="m1" class="o chip" style="top:560px">1 · Hücreler yaraya göç eder</div>
+    <div id="m2" class="o chip" style="top:560px">2 · Hücreler çoğalır</div>
+    <div id="m3" class="o chip" style="top:220px">3 · Yeni dokulara dönüşür</div>
+    <div id="legend" class="o"><div><i style="background:#dfe9ff"></i>Kemik/kıkırdak</div><div><i style="background:#ff4d5e"></i>Kas</div><div><i style="background:#ffd84a"></i>Sinir</div><div><i style="background:#7a5cff"></i>Damar</div><div><i style="background:#ffb3c6"></i>Deri</div></div>
+    <div id="neoteny" class="o chip pink">Neoteni 🐣<small>Yetişkinken bile yavru özelliklerini korur</small></div>
+    <div id="home" class="o chip">📍 Doğal yaşam alanı: Meksika<small>Xochimilco kanalları · doğada kritik tehlike altında</small></div>
+    <div id="title" class="o big"><span>AKSOLOTL</span><small>Doğanın kendini yenileyen mucizesi.</small></div>
+    <div id="question" class="o big"><span>Sen böyle bir canlı</span><span>olduğunu biliyor muydun?</span></div>
+    <div id="brand" class="o"><img src="./assets/logo.png" alt="">Pirilumo</div>
+    <div id="tBud" class="o tag bud">Blastema</div>
+    <div id="tBone" class="o tag bone">Kemik</div>
+    <div id="tMuscle" class="o tag muscle">Kas</div>
+    <div id="tNerve" class="o tag nerve">Sinir</div>
+    <div id="tVessel" class="o tag vessel">Damar</div>
+    <div id="tGills" class="o tag gill">Dış solungaçlar</div>
+    <div id="sub" class="o"></div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
