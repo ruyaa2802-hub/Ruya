@@ -2,3 +2,7 @@ episode/.hyperframes/
 episode/renders/work-*/
 episode/renders/.*
 episode/render.log
+dj/.hyperframes/
+dj/renders/work-*/
+dj/renders/.*
+dj/render.log
