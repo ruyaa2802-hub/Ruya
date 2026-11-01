@@ -1,7 +1,7 @@
 """Özgün müzik + ses efektleri sentezi ve karışım (yalnızca numpy). Çıktı: out/mix.wav ve stem'ler."""
 import os, math, wave, json
 import numpy as np
-DUR = 63.0
+DUR = 91.0
 LINES = []
 SFX = []
 

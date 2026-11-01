@@ -88,6 +88,12 @@ def blit_char(canvas, cam, st):
     px, py = int(bx - ax * f) + ox0, int(by - ay * f) + oy0
     if px > W or py > H or px + nw < 0 or py + nh < 0:
         return
+    if st.get('clip', 9999) < 9000:
+        row = int((st['clip'] - cam.y0) * cam.z) - py
+        if row < nh:
+            a = spr.split()[3]
+            a.paste(0, (0, max(0, row), nw, nh))
+            spr.putalpha(a)
     paste(canvas, spr, px, py)
 
 
@@ -199,41 +205,41 @@ def overlays(img, t):
             d.text((W / 2, y + 50 + lh * i + lh / 2), l, font=fnt, fill=(255, 252, 245, 255), anchor='mm',
                    stroke_width=2, stroke_fill=(0, 0, 0, 200))
         y += hbox + 14
-    if 56.3 <= t < 58.0:
-        a = ease((t - 56.3) / 0.3) * (1 - ease((t - 57.7) / 0.3))
+    if 84.4 <= t < 85.9:
+        a = ease((t - 84.4) / 0.3) * (1 - ease((t - 85.6) / 0.3))
         d.text((W / 2, 330), '( cırcır böceği )', font=font(F_SERIF_BI, 46), fill=(220, 230, 255, int(220 * a)), anchor='mm')
-    if t >= 59.55:
+    if t >= direct.END_T:
         d.rectangle((0, 0, W, H), fill=(14, 10, 20, 255))
-        k = ease_out((t - 59.6) / 0.35)
+        k = ease_out((t - direct.END_T - 0.05) / 0.35)
         d.text((W / 2, 820), 'İNSANLAR GİDİNCE', font=font(F_SANS_B, int(78 * (0.8 + 0.2 * k))), fill=(255, 210, 80, int(255 * k)),
                anchor='mm', stroke_width=5, stroke_fill=(60, 30, 10, int(255 * k)))
         d.text((W / 2, 930), 'Katlanmayanların İsyanı', font=font(F_SERIF_BI, 52), fill=(255, 255, 255, int(255 * k)), anchor='mm')
-        if t > 60.6:
-            k2 = ease((t - 60.6) / 0.5)
+        if t > direct.END_T + 1.0:
+            k2 = ease((t - direct.END_T - 1.0) / 0.5)
             d.text((W / 2, 1080), 'Kıyafetler katlanmadı. İsyan sürüyor…', font=font(F_SANS, 36), fill=(200, 200, 220, int(255 * k2)), anchor='mm')
     img.alpha_composite(lay)
 
 
 def render_frame(t, idx=0):
     init()
-    if t >= 59.55:
+    if t >= direct.END_T:
         out = Image.new('RGBA', (W, H), (0, 0, 0, 255))
         overlays(out, t)
         return out.convert('RGB')
     cx, cy, z = direct.camera(t)
     cam = Cam(cx, cy, z)
     canvas = G['bg'].resize((W, H), Image.BICUBIC, box=(cam.x0 * 2, cam.y0 * 2, (cam.x0 + W / z) * 2, (cam.y0 + H / z) * 2)).convert('RGBA')
-    sts = [direct.state_of(a, t) for a in G['acts'].values()]
-    floor = [s for s in sts if s['name'] == 'sepet']
-    others = sorted([s for s in sts if s['name'] != 'sepet'], key=lambda s: s['ground'])
+    acts = G['acts']
+    sts = {n: direct.state_of(a, t, acts) for n, a in acts.items()}
+    # koltuğun arkasındaki Pantolon önce (sırt kenarında kırpılır)
+    blit_char(canvas, cam, sts['pantolon'])
     draw_pile(canvas, cam, t)
-    for st in others:
-        if st['name'] in ('corapA', 'pantolon', 'corapB'):
+    rest = sorted([s for n, s in sts.items() if n != 'pantolon'], key=lambda s: s['ground'])
+    for st in rest:
+        if st['name'] in ('tisort', 'havlu', 'sepet', 'corapB', 'corapA'):
             shadow(canvas, cam, st, clothes.WIDTH[st['name']])
-        blit_char(canvas, cam, st)
-    for st in floor:
-        shadow(canvas, cam, st, clothes.WIDTH['sepet'])
-        draw_legs(canvas, cam, st)
+        if st['name'] == 'sepet':
+            draw_legs(canvas, cam, st)
         blit_char(canvas, cam, st)
     draw_hands(canvas, cam, t)
     fr = np.asarray(canvas.convert('RGB'), np.float32)
@@ -241,10 +247,10 @@ def render_frame(t, idx=0):
     mult = np.array([1.02, 0.98, 0.92], np.float32)
     if 0 <= t < 0.6:
         mult = mult * (t / 0.6)
-    if 32.65 <= t < 33.2:   # "YETER" kırmızı flaş
-        k = 1 - (t - 32.65) / 0.55
+    if 56.85 <= t < 57.4:   # "YETER" kırmızı flaş
+        k = 1 - (t - 56.85) / 0.55
         fr += np.array([90, 10, 0], np.float32) * k
-    if 55.6 <= t < 58.2:
+    if 83.6 <= t < 86.2:
         mult = mult * np.array([0.9, 0.95, 1.05], np.float32)
     fr *= mult
     sh = direct.human_shadow(t)

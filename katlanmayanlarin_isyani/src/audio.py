@@ -81,16 +81,16 @@ def music():
     m = bus()
     # giriş: parmak ucu pizzicato
     for i, n in enumerate(['C3', 'G2', 'C3', 'G2', 'Eb3']):
-        add(m, bass_pluck(nf(n), 0.25, 0.35), 0.4 + i * 0.42, -0.2)
+        add(m, bass_pluck(nf(n), 0.25, 0.3), 1.3 + i * 0.36, -0.2)
     # A: komik marş 3.3 – 28.4
     prog = [('C2', ['C4', 'E4', 'G4']), ('G1', ['B3', 'D4', 'G4']), ('A1', ['C4', 'E4', 'A4']), ('F1', ['C4', 'F4', 'A4'])]
     mel = ['G4', 'E4', 'C4', 'E4', 'G4', 'Ab4', 'G4', 'E4', 'F4', 'D4', 'B3', 'D4', 'F4', 'E4', 'D4', 'G3']
-    t = 4.0; bar = 0
-    while t < 28.3:
+    t = 10.4; bar = 0
+    while t < 52.5:
         root, ch = prog[bar % 4]
         for b in range(4):
             tb = t + b * BEAT
-            if tb >= 28.35:
+            if tb >= 52.55:
                 break
             if b % 2 == 0:
                 add(m, tuba(nf(root), 0.32, 0.55), tb, -0.1)
@@ -101,43 +101,46 @@ def music():
         if bar % 2 == 0:
             for k in range(8):
                 tn = t + k * BEAT / 2
-                if tn < 28.3 and (k % 3 != 2):
+                if tn < 52.5 and (k % 3 != 2):
                     add(m, clarinet(nf(mel[(bar * 4 + k) % len(mel)]), 0.2, 0.16), tn, 0.1)
         t += 4 * BEAT; bar += 1
     # kaos 28.4 – 32.6: hızlı, trampet, kayan düdük
-    t = 28.4
+    t = 52.6
     k = 0
-    while t < 32.6:
+    while t < 56.5:
         add(m, snare(0.22 if k % 2 else 0.32), t, 0.0)
         if k % 2 == 0:
             add(m, tuba(nf(['C2', 'Db2', 'D2', 'Eb2'][(k // 2) % 4]), 0.18, 0.6), t, -0.1)
         add(m, marimba(nf(['C5', 'B4', 'Bb4', 'A4', 'Ab4', 'G4'][k % 6]), 0.16), t + 0.06, 0.3)
         t += 0.25; k += 1
-    add(m, slide(500, 1400, 0.8, 0.12), 29.3, 0.4)
-    add(m, slide(1400, 400, 0.8, 0.12), 30.9, -0.4)
+    add(m, slide(500, 1400, 0.8, 0.12), 53.4, 0.4)
+    add(m, slide(1400, 400, 0.8, 0.12), 55.0, -0.4)
     # S4: sahte-dramatik yaylılar
-    add(m, drone(nf('C2'), 7.8, 0.22, att=1.0, rel=1.5), 35.6, 0.0)
-    for tt, ch in ((35.7, ['C3', 'Eb3', 'G3']), (38.3, ['Ab2', 'C3', 'Eb3']), (40.6, ['G2', 'B2', 'D3', 'F3'])):
+    add(m, drone(nf('C2'), 7.6, 0.22, att=1.0, rel=1.5), 59.6, 0.0)
+    for tt, ch in ((59.7, ['C3', 'Eb3', 'G3']), (62.2, ['Ab2', 'C3', 'Eb3']), (64.6, ['G2', 'B2', 'D3', 'F3'])):
         add(m, strings([nf(x) for x in ch], 2.4, att=0.6, rel=0.8, vol=0.24), tt, 0.0)
-    add(m, brass([nf('G2'), nf('D3')], 0.5, 0.3), 43.0, 0.0)
+    add(m, brass([nf('G2'), nf('D3')], 0.5, 0.3), 67.2, 0.0)
+    for i, n in enumerate(['E3', 'C3', 'G2', 'C3', 'E3', 'D3']):
+        add(m, bass_pluck(nf(n), 0.2, 0.25), 67.7 + i * 0.5, 0.0)
     # ayak sesi gerilimi
-    for tt in (44.0, 44.6, 45.2, 45.8):
-        add(m, tuba(nf('C2'), 0.25, 0.5), tt, 0.0)
+    for tt in (70.9, 71.6, 72.3, 73.0, 73.6):
+        add(m, tuba(nf('C2'), 0.25, 0.12), tt, 0.0)
     # fanfar
-    add(m, brass([nf('C4'), nf('E4'), nf('G4'), nf('C5')], 0.35, 0.5), 46.45, 0.0)
-    add(m, brass([nf('C4'), nf('E4'), nf('G4'), nf('C5')], 1.3, 0.55), 46.85, 0.0)
-    add(m, cymbal(0.3, 2.0), 46.85, 0.2)
-    add(m, kick(0.7), 46.85, 0.0)
+    add(m, brass([nf('C4'), nf('E4'), nf('G4'), nf('C5')], 0.35, 0.5), 73.95, 0.0)
+    add(m, brass([nf('C4'), nf('E4'), nf('G4'), nf('C5')], 1.3, 0.55), 74.35, 0.0)
+    add(m, cymbal(0.3, 2.0), 74.35, 0.2)
+    add(m, kick(0.7), 74.35, 0.0)
     # kaldırma/taşıma: tırmanan pizzicato
     seq = ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4']
     for i, n in enumerate(seq):
-        add(m, bass_pluck(nf(n), 0.18, 0.35), 49.6 + i * 0.25, 0.1 * ((i % 2) * 2 - 1))
-    add(m, slide(300, 1200, 0.7, 0.14), 49.6, 0.0)
-    add(m, slide(1200, 250, 0.3, 0.14), 52.55, 0.0)
+        add(m, bass_pluck(nf(n), 0.18, 0.35), direct.H0 + 1.2 + i * 0.25, 0.1 * ((i % 2) * 2 - 1))
+    add(m, slide(300, 1200, 0.7, 0.14), direct.H0 + 1.2, 0.0)
+    add(m, slide(1200, 250, 0.3, 0.14), direct.H0 + 4.15, 0.0)
     # final: rimshot + üzgün trombon
-    add(m, snare(0.45), 59.55, 0.0); add(m, snare(0.35), 59.68, 0.0); add(m, cymbal(0.35, 1.2), 59.82, 0.1); add(m, kick(0.5), 59.82, 0.0)
+    E = direct.END_T
+    add(m, snare(0.45), E, 0.0); add(m, snare(0.35), E + 0.13, 0.0); add(m, cymbal(0.35, 1.2), E + 0.27, 0.1); add(m, kick(0.5), E + 0.27, 0.0)
     for i, (n, d, v) in enumerate((('Bb3', 0.42, 0.0), ('A3', 0.42, 0.0), ('Ab3', 0.42, 0.0), ('G3', 1.4, 0.03))):
-        add(m, brass([nf(n)], d, 0.55, glide=-0.02 if i == 3 else 0.0, vib=v), 60.0 + i * 0.5, 0.0)
+        add(m, brass([nf(n)], d, 0.55, glide=-0.02 if i == 3 else 0.0, vib=v), E + 0.45 + i * 0.5, 0.0)
     return m
 
 
@@ -147,6 +150,11 @@ def sfx(name):
         y, p = ak.sfx('door'); return y * 1.2, 0.6
     if name == 'door2':
         y, p = ak.sfx('door'); return y * 0.6, 0.8
+    if name == 'car':
+        t = T(2.3)
+        e = np.sin(np.pi * np.minimum(1, t / 2.3)) ** 1.5
+        y = (np.sin(2 * np.pi * (48 + 6 * t) * t) * 0.5 + fft_filter(rng.randn(len(t)), lo=60, hi=500) * 0.5) * e
+        return y * 0.09, 0.8
     if name == 'keys':
         t = T(0.7); y = np.zeros(len(t), np.float32)
         for _ in range(9):
@@ -183,7 +191,7 @@ def sfx(name):
         t = T(0.7)
         y = np.sin(2 * np.pi * 48 * t * np.exp(-t * 2.5)) * np.exp(-t / 0.15) * 1.0
         y += fft_filter(rng.randn(len(t)) * np.exp(-t / 0.035), lo=80, hi=1500) * 0.6
-        return y * 0.6, 0.6
+        return y * 0.2, 0.6
     if name == 'fanfare':
         return np.zeros(10, np.float32), 0.0
     if name == 'rustle':
@@ -206,7 +214,7 @@ def sfx(name):
     raise ValueError(name)
 
 
-PAN = dict(gomlek=0.0, havlu=-0.4, tisort=0.4, corapA=-0.6, pantolon=0.1, corapB=0.7, sepet=0.45)
+PAN = dict(gomlek=0.4, havlu=0.65, tisort=-0.45, corapA=-0.2, pantolon=0.1, corapB=0.75, sepet=0.15)
 
 
 def read(code):
@@ -224,8 +232,12 @@ def voices():
         x = fft_filter(x, lo=90)
         x = np.tanh(x * 1.3) / 1.3
         g = 0.62 if code.startswith('a_') else 1.0
-        if code in ('s1',):
-            g = 1.25
+        if code in ('s1', 'h4'):
+            g = 1.3
+        if code == 'g1':
+            g = 1.15
+        if who == 'havlu' and not code.startswith('a_'):
+            g *= 1.2
         add(v, x, t0, PAN[who], g)
     return v
 
@@ -233,12 +245,14 @@ def voices():
 def main():
     os.makedirs(OUT, exist_ok=True)
     mus = music()
-    seg = mus[:, int(4 * SR):int(28 * SR)]
+    seg = mus[:, int(4 * SR):int(52 * SR)]
     mus *= 0.05 / (np.sqrt(np.mean(seg ** 2)) + 1e-9)
     # "YETER" anında müzik kesilir
-    i = int(32.65 * SR); r = int(0.05 * SR)
+    i = int(56.5 * SR); r = int(0.05 * SR)
     mus[:, i:i + r] *= np.linspace(1, 0, r)[None, :]
-    mus[:, i + r:int(35.5 * SR)] = 0
+    mus[:, i + r:int(59.5 * SR)] = 0
+    j = int(direct.H0 + 4.5)
+    mus[:, int((direct.H0 + 4.6) * SR):int(direct.END_T * SR) - 10] = 0
     sf = bus()
     for name, t0 in direct.SFX:
         y, pan = sfx(name)
@@ -250,7 +264,7 @@ def main():
     duck = 10 ** ((-11 * venv) / 20)
     mus_bus = (mus + reverb(mus, 0.16)) * duck[None, :]
     sfx_bus = sf + reverb(sf, 0.12)
-    vo_bus = vo + reverb(vo, 0.05)
+    vo_bus = vo + reverb(vo, 0.09, ir=[make_ir(31, 0.18, 0.9, 6000), make_ir(32, 0.18, 0.9, 6000)])
     mix = mus_bus + sfx_bus + vo_bus
     mix += fft_filter(rng.randn(N).astype(np.float32) * 0.0008, lo=60, hi=800)[None, :]
     n_out = int(direct.DUR * SR)
@@ -265,9 +279,11 @@ def main():
         if code.startswith('a_'):
             continue
         a, b = int(t0 * SR), int((t0 + 0.9) * SR)
-        v = np.sqrt(np.mean(vo_bus[:, a:b] ** 2)); m = np.sqrt(np.mean((mus_bus[:, a:b] + sfx_bus[:, a:b]) ** 2)) + 1e-9
+        vb = fft_filter(vo_bus[:, a:b].mean(axis=0), lo=300, hi=4000)
+        mb = fft_filter((mus_bus[:, a:b] + sfx_bus[:, a:b]).mean(axis=0), lo=300, hi=4000)
+        v = np.sqrt(np.mean(vb ** 2)); m = np.sqrt(np.mean(mb ** 2)) + 1e-9
         rep.append((code, round(20 * math.log10(v / m), 1)))
-    print('ses / müzik+efekt (dB):', rep)
+    print('konuşma bandında ses / müzik+efekt (dB):', rep)
 
 
 if __name__ == '__main__':
