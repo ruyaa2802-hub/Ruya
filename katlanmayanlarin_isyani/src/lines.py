@@ -1,0 +1,36 @@
+"""Replik metinleri ve karakter ses ayarları (edge-tts: tr-TR Ahmet / Emel nöral sesleri)."""
+VOICE = {
+    # karakter: (ses, hız, perde)
+    'gomlek':  ('tr-TR-AhmetNeural', '+6%', '-6Hz'),
+    'tisort':  ('tr-TR-AhmetNeural', '+16%', '+24Hz'),
+    'corapA':  ('tr-TR-EmelNeural', '+12%', '+38Hz'),
+    'corapB':  ('tr-TR-AhmetNeural', '+6%', '+30Hz'),
+    'havlu':   ('tr-TR-AhmetNeural', '-14%', '-34Hz'),
+    'pantolon': ('tr-TR-AhmetNeural', '-8%', '-16Hz'),
+    'sepet':   ('tr-TR-EmelNeural', '+2%', '-20Hz'),
+}
+LINES = {
+    'g1': ('gomlek', 'Üç gündür buradayım! Ben bir gömleğim, halı değilim!'),
+    't1': ('tisort', 'En azından senin bir çiftin var. Benim üstüme çorap bile atmışlar!'),
+    'c1': ('corapA', 'Benim eşim nerede?'),
+    'c2': ('corapB', 'Kesin yine çamaşır makinesinde başka biriyle dönüyordur!'),
+    'c3': ('corapA', 'Ne demek o?!'),
+    'c4': ('corapB', 'Bildiğin gibi, canım!'),
+    'p1': ('pantolon', 'Ben katlanmam! Ben askıya asılırım!'),
+    'h1': ('havlu', 'Sen önce haddini bil! Ben üç gündür burada bekliyorum!'),
+    'g2': ('gomlek', 'Asıl benim kırışıklarım...'),
+    't2': ('tisort', 'Kimse seni dinlemiyor!'),
+    'p2': ('pantolon', 'Bana ütüsüz yaklaşmayın!'),
+    'c5': ('corapA', 'Eşim nerede, eşim?!'),
+    'h2': ('havlu', 'Hepiniz nem kokuyorsunuz!'),
+    's1': ('sepet', 'Yeter! Hepiniz susun!'),
+    's2': ('sepet', 'İnsanlar bizi yıkadı, kuruttu... Şimdi de katlamaya üşeniyorlar. Biz burada tekstil enkazına döndük!'),
+    'a_g': ('gomlek', 'Sonunda! Bizi katlayacak!'),
+    'a_t': ('tisort', 'Sonunda! Bizi katlayacak!'),
+    'a_cA': ('corapA', 'Sonunda! Bizi katlayacak!'),
+    'a_cB': ('corapB', 'Sonunda! Bizi katlayacak!'),
+    'a_h': ('havlu', 'Sonunda! Bizi katlayacak!'),
+    'a_p': ('pantolon', 'Sonunda! Bizi katlayacak!'),
+    'a_s': ('sepet', 'Sonunda! Bizi katlayacak!'),
+    'g3': ('gomlek', 'Şaka mı bu lan?'),
+}
