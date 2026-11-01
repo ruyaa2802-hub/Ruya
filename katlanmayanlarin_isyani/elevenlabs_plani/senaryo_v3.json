@@ -1,0 +1,40 @@
+{
+  "bolum": "İnsanlar Gidince — Katlanmayanların İsyanı (v3, ElevenLabs)",
+  "model_ses": "eleven_v4",
+  "seslendirme_kadrosu": {
+    "gomlek":   {"ses": "Orhan - Expressive Istanbul Actor", "voice_id": "y6X1mFgtBqHFtQwrOezf", "neden": "tiyatral, kendini önemli gören"},
+    "tisort":   {"ses": "Ali - Mad Man", "voice_id": "xROJDAAwVXltxzeQxuFL", "neden": "genç, animasyon sesi, alaycı"},
+    "havlu":    {"ses": "Seyfullah Kartal", "voice_id": "mF7tIc9VLrznhGooGjaT", "neden": "yaşlı, tok, sabrı tükenmiş"},
+    "pantolon": {"ses": "Atakan - Deep, Rich, Sophisticated", "voice_id": "GYYjvYBUewPSDNmt60NS", "neden": "kibirli, kadife ses"},
+    "corapA":   {"ses": "Gözde", "voice_id": "rtnDjO8siSxeTEeTVczO", "neden": "genç kadın, duygusal, telaşlı"},
+    "corapB":   {"ses": "JollyBolt - Playful", "voice_id": "xtPlXcRNvdlUVw2QsITM", "neden": "oyunbaz, dedikoducu"},
+    "sepet":    {"ses": "Deniz – Turkish Storyteller & Animation Voice", "voice_id": "2w5twzryiFg9VNnXphRP", "neden": "güçlü, otoriter, animasyon"}
+  },
+  "replikler": [
+    ["g1", "gomlek", "[whispering] Gitti mi? [pause] [excited] Gitti! [shouting, furious] Ya üç gündür buradayım! Ben bir gömleğim, halı değilim!"],
+    ["t1", "tisort", "[lazy, yawning] Bağırma abi ya... [sarcastic] En azından sen koltuktasın. Ben yerdeyim! Üstüme çorap bile atmışlar!"],
+    ["h1", "havlu", "[sighs, gossiping] Gördünüz mü ama? Sevgilisi geldi diye bizi apar topar koltuğa yığdı."],
+    ["cA1", "corapA", "[gasps, scandalized] Ay! Sevgilisinden de utanmıyor! Ev ne halde, ne halde!"],
+    ["cB1", "corapB", "[mischievous] Annesini mi çağıralım, ne yapalım yahu?"],
+    ["p1", "pantolon", "[smug, peeking] Annesi görse var ya... kulağından tutar, hepimizi tek tek katlatır!"],
+    ["cA2", "corapA", "[suddenly worried] Dur bir dakika... Benim eşim nerede?"],
+    ["cB2", "corapB", "[teasing, laughing] Kesin yine çamaşır makinesinde başka biriyle dönüyordur!"],
+    ["cA3", "corapA", "[offended, shouting] Ne demek o?!"],
+    ["cB3", "corapB", "[smug] Bildiğin gibi, canım!"],
+    ["cA4", "corapA", "[angry] Gel buraya sen! [grunts]"],
+    ["cB4", "corapB", "[laughing, running] Yakala da göreyim!"],
+    ["p2", "pantolon", "[arrogant] Ben katlanmam ama! Ben askıya asılırım!"],
+    ["h2", "havlu", "[interrupting, furious] Sen önce haddini bil! Ben üç gündür yerde bekliyorum!"],
+    ["p3", "pantolon", "[offended] Bırak paçamı! Ütüm bozulacak!"],
+    ["h3", "havlu", "[straining] Bırakmıyorum! [grunts]"],
+    ["g2", "gomlek", "[shouting] Asıl benim kırışıklarım!"],
+    ["t2", "tisort", "[shouting] Kimse seni dinlemiyor!"],
+    ["h4", "havlu", "[shouting] Hepiniz nem kokuyorsunuz!"],
+    ["s1", "sepet", "[thunderous, shouting] YETER! Hepiniz susun!"],
+    ["s2", "sepet", "[stern, then dramatic] İnsanlar bizi yıkadı, kuruttu... [pause] Şimdi de katlamaya üşeniyorlar. [exasperated] Biz burada tekstil enkazına döndük!"],
+    ["t3", "tisort", "[muttering] Bir de sevgilisine, evim hep böyle tertemiz, diyor..."],
+    ["h5", "havlu", "[urgent whisper] Susun! Geliyor!"],
+    ["all", "hepsi", "[cheering, overjoyed] Sonunda! Bizi katlayacak!"],
+    ["g3", "gomlek", "[deadpan, disbelief] Şaka mı bu lan?"]
+  ]
+}
