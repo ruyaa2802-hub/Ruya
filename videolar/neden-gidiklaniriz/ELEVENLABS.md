@@ -5,7 +5,7 @@ Sistem hiçbir API çağrısı yapmaz; bu metni ElevenLabs'te **sen** üretirsin
 ## Ayarlar
 | Ayar | Değer |
 |---|---|
-| Ses | Uğur – Turkish Documentary Narrator (Bölüm 1 ile aynı ses = seri bütünlüğü) |
+| Ses | **Su – Gentle & Expressive Storytelling** (genç, sıcak, meraklı Türkçe kadın anlatıcı; Voice Library'de "Su" diye ara) — alternatif: Bölüm 1'deki Uğur |
 | Model | Eleven v3 (önerilen) veya Multilingual v2 |
 | Stability / Similarity / Style | 0.50 / 0.75 / 0.25 (bu konu biraz daha neşeli) |
 | Çıktı | MP3, 44.1 kHz |
