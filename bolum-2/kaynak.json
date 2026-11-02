@@ -9,5 +9,20 @@
     "voice_id": "i0MwGlmJMVRT2teAFS3N",
     "output_format": "mp3_44100_128",
     "created_at": "2026-11-02T13:58:57Z"
+  },
+  "descript": {
+    "project_url": "https://web.descript.com/6ad18a3a-a0cd-45ec-98d4-8210bf0a9db8/0b1ff",
+    "share_url": "https://share.descript.com/view/ZxiwkQLM1p9",
+    "islem": "Baş sessizlik kırpıldı, 1 sn ve üzeri 3 boşluk ~0.6 sn'ye indirildi (47.96 sn -> 46.38 sn)"
+  },
+  "final": {
+    "dosyalar": [
+      "final/bolum2_final.wav",
+      "final/bolum2_final.mp3"
+    ],
+    "sure_sn": 47.39,
+    "loudness": "-14.0 LUFS",
+    "true_peak": "-1.0 dBTP",
+    "format": "48 kHz stereo; MP3 192 kbps"
   }
 }
