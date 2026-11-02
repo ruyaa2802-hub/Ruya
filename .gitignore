@@ -1,0 +1,4 @@
+node_modules/
+videolar/*/cikti/kareler/
+videolar/*/cikti/.parca-*/
+.DS_Store

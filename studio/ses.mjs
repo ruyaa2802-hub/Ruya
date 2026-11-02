@@ -1,0 +1,164 @@
+// Müzik ve ses efekti yatağı — tamamen kodla sentezlenir (lisans/kredi derdi yok).
+// Gizemli pad, korku "sting"i, kalp atışı, geçiş "whoosh"ları, sinir "zap"ı, rüzgâr ve kapanış darbesi.
+import fs from 'node:fs';
+
+const SR = 48000;
+
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+
+// Durum değişkenli filtre (Chamberlin): low/band/high
+function svf() {
+  let lo = 0, bp = 0;
+  return (x, fc, q = 0.7) => {
+    const f = 2 * Math.sin(Math.PI * Math.min(fc, SR / 6) / SR);
+    lo += f * bp; const hi = x - lo - (1 / q) * bp; bp += f * hi;
+    return { lo, bp, hi };
+  };
+}
+
+export function sesYatagiUret(TL, dosya) {
+  const N = Math.ceil(TL.toplam * SR) + SR;
+  const L = new Float32Array(N), R = new Float32Array(N), rev = new Float32Array(N);
+  const r = rng(7);
+  const ekle = (i, l, rr, yank = 0) => { if (i >= 0 && i < N) { L[i] += l; R[i] += rr; rev[i] += (l + rr) * 0.5 * yank; } };
+  const B = TL.bolumler;
+  const bolumZaman = id => B.find(b => b.id === id);
+
+  // ---- 1) Pad: bölüm başına akor (Hz), yumuşak geçişli ----
+  const akorlar = {
+    korku: [55.0, 82.41, 130.81, 155.56],      // A1 E2 C3 Eb3 — gerilimli
+    deri: [73.42, 110.0, 174.61, 220.0],        // D minör, merak
+    evrim: [87.31, 130.81, 220.0, 261.63],      // F major renkli, geniş
+    sonuc: [110.0, 130.81, 164.81, 246.94],     // Am(add9) → huzurlu kapanış
+  };
+  const padSeviye = 0.05;
+  for (let i = 0; i < N; i++) {
+    const t = i / SR;
+    let l = 0, rr = 0;
+    for (const b of B) {
+      const a = akorlar[b.sahne] || akorlar.deri;
+      const w = clamp((t - (b.start - 1.2)) / 2.4) * (1 - clamp((t - (b.end - 1.2)) / 2.4));
+      if (w <= 0) continue;
+      a.forEach((f, k) => {
+        const lfo = 0.6 + 0.4 * Math.sin(2 * Math.PI * (0.07 + k * 0.031) * t + k);
+        const s1 = Math.sin(2 * Math.PI * f * t), s2 = Math.sin(2 * Math.PI * f * 1.004 * t + 1.3), s3 = Math.sin(2 * Math.PI * f * 2.003 * t) * 0.25;
+        const v = (s1 + s2 * 0.8 + s3) * lfo * w * padSeviye / (k + 1.6);
+        l += v * (k % 2 ? 0.75 : 1); rr += v * (k % 2 ? 1 : 0.75);
+      });
+    }
+    const giris = clamp(t / 2.5), cikis = clamp((TL.toplam - t) / 2.0);
+    ekle(i, l * giris * cikis, rr * giris * cikis, 0.5);
+  }
+
+  // ---- 2) Korku sting'i (giriş anında) ----
+  const korkuT = Math.max(0.6, TL.giris - 0.8);
+  {
+    const n0 = Math.floor(korkuT * SR), f = svf();
+    for (let j = 0; j < SR * 3; j++) {
+      const t = j / SR;
+      const boom = Math.sin(2 * Math.PI * (30 + 50 * Math.exp(-t * 8)) * t) * Math.exp(-t * 2.2) * 0.55;
+      const gur = f((r() * 2 - 1), 900 + 3000 * Math.exp(-t * 6), 0.9).bp * Math.exp(-t * 9) * 0.6;
+      const metal = [523, 787, 1131, 1663].reduce((s, fr, k) => s + Math.sin(2 * Math.PI * fr * t + k) * Math.exp(-t * (3 + k)), 0) * 0.05;
+      ekle(n0 + j, boom + gur + metal, boom + gur * 0.8 + metal, 0.9);
+    }
+  }
+
+  // ---- 3) Kalp atışı (korku sahnesi boyunca, giderek azalan) ----
+  const korku = bolumZaman('korku');
+  if (korku) {
+    for (let t = korkuT + 0.35; t < korku.end - 0.6; t += 0.82) {
+      const sev = 0.42 * (1 - 0.6 * clamp((t - korkuT) / (korku.end - korkuT)));
+      for (const [ofs, a] of [[0, 1], [0.17, 0.7]]) {
+        const n0 = Math.floor((t + ofs) * SR);
+        for (let j = 0; j < SR * 0.25; j++) {
+          const tt = j / SR;
+          const v = Math.sin(2 * Math.PI * (48 + 30 * Math.exp(-tt * 30)) * tt) * Math.exp(-tt * 18) * sev * a;
+          ekle(n0 + j, v, v, 0.2);
+        }
+      }
+    }
+  }
+
+  // ---- 4) Geçiş whoosh'ları ----
+  for (let k = 0; k < B.length - 1; k++) {
+    const merkez = B[k].end, d = (B[k].gecisSure || 1) + 0.6;
+    const n0 = Math.floor((merkez - d * 0.6) * SR), f = svf();
+    for (let j = 0; j < d * SR; j++) {
+      const u = j / (d * SR);
+      const zarf = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.8)), 2);
+      const fc = 250 + 4200 * Math.pow(Math.sin(Math.PI * u), 2);
+      const v = f(r() * 2 - 1, fc, 1.2).bp * zarf * 0.32;
+      const pan = 0.5 + 0.45 * Math.cos(Math.PI * u);
+      ekle(n0 + j, v * (1 - pan) * 1.6, v * pan * 1.6, 0.6);
+    }
+  }
+
+  // ---- 5) Sinir sinyali "zap"ı (deri sahnesi, 3. cümle) ----
+  const deri = bolumZaman('deri');
+  if (deri && deri.cumleler[2]) {
+    const c = deri.cumleler[2];
+    const t0 = c.start + 0.18 * (c.end - c.start);
+    const n0 = Math.floor(t0 * SR);
+    for (let j = 0; j < SR * 1.2; j++) {
+      const t = j / SR;
+      const fr = 300 + 1500 * t;
+      const v = Math.sin(2 * Math.PI * fr * t + 3 * Math.sin(2 * Math.PI * 37 * t)) * Math.exp(-t * 2.5) * clamp(t * 30) * 0.08;
+      ekle(n0 + j, v, v * 0.7, 0.8);
+    }
+    // kılların kalkması: yükselen parıltı
+    const t1 = c.start + 0.55 * (c.end - c.start), n1 = Math.floor(t1 * SR);
+    for (let j = 0; j < SR * 2; j++) {
+      const t = j / SR, u = t / 2;
+      const v = [880, 1320, 1760].reduce((s, fr, k) => s + Math.sin(2 * Math.PI * fr * (1 + u * 0.06) * t + k), 0) * Math.sin(Math.PI * u) * 0.022;
+      ekle(n1 + j, v, v, 1);
+    }
+  }
+
+  // ---- 6) Rüzgâr (evrim, soğuk bölüm) ----
+  const evrim = bolumZaman('evrim');
+  if (evrim && evrim.cumleler[2]) {
+    const c = evrim.cumleler[2], a = c.start - 0.8, z = evrim.end + 0.4, f = svf();
+    for (let i = Math.floor(a * SR); i < Math.min(N, z * SR); i++) {
+      const t = i / SR, w = clamp((t - a) / 1.5) * clamp((z - t) / 1.2);
+      const fc = 500 + 400 * Math.sin(2 * Math.PI * 0.23 * t) + 250 * Math.sin(2 * Math.PI * 0.61 * t);
+      const v = f(r() * 2 - 1, fc, 2.5).bp * w * 0.16;
+      ekle(i, v * (0.8 + 0.2 * Math.sin(t)), v * (0.8 - 0.2 * Math.sin(t)), 0.3);
+    }
+  }
+
+  // ---- 7) Kapanış darbesi ----
+  {
+    const t0 = TL.konusmaSon + 0.15, n0 = Math.floor(t0 * SR);
+    for (let j = 0; j < SR * 4; j++) {
+      const t = j / SR;
+      const v = Math.sin(2 * Math.PI * (36 + 30 * Math.exp(-t * 5)) * t) * Math.exp(-t * 1.3) * 0.4
+        + [220, 330, 440, 659].reduce((s, fr, k) => s + Math.sin(2 * Math.PI * fr * t + k), 0) * Math.exp(-t * 0.9) * 0.018 * clamp(t * 8);
+      ekle(n0 + j, v, v, 1);
+    }
+  }
+
+  // ---- Basit yankı (comb + allpass) ----
+  const combs = [1557, 1617, 1491, 1422].map(d => ({ d: Math.floor(d * SR / 44100), buf: new Float32Array(Math.floor(d * SR / 44100)), i: 0 }));
+  let onceki = 0;
+  for (let i = 0; i < N; i++) {
+    let s = 0;
+    for (const c of combs) { const y = c.buf[c.i]; c.buf[c.i] = rev[i] * 0.5 + y * 0.84; c.i = (c.i + 1) % c.d; s += y; }
+    s = s * 0.25; onceki = onceki * 0.6 + s * 0.4;
+    L[i] += onceki * 0.45; R[i] += (s * 0.6 + onceki * 0.4) * 0.45;
+  }
+
+  // ---- WAV yaz (16 bit stereo) ----
+  let tepe = 0;
+  for (let i = 0; i < N; i++) tepe = Math.max(tepe, Math.abs(L[i]), Math.abs(R[i]));
+  const kazanc = tepe > 0.89 ? 0.89 / tepe : 1;
+  const buf = Buffer.alloc(44 + N * 4);
+  buf.write('RIFF', 0); buf.writeUInt32LE(36 + N * 4, 4); buf.write('WAVE', 8); buf.write('fmt ', 12);
+  buf.writeUInt32LE(16, 16); buf.writeUInt16LE(1, 20); buf.writeUInt16LE(2, 22); buf.writeUInt32LE(SR, 24);
+  buf.writeUInt32LE(SR * 4, 28); buf.writeUInt16LE(4, 32); buf.writeUInt16LE(16, 34); buf.write('data', 36); buf.writeUInt32LE(N * 4, 40);
+  for (let i = 0; i < N; i++) {
+    buf.writeInt16LE(Math.round(clamp(L[i] * kazanc, -1, 1) * 32767), 44 + i * 4);
+    buf.writeInt16LE(Math.round(clamp(R[i] * kazanc, -1, 1) * 32767), 46 + i * 4);
+  }
+  fs.writeFileSync(dosya, buf);
+}

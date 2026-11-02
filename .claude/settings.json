@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "deny": [
+      "mcp__ElevenLabs__creative_generate_video",
+      "mcp__ElevenLabs__creative_generate_image",
+      "mcp__ElevenLabs__creative_edit_image",
+      "mcp__ElevenLabs__creative_generate_speech",
+      "mcp__ElevenLabs__creative_generate_in_flow",
+      "mcp__ElevenLabs__creative_run_flow_nodes",
+      "mcp__ElevenLabs-fdb9362a__creative_generate_speech",
+      "mcp__ElevenLabs-fdb9362a__creative_generate_in_flow",
+      "mcp__ElevenLabs-fdb9362a__creative_run_flow_nodes",
+      "mcp__vidIQ__vidiq_generate_video",
+      "mcp__vidIQ__vidiq_generate_broll",
+      "mcp__vidIQ__vidiq_motion_graphics",
+      "mcp__vidIQ__vidiq_generate_music",
+      "mcp__vidIQ__vidiq_voiceover_generate",
+      "mcp__vidIQ__vidiq_generate_thumbnail",
+      "mcp__Canva__generate-image",
+      "mcp__Canva__generate-design",
+      "mcp__HyperFrames_by_HeyGen__compose",
+      "mcp__HyperFrames_by_HeyGen__render_video"
+    ],
+    "ask": [
+      "mcp__ElevenLabs",
+      "mcp__ElevenLabs-fdb9362a",
+      "mcp__vidIQ",
+      "mcp__Canva",
+      "mcp__Adobe",
+      "mcp__Orshot",
+      "mcp__Moda_-_Slides_and_Designs",
+      "mcp__HyperFrames_by_HeyGen",
+      "mcp__AI_Producer_by_OpusClip",
+      "mcp__Descript",
+      "mcp__Wonder",
+      "mcp__Send",
+      "WebFetch",
+      "Bash(curl:*)",
+      "Bash(wget:*)"
+    ]
+  }
+}

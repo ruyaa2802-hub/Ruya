@@ -1,0 +1,40 @@
+{
+  "baslik": "Korktuğumuzda neden tüylerimiz diken diken olur?",
+  "fps": 30,
+  "giris": 2.4,
+  "kapanis": 2.6,
+  "altyaziY": 1390,
+  "kanca": {
+    "ust": "BİLİM · 60 SANİYE",
+    "satirlar": ["Korkunca tüylerimiz", "neden diken diken olur?"],
+    "start": 0.5
+  },
+  "bolumler": [
+    {
+      "id": "korku",
+      "sahne": "korku",
+      "gecis": "dalis",
+      "gecisSure": 1.2,
+      "metin": "Hiç korktuğunuzda veya ürperdiğinizde kollarınızdaki tüylerin aniden diken diken olduğunu fark ettiniz mi? Peki vücudunuz bunu neden yapıyor?"
+    },
+    {
+      "id": "deri",
+      "sahne": "deri",
+      "gecis": "karart",
+      "gecisSure": 1.4,
+      "metin": "Aslında derimizin altında, her kıl köküne bağlı küçücük kaslar bulunuyor. Bunlara kıl dikleştirici kaslar deniyor. Korktuğumuzda sinir sistemimiz bu kasları harekete geçiriyor ve tüylerimiz dikleşiyor."
+    },
+    {
+      "id": "evrim",
+      "sahne": "evrim",
+      "gecis": "karart",
+      "gecisSure": 1.2,
+      "metin": "Bu mekanizma aslında çok eski bir hayatta kalma yönteminden geliyor. Atalarımızın vücut kılları kabardığında daha büyük ve korkutucu görünmelerine yardımcı oluyordu. Aynı zamanda soğukta vücut çevresinde hava tabakası oluşturarak ısı kaybını azaltıyordu."
+    },
+    {
+      "id": "sonuc",
+      "sahne": "sonuc",
+      "metin": "İnsanlar zamanla vücut kıllarının büyük bölümünü kaybetti. Ama bu eski mekanizma hâlâ bizimle. Yani korktuğumuzda tüylerimizin diken diken olması, vücudumuzun milyonlarca yıllık geçmişinden kalan küçük bir iz!"
+    }
+  ]
+}

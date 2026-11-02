@@ -1,0 +1,14 @@
+{
+  "name": "ruya-studio",
+  "private": true,
+  "type": "module",
+  "description": "Kredi harcamayan, kod tabanlı dikey bilim videosu üretim sistemi (Canvas + Playwright + FFmpeg)",
+  "scripts": {
+    "onizleme": "node studio/render.mjs",
+    "final": "node studio/render.mjs --final",
+    "kare": "node studio/render.mjs --kare"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

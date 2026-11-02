@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruya Studio Oynatıcı</title>
+<style>
+  @font-face { font-family: "Inter Studio"; src: url("fonts/Inter-Medium.otf"); font-weight: 400 599; }
+  @font-face { font-family: "Inter Studio"; src: url("fonts/Inter-SemiBold.otf"); font-weight: 600 699; }
+  @font-face { font-family: "Inter Studio"; src: url("fonts/Inter-ExtraBold.otf"); font-weight: 700 900; }
+  html, body { margin: 0; background: #000; color: #ddd; font-family: "Inter Studio", sans-serif; }
+  body.render canvas { display: block; width: 1080px; height: 1920px; }
+  body:not(.render) { display: flex; flex-direction: column; align-items: center; padding: 12px; gap: 10px; }
+  body:not(.render) canvas { height: min(80vh, 160vw); aspect-ratio: 9 / 16; background: #111; }
+  .kontrol { display: flex; gap: 10px; align-items: center; width: min(92vw, 520px); }
+  .kontrol input { flex: 1; }
+  button { background: #222; color: #fff; border: 1px solid #444; border-radius: 8px; padding: 6px 14px; font-size: 16px; }
+</style>
+</head>
+<body>
+<canvas id="sahne"></canvas>
+<div class="kontrol" id="kontrol" hidden>
+  <button id="oynat">⏸</button>
+  <input id="zaman" type="range" min="0" max="1" step="0.001" value="0">
+  <span id="saat">0.0</span>
+</div>
+<script src="engine.js"></script>
+<script>
+(function () {
+  const q = new URLSearchParams(location.search);
+  const v = q.get('v');
+  const render = q.has('render');
+  if (render) document.body.classList.add('render');
+  function yukle(src) {
+    return new Promise((ok, hata) => {
+      const s = document.createElement('script');
+      s.src = src; s.onload = ok; s.onerror = () => hata(new Error('Yüklenemedi: ' + src));
+      document.body.appendChild(s);
+    });
+  }
+  (async () => {
+    await yukle(`../videolar/${v}/cikti/zamanlama.js`);
+    await yukle(`../videolar/${v}/sahneler.js`);
+    await STUDIO.baslat(window.__ZAMANLAMA__);
+    window.__hazir = true;
+    if (render) return;
+    // Tarayıcıda canlı önizleme
+    const k = document.getElementById('kontrol'); k.hidden = false;
+    const r = document.getElementById('zaman'), saat = document.getElementById('saat'), b = document.getElementById('oynat');
+    const T = STUDIO.TL.toplam;
+    let t0 = performance.now(), oynuyor = true, t = 0;
+    b.onclick = () => { oynuyor = !oynuyor; b.textContent = oynuyor ? '⏸' : '▶'; t0 = performance.now() - t * 1000; };
+    r.oninput = () => { t = r.value * T; t0 = performance.now() - t * 1000; STUDIO.kare(t); };
+    (function dongu() {
+      if (oynuyor) { t = ((performance.now() - t0) / 1000) % T; STUDIO.kare(t); r.value = t / T; saat.textContent = t.toFixed(1); }
+      requestAnimationFrame(dongu);
+    })();
+  })().catch(e => { document.body.innerHTML = '<pre style="color:#f66">' + e.stack + '</pre>'; window.__hata = String(e.stack || e); });
+})();
+</script>
+</body>
+</html>

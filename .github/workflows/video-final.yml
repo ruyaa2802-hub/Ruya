@@ -1,0 +1,70 @@
+# Ses dosyası yüklendiğinde final videoyu otomatik üretir (GitHub'ın ücretsiz Actions dakikalarıyla).
+# Tetik: videolar/<video>/ses/seslendirme.* dosyasının push edilmesi — iPhone'dan GitHub'a yükleme yeterli.
+# Hiçbir ücretli API çağrılmaz: Chromium + FFmpeg ile yerelde render edilir.
+name: Video final render
+
+on:
+  push:
+    paths:
+      - 'videolar/*/ses/seslendirme.*'
+  workflow_dispatch:
+    inputs:
+      video:
+        description: 'Video klasörü (ör. tuyler-diken-diken)'
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: video-final-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Hangi videolar?
+        id: hedef
+        run: |
+          if [ -n "${{ github.event.inputs.video }}" ]; then
+            echo "liste=${{ github.event.inputs.video }}" >> "$GITHUB_OUTPUT"
+          else
+            L=$(git diff --name-only HEAD~1 HEAD | grep -E '^videolar/[^/]+/ses/seslendirme\.' | cut -d/ -f2 | sort -u | tr '\n' ' ')
+            echo "liste=$L" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Araçlar (ffmpeg + Chromium)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Final render
+        run: |
+          for v in ${{ steps.hedef.outputs.liste }}; do
+            echo "▶ $v"
+            node studio/render.mjs "$v" --final --isci 4
+          done
+
+      - name: Final videoyu repoya kaydet
+        run: |
+          git config user.name "ruya-studio-bot"
+          git config user.email "ruya-studio-bot@users.noreply.github.com"
+          git add videolar/*/cikti/final.mp4 videolar/*/cikti/zamanlama.json || true
+          git commit -m "Final video render: ${{ steps.hedef.outputs.liste }}" || echo "Değişiklik yok"
+          git push
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: final-videolar
+          path: videolar/*/cikti/final.mp4
