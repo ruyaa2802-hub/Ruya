@@ -1,0 +1,79 @@
+{
+  "kaynak": "hizalanmis",
+  "ses": "ses/seslendirme.wav",
+  "sure": 47.394,
+  "cumleler": [
+    {
+      "id": 1,
+      "metin": "Kendinizi gıdıklamayı hiç denediniz mi?",
+      "bas": 0.3,
+      "son": 2.518
+    },
+    {
+      "id": 2,
+      "metin": "Ne kadar uğraşırsanız uğraşın, işe yaramaz.",
+      "bas": 3.135,
+      "son": 5.663
+    },
+    {
+      "id": 3,
+      "metin": "Peki neden?",
+      "bas": 6.269,
+      "son": 6.939
+    },
+    {
+      "id": 4,
+      "metin": "Aslında iki tür gıdıklanma var.",
+      "bas": 7.256,
+      "son": 9.079
+    },
+    {
+      "id": 5,
+      "metin": "Biri, tenimize tüy değmiş gibi hafif bir kaşıntı hissi.",
+      "bas": 9.602,
+      "son": 12.688
+    },
+    {
+      "id": 6,
+      "metin": "Diğeri ise kaburgalarımıza ya da koltuk altımıza yapılan, bizi kahkahaya boğan gıdıklama.",
+      "bas": 13.435,
+      "son": 18.496
+    },
+    {
+      "id": 7,
+      "metin": "Kendinize dokunduğunuzda beyniniz, özellikle de beyincik, bu hissi önceden tahmin ediyor ve etkisini azaltıyor.",
+      "bas": 19.149,
+      "son": 26.635
+    },
+    {
+      "id": 8,
+      "metin": "Sürpriz olmayınca, gıdıklanma da olmuyor.",
+      "bas": 27.176,
+      "son": 29.826
+    },
+    {
+      "id": 9,
+      "metin": "Bilim insanlarına göre gıdıklanma, oyun sırasında aramızdaki bağı güçlendiriyor olabilir.",
+      "bas": 30.375,
+      "son": 35.595
+    },
+    {
+      "id": 10,
+      "metin": "Üstelik bu yalnızca bize özgü değil:",
+      "bas": 36.151,
+      "son": 38.012
+    },
+    {
+      "id": 11,
+      "metin": "Şempanzeler, hatta fareler bile gıdıklanınca gülmeye benzer sesler çıkarıyor.",
+      "bas": 38.399,
+      "son": 43.307
+    },
+    {
+      "id": 12,
+      "metin": "Farelerin bu sesini ise kulağımız duyamıyor!",
+      "bas": 43.85,
+      "son": 46.641
+    }
+  ]
+}
