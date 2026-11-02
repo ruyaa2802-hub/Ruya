@@ -35,3 +35,8 @@ Her paragrafın sonuna `<break time="0.7s" />` ekle.
 - Kendini gıdıklayamama: beyincik, kendi hareketimizin duyusal sonucunu tahmin edip tepkiyi azaltır (Blakemore, Wolpert & Frith çalışmaları).
 - Sosyal bağ: yaygın bir hipotez olduğu için metinde "olabilir" diye anlatıldı.
 - Şempanzeler gıdıklanınca gülmeye benzer sesler çıkarır; fareler ~50 kHz ultrasonik sesler çıkarır (Panksepp). İnsan işitmesi ~20 kHz'e kadardır.
+
+## Durum
+- ✅ Seslendirme üretildi (kullanıcı onayıyla, 680 kredi): ses **Su**, model Eleven v3, 47,9 sn.
+- ElevenLabs flow: `ej5WAwzMY5rhzL91rEyZ` · generation: `1ONMol877lmuFVrqZP3Z` · geçmiş: https://elevenlabs.io/app/speech-synthesis/text-to-speech?historyItemId=ShZxSCHPIOKteaKQVqKh
+- ⏳ İndirilmedi: bulut ortamı `elevenlabsusercontent.com` adresine erişemiyor. Yeni oturumda (alan adı izinliyse) `creative_get_generations` ile yeni indirme bağlantısı alınır — **yeniden üretme, kredi harcar.**
