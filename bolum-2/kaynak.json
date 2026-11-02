@@ -1,0 +1,13 @@
+{
+  "bolum": 2,
+  "konu": "Kendimizi neden gıdıklayamayız?",
+  "elevenlabs": {
+    "flow_id": "ej5WAwzMY5rhzL91rEyZ",
+    "node_id": "KKIqDki4bd2XO806UFQv",
+    "generation_id": "1ONMol877lmuFVrqZP3Z",
+    "model_id": "eleven_v3",
+    "voice_id": "i0MwGlmJMVRT2teAFS3N",
+    "output_format": "mp3_44100_128",
+    "created_at": "2026-11-02T13:58:57Z"
+  }
+}
