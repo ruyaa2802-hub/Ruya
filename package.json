@@ -1,0 +1,12 @@
+{
+  "name": "ruya-video-studyo",
+  "private": true,
+  "description": "Ücretsiz, kod tabanlı bilim videosu üretim hattı",
+  "scripts": {
+    "onizleme": "./studio/uret.sh",
+    "render": "node studio/araclar/render.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

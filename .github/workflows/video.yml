@@ -1,0 +1,77 @@
+# Ses dosyası yüklendiğinde finali ücretsiz render eder (GitHub Actions kotası; kredi yok).
+name: Video final
+
+on:
+  push:
+    paths:
+      - "videolar/*/ses/seslendirme.*"
+  workflow_dispatch:
+    inputs:
+      video:
+        description: "Video klasörü (örn. videolar/01-gidiklama)"
+        required: true
+      mod:
+        description: "onizleme veya final"
+        default: final
+
+permissions:
+  contents: write
+
+concurrency:
+  group: video-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Hangi video?
+        id: sec
+        run: |
+          if [ -n "${{ github.event.inputs.video }}" ]; then
+            echo "videolar=${{ github.event.inputs.video }}" >> "$GITHUB_OUTPUT"
+            echo "mod=${{ github.event.inputs.mod }}" >> "$GITHUB_OUTPUT"
+          else
+            V=$(git diff --name-only HEAD~1 HEAD | grep -E '^videolar/[^/]+/ses/seslendirme\.' | cut -d/ -f1-2 | sort -u | tr '\n' ' ')
+            echo "videolar=$V" >> "$GITHUB_OUTPUT"
+            echo "mod=final" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bağımlılıklar
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          pip install numpy
+          npm ci || npm install
+          npx playwright install --with-deps chromium
+
+      - name: Render
+        run: |
+          for V in ${{ steps.sec.outputs.videolar }}; do
+            ./studio/uret.sh "$V" "${{ steps.sec.outputs.mod }}"
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: videolar
+          path: videolar/*/cikti/*.mp4
+
+      - name: Finali repoya ekle
+        if: steps.sec.outputs.mod == 'final'
+        run: |
+          git config user.name "video-bot"
+          git config user.email "video-bot@users.noreply.github.com"
+          git add videolar/*/cikti/final.mp4 videolar/*/zamanlama.json
+          git commit -m "Final video render edildi" || exit 0
+          git push

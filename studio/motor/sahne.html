@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Sahne</title>
+<link rel="stylesheet" href="motor.css">
+</head>
+<body>
+<div id="kare">
+  <div id="sahneler"></div>
+  <canvas id="toz" width="1080" height="1920"></canvas>
+  <div id="isik"></div>
+  <div id="vinyet"></div>
+  <canvas id="gren" width="540" height="960"></canvas>
+  <div id="etiket"></div>
+  <div id="altyazi"></div>
+  <div id="karartma"></div>
+</div>
+<script src="motor.js"></script>
+<script>
+  // ?video=videolar/01-gidiklama  ->  zamanlama.json + ayarlar.json + sahneler.js
+  Motor.baslat(new URLSearchParams(location.search).get('video'));
+</script>
+</body>
+</html>

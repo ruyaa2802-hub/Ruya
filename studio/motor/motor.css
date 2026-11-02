@@ -1,0 +1,59 @@
+@font-face { font-family: "Inter"; font-weight: 500; src: url("../fontlar/Inter-Medium.otf"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("../fontlar/Inter-Bold.otf"); }
+@font-face { font-family: "InterDisplay"; font-weight: 800; src: url("../fontlar/InterDisplay-ExtraBold.otf"); }
+
+:root {
+  --gece: #03060d;
+  --camgobegi: #5ce1e6;
+  --buz: #bff6ff;
+  --amber: #ffb547;
+  --altin: #ffc847;
+  --mor: #7b5cff;
+  --pembe: #ff6b9a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; transition: none !important; animation: none !important; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: var(--gece); }
+body { font-family: "Inter", sans-serif; color: #fff; -webkit-font-smoothing: antialiased; }
+
+#kare { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--gece); }
+#kare > * { position: absolute; inset: 0; }
+
+.sahne { position: absolute; inset: 0; opacity: 0; will-change: opacity, transform, filter; }
+.sahne > svg { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: visible; }
+
+#toz { width: 1080px; height: 1920px; mix-blend-mode: screen; pointer-events: none; }
+#isik { mix-blend-mode: screen; pointer-events: none; }
+#vinyet {
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 85% 62% at 50% 44%, transparent 55%, rgba(0,0,0,.55) 82%, rgba(0,0,0,.92) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,.55), transparent 14%, transparent 70%, rgba(0,0,0,.7));
+}
+#gren { width: 1080px; height: 1920px; opacity: .085; mix-blend-mode: overlay; image-rendering: pixelated; pointer-events: none; }
+#karartma { background: #000; opacity: 0; pointer-events: none; }
+
+/* Üst etiket */
+#etiket {
+  top: 150px; bottom: auto; height: 60px;
+  text-align: center; font: 700 30px/60px "Inter"; letter-spacing: .32em;
+  color: var(--altin); text-shadow: 0 0 18px rgba(255,200,71,.45);
+}
+
+/* Altyazı: kelime kelime animasyonlu */
+#altyazi { top: 1235px; bottom: auto; height: 260px; display: flex; align-items: center; justify-content: center; padding: 0 90px; }
+.ifade { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 26px; text-align: center; }
+.kelime {
+  display: inline-block;
+  font: 800 78px/1.12 "InterDisplay", "Inter", sans-serif;
+  letter-spacing: -.01em;
+  color: #fff;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 10px rgba(3,6,13,.85);
+  text-shadow: 0 6px 28px rgba(0,0,0,.75);
+  transform-origin: 50% 70%;
+}
+.kelime.aktif { color: var(--altin); }
+
+/* HUD yazıları (sahnelerde kullanılır) */
+.hud { font-family: "Inter"; font-weight: 700; letter-spacing: .18em; }
