@@ -37,7 +37,8 @@ export function sesYatagiUret(TL, dosya) {
     const t = i / SR;
     let l = 0, rr = 0;
     for (const b of B) {
-      const a = akorlar[b.sahne] || akorlar.deri;
+      const ozel = TL.ses && TL.ses.akorlar && TL.ses.akorlar[b.sahne];
+      const a = ozel || akorlar[b.sahne] || Object.values(akorlar)[B.indexOf(b) % 4];
       const w = clamp((t - (b.start - 1.2)) / 2.4) * (1 - clamp((t - (b.end - 1.2)) / 2.4));
       if (w <= 0) continue;
       a.forEach((f, k) => {
@@ -53,7 +54,7 @@ export function sesYatagiUret(TL, dosya) {
 
   // ---- 2) Korku sting'i (giriş anında) ----
   const korkuT = Math.max(0.6, TL.giris - 0.8);
-  {
+  if (!TL.ses || TL.ses.sting !== false) {
     const n0 = Math.floor(korkuT * SR), f = svf();
     for (let j = 0; j < SR * 3; j++) {
       const t = j / SR;
@@ -124,6 +125,33 @@ export function sesYatagiUret(TL, dosya) {
       const fc = 500 + 400 * Math.sin(2 * Math.PI * 0.23 * t) + 250 * Math.sin(2 * Math.PI * 0.61 * t);
       const v = f(r() * 2 - 1, fc, 2.5).bp * w * 0.16;
       ekle(i, v * (0.8 + 0.2 * Math.sin(t)), v * (0.8 - 0.2 * Math.sin(t)), 0.3);
+    }
+  }
+
+  // ---- 6b) Senaryodaki genel ses işaretleri: pop / parilti / zap ----
+  for (const is of (TL.ses && TL.ses.isaretler) || []) {
+    const b = bolumZaman(is.bolum); if (!b) continue;
+    const c = b.cumleler[Math.min(is.cumle || 0, b.cumleler.length - 1)];
+    const t0 = c.start + (is.oran || 0) * (c.end - c.start), n0 = Math.floor(t0 * SR);
+    const sev = is.seviye || 1;
+    if (is.tip === 'pop') {
+      for (let k = 0; k < (is.adet || 1); k++) for (let j = 0; j < SR * 0.18; j++) {
+        const t = j / SR, f0 = 420 + k * 130;
+        const v = Math.sin(2 * Math.PI * (f0 + 900 * Math.exp(-t * 40)) * t) * Math.exp(-t * 28) * 0.12 * sev;
+        ekle(n0 + Math.floor(k * 0.11 * SR) + j, v * (k % 2 ? 0.7 : 1), v * (k % 2 ? 1 : 0.7), 0.5);
+      }
+    } else if (is.tip === 'parilti') {
+      for (let j = 0; j < SR * 1.6; j++) {
+        const t = j / SR;
+        const v = [1046, 1318, 1568, 2093].reduce((s, fr, k) => s + Math.sin(2 * Math.PI * fr * t + k) * Math.exp(-Math.max(0, t - k * 0.09) * 3) * (t > k * 0.09 ? 1 : 0), 0) * 0.03 * sev;
+        ekle(n0 + j, v, v, 1);
+      }
+    } else if (is.tip === 'zap') {
+      for (let j = 0; j < SR * 1.0; j++) {
+        const t = j / SR;
+        const v = Math.sin(2 * Math.PI * (300 + 1500 * t) * t + 3 * Math.sin(2 * Math.PI * 37 * t)) * Math.exp(-t * 2.5) * clamp(t * 30) * 0.08 * sev;
+        ekle(n0 + j, v, v * 0.7, 0.8);
+      }
     }
   }
 

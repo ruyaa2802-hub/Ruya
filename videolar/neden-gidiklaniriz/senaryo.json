@@ -1,0 +1,60 @@
+{
+  "baslik": "Neden gıdıklanırız?",
+  "bolum": 2,
+  "fps": 30,
+  "giris": 1.6,
+  "kapanis": 2.6,
+  "altyaziY": 1400,
+  "kanca": {
+    "ust": "BİLİM · BÖLÜM 2",
+    "satirlar": ["Kendini neden", "gıdıklayamazsın?"],
+    "start": 0.3
+  },
+  "ses": {
+    "sting": false,
+    "akorlar": {
+      "kanca": [65.41, 98.0, 164.81, 196.0],
+      "turler": [87.31, 130.81, 220.0, 261.63],
+      "beyin": [73.42, 110.0, 174.61, 246.94],
+      "sosyal": [98.0, 146.83, 246.94, 293.66]
+    },
+    "isaretler": [
+      { "tip": "pop", "bolum": "kanca", "cumle": 0, "oran": 0.55, "adet": 3, "seviye": 0.6 },
+      { "tip": "parilti", "bolum": "turler", "cumle": 1, "oran": 0.2 },
+      { "tip": "pop", "bolum": "turler", "cumle": 2, "oran": 0.6, "adet": 4 },
+      { "tip": "zap", "bolum": "beyin", "cumle": 0, "oran": 0.08 },
+      { "tip": "zap", "bolum": "beyin", "cumle": 0, "oran": 0.3, "seviye": 0.7 },
+      { "tip": "parilti", "bolum": "beyin", "cumle": 1, "oran": 0.5 },
+      { "tip": "pop", "bolum": "sosyal", "cumle": 0, "oran": 0.4, "adet": 3 },
+      { "tip": "parilti", "bolum": "sosyal", "cumle": 2, "oran": 0.1 }
+    ]
+  },
+  "bolumler": [
+    {
+      "id": "kanca",
+      "sahne": "kanca",
+      "gecis": "dalis",
+      "gecisSure": 1.1,
+      "metin": "Kendinizi gıdıklamayı hiç denediniz mi? Ne kadar uğraşırsanız uğraşın, işe yaramaz. Peki neden?"
+    },
+    {
+      "id": "turler",
+      "sahne": "turler",
+      "gecis": "karart",
+      "gecisSure": 1.1,
+      "metin": "Aslında iki tür gıdıklanma var. Biri, tenimize tüy değmiş gibi hafif bir kaşıntı hissi. Diğeri ise kaburgalarımıza ya da koltuk altımıza yapılan, bizi kahkahaya boğan gıdıklama."
+    },
+    {
+      "id": "beyin",
+      "sahne": "beyin",
+      "gecis": "karart",
+      "gecisSure": 1.1,
+      "metin": "Kendinize dokunduğunuzda beyniniz, özellikle de beyincik, bu hissi önceden tahmin ediyor ve etkisini azaltıyor. Sürpriz olmayınca, gıdıklanma da olmuyor."
+    },
+    {
+      "id": "sosyal",
+      "sahne": "sosyal",
+      "metin": "Bilim insanlarına göre gıdıklanma, oyun sırasında aramızdaki bağı güçlendiriyor olabilir. Üstelik bu yalnızca bize özgü değil: Şempanzeler, hatta fareler bile gıdıklanınca gülmeye benzer sesler çıkarıyor. Farelerin bu sesini ise kulağımız duyamıyor!"
+    }
+  ]
+}

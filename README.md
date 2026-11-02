@@ -19,6 +19,7 @@ seslendirme.mp3 ─────┘ (sessizlik analizi: bölüm/cümle/kelime zam
 | Zamanlama | `studio/zamanlama.mjs` | Ses yokken metinden süre tahmini; ses gelince FFmpeg `silencedetect` ile bölüm-cümle sınırlarını bulur, kelimeleri hece ağırlığına göre dağıtır. Sahneler cümlelere bağlı olduğu için görüntü sese **otomatik esner** |
 | Ses tasarımı | `studio/ses.mjs` | Gizemli pad müzik, korku "sting"i, kalp atışı, geçiş whoosh'ları, sinir "zap"ı, rüzgâr, kapanış darbesi — hepsi matematikle sentezlenir (lisans sorunu yok) |
 | Render | `studio/render.mjs` | Playwright/Chromium ile paralel kare çizimi, FFmpeg ile kodlama ve miks |
+| Kütüphane | `studio/kutuphane.js` | Videolar arası ortak çizimler: kamera, insan silueti, bokeh, ışık halkaları, etiket hapları, stüdyo ışığı |
 | Oynatıcı | `studio/player.html` | Tarayıcıda canlı önizleme (`player.html?v=<video>`) |
 | Video | `videolar/<video>/` | `senaryo.json`, `sahneler.js`, `ELEVENLABS.md`, `ses/`, `cikti/` |
 
@@ -51,6 +52,7 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 ## Videolar
 | Video | Durum |
 |---|---|
-| [tuyler-diken-diken](videolar/tuyler-diken-diken) — Korktuğumuzda neden tüylerimiz diken diken olur? | Sessiz önizleme hazır · seslendirme bekleniyor |
+| [tuyler-diken-diken](videolar/tuyler-diken-diken) — Bölüm 1: Korktuğumuzda neden tüylerimiz diken diken olur? | Final hazır |
+| [neden-gidiklaniriz](videolar/neden-gidiklaniriz) — Bölüm 2: Neden gıdıklanırız? | Sessiz önizleme hazır · seslendirme bekleniyor |
 
 Yazı tipi: Inter (SIL OFL, `studio/fonts/`).
