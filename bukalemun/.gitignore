@@ -4,3 +4,4 @@ out/post_*.png
 out/video_noaudio.mp4
 logs/
 __pycache__/
+out/qa/
