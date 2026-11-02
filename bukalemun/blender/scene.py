@@ -443,8 +443,8 @@ def build_chameleon():
     D['mat_glint'] = principled('Glint', (1, 1, 1), 0.1, emit=(1, 1, 1), emit_k=4.0)
     mouth_mat = principled('MouthInside', hexc('#d24a6a'), 0.35, sss=0.2)
     D['mat_mouth'] = mouth_mat
-    D['mat_tongue'] = principled('Tongue', hexc('#ff6f9a'), 0.28, sss=0.3, coat=0.6)
-    D['mat_tip'] = principled('TonguePad', hexc('#ff3f7f'), 0.12, sss=0.2, coat=1.0, emit=hexc('#ff2f6f'), emit_k=0.15)
+    D['mat_tongue'] = principled('Tongue', hexc('#ff7da6'), 0.22, sss=0.35, coat=0.9)
+    D['mat_tip'] = principled('TonguePad', hexc('#ff4a86'), 0.1, sss=0.3, coat=1.0, emit=hexc('#ff2f6f'), emit_k=0.12)
     body = mesh_obj('Body', body_bm(), skin, root, subsurf=1)
     D['body'] = body
     # dorsal crest spikes
@@ -484,10 +484,20 @@ def build_chameleon():
     D['tail'] = curve_obj('Tail', 48, 1.0, skin, root, res=4)
     D['tail'].data.bevel_depth = 0.042
     # tongue: base inside the mouth, curve + sticky club tip (world space, not parented)
-    D['tongue'] = curve_obj('Tongue', 24, 0.016, D['mat_tongue'], None, res=4)
-    bm = sphere_bm(1.0, 24, 14)
-    bmesh.ops.scale(bm, vec=(0.03, 0.034, 0.034), verts=bm.verts)
-    D['tip'] = mesh_obj('TongueTip', bm, D['mat_tip'], None)
+    # fleshy tongue: radius profile is set per point every frame (bevel_depth = base radius)
+    D['tongue'] = curve_obj('Tongue', TONGUE_N, TONGUE_R, D['mat_tongue'], None, res=5)
+    D['tongue'].data.splines[0].use_smooth = True
+    # sticky club: a bulb whose front is cupped (the pad that wraps around prey)
+    bm = sphere_bm(1.0, 32, 18)
+    for v in bm.verts:
+        x, y, z = v.co
+        r2 = min(1.0, y * y + z * z)
+        if x > 0:
+            v.co.x = x * 0.72 - 0.32 * (1 - r2) ** 1.5   # flatten + dimple the front
+        else:
+            v.co.x = x * 1.15                             # longer, rounder back that merges into the tongue
+    bmesh.ops.scale(bm, vec=(0.034, 0.036, 0.036), verts=bm.verts)
+    D['tip'] = mesh_obj('TongueTip', bm, D['mat_tip'], None, smooth=True)
     return root
 
 
@@ -795,8 +805,20 @@ def mouth_world():
     return hp.matrix_world @ head_shape(0.92, 0, ZM - 0.02)
 
 
+TONGUE_N = 56       # points along the tongue
+TONGUE_R = 0.034    # base radius (bevel depth); per-point radii scale it
+
+
 def set_tongue(L, target_dir, tip_open=0.0, wobble=0.0, t=0.0, bend=0.0):
-    """Tongue from the mouth along target_dir, length L (0 = inside)."""
+    """Fleshy tongue from the mouth along target_dir, length L (0 = inside).
+
+    Real chameleon tongues are not coiled: they sit bunched (pleated) on the hyoid and
+    shoot out straight. So the shape here is
+      * thick at the root, tapering, then a short neck that swells into the sticky club;
+      * fat and pleated like an accordion while short, smooth and slimmer when stretched;
+      * a travelling whip ripple (ends fixed) + a slight sag — the tip position is exactly
+        mouth + d·L as before, so prey/ruler/labels stay where they were.
+    """
     m = mouth_world()
     tg = D['tongue']
     tip = D['tip']
@@ -812,14 +834,24 @@ def set_tongue(L, target_dir, tip_open=0.0, wobble=0.0, t=0.0, bend=0.0):
         side = V((0, 1, 0))
     side.normalize()
     up = side.cross(d).normalized()
-    pts = []
-    for i in range(24):
-        f = i / 23
+    n = TONGUE_N
+    stretch = clamp((0.4 / max(L, 0.02)) ** 0.3, 0.8, 1.35)    # short = fat, long = slimmer
+    pleat = 0.1 * clamp(1 - L / 0.3, 0, 1)                      # accordion rings while bunched
+    amp = (0.05 * wobble + 0.006) * min(L, 1.2)                   # whip ripple amplitude
+    sag = 0.06 * min(L, 1.2) * clamp((L - 0.15) / 0.4, 0, 1)
+    pts, radii = [], []
+    for i in range(n):
+        f = i / (n - 1)
+        env = math.sin(math.pi * f)
         p = m + d * (L * f)
-        p += up * (math.sin(math.pi * f) * bend * L * 0.15)
-        p += side * (math.sin(f * 9 - t * 30) * wobble * 0.01 * f)
+        p += up * (env * (bend * L * 0.15 - sag))
+        p += side * (env * amp * math.sin(f * 7.0 - t * 26))
+        p += up * (env * amp * 0.6 * math.sin(f * 5.0 - t * 21 + 1.3))
         pts.append(p)
-    radii = [lerp(1.0, 0.75, i / 23) for i in range(24)]
+        # radius profile: root 1.0 → 0.62 at the neck (f≈0.9) → 0.85 where it enters the club
+        prof = lerp(1.0, 0.55, ss(0.0, 0.9, f)) + 0.2 * ss(0.9, 1.0, f)
+        rings = 1 + pleat * math.sin(f * 9 * 2 * math.pi) * ss(0.0, 0.08, f)
+        radii.append(prof * stretch * rings)
     set_curve(tg, pts, radii)
     tip.location = pts[-1] + d * 0.012
     tip.rotation_euler = d.to_track_quat('X', 'Z').to_euler()

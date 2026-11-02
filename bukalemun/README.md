@@ -32,7 +32,11 @@ Pirilumo için 38 saniyelik dikey (9:16, 1080×1920, 30 fps) 3D çizgi film anim
 * **Baş:** miğfer (casque) şeklinde. Alt çene menteşeli, ağız gülümseyen bir çizgi.
 * **Gözler:** **birbirinden bağımsız dönen** göz kuleleri; büyük beyaz-turuncu iris, göz kapakları ile kırpma ve kısma.
 * **Bacaklar ve kuyruk:** dört kısa bacak, dalı iki yandan kavrayan parmak grupları; **spiral kıvrılan kuyruk**.
-* **Dil:** yapışkan, pembe topuz uçlu.
+* **Dil:** etli ve kökten uca incelen bir dil.
+  * Kısayken akordeon gibi büzülü ve kalındır; uzadıkça incelir.
+  * Fırlarken hafif kamçı dalgası ve doğal bir sarkma gösterir.
+  * Ucunda önü çukur, yapışkan bir topuz vardır.
+  * Gerçek bukalemunlarda olduğu gibi dil kıvrılarak değil, düz fırlar.
 
 ## Sahneler
 
