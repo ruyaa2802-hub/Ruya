@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Psychedelic Infinite Zoom</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  canvas { display: block; width: 1080px; height: 1920px; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script id="fs" type="x-shader/x-fragment">
+precision highp float;
+uniform vec2 uRes;
+uniform float uT;      // seconds, 0..30 loop
+uniform float uBeat;   // seconds since the last beat (0..beat length)
+uniform float uBeatLen;
+
+const float TAU = 6.283185307;
+const float W_PERIOD = 8.0;   // noise repeats every 8 octaves of zoom
+const float LOOP = 30.0;
+const float OCT = 8.0;        // octaves zoomed per loop; equals W_PERIOD, so one loop = one full cycle
+
+// --- periodic value noise (periodic along z, so the zoom loop is exact) ---
+float hash3(vec3 p) {
+  p = fract(p * 0.3183099 + vec3(0.1, 0.1, 0.1));
+  p *= 17.0;
+  return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+}
+
+float vnoise(vec3 x, float P) {
+  vec3 i = floor(x);
+  vec3 f = fract(x);
+  f = f * f * (3.0 - 2.0 * f);
+  float z0 = mod(i.z, P);
+  float z1 = mod(i.z + 1.0, P);
+  float n000 = hash3(vec3(i.x,       i.y,       z0));
+  float n100 = hash3(vec3(i.x + 1.0, i.y,       z0));
+  float n010 = hash3(vec3(i.x,       i.y + 1.0, z0));
+  float n110 = hash3(vec3(i.x + 1.0, i.y + 1.0, z0));
+  float n001 = hash3(vec3(i.x,       i.y,       z1));
+  float n101 = hash3(vec3(i.x + 1.0, i.y,       z1));
+  float n011 = hash3(vec3(i.x,       i.y + 1.0, z1));
+  float n111 = hash3(vec3(i.x + 1.0, i.y + 1.0, z1));
+  return mix(mix(mix(n000, n100, f.x), mix(n010, n110, f.x), f.y),
+             mix(mix(n001, n101, f.x), mix(n011, n111, f.x), f.y), f.z);
+}
+
+// 5-octave fBm; the z period doubles with each octave so periodicity holds
+float fbm(vec3 x, float P) {
+  float s = 0.0;
+  float a = 0.5;
+  for (int i = 0; i < 5; i++) {
+    s += a * vnoise(x, P);
+    x = vec3(x.xy * 2.03 + vec2(0.37, 0.19), x.z * 2.0);  // z doubles exactly, keeping the loop period
+    P *= 2.0;
+    a *= 0.5;
+  }
+  return s;
+}
+
+vec3 palette(float t) {
+  return 0.5 + 0.5 * cos(TAU * (t + vec3(0.0, 0.33, 0.67)));
+}
+
+// Shade one sample of the infinite world at log-radius w and polar angle a
+vec3 world(float a, float w, float tt) {
+  // kaleidoscope: fold the angle into a mirrored sector, blended in and out over the loop
+  // both folds are 2π-periodic in a, so the atan branch cut at ±π cannot show as a seam
+  float seg6 = TAU / 6.0;
+  float seg12 = TAU / 12.0;
+  float ak6 = abs(mod(a, seg6) - seg6 * 0.5);
+  float ak12 = abs(mod(a, seg12) - seg12 * 0.5);
+  float kal = 0.5 + 0.5 * sin(TAU * tt);
+  float aa = mix(ak6, ak12, kal);
+  // spiral twist, periodic in w
+  aa += 0.7 * sin(TAU * w / W_PERIOD) + 0.35 * sin(TAU * 2.0 * w / W_PERIOD + 1.3);
+
+  vec2 c = vec2(cos(aa), sin(aa));
+  float z = w * 2.0;   // noise z coordinate, period W_PERIOD*2 = 16 cells
+
+  // domain warp: liquid, melting, morphing
+  float n1 = fbm(vec3(c * 1.6, z), 16.0);
+  float n2 = fbm(vec3(c * 2.4 + vec2(n1, n1 * 0.6) * 2.6, z + 0.5), 16.0);
+  float n3 = fbm(vec3(c * 3.1 + vec2(n2, -n2) * 3.0, z + n1), 16.0);
+
+  float hue = n3 * 1.6 + n2 * 0.8 + 0.25 * sin(TAU * w / W_PERIOD) + tt;
+  vec3 col = palette(hue);
+  float bright = 0.35 + 0.9 * n3;
+  col *= bright;
+  // bright luminous veins where the warp folds hard
+  col += pow(clamp(1.0 - abs(n2 - 0.5) * 5.0, 0.0, 1.0), 3.0) * palette(hue + 0.5) * 0.8;
+  return col;
+}
+
+void main() {
+  vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
+  float r = max(length(p), 1e-4);
+  float a = atan(p.y, p.x);
+  float tt = uT / LOOP;
+
+  // beat: zoom kicks on every beat, periodic over the loop
+  float ph = clamp(uBeat / uBeatLen, 0.0, 1.0);
+  float pulse = 0.22 * exp(-5.0 * ph);
+
+  float w = log2(r) + uT * OCT / LOOP + pulse;
+
+  // chromatic split: the three channels read the world at slightly different zooms
+  float split = 0.035;
+  vec3 colR = world(a, w - split, tt);
+  vec3 colG = world(a, w, tt);
+  vec3 colB = world(a, w + split, tt);
+  vec3 col = vec3(colR.r, colG.g, colB.b);
+
+  // kick flash on every beat
+  col += palette(tt + 0.5) * exp(-7.0 * ph) * 0.35;
+
+  // gentle tone curve so the neon stays saturated
+  col = col / (1.0 + col * 0.25);
+  col = pow(col, vec3(0.9));
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}
+</script>
+<script>
+const canvas = document.getElementById('c');
+const gl = canvas.getContext('webgl', { preserveDrawingBuffer: true });
+const BPM = 140, BEAT_LEN = 60 / BPM;   // 70 beats per 30 s loop
+function compile(type, src) {
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src); gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+const vs = compile(gl.VERTEX_SHADER, 'attribute vec2 p; void main(){ gl_Position = vec4(p,0.,1.); }');
+const fs = compile(gl.FRAGMENT_SHADER, document.getElementById('fs').textContent);
+const prog = gl.createProgram();
+gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog); gl.useProgram(prog);
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog, 'p');
+gl.enableVertexAttribArray(loc);
+gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+const uRes = gl.getUniformLocation(prog, 'uRes');
+const uT = gl.getUniformLocation(prog, 'uT');
+const uBeat = gl.getUniformLocation(prog, 'uBeat');
+const uBeatLen = gl.getUniformLocation(prog, 'uBeatLen');
+gl.uniform2f(uRes, canvas.width, canvas.height);
+gl.uniform1f(uBeatLen, BEAT_LEN);
+
+// deterministic: the frame at time t depends only on t
+window.render = function (t) {
+  gl.uniform1f(uT, t);
+  gl.uniform1f(uBeat, t % BEAT_LEN);
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.drawArrays(gl.TRIANGLES, 0, 3);
+  gl.finish();
+};
+window.render(0);
+</script>
+</body>
+</html>
