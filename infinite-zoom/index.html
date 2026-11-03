@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Infinite Zoom</title>
+<style>
+  html, body { margin: 0; background: #07020f; overflow: hidden; }
+  canvas { display: block; width: 1080px; height: 1920px; }
+</style>
+</head>
+<body>
+<canvas id="c" width="1080" height="1920"></canvas>
+<script>
+// Infinite zoom loop. Every ring j has a fixed identity and radius r_j = 40 * 2^(z - j),
+// where z grows by exactly OCT octaves per loop. After one loop the rings line up with
+// the ring identities one step over, so the last frame flows back into the first.
+const W = 1080, H = 1920, CX = W / 2, CY = H / 2;
+const LOOP = 30;                     // seconds
+const BPM = 128, BEAT = 60 / BPM;    // 64 beats per loop
+const OCT = 8;                       // octaves zoomed per loop
+const TAU = Math.PI * 2;
+const ctx = document.getElementById('c').getContext('2d');
+
+const clamp01 = x => Math.max(0, Math.min(1, x));
+const smooth = x => { x = clamp01(x); return x * x * (3 - 2 * x); };
+const cdist = (a, b) => { const d = Math.abs(a - b) % LOOP; return Math.min(d, LOOP - d); };
+
+// neon palette by ring identity; period 4 divides OCT, so the palette repeats per loop
+const NEON = ['#ff2e9a', '#9b5cff', '#2ef2ff', '#3d7bff'];
+
+// stage humps on the loop clock: door, disco, mirror maze, neon city, giant eye
+const STAGE_AT = [3, 9, 15, 21, 27];
+const stageWeights = t => STAGE_AT.map(c => smooth(1 - cdist(t, c) / 3));
+
+// emblems are drawn in units of the ring radius r, so they scale with the zoom
+const EMBLEM = [
+  (r) => ctx.strokeRect(CX - r * 0.8, CY - r * 1.1, r * 1.6, r * 2.2),                // door
+  (r, rot) => {                                                                         // disco dots
+    for (let m = 0; m < 12; m++) {
+      const a = rot + m * TAU / 12;
+      ctx.beginPath();
+      ctx.arc(CX + Math.cos(a) * r, CY + Math.sin(a) * r, Math.max(1, r * 0.05), 0, TAU);
+      ctx.fill();
+    }
+  },
+  (r, rot) => {                                                                         // mirror maze spokes
+    ctx.beginPath();
+    for (let m = 0; m < 8; m++) {
+      const a = rot + m * TAU / 8;
+      ctx.moveTo(CX + Math.cos(a) * r * 0.4, CY + Math.sin(a) * r * 0.4);
+      ctx.lineTo(CX + Math.cos(a) * r, CY + Math.sin(a) * r);
+    }
+    ctx.stroke();
+  },
+  (r, rot) => {                                                                         // neon city bars
+    ctx.lineWidth = Math.max(1.5, r * 0.03);
+    ctx.beginPath();
+    for (let m = 0; m < 16; m++) {
+      const a = rot + m * TAU / 16;
+      const h = 1.05 + 0.2 * ((m * 37) % 5) / 5;
+      ctx.moveTo(CX + Math.cos(a) * r, CY + Math.sin(a) * r);
+      ctx.lineTo(CX + Math.cos(a) * r * h, CY + Math.sin(a) * r * h);
+    }
+    ctx.stroke();
+  },
+  (r) => {                                                                              // giant eye
+    ctx.beginPath();
+    ctx.ellipse(CX, CY, r, r * 0.55, 0, 0, TAU);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(CX, CY, r * 0.32, r * 0.2, 0, 0, TAU);
+    ctx.stroke();
+  },
+];
+
+function drawRing(j, r, alpha, rot, weights) {
+  const col = NEON[((j % 4) + 4) % 4];
+  ctx.strokeStyle = col;
+  ctx.fillStyle = col;
+  ctx.shadowColor = col;
+  ctx.shadowBlur = 18;
+  ctx.lineWidth = Math.max(1.5, r * 0.012);
+  ctx.globalAlpha = alpha;
+  ctx.beginPath();
+  ctx.arc(CX, CY, r, 0, TAU);
+  ctx.stroke();
+  for (let k = 0; k < EMBLEM.length; k++) {
+    const w = weights[k];
+    if (w < 0.01) continue;
+    ctx.globalAlpha = alpha * w;
+    EMBLEM[k](r, rot);
+  }
+}
+
+function render(t) {
+  // beat phase and a zero-mean pulse per beat, so z(LOOP) = z(0) + OCT exactly
+  const ph = (t % BEAT) / BEAT;
+  const pulse = 0.35 * (Math.exp(-7 * ph) - (1 - Math.exp(-7)) / 7);
+  const z = t * OCT / LOOP + pulse;
+  const rot = TAU * t / LOOP;
+  const weights = stageWeights(t);
+
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 1;
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#07020f';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.globalCompositeOperation = 'lighter';
+  const jmin = Math.floor(z - 7), jmax = Math.ceil(z + 5);
+  for (let j = jmin; j <= jmax; j++) {
+    const r = 40 * Math.pow(2, z - j);
+    const small = smooth((r - 8) / 30);
+    const big = 1 - smooth((r - 900) / 700);
+    const alpha = small * big;
+    if (alpha < 0.01) continue;
+    drawRing(j, r, alpha, rot, weights);
+  }
+
+  // kick flash on every beat
+  ctx.shadowBlur = 0;
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = 0.22 * Math.exp(-9 * ph);
+  ctx.fillStyle = '#ff2e9a';
+  ctx.fillRect(0, 0, W, H);
+  ctx.globalAlpha = 1;
+}
+
+window.render = render;
+render(0);
+</script>
+</body>
+</html>
