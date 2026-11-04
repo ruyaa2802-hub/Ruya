@@ -54,6 +54,6 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 |---|---|
 | [tuyler-diken-diken](videolar/tuyler-diken-diken) — Bölüm 1: Korktuğumuzda neden tüylerimiz diken diken olur? | Final hazır |
 | [neden-gidiklaniriz](videolar/neden-gidiklaniriz) — Bölüm 2: Neden gıdıklanırız? | Sessiz önizleme hazır · seslendirme ElevenLabs'te üretildi, yüklenmeyi bekliyor |
-| [insan-atlasi-01-aglama](videolar/insan-atlasi-01-aglama) — İnsan Atlası #01: Neden bazen sebepsiz yere ağlamak isteriz? | Sessiz önizleme hazır · seslendirme bekleniyor |
+| [insan-atlasi-01-aglama](videolar/insan-atlasi-01-aglama) — İnsan Atlası #01: Neden bazen sebepsiz yere ağlamak isteriz? | Final hazır (ses: Evren) |
 
 Yazı tipi: Inter (SIL OFL, `studio/fonts/`).
