@@ -347,7 +347,7 @@ o('''<g opacity="0.82" stroke-width="3">
   <path d="M652 1030 C624 1036 606 1050 594 1066" fill="none" stroke-width="5"/>
   <path d="M786 920 C786 900 790 880 792 860 L808 860 C810 880 814 900 814 920 Z" fill="#9a7ab3"/>
   <ellipse cx="800" cy="770" rx="78" ry="98" fill="#9a7ab3"/>
-  <g filter="url(#smoke)" stroke="none"><ellipse cx="772" cy="778" rx="34" ry="39" fill="#140c18" opacity="0.85"/><ellipse cx="828" cy="778" rx="34" ry="39" fill="#140c18" opacity="0.85"/></g>
+  <g filter="url(#smoke)" stroke="none"><ellipse cx="772" cy="778" rx="31" ry="36" fill="#140c18" opacity="0.4"/><ellipse cx="828" cy="778" rx="31" ry="36" fill="#140c18" opacity="0.4"/></g>
   <ellipse cx="772" cy="776" rx="26" ry="30" fill="#f2c230"/><ellipse cx="828" cy="776" rx="26" ry="30" fill="#f2c230"/>
   <circle cx="766" cy="790" r="5" fill="#120c08" stroke="none"/><circle cx="822" cy="790" r="5" fill="#120c08" stroke="none"/>
   <path d="M744 760 C760 744 790 744 800 760 M800 760 C810 744 840 744 856 760" fill="#8a69a3" stroke-width="2.4"/>
