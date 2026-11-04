@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+  <defs>
+    <filter id="paper" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="4" result="n"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.35  0 0 0 0 0.28  0 0 0 0 0.18  0 0 0 0.10 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+      <feBlend in="SourceGraphic" mode="multiply"/>
+    </filter>
+    <filter id="wobble">
+      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" seed="7" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="3"/>
+    </filter>
+    <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#3a2a22" stroke-width="1.1" opacity="0.55"/>
+    </pattern>
+    <pattern id="cross" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#3a2a22" stroke-width="1" opacity="0.5"/>
+      <line x1="0" y1="0" x2="7" y2="0" stroke="#3a2a22" stroke-width="1" opacity="0.35"/>
+    </pattern>
+    <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="0.9" fill="#3a2a22" opacity="0.45"/>
+    </pattern>
+    <!-- çuval bezi dokusu -->
+    <pattern id="weave" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path d="M0 2 H8 M0 6 H8" stroke="#8a7a5c" stroke-width="0.8" opacity="0.5"/>
+      <path d="M2 0 V8 M6 0 V8" stroke="#8a7a5c" stroke-width="0.6" opacity="0.35"/>
+    </pattern>
+    <clipPath id="tunicClip">
+      <path d="M392 452 C372 520 348 640 330 770 C400 790 500 790 570 770 C552 640 528 520 508 452 Z"/>
+    </clipPath>
+    <clipPath id="faceClip"><ellipse cx="450" cy="335" rx="60" ry="74"/></clipPath>
+  </defs>
+
+  <!-- arka plan -->
+  <rect width="900" height="1200" fill="#ece2cb"/>
+  <rect width="900" height="1200" fill="url(#dots)" opacity="0.25"/>
+  <path d="M0 960 C200 930 350 985 520 950 C680 920 800 960 900 945 L900 1200 L0 1200 Z" fill="#d9b9ad"/>
+  <circle cx="140" cy="170" r="46" fill="#e9d6a8" stroke="#3a2a22" stroke-width="2"/>
+  <circle cx="190" cy="120" r="18" fill="#e9d6a8" stroke="#3a2a22" stroke-width="2"/>
+
+  <g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round">
+
+    <!-- DEV VELUN PARMAĞI (ölçek için: Ilo'nun tüm vücudundan geniş) -->
+    <path d="M770 -60 C730 300 690 600 662 860 C652 940 730 990 840 986 C940 982 1010 950 1030 900 C1070 700 1130 400 1210 -60 Z" fill="#8e6aa8" stroke-width="4"/>
+    <path d="M940 -60 C920 300 900 640 880 986 C940 982 1010 950 1030 900 C1070 700 1130 400 1210 -60 Z" fill="url(#hatch)" stroke="none"/>
+    <!-- boğum kırışıkları -->
+    <path d="M722 380 C800 410 900 416 1000 400 M716 420 C800 452 900 458 996 444 M710 462 C790 490 880 496 970 486" fill="none" stroke-width="2.4"/>
+    <!-- dev tırnak -->
+    <path d="M700 850 C696 760 762 716 852 724 C940 734 984 796 972 878 C958 950 708 958 700 850 Z" fill="#b89ccb" stroke-width="3.5"/>
+    <path d="M730 830 C736 780 780 754 836 756" fill="none" stroke="#efe4f5" stroke-width="5"/>
+    <!-- tırnaktan dökülen altın toz -->
+    <g fill="#e2b33a" stroke="none">
+      <circle cx="690" cy="900" r="3"/><circle cx="676" cy="922" r="2"/><circle cx="700" cy="940" r="2.5"/><circle cx="668" cy="950" r="1.6"/><circle cx="712" cy="962" r="2"/>
+    </g>
+
+    <!-- SAÇ (arka kütle, beline kadar) -->
+    <path d="M388 300 C370 380 360 480 372 600 C380 660 400 700 420 720 C430 640 420 520 430 420 L470 420 C480 520 470 640 480 720 C500 700 520 660 528 600 C540 480 530 380 512 300 C500 250 400 250 388 300 Z" fill="#2a2230" stroke-width="3"/>
+    <path d="M490 300 C505 380 520 480 512 600 C508 650 495 690 480 720 C470 640 480 520 470 420 Z" fill="url(#cross)" stroke="none" opacity="0.7"/>
+
+    <!-- yukarı kıvrılan sarmaşık saç telleri -->
+    <g fill="none" stroke="#2a2230" stroke-width="7">
+      <path d="M420 270 C400 220 380 190 392 150 C402 120 432 124 428 150 C425 168 405 166 408 152"/>
+      <path d="M446 262 C440 200 448 150 470 112 C486 86 516 98 506 122 C498 140 478 132 484 118"/>
+      <path d="M478 270 C500 228 530 210 556 214 C584 220 584 252 562 254 C546 256 544 238 556 236"/>
+      <path d="M402 290 C370 270 340 262 318 278 C298 294 312 320 330 312 C344 306 338 290 326 294"/>
+    </g>
+    <!-- sarmaşık tellerinde minik yapraklar -->
+    <g fill="#7a9a6a" stroke-width="1.6">
+      <path d="M392 196 c-14 -4 -22 4 -22 12 c10 2 18 -2 22 -12 Z"/>
+      <path d="M456 160 c-6 -12 -18 -14 -24 -8 c6 10 16 12 24 8 Z"/>
+      <path d="M528 214 c4 -14 16 -18 24 -14 c-4 10 -14 16 -24 14 Z"/>
+      <path d="M352 270 c-4 -12 -16 -16 -22 -10 c4 10 14 14 22 10 Z"/>
+    </g>
+
+    <!-- BOYUN -->
+    <path d="M436 400 C437 425 434 445 430 458 L470 458 C466 445 463 425 464 400 Z" fill="#e6c3a0" stroke-width="2.5"/>
+
+    <!-- KOLLAR -->
+    <!-- sağ kol: dev parmağa doğru uzanıyor -->
+    <path d="M500 476 C560 500 610 530 660 566 C674 574 680 560 668 552 C630 512 570 480 506 458 Z" fill="#e6c3a0" stroke-width="2.5"/>
+    <path d="M668 552 l14 -6 M671 558 l16 0 M669 565 l14 8 M660 570 l8 14" fill="none" stroke-width="2.2"/>
+
+    <!-- ÇUVAL BEZİ TUNİK -->
+    <path d="M392 452 C372 520 348 640 330 770 C400 790 500 790 570 770 C552 640 528 520 508 452 Z" fill="#e6dcc2" stroke-width="3"/>
+    <g clip-path="url(#tunicClip)">
+      <rect x="320" y="440" width="260" height="360" fill="url(#weave)" stroke="none"/>
+      <path d="M470 452 C500 540 520 660 540 790 L600 790 L600 440 Z" fill="url(#hatch)" stroke="none"/>
+    </g>
+    <!-- sol kol: yanda, gevşek -->
+    <path d="M398 470 C380 530 368 600 366 660 C366 676 382 678 384 662 C388 604 400 540 416 488 Z" fill="#e6c3a0" stroke-width="2.5"/>
+    <path d="M366 660 l-6 22 M372 666 l-2 24 M378 666 l3 22 M384 662 l7 18" fill="none" stroke-width="2.2"/>
+    <!-- kısa kollar -->
+    <path d="M392 452 C376 470 370 490 374 508 C390 512 404 506 412 494 Z" fill="#e6dcc2" stroke-width="2.5"/>
+    <path d="M508 452 C530 462 542 476 540 494 C524 500 508 494 498 482 Z" fill="#e6dcc2" stroke-width="2.5"/>
+    <!-- yaka -->
+    <path d="M420 456 C432 474 468 474 480 456" fill="none" stroke-width="2.2"/>
+    <!-- ip kemer ve sarkan uç -->
+    <path d="M372 590 C410 604 490 604 528 590" fill="none" stroke="#9a7a48" stroke-width="7"/>
+    <path d="M372 590 C410 604 490 604 528 590" fill="none" stroke-width="1.4" stroke-dasharray="3 5"/>
+    <path d="M478 600 C476 630 482 650 474 672 M486 600 C490 628 496 646 492 664" fill="none" stroke="#9a7a48" stroke-width="4"/>
+    <!-- etek ucu yırtık kenar -->
+    <path d="M330 770 l12 10 l10 -8 l14 12 l12 -10 l16 10 l14 -8 l18 10 l16 -10 l16 10 l14 -8 l18 10 l14 -10 l16 10 l14 -10 l16 8 l12 -8" fill="none" stroke-width="2.2"/>
+
+    <!-- BACAKLAR VE ÇIPLAK AYAKLAR -->
+    <path d="M412 785 C410 850 412 900 414 948 L436 948 C436 900 438 850 440 787 Z" fill="#e6c3a0" stroke-width="2.5"/>
+    <path d="M460 787 C462 850 464 900 464 948 L486 948 C488 900 490 850 488 785 Z" fill="#e6c3a0" stroke-width="2.5"/>
+    <path d="M414 946 C404 952 394 960 396 966 C410 970 430 968 438 962 L436 946 Z" fill="#e6c3a0" stroke-width="2.5"/>
+    <path d="M486 946 C496 952 508 960 506 966 C492 970 472 968 464 962 L464 946 Z" fill="#e6c3a0" stroke-width="2.5"/>
+
+    <!-- YÜZ -->
+    <ellipse cx="450" cy="335" rx="60" ry="74" fill="#ecccab" stroke-width="3"/>
+    <g clip-path="url(#faceClip)">
+      <path d="M478 250 C520 300 520 380 478 420 L540 420 L540 250 Z" fill="url(#hatch)" stroke="none" opacity="0.6"/>
+    </g>
+    <!-- alın perçemi -->
+    <path d="M392 318 C396 268 440 248 476 262 C498 272 510 296 508 318 C490 290 460 282 440 292 C420 300 402 306 392 318 Z" fill="#2a2230" stroke-width="2.5"/>
+    <!-- iri badem gözler, yukarı (parmağa) bakıyor -->
+    <path d="M410 338 C420 322 440 322 448 336 C438 346 420 348 410 338 Z" fill="#faf3e2" stroke-width="2.2"/>
+    <path d="M454 336 C462 322 482 322 492 338 C482 348 464 346 454 336 Z" fill="#faf3e2" stroke-width="2.2"/>
+    <circle cx="434" cy="332" r="6.5" fill="#3b4a3a" stroke="none"/>
+    <circle cx="478" cy="332" r="6.5" fill="#3b4a3a" stroke="none"/>
+    <circle cx="435" cy="332" r="3" fill="#120c08" stroke="none"/>
+    <circle cx="479" cy="332" r="3" fill="#120c08" stroke="none"/>
+    <circle cx="432" cy="330" r="1.6" fill="#fff8e0" stroke="none"/>
+    <circle cx="476" cy="330" r="1.6" fill="#fff8e0" stroke="none"/>
+    <!-- ince kaşlar -->
+    <path d="M412 320 C420 312 436 312 446 318 M456 318 C466 312 482 312 490 320" fill="none" stroke-width="2"/>
+    <!-- burun ve küçük ağız -->
+    <path d="M452 348 C450 362 448 372 456 374" fill="none" stroke-width="1.8"/>
+    <path d="M440 390 C448 394 458 394 466 390" fill="none" stroke-width="2.2"/>
+    <!-- yanak -->
+    <circle cx="418" cy="366" r="9" fill="#e3a58f" stroke="none" opacity="0.55"/>
+    <circle cx="486" cy="366" r="9" fill="#e3a58f" stroke="none" opacity="0.55"/>
+  </g>
+
+  <rect width="900" height="1200" fill="#ece2cb" opacity="0.001" filter="url(#paper)"/>
+  <text x="40" y="1170" font-family="Georgia, serif" font-size="30" fill="#2b1e18" letter-spacing="6">ILO</text>
+</svg>
