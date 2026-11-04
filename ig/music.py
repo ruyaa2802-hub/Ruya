@@ -83,9 +83,43 @@ def sneaky(dur=26.0, bpm=112, seed=21):
     return _norm(_room(_band(out, 50, 9000), 0.5, 0.2, seed)[:n], -6)
 
 
+PLAYFUL = [  # C major, bouncy
+    "E5 - C5 - G4 - C5 -", "D5 - B4 - G4 - B4 -", "C5 E5 G5 - E5 - C5 -", "D5 - - G4 B4 - D5 -",
+    "E5 - C5 - A4 - C5 -", "F5 - D5 - A4 - D5 -", "E5 D5 C5 - G4 - C5 -", "D5 - G4 - C5 - - -",
+]
+PLAYFUL_BASS = ["C3 G2 C3 G2", "G2 D3 G2 D3", "C3 G2 E3 G2", "G2 D3 B2 G2",
+                "A2 E3 A2 E3", "D3 A2 F3 A2", "C3 G2 E3 G2", "G2 D3 C3 -"]
+
+
+def playful(dur=20.0, bpm=126, seed=31):
+    """Light comedy cue for gossip scenes: bouncy pizzicato in C major with a soft woodblock."""
+    rng = np.random.default_rng(seed)
+    beat = 60.0 / bpm
+    n = int(SR * dur)
+    out = np.zeros(n + SR)
+    bar, t0 = 0, 0.0
+    while t0 < dur:
+        for k, name in enumerate(PLAYFUL[bar % len(PLAYFUL)].split()):
+            if name != "-":
+                i = int((t0 + k * beat / 2 + rng.uniform(0, 0.006)) * SR)
+                _add(out, i, pluck(freq(name), 0.3, decay=0.992, bright=0.65, seed=bar * 16 + k) * 0.45)
+        for k, name in enumerate(PLAYFUL_BASS[bar % len(PLAYFUL_BASS)].split()):
+            if name != "-":
+                _add(out, int((t0 + k * beat) * SR), pluck(freq(name), 0.45, decay=0.995, bright=0.3,
+                                                           seed=700 + bar * 4 + k) * 0.8)
+        for k in (1, 3):
+            _add(out, int((t0 + k * beat) * SR), woodblock() * 0.14)
+        t0 += 4 * beat
+        bar += 1
+    out = out[:n]
+    out *= np.minimum(1, (dur - np.arange(n) / SR) / 0.8)
+    return _norm(_room(_band(out, 50, 9000), 0.5, 0.2, seed)[:n], -6)
+
+
 def write_all(folder):
     os.makedirs(folder, exist_ok=True)
     sf.write(os.path.join(folder, "music_sneaky.wav"), sneaky().astype(np.float32), SR)
+    sf.write(os.path.join(folder, "music_playful.wav"), playful().astype(np.float32), SR)
 
 
 if __name__ == "__main__":

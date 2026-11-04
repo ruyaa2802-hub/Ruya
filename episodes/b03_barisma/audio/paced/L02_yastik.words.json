@@ -1,0 +1,44 @@
+[
+ {
+  "word": "Üçüncü",
+  "start": 0.0,
+  "end": 0.4,
+  "p": 0.827,
+  "asr": "Üçüncü"
+ },
+ {
+  "word": "kez",
+  "start": 0.4,
+  "end": 0.6,
+  "p": 0.719,
+  "asr": "kez"
+ },
+ {
+  "word": "ayrıldılar.",
+  "start": 0.6,
+  "end": 1.18,
+  "p": 0.994,
+  "asr": "ayrıldılar."
+ },
+ {
+  "word": "Bu",
+  "start": 1.48,
+  "end": 1.58,
+  "p": 0.975,
+  "asr": "Bu"
+ },
+ {
+  "word": "sefer",
+  "start": 1.58,
+  "end": 1.94,
+  "p": 0.976,
+  "asr": "sefer"
+ },
+ {
+  "word": "kesin.",
+  "start": 1.94,
+  "end": 2.3,
+  "p": 0.982,
+  "asr": "kesin."
+ }
+]

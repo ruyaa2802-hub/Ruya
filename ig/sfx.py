@@ -261,6 +261,57 @@ def thunk(seed=20):
     return _norm(body + glass + _band(rng.standard_normal(len(t)), 300, 3000) * np.exp(-t * 80) * 0.3, -8)
 
 
+def hangup(seed=22):
+    """Line goes dead: three short 425 Hz busy beeps, heard through a phone speaker."""
+    t = _t(1.2)
+    gate = ((t % 0.4) < 0.2).astype(float)
+    x = np.sin(2 * np.pi * 425 * t) * gate
+    x = np.convolve(x, np.ones(48) / 48, mode="same")              # soften the gate clicks
+    return _norm(_band(x, 300, 3400), -14)
+
+
+def ringtone(seed=23, dur=2.4):
+    """Cheerful marimba-ish phone ringtone: a little four-note phrase, repeated."""
+    t = _t(dur)
+    x = np.zeros(len(t))
+    notes = (1046.5, 1318.5, 1568.0, 1318.5)
+    step = 0.15
+    for i in range(int(dur / step)):
+        if (i // 4) % 2 == 1 and i % 4 == 3:
+            continue
+        i0 = int(i * step * SR)
+        tt = t[: len(t) - i0]
+        f = notes[i % 4]
+        x[i0:] += (np.sin(2 * np.pi * f * tt) + 0.3 * np.sin(2 * np.pi * 4 * f * tt)) * np.exp(-tt * 14)
+    return _norm(_band(x, 400, 9000), -10)
+
+
+def buzz(seed=24, dur=2.4):
+    """Phone vibrating on a mattress: pulsed low rattle."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    gate = ((t % 0.8) < 0.45).astype(float)
+    gate = np.convolve(gate, np.ones(240) / 240, mode="same")
+    x = (np.sign(np.sin(2 * np.pi * 150 * t)) * 0.6 + _band(rng.standard_normal(len(t)), 80, 400)) * gate
+    return _norm(_band(x, 60, 900), -16)
+
+
+def rimshot(seed=25):
+    """Ba-dum-tss."""
+    rng = np.random.default_rng(seed)
+    t = _t(1.4)
+    out = np.zeros(len(t))
+    for t0, f in ((0.0, 190.0), (0.14, 140.0)):
+        i0 = int(t0 * SR)
+        tt = t[: len(t) - i0]
+        out[i0:] += np.sin(2 * np.pi * (f + 60 * np.exp(-tt * 30)) * tt) * np.exp(-tt * 16) \
+            + _band(rng.standard_normal(len(tt)), 800, 5000) * np.exp(-tt * 40) * 0.3
+    i0 = int(0.3 * SR)
+    tt = t[: len(t) - i0]
+    out[i0:] += _band(rng.standard_normal(len(tt)), 4000, 14000) * np.exp(-tt * 4) * 0.9
+    return _norm(_room(out, 0.4, 0.2, seed), -4)
+
+
 def room_tone(dur, seed=7):
     rng = np.random.default_rng(seed)
     x = np.cumsum(rng.standard_normal(int(SR * dur)))
@@ -272,7 +323,7 @@ EFFECTS = {"door_slam": door_slam, "keys": keys, "rustle": rustle, "rustle_long"
            "poof": poof, "whoosh": whoosh, "sniff": sniff, "chatter": chatter, "clink": clink, "ding": ding,
            "jitter": jitter, "fridge_open": fridge_open, "fridge_close": fridge_close,
            "fridge_hum": fridge_hum, "footsteps": footsteps, "rattle": rattle, "siren": siren, "bloop": bloop,
-           "thunk": thunk}
+           "thunk": thunk, "hangup": hangup, "ringtone": ringtone, "buzz": buzz, "rimshot": rimshot}
 
 
 def write_all(folder):

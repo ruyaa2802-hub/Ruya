@@ -16,7 +16,7 @@ FONT = "Nunito Black"
 # speaker colours as (R, G, B); text is white until the word is spoken
 SPEAKERS = {"yastik": (120, 200, 255), "battaniye": (255, 196, 64), "kupa": (255, 150, 70),
             "buzdolabi": (140, 215, 255), "sut": (235, 240, 255), "peynir": (255, 205, 60),
-            "zeytin": (170, 230, 90), "tahin": (230, 180, 120)}
+            "zeytin": (170, 230, 90), "tahin": (230, 180, 120), "insan": (255, 255, 255)}
 DEFAULT = (255, 230, 120)
 
 

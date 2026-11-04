@@ -1,0 +1,56 @@
+[
+ {
+  "word": "Geçen",
+  "start": 0.0,
+  "end": 0.34,
+  "p": 0.787
+ },
+ {
+  "word": "seferde",
+  "start": 0.34,
+  "end": 0.82,
+  "p": 0.92
+ },
+ {
+  "word": "kesin",
+  "start": 0.82,
+  "end": 1.16,
+  "p": 0.934
+ },
+ {
+  "word": "demiştin",
+  "start": 1.16,
+  "end": 1.58,
+  "p": 0.906
+ },
+ {
+  "word": "2",
+  "start": 1.58,
+  "end": 1.92,
+  "p": 0.23
+ },
+ {
+  "word": "saat",
+  "start": 1.92,
+  "end": 2.22,
+  "p": 0.989
+ },
+ {
+  "word": "sonra",
+  "start": 2.22,
+  "end": 2.56,
+  "p": 0.994
+ },
+ {
+  "word": "üstümde",
+  "start": 2.56,
+  "end": 3.08,
+  "p": 0.88
+ },
+ {
+  "word": "öpüşüyorlardı.",
+  "start": 3.08,
+  "end": 3.82,
+  "p": 0.97
+ }
+]

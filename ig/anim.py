@@ -220,6 +220,13 @@ class Timeline:
         self.duration = max(self.duration, t + dur)
         return Line(who, t, path, dur, lipsync.words(path))
 
+    def offscreen(self, who, t, path):
+        """Dialogue from someone with no rig (a human out of frame): audio + subtitles, no lip sync."""
+        dur = lipsync.duration(path)
+        self.lines.append(dict(who=who, t=t, path=path, text="", dur=dur))
+        self.duration = max(self.duration, t + dur)
+        return Line(who, t, path, dur, lipsync.words(path))
+
     def sfx(self, t, path, gain_db=0.0, dur=None, fade=0.05):
         """Play a sound at t; dur cuts it off (with a short fade), e.g. music that stops dead on a gag."""
         self.sounds.append(dict(t=t, path=path, gain=gain_db, dur=dur, fade=fade))

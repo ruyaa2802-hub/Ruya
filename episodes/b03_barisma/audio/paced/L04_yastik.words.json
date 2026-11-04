@@ -1,0 +1,51 @@
+[
+ {
+  "word": "Ben",
+  "start": 0.0,
+  "end": 0.2,
+  "p": 0.76,
+  "asr": "Ben"
+ },
+ {
+  "word": "artık",
+  "start": 0.2,
+  "end": 0.46,
+  "p": 0.981,
+  "asr": "artık"
+ },
+ {
+  "word": "bu",
+  "start": 0.46,
+  "end": 0.66,
+  "p": 0.983,
+  "asr": "bu"
+ },
+ {
+  "word": "ilişkinin",
+  "start": 0.66,
+  "end": 1.18,
+  "p": 0.982,
+  "asr": "ilişkinin"
+ },
+ {
+  "word": "sezon",
+  "start": 1.18,
+  "end": 1.58,
+  "p": 0.84,
+  "asr": "sezon"
+ },
+ {
+  "word": "finalini",
+  "start": 1.58,
+  "end": 1.96,
+  "p": 0.972,
+  "asr": "finalini"
+ },
+ {
+  "word": "bekliyorum.",
+  "start": 1.96,
+  "end": 2.42,
+  "p": 0.994,
+  "asr": "bekliyorum."
+ }
+]

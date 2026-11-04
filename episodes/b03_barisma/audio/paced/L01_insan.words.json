@@ -1,0 +1,30 @@
+[
+ {
+  "word": "BİR",
+  "start": 0.0,
+  "end": 0.14,
+  "p": 0.773,
+  "asr": "Bir"
+ },
+ {
+  "word": "DAHA",
+  "start": 0.14,
+  "end": 0.38,
+  "p": 0.977,
+  "asr": "daha"
+ },
+ {
+  "word": "BENİ",
+  "start": 0.38,
+  "end": 0.58,
+  "p": 0.98,
+  "asr": "beni"
+ },
+ {
+  "word": "ARAMA!",
+  "start": 0.58,
+  "end": 0.9,
+  "p": 0.947,
+  "asr": "arama."
+ }
+]
