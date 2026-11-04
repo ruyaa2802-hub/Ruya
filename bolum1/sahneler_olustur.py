@@ -237,7 +237,6 @@ def sahne1():
     for x, y, w, rot in [(900, 420, 170, -25), (480, 620, 150, 30), (760, 860, 160, -10), (300, 980, 140, 60), (940, 960, 150, 15)]:
         b += speed_lines(x, y - 60)
         b += f'<g transform="rotate({rot} {x} {y})">' + use('baby', x - w / 2, y - w / 4, w, w / 2) + '</g>'
-    b += f'<text x="640" y="1290" font-family="Georgia, serif" font-weight="bold" font-size="64" fill="#fbeef0" stroke="{INK}" stroke-width="2.5">tak!</text>'
     b += dust(25, 0, 1080, 500, 1750, 1)
     return frame(b, 1, '0–3 sn', 'Gökten bebekler düşüyor')
 
@@ -278,7 +277,6 @@ def sahne3():
     # "pof" bulutçukları ve hareket çizgileri
     for x, y, r in [(660, 1240, 34), (700, 1290, 24), (630, 1300, 20)]:
         b += f'<circle cx="{x}" cy="{y}" r="{r}" fill="#fbeef0" stroke="{INK}" stroke-width="2.2"/>'
-    b += f'<text x="580" y="1160" font-family="Georgia, serif" font-weight="bold" font-size="70" fill="#fbeef0" stroke="{INK}" stroke-width="2.5">pof!</text>'
     # tekrar işareti: hayalet Ilo silüetleri (1. ve 2. itiş)
     b += f'<g opacity="0.22">{ilo(800, 1600, 300)}</g>'
     b += tufts(6, -20, 1060, 1600, 1800, 80, 130, 7)
@@ -312,7 +310,6 @@ def sahne5():
     b += ilo(470, 1720, 1250, 'ilo_gul')
     # elin camdaki buğusu
     b += '<ellipse cx="770" cy="1000" rx="60" ry="70" fill="#ffffff" opacity="0.35"/>'
-    b += f'<text x="60" y="1560" font-family="Georgia, serif" font-style="italic" font-size="60" fill="#fbeef0" stroke="{INK}" stroke-width="2">kıkır kıkır</text>'
     return frame(b, 5, '16–20 sn', 'Ilo gülüyor')
 
 
@@ -331,8 +328,6 @@ def sahne6():
     # darbe halkaları ve ses yazıları
     b += ''.join(f'<path d="M{850 - r} {700 + r * 0.3:.0f} A{r} {r} 0 0 1 {850 + r * 0.2:.0f} {700 - r}" fill="none" stroke="#fbeef0" stroke-width="6" opacity="{1 - r / 260:.2f}"/>'
                  for r in [60, 110, 160, 210])
-    for x, y, s, rot in [(140, 520, 110, -12), (520, 360, 90, 8), (160, 900, 80, 4)]:
-        b += f'<text x="{x}" y="{y}" font-family="Georgia, serif" font-weight="bold" font-size="{s}" fill="#fbeef0" stroke="{INK}" stroke-width="3" transform="rotate({rot} {x} {y})">TAK!</text>'
     return frame(b, 6, '20–25 sn', 'Tak tak tak')
 
 
@@ -368,7 +363,6 @@ def sahne7():
     b += f'<path d="M604 690 C596 740 584 790 568 840" fill="none" stroke="#f2c230" stroke-width="3" stroke-dasharray="4 10"/>'
     # karanlığa kapanış
     b += '<rect width="1080" height="1920" fill="url(#vignette)"/>'
-    b += f'<text x="660" y="600" font-family="Georgia, serif" font-style="italic" font-weight="bold" font-size="80" fill="#fbeef0" stroke="{INK}" stroke-width="2.4">çıt…</text>'
     return frame(b, 7, '25–30 sn', 'Çatlak · Cliffhanger')
 
 
