@@ -5,26 +5,26 @@ Sistem hiçbir API çağrısı yapmaz; bu metni ElevenLabs'te **sen** üretirsin
 ## Ayarlar
 | Ayar | Değer |
 |---|---|
-| Ses | Sakin, sıcak, yavaş bir Türkçe anlatıcı. Öneri: **Su – Gentle & Expressive Storytelling** (kadın) ya da **Ömer – Calm, Natural and Young** (erkek) |
+| Ses | **Su – Gentle & Expressive Storytelling** (kadın, Bölüm 2 ile aynı) — alternatif: Ömer – Calm, Natural and Young (erkek) |
 | Model | Eleven v3 (önerilen) veya Multilingual v2 |
 | Stability / Similarity / Style | 0.60 / 0.75 / 0.15 (duygusal ama abartısız) |
 | Hız | 0.95 (biraz yavaş, nefes alan bir anlatım) |
 | Çıktı | MP3, 44.1 kHz |
-| Uzunluk | 757 karakter → yaklaşık 48–52 sn (≈ 760 kredi, tek deneme) |
+| Uzunluk | 502 karakter → yaklaşık 32–35 sn konuşma (≈ 500 kredi, tek deneme) |
 
-> Not: Bu metin 30 saniyeye sığmaz; doğal hızda ~50 sn sürer. Video sese göre otomatik uzar/kısalır, metni kısaltmana gerek yok.
+> Kısaltılmış sürüm (30–35 sn). Video sese göre otomatik uzar/kısalır.
 
 ## Kopyalanacak metin (Eleven v3)
 Paragraflar arasındaki **boş satırları silme** — sahne geçişleri bu duraklamalardan bulunur.
 
 ```
-Hiç durduk yere ağlamak istedin mi? Belki de ortada hiçbir sebep yok değil… Sen sadece henüz fark etmedin.
+Hiç durduk yere ağlamak istedin mi? Belki bir sebep var… Sadece henüz fark etmedin.
 
-Bazen gün boyunca bastırdığımız duygular, fark etmediğimiz stres ve zihinsel yorgunluk birikir. Gün içinde güçlü kalmaya çalışırken bedenimiz ve zihnimiz sessizce yorulabilir.
+Gün boyunca bastırdığın duygular, stres ve yorgunluk birikir. Zihnin sessizce yorulur.
 
-Üstelik ağlamak yalnızca üzüntüyle ilgili değildir. Yoğun stres, yorgunluk, hormonal değişimler ve bazen mutluluk bile gözyaşlarını tetikleyebilir. Beynimiz duygularımızı düzenlerken ağlamak da bu deneyimin bir parçası olabilir.
+Ağlamak sadece üzüntü değildir. Stres, yorgunluk, hormonlar, hatta mutluluk bile gözyaşı getirebilir. Bu, duyguları düzenlemenin bir yolu olabilir.
 
-Yani bazen ağlamak için büyük bir olay yaşaman gerekmez. Gözyaşların, yaşadığın duyguların bir yansıması olabilir. Kendini sürekli güçlü olmak zorunda hissetme. Bazen hissetmek de yeterlidir.
+Büyük bir sebep gerekmez. Gözyaşın, hissettiklerinin bir yansıması. Kendini hep güçlü olmaya zorlama. Bazen hissetmek yeterlidir.
 
 İnsan sandığından çok daha gizemli. İnsan Atlası.
 ```

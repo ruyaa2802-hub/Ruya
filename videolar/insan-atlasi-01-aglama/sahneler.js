@@ -423,27 +423,27 @@
       }
       ctx.restore();
       // bölgeler
-      const stres = pencere(t, kel(0.02), kel(1.05), 0.3), yorg = pencere(t, kel(0.16), kel(1.05), 0.3);
-      const hormon = pencere(t, kel(0.28), kel(1.05), 0.3), mutlu = pencere(t, kel(0.52), kel(1.05), 0.3);
+      const stres = pencere(t, kel(0.0), kel(1.05), 0.3), yorg = pencere(t, kel(0.1), kel(1.05), 0.3);
+      const hormon = pencere(t, kel(0.26), kel(1.05), 0.3), mutlu = pencere(t, kel(0.42), kel(1.05), 0.3);
       bolgeIsik(ctx, BOLGE.amigdala, '255,120,90', stres * (0.7 + 0.3 * Math.sin(t * 6)), 90);
       if (yorg > 0) { ctx.save(); ctx.globalAlpha = 0.25 * yorg * (0.5 + 0.5 * Math.sin(t * 2)); ctx.fillStyle = 'rgb(140,150,170)'; ctx.globalCompositeOperation = 'lighter'; ctx.drawImage(parilti('140,160,200'), 560 - 420, 760 - 300, 840, 600); ctx.restore(); }
       bolgeIsik(ctx, BOLGE.hipotalamus, '190,140,255', hormon * (0.7 + 0.3 * Math.sin(t * 5 + 1)), 80);
       bolgeIsik(ctx, [560, 760], '255,200,120', mutlu * 0.6, 360);
       // gözyaşı bezine sinyal ve göz
-      const gozA = ramp(t, kel(0.55), kel(0.75));
+      const gozA = ramp(t, kel(0.5), kel(0.68));
       ctx.save(); ctx.globalAlpha = gozA;
       ctx.strokeStyle = 'rgba(200,220,255,0.7)'; ctx.lineWidth = 3;
       ctx.beginPath(); ctx.ellipse(842, 1022, 34, 14, 0.05, 0, TAU); ctx.stroke();
       ctx.fillStyle = 'rgba(200,220,255,0.6)'; ctx.beginPath(); ctx.arc(850, 1022, 9, 0, TAU); ctx.fill();
       ctx.fillStyle = 'rgba(120,200,255,0.55)'; ctx.beginPath(); ctx.ellipse(840, 1000, 20, 9, 0.4, 0, TAU); ctx.fill();
       ctx.restore();
-      const su = clamp((t - kel(0.72)) / (kel(1.0) - kel(0.72)));
+      const su = clamp((t - kel(0.62)) / (kel(0.98) - kel(0.62)));
       if (su > 0) {
         ctx.save(); ctx.strokeStyle = `rgba(${TURKUAZ},0.4)`; ctx.lineWidth = 3; ctx.setLineDash([10, 8]);
         ctx.beginPath(); YAS_YOLU.forEach((p, i) => i ? ctx.lineTo(...p) : ctx.moveTo(...p)); ctx.stroke(); ctx.restore();
         if (su < 1) { const [x, y] = yolNokta(YAS_YOLU, ease.inOut(su)); bolgeIsik(ctx, [x, y], TURKUAZ, 1, 40); }
       }
-      const yd = clamp((t - kel(1.0)) / 2.0);
+      const yd = clamp((t - kel(0.98)) / 1.6);
       if (yd > 0) damla(ctx, 860, 1040 + ease.in(yd) * 120, 12, 1 - ramp(yd, 0.8, 1));
       // düzenleme: prefrontal
       const pf = ramp(t, S.at(2, 0.05), S.at(2, 0.4));
@@ -456,10 +456,10 @@
       // etiketler
       etiket(ctx, ...E(BOLGE.amigdala), 250, 1200, 'Amigdala', stres * (1 - pf), { alt: 'duygusal tepki', renk: 'rgba(255,190,170,1)' });
       etiket(ctx, ...E(BOLGE.hipotalamus), 560, 560, 'Hipotalamus', hormon * (1 - pf), { alt: 'stres ve hormonlar', renk: 'rgba(215,190,255,1)' });
-      etiket(ctx, ...E(BOLGE.bezi), 660, 1250, 'Gözyaşı bezi', pencere(t, kel(0.7), S.at(2, 0.2), 0.3), { renk: 'rgba(170,225,255,1)' });
+      etiket(ctx, ...E(BOLGE.bezi), 660, 1250, 'Gözyaşı bezi', pencere(t, kel(0.62), S.at(2, 0.2), 0.3), { renk: 'rgba(170,225,255,1)' });
       etiket(ctx, ...E(BOLGE.prefrontal), 620, 360, 'Prefrontal korteks', pencere(t, S.at(2, 0.15), S.d + 2, 0.4), { boyut: 46, alt: 'duyguları düzenler', renk: `rgba(${TURKUAZ},1)` });
       // tetikleyiciler
-      const cipler = [['Stres', 0.02, '255,140,110'], ['Yorgunluk', 0.16, '170,185,210'], ['Hormonlar', 0.28, '200,160,255'], ['Mutluluk', 0.52, '255,205,120']];
+      const cipler = [['Stres', 0.0, '255,140,110'], ['Yorgunluk', 0.1, '170,185,210'], ['Hormonlar', 0.26, '200,160,255'], ['Mutluluk', 0.42, '255,205,120']];
       const cipA = 1 - ramp(t, S.at(2, 0.0), S.at(2, 0.2));
       cipler.forEach(([m, o, r], i) => {
         const a = ramp(t, kel(o), kel(o) + 0.5, ease.outBack) * cipA;

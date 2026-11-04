@@ -2,12 +2,15 @@
   "seri": "İnsan Atlası",
   "baslik": "İnsan neden bazen hiçbir sebep yokken ağlamak ister?",
   "fps": 30,
-  "giris": 1.4,
-  "kapanis": 2.2,
+  "giris": 1.2,
+  "kapanis": 2.0,
   "altyaziY": 1410,
   "kanca": {
     "ust": "İNSAN ATLASI",
-    "satirlar": ["Neden bazen sebepsiz", "yere ağlamak isteriz?"],
+    "satirlar": [
+      "Neden bazen sebepsiz",
+      "yere ağlamak isteriz?"
+    ],
     "start": 0.4
   },
   "ses": {
@@ -16,22 +19,86 @@
     "pad": 0.8,
     "piyano": 1,
     "akorlar": {
-      "kanca": [110.0, 130.81, 164.81, 196.0],
-      "birikim": [87.31, 130.81, 174.61, 220.0],
-      "beyin": [73.42, 110.0, 146.83, 220.0],
-      "final": [98.0, 146.83, 196.0, 246.94],
-      "kapanis": [65.41, 98.0, 130.81, 196.0]
+      "kanca": [
+        110.0,
+        130.81,
+        164.81,
+        196.0
+      ],
+      "birikim": [
+        87.31,
+        130.81,
+        174.61,
+        220.0
+      ],
+      "beyin": [
+        73.42,
+        110.0,
+        146.83,
+        220.0
+      ],
+      "final": [
+        98.0,
+        146.83,
+        196.0,
+        246.94
+      ],
+      "kapanis": [
+        65.41,
+        98.0,
+        130.81,
+        196.0
+      ]
     },
     "ortam": [
-      { "tip": "oda", "bas": "kanca", "son": "final", "seviye": 1 },
-      { "tip": "yagmur", "bas": "kanca", "son": "birikim", "seviye": 0.8 },
-      { "tip": "saat", "bas": "kanca", "son": "birikim", "seviye": 0.7 },
-      { "tip": "kus", "bas": "final", "son": "final", "basOfs": 4.0, "seviye": 0.8 }
+      {
+        "tip": "oda",
+        "bas": "kanca",
+        "son": "final",
+        "seviye": 1
+      },
+      {
+        "tip": "yagmur",
+        "bas": "kanca",
+        "son": "birikim",
+        "seviye": 0.8
+      },
+      {
+        "tip": "saat",
+        "bas": "kanca",
+        "son": "birikim",
+        "seviye": 0.7
+      },
+      {
+        "tip": "kus",
+        "bas": "final",
+        "son": "final",
+        "basOfs": 4.0,
+        "seviye": 0.8
+      }
     ],
     "isaretler": [
-      { "tip": "parilti", "bolum": "beyin", "cumle": 1, "oran": 0.75, "seviye": 0.6 },
-      { "tip": "parilti", "bolum": "final", "cumle": 2, "oran": 0.1, "seviye": 0.7 },
-      { "tip": "parilti", "bolum": "kapanis", "cumle": 1, "oran": 0.0, "seviye": 0.9 }
+      {
+        "tip": "parilti",
+        "bolum": "beyin",
+        "cumle": 1,
+        "oran": 0.75,
+        "seviye": 0.6
+      },
+      {
+        "tip": "parilti",
+        "bolum": "final",
+        "cumle": 2,
+        "oran": 0.1,
+        "seviye": 0.7
+      },
+      {
+        "tip": "parilti",
+        "bolum": "kapanis",
+        "cumle": 1,
+        "oran": 0.0,
+        "seviye": 0.9
+      }
     ]
   },
   "bolumler": [
@@ -40,28 +107,28 @@
       "sahne": "kanca",
       "gecis": "capraz",
       "gecisSure": 1.2,
-      "metin": "Hiç durduk yere ağlamak istedin mi? Belki de ortada hiçbir sebep yok değil… Sen sadece henüz fark etmedin."
+      "metin": "Hiç durduk yere ağlamak istedin mi? Belki bir sebep var… Sadece henüz fark etmedin."
     },
     {
       "id": "birikim",
       "sahne": "birikim",
       "gecis": "dalis",
       "gecisSure": 1.2,
-      "metin": "Bazen gün boyunca bastırdığımız duygular, fark etmediğimiz stres ve zihinsel yorgunluk birikir. Gün içinde güçlü kalmaya çalışırken bedenimiz ve zihnimiz sessizce yorulabilir."
+      "metin": "Gün boyunca bastırdığın duygular, stres ve yorgunluk birikir. Zihnin sessizce yorulur."
     },
     {
       "id": "beyin",
       "sahne": "beyin",
       "gecis": "karart",
       "gecisSure": 1.2,
-      "metin": "Üstelik ağlamak yalnızca üzüntüyle ilgili değildir. Yoğun stres, yorgunluk, hormonal değişimler ve bazen mutluluk bile gözyaşlarını tetikleyebilir. Beynimiz duygularımızı düzenlerken ağlamak da bu deneyimin bir parçası olabilir."
+      "metin": "Ağlamak sadece üzüntü değildir. Stres, yorgunluk, hormonlar, hatta mutluluk bile gözyaşı getirebilir. Bu, duyguları düzenlemenin bir yolu olabilir."
     },
     {
       "id": "final",
       "sahne": "final",
       "gecis": "karart",
       "gecisSure": 1.4,
-      "metin": "Yani bazen ağlamak için büyük bir olay yaşaman gerekmez. Gözyaşların, yaşadığın duyguların bir yansıması olabilir. Kendini sürekli güçlü olmak zorunda hissetme. Bazen hissetmek de yeterlidir."
+      "metin": "Büyük bir sebep gerekmez. Gözyaşın, hissettiklerinin bir yansıması. Kendini hep güçlü olmaya zorlama. Bazen hissetmek yeterlidir."
     },
     {
       "id": "kapanis",
