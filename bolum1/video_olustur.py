@@ -496,7 +496,7 @@ def make_audio(path):
     roll(6 + 3.2, 6 + 3.9)
     tak(6 + 4.3, 0.75)
     # --- SAHNE 4–5 ---
-    hum(11.3, 20.4, 0.24, 2.2)
+    hum(11.3, 20.4, 0.16, 2.2)
     giggle(16.3, 6); giggle(17.0, 5); giggle(18.2, 6, 0.2)
     # --- SAHNE 6 ---
     for p in TAPS:
@@ -506,6 +506,110 @@ def make_audio(path):
     tak(25 + 1.8, 0.35)
     shimmer(25 + 2.8, 25 + 4.2, 10, 0.07)
     bell(25 + 4.4)
+
+
+    # ================= ARKA PLAN MÜZİĞİ: merak + hafif gerilim =================
+    mus = np.zeros(N); mwet = np.zeros(N)
+
+    def mtof(m):
+        return 440.0 * 2 ** ((m - 69) / 12)
+
+    def mput(sig, t0, g=1.0, send=0.25):
+        i = int(t0 * SR)
+        if i >= N:
+            return
+        j = min(N, i + len(sig))
+        mus[i:j] += g * sig[:j - i]
+        mwet[i:j] += g * send * sig[:j - i]
+
+    def musicbox(m, t0, g=0.22, d=1.6):
+        f = mtof(m); n = int(d * SR); tt = np.arange(n) / SR
+        s = (np.sin(2 * np.pi * f * tt) * np.exp(-tt / 0.55)
+             + 0.35 * np.sin(2 * np.pi * 2.0 * f * tt) * np.exp(-tt / 0.25)
+             + 0.12 * np.sin(2 * np.pi * 3.02 * f * tt) * np.exp(-tt / 0.12))
+        s *= np.minimum(1, tt / 0.003)
+        mput(s, t0, g, 0.5)
+
+    def pizz(m, t0, g=0.3):
+        f = mtof(m); n = int(0.5 * SR); tt = np.arange(n) / SR
+        s = sum((0.8 ** k) * np.sin(2 * np.pi * f * (k + 1) * tt) for k in range(5)) * np.exp(-tt / 0.09)
+        s *= np.minimum(1, tt / 0.004)
+        mput(s, t0, g, 0.3)
+
+    def tick(t0, g=0.05):
+        n = int(0.004 * SR)
+        mput(band_noise(n, 4000, 10000) * np.linspace(1, 0, n), t0, g, 0.1)
+
+    def pad(ms, t0, t1, g=0.12, att=2.5, rel=0.6):
+        n = int((t1 - t0) * SR); tt = np.arange(n) / SR
+        s = np.zeros(n)
+        for m in ms:
+            for det in (-0.12, 0.12):
+                f = mtof(m + det)
+                s += sum((0.55 ** k) * np.sin(2 * np.pi * f * (k + 1) * tt + k) for k in range(4))
+        s /= len(ms) * 2
+        e = np.minimum(1, tt / att) * np.minimum(1, (t1 - t0 - tt) / rel)
+        mput(s * e * (1 + 0.1 * np.sin(2 * np.pi * 0.25 * tt)), t0, g, 0.5)
+
+    def pulse(t0, g=0.32):
+        for dt, a in ((0, 1.0), (0.18, 0.6)):
+            n = int(0.25 * SR); tt = np.arange(n) / SR
+            mput(np.sin(2 * np.pi * 52 * tt) * np.exp(-tt / 0.07) * np.minimum(1, tt / 0.005), t0 + dt, g * a, 0.1)
+
+    def shiver(t0, t1, m=86, g=0.05):
+        n = int((t1 - t0) * SR); tt = np.arange(n) / SR
+        s = np.sin(2 * np.pi * mtof(m) * tt) * (0.5 + 0.5 * np.sin(2 * np.pi * 9 * tt))
+        e = (tt / (t1 - t0)) ** 1.5 * np.minimum(1, (t1 - t0 - tt) / 0.05)
+        mput(s * e, t0, g, 0.6)
+
+    BEAT = 60 / 96; E8 = BEAT / 2
+    # 1) merak: müzik kutusu motifi (Re dorian, tuhaf bir #4 ile) — 0–11 sn
+    motif = [74, 77, 81, 80, 76, 77, 74, None, 74, 77, 81, 84, 83, 80, 81, None,
+             72, 76, 79, 80, 77, 76, 74, None, 81, 80, 77, 74, 73, 74, None, None]
+    t0 = 0.15; k = 0
+    while t0 < 10.9:
+        m = motif[k % len(motif)]
+        if m is not None:
+            musicbox(m + (12 if (k // len(motif)) % 2 and k % 4 == 0 else 0), t0, 0.16)
+        tick(t0, 0.03 if k % 2 else 0.05)
+        t0 += E8; k += 1
+    bass = [50, 45, 46, 45]
+    t0 = 0.15; k = 0
+    while t0 < 10.9:
+        pizz(bass[(k // 2) % 4] - (12 if k % 2 else 0), t0, 0.26)
+        t0 += BEAT; k += 1
+    pad([50, 57], 0.0, 11.4, 0.05, 3.0, 0.8)
+    # 2) gerilim: seyrek notalar, uyumsuz ses dokusu, kalp atışı — 11–20 sn
+    pad([50, 57, 63], 11.0, 20.6, 0.10, 3.5, 0.6)
+    pad([38, 39], 13.0, 20.6, 0.07, 4.0, 0.6)
+    sparse = [86, None, 85, None, 81, None, None, 80, None, 86, None, 89, None, None, 88, None]
+    t0 = 11.2; k = 0
+    while t0 < 20.0:
+        m = sparse[k % len(sparse)]
+        if m is not None:
+            musicbox(m, t0, 0.11, 2.4)
+        t0 += BEAT; k += 1
+    t0 = 13.0
+    while t0 < 20.2:
+        pulse(t0, 0.26 + 0.1 * (t0 - 13) / 7); t0 += 0.85
+    # 3) vuruşlar: müzik geri çekilir, ince titreyen gerilim tonu yükselir — 20–25 sn
+    pad([50, 51, 57], 20.0, 25.25, 0.06, 0.5, 0.05)
+    shiver(20.2, 25.25, 86, 0.06)
+    # 4) 25 sn: müzik aniden kesilir (sessizlik ve çan için)
+    cut = int(25.25 * SR); mus[cut:] = 0; mwet[cut:] = 0
+
+    # efektlerin üstüne binmemesi için müziği kısa süre kıs (sidechain)
+    duck = np.ones(N)
+    for tt0, depth, d in ([(LAND[k] + 0.15, 0.5, 0.25) for k in range(3)]
+                          + [(6 + p, 0.5, 0.35) for p in PUSHES] + [(10.3, 0.4, 0.3)]
+                          + [(20 + p, 0.25, 0.6) for p in TAPS]):
+        i = int(tt0 * SR); n = int(d * SR)
+        curve = depth + (1 - depth) * np.linspace(0, 1, n) ** 2
+        duck[i:i + n] = np.minimum(duck[i:i + n], curve[:max(0, min(n, N - i))])
+    mus *= duck; mwet *= duck
+    MUSIC_GAIN = 0.55
+    dry += mus * MUSIC_GAIN
+    wet += mwet * MUSIC_GAIN
 
     # basit yankı: üstel sönen gürültü darbe tepkisi (FFT ile evrişim)
     irn = int(1.4 * SR); tt = np.arange(irn) / SR
