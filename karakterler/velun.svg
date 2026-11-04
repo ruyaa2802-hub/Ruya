@@ -32,6 +32,7 @@
     </clipPath>
     <clipPath id="eyeL"><ellipse cx="370" cy="322" rx="70" ry="88"/></clipPath>
     <clipPath id="eyeR"><ellipse cx="530" cy="322" rx="70" ry="88"/></clipPath>
+    <clipPath id="hornClip"><path d="M422 86 C424 0 440 -100 476 -192 C470 -100 474 0 480 86 Z"/></clipPath>
   </defs>
 
   <!-- arka plan -->
@@ -42,7 +43,7 @@
   <circle cx="140" cy="170" r="46" fill="#e9d6a8" stroke="#3a2a22" stroke-width="2"/>
   <circle cx="190" cy="120" r="18" fill="#e9d6a8" stroke="#3a2a22" stroke-width="2"/>
 
-  <g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round">
+  <g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round" transform="translate(63 190) scale(0.86)">
 
     <!-- CÜBBE / GÖVDE -->
     <path d="M300 690 C250 760 210 900 170 1200 L730 1200 C690 900 650 760 600 690 Z" fill="#6f8f86" stroke-width="3"/>
@@ -101,7 +102,57 @@
     <g clip-path="url(#headClip)">
       <path d="M540 60 C625 160 640 380 540 560 L700 560 L700 60 Z" fill="url(#cross)" stroke="none"/><path d="M540 60 C625 160 640 380 540 560 L700 560 L700 60 Z" fill="#3b2550" opacity="0.18" stroke="none"/>
       <!-- alın kırışıkları -->
-      <path d="M360 150 C400 135 500 135 540 150 M375 180 C410 168 490 168 525 180" fill="none" stroke-width="1.8"/>
+      <path d="M360 182 C400 167 500 167 540 182 M375 208 C410 196 490 196 525 208" fill="none" stroke-width="1.8"/>
+    </g>
+
+    <!-- SÜSLÜ TEK BOYNUZ (Velunlara özel) -->
+    <g id="boynuz" transform="translate(0 22)">
+      <path d="M422 86 C424 0 440 -100 476 -192 C470 -100 474 0 480 86 Z" fill="#efe4cc" stroke-width="3"/>
+      <g clip-path="url(#hornClip)">
+        <!-- sarmal altın bantlar -->
+        <g fill="none" stroke="#d6a52a" stroke-width="7">
+          <path d="M390 70 L520 40"/><path d="M390 30 L520 0"/><path d="M390 -10 L520 -40"/>
+          <path d="M390 -50 L520 -80"/><path d="M390 -90 L520 -120"/><path d="M390 -130 L520 -160"/>
+        </g>
+        <g fill="none" stroke="#2b1e18" stroke-width="1.4">
+          <path d="M390 66 L520 36"/><path d="M390 74 L520 44"/><path d="M390 26 L520 -4"/><path d="M390 34 L520 4"/>
+          <path d="M390 -14 L520 -44"/><path d="M390 -6 L520 -36"/><path d="M390 -54 L520 -84"/><path d="M390 -46 L520 -76"/>
+          <path d="M390 -94 L520 -124"/><path d="M390 -86 L520 -116"/><path d="M390 -134 L520 -164"/><path d="M390 -126 L520 -156"/>
+        </g>
+        <!-- bantlar arası oyma noktalar -->
+        <g fill="#2b1e18" stroke="none">
+          <circle cx="440" cy="52" r="2"/><circle cx="458" cy="47" r="2"/>
+          <circle cx="446" cy="12" r="2"/><circle cx="462" cy="8" r="2"/>
+          <circle cx="451" cy="-28" r="2"/><circle cx="465" cy="-31" r="2"/>
+          <circle cx="458" cy="-68" r="2"/><circle cx="468" cy="-71" r="2"/>
+          <circle cx="465" cy="-108" r="1.8"/><circle cx="471" cy="-146" r="1.6"/>
+        </g>
+        <!-- sağ taraf gölge taraması -->
+        <path d="M462 90 C460 0 466 -100 480 -200 L540 -200 L540 90 Z" fill="url(#hatch)" stroke="none"/>
+      </g>
+      <path d="M422 86 C424 0 440 -100 476 -192 C470 -100 474 0 480 86 Z" fill="none" stroke-width="3"/>
+
+      <!-- tepe süsü -->
+      <circle cx="476" cy="-196" r="8" fill="#f2c230" stroke-width="2.5"/>
+      <circle cx="473" cy="-199" r="2.2" fill="#fff8e0" stroke="none"/>
+
+      <!-- orta halka ve sarkan boncuk zincirleri -->
+      <ellipse cx="458" cy="-30" rx="19" ry="6" fill="#d6a52a" stroke-width="2.2"/>
+      <path d="M441 -28 C428 -5 422 20 420 46" fill="none" stroke="#b8861a" stroke-width="1.8" stroke-dasharray="2 4"/>
+      <path d="M476 -28 C490 -5 498 22 500 50" fill="none" stroke="#b8861a" stroke-width="1.8" stroke-dasharray="2 4"/>
+      <circle cx="420" cy="52" r="6" fill="#f2c230" stroke-width="2"/>
+      <circle cx="500" cy="56" r="6" fill="#f2c230" stroke-width="2"/>
+      <path d="M420 58 l-4 12 l4 6 l4 -6 Z" fill="#7b5895" stroke-width="1.6"/>
+      <path d="M500 62 l-4 12 l4 6 l4 -6 Z" fill="#7b5895" stroke-width="1.6"/>
+
+      <!-- taban tacı ve göz rengiyle aynı taş -->
+      <path d="M408 96 C424 68 478 68 494 96 C476 108 426 108 408 96 Z" fill="#d6a52a" stroke-width="2.8"/>
+      <path d="M414 92 C430 76 472 76 488 92" fill="none" stroke-width="1.4"/>
+      <g fill="#2b1e18" stroke="none">
+        <circle cx="420" cy="95" r="2"/><circle cx="432" cy="99" r="2"/><circle cx="470" cy="99" r="2"/><circle cx="482" cy="95" r="2"/>
+      </g>
+      <ellipse cx="451" cy="96" rx="10" ry="8" fill="#f2c230" stroke-width="2.4"/>
+      <circle cx="448" cy="93" r="2.4" fill="#fff8e0" stroke="none"/>
     </g>
     <!-- minik yelpaze kulaklar yerine: iki sarkık ince et ipliği -->
     <path d="M280 360 C250 380 240 430 252 470" fill="none" stroke-width="3"/>
@@ -142,8 +193,8 @@
     <path d="M436 494 C446 497 454 497 464 494" fill="none" stroke-width="1.4" opacity="0.6"/>
 
     <!-- alında üçüncü, kapalı göz (absürt detay) -->
-    <path d="M432 112 C442 104 458 104 468 112 C458 118 442 118 432 112 Z" fill="#7b5895" stroke-width="2"/>
-    <path d="M432 112 C442 118 458 118 468 112" fill="none" stroke-width="2"/>
+    <path d="M432 150 C442 142 458 142 468 150 C458 156 442 156 432 150 Z" fill="#7b5895" stroke-width="2"/>
+    <path d="M432 150 C442 156 458 156 468 150" fill="none" stroke-width="2"/>
   </g>
 
   <!-- kâğıt dokusu katmanı -->
