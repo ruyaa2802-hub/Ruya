@@ -33,6 +33,7 @@
     <clipPath id="eyeL"><ellipse cx="370" cy="322" rx="70" ry="88"/></clipPath>
     <clipPath id="eyeR"><ellipse cx="530" cy="322" rx="70" ry="88"/></clipPath>
     <clipPath id="hornClip"><path d="M422 86 C424 0 440 -100 476 -192 C470 -100 474 0 480 86 Z"/></clipPath>
+    <filter id="smoke" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>
   </defs>
 
   <!-- arka plan -->
@@ -168,6 +169,11 @@
     <circle cx="252" cy="474" r="6" fill="#8e6aa8" stroke-width="2"/>
     <circle cx="648" cy="474" r="6" fill="#8e6aa8" stroke-width="2"/>
 
+    <!-- gözlerin etrafında buğulu siyah halka -->
+    <g clip-path="url(#headClip)" filter="url(#smoke)" stroke="none">
+      <ellipse cx="370" cy="326" rx="90" ry="108" fill="#140c18" opacity="0.85"/>
+      <ellipse cx="530" cy="326" rx="90" ry="108" fill="#140c18" opacity="0.85"/>
+    </g>
     <!-- KOCAMAN SARI GÖZLER -->
     <ellipse cx="370" cy="322" rx="70" ry="88" fill="url(#eyeglow)" stroke-width="3.5"/>
     <ellipse cx="530" cy="322" rx="70" ry="88" fill="url(#eyeglow)" stroke-width="3.5"/>
