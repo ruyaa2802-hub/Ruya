@@ -53,14 +53,14 @@
     <path d="M540 760 C565 900 590 1050 610 1200" fill="none" stroke-width="2"/>
 
     <!-- SOL KOL (aşağıda, gövdeye yapışık, absürt uzun) -->
-    <path d="M305 700 C250 760 230 860 238 980 C240 1010 262 1012 266 985 C270 880 285 790 330 720 Z" fill="#d08a6a" stroke-width="3"/>
+    <path d="M305 700 C250 760 230 860 238 980 C240 1010 262 1012 266 985 C270 880 285 790 330 720 Z" fill="#8e6aa8" stroke-width="3"/>
     <path d="M238 980 l-14 70 M248 990 l-4 78 M258 990 l8 74 M266 985 l20 62" fill="none" stroke-width="3"/>
 
     <!-- SAĞ KOL (kalkık, avucunda Ilo) -->
-    <path d="M595 700 C680 690 740 640 760 560 C768 530 745 520 735 548 C712 615 660 650 585 668 Z" fill="#d08a6a" stroke-width="3"/>
+    <path d="M595 700 C680 690 740 640 760 560 C768 530 745 520 735 548 C712 615 660 650 585 668 Z" fill="#8e6aa8" stroke-width="3"/>
     <path d="M700 640 C730 600 745 570 750 555" fill="none" stroke="url(#hatch)" stroke-width="14" opacity="0.8"/>
     <!-- avuç -->
-    <path d="M700 545 C700 510 790 505 800 540 C805 565 760 580 735 575 C715 572 700 565 700 545 Z" fill="#d08a6a" stroke-width="3"/>
+    <path d="M700 545 C700 510 790 505 800 540 C805 565 760 580 735 575 C715 572 700 565 700 545 Z" fill="#8e6aa8" stroke-width="3"/>
     <!-- altı uzun parmak -->
     <path d="M708 540 C690 500 688 470 694 440" fill="none" stroke-width="7"/>
     <path d="M725 530 C716 480 716 440 724 405" fill="none" stroke-width="7"/>
@@ -68,12 +68,12 @@
     <path d="M766 528 C778 485 792 452 808 425" fill="none" stroke-width="7"/>
     <path d="M786 535 C808 505 828 485 848 472" fill="none" stroke-width="7"/>
     <path d="M798 552 C826 548 850 548 872 556" fill="none" stroke-width="7"/>
-    <path d="M708 540 C690 500 688 470 694 440" fill="none" stroke="#d08a6a" stroke-width="3"/>
-    <path d="M725 530 C716 480 716 440 724 405" fill="none" stroke="#d08a6a" stroke-width="3"/>
-    <path d="M745 526 C746 476 752 436 764 400" fill="none" stroke="#d08a6a" stroke-width="3"/>
-    <path d="M766 528 C778 485 792 452 808 425" fill="none" stroke="#d08a6a" stroke-width="3"/>
-    <path d="M786 535 C808 505 828 485 848 472" fill="none" stroke="#d08a6a" stroke-width="3"/>
-    <path d="M798 552 C826 548 850 548 872 556" fill="none" stroke="#d08a6a" stroke-width="3"/>
+    <path d="M708 540 C690 500 688 470 694 440" fill="none" stroke="#8e6aa8" stroke-width="3"/>
+    <path d="M725 530 C716 480 716 440 724 405" fill="none" stroke="#8e6aa8" stroke-width="3"/>
+    <path d="M745 526 C746 476 752 436 764 400" fill="none" stroke="#8e6aa8" stroke-width="3"/>
+    <path d="M766 528 C778 485 792 452 808 425" fill="none" stroke="#8e6aa8" stroke-width="3"/>
+    <path d="M786 535 C808 505 828 485 848 472" fill="none" stroke="#8e6aa8" stroke-width="3"/>
+    <path d="M798 552 C826 548 850 548 872 556" fill="none" stroke="#8e6aa8" stroke-width="3"/>
 
     <!-- avuçtaki minik Ilo -->
     <g transform="translate(752 498)" stroke-width="1.5">
@@ -84,7 +84,7 @@
     </g>
 
     <!-- UZUN İNCE BOYUN -->
-    <path d="M415 530 C418 600 412 660 405 700 L495 700 C488 660 482 600 485 530 Z" fill="#d08a6a" stroke-width="3"/>
+    <path d="M415 530 C418 600 412 660 405 700 L495 700 C488 660 482 600 485 530 Z" fill="#8e6aa8" stroke-width="3"/>
     <path d="M460 535 C462 600 470 660 478 700 L495 700 C488 660 482 600 485 530 Z" fill="url(#hatch)" stroke="none"/>
     <!-- boyun halkaları -->
     <path d="M418 575 C440 585 462 585 484 575 M416 615 C440 626 462 626 486 615 M412 655 C440 667 462 667 489 655" fill="none" stroke-width="1.8"/>
@@ -96,18 +96,18 @@
     </g>
 
     <!-- KAFA: dev, yumurta biçimli, kel -->
-    <path d="M450 70 C600 70 640 210 625 330 C612 450 560 540 450 548 C340 540 288 450 275 330 C260 210 300 70 450 70 Z" fill="#d89574" stroke-width="3.5"/>
+    <path d="M450 70 C600 70 640 210 625 330 C612 450 560 540 450 548 C340 540 288 450 275 330 C260 210 300 70 450 70 Z" fill="#9a78b4" stroke-width="3.5"/>
     <!-- kafa gölgesi (sağ taraf tarama) -->
     <g clip-path="url(#headClip)">
-      <path d="M540 60 C625 160 640 380 540 560 L700 560 L700 60 Z" fill="url(#cross)" stroke="none"/><path d="M540 60 C625 160 640 380 540 560 L700 560 L700 60 Z" fill="#7a4a35" opacity="0.18" stroke="none"/>
+      <path d="M540 60 C625 160 640 380 540 560 L700 560 L700 60 Z" fill="url(#cross)" stroke="none"/><path d="M540 60 C625 160 640 380 540 560 L700 560 L700 60 Z" fill="#3b2550" opacity="0.18" stroke="none"/>
       <!-- alın kırışıkları -->
       <path d="M360 150 C400 135 500 135 540 150 M375 180 C410 168 490 168 525 180" fill="none" stroke-width="1.8"/>
     </g>
     <!-- minik yelpaze kulaklar yerine: iki sarkık ince et ipliği -->
     <path d="M280 360 C250 380 240 430 252 470" fill="none" stroke-width="3"/>
     <path d="M620 360 C650 380 660 430 648 470" fill="none" stroke-width="3"/>
-    <circle cx="252" cy="474" r="6" fill="#d08a6a" stroke-width="2"/>
-    <circle cx="648" cy="474" r="6" fill="#d08a6a" stroke-width="2"/>
+    <circle cx="252" cy="474" r="6" fill="#8e6aa8" stroke-width="2"/>
+    <circle cx="648" cy="474" r="6" fill="#8e6aa8" stroke-width="2"/>
 
     <!-- KOCAMAN SARI GÖZLER -->
     <ellipse cx="370" cy="322" rx="70" ry="88" fill="url(#eyeglow)" stroke-width="3.5"/>
@@ -124,11 +124,11 @@
     <circle cx="556" cy="351" r="2.6" fill="#fff8e0" stroke="none"/>
     <!-- ağır üst göz kapakları (uykulu, kayıtsız bakış) -->
     <g clip-path="url(#eyeL)">
-      <path d="M290 220 L470 220 L470 282 C410 268 330 268 290 298 Z" fill="#c9805f" stroke-width="3"/>
+      <path d="M290 220 L470 220 L470 282 C410 268 330 268 290 298 Z" fill="#7b5895" stroke-width="3"/>
       <path d="M290 220 L470 220 L470 282 C410 268 330 268 290 298 Z" fill="url(#hatch)" stroke="none"/>
     </g>
     <g clip-path="url(#eyeR)">
-      <path d="M450 220 L610 220 L610 290 C570 268 490 268 450 292 Z" fill="#c9805f" stroke-width="3"/>
+      <path d="M450 220 L610 220 L610 290 C570 268 490 268 450 292 Z" fill="#7b5895" stroke-width="3"/>
       <path d="M450 220 L610 220 L610 290 C570 268 490 268 450 292 Z" fill="url(#hatch)" stroke="none"/>
     </g>
     <path d="M298 296 C330 270 410 268 440 290" fill="none" stroke-width="3"/>
@@ -142,7 +142,7 @@
     <path d="M436 494 C446 497 454 497 464 494" fill="none" stroke-width="1.4" opacity="0.6"/>
 
     <!-- alında üçüncü, kapalı göz (absürt detay) -->
-    <path d="M432 112 C442 104 458 104 468 112 C458 118 442 118 432 112 Z" fill="#c9805f" stroke-width="2"/>
+    <path d="M432 112 C442 104 458 104 468 112 C458 118 442 118 432 112 Z" fill="#7b5895" stroke-width="2"/>
     <path d="M432 112 C442 118 458 118 468 112" fill="none" stroke-width="2"/>
   </g>
 
