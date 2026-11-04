@@ -3,35 +3,35 @@
   "word": "Aşkım…",
   "start": 0.0,
   "end": 0.52,
-  "p": 0.924,
-  "asr": "Aşkım"
+  "p": 0.914,
+  "asr": "Aşkım,"
  },
  {
   "word": "seni",
-  "start": 0.52,
-  "end": 0.76,
-  "p": 0.96,
+  "start": 0.74,
+  "end": 0.98,
+  "p": 0.939,
   "asr": "seni"
  },
  {
   "word": "çok",
-  "start": 0.76,
-  "end": 1.04,
-  "p": 0.989,
+  "start": 0.98,
+  "end": 1.18,
+  "p": 0.997,
   "asr": "çok"
  },
  {
   "word": "özledim",
-  "start": 1.04,
-  "end": 1.7,
-  "p": 0.955,
+  "start": 1.18,
+  "end": 1.6,
+  "p": 0.995,
   "asr": "özledim"
  },
  {
   "word": "ben…",
-  "start": 1.7,
-  "end": 1.86,
-  "p": 0.092,
-  "asr": "bak"
+  "start": 1.6,
+  "end": 1.72,
+  "p": 0.954,
+  "asr": "ben."
  }
 ]

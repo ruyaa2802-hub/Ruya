@@ -2,22 +2,22 @@
  {
   "word": "Yeni",
   "start": 0.0,
-  "end": 0.26,
+  "end": 0.32,
   "p": 0.795,
   "asr": "Yeni"
  },
  {
   "word": "bölüm",
-  "start": 0.26,
-  "end": 0.54,
-  "p": 0.97,
+  "start": 0.32,
+  "end": 0.58,
+  "p": 0.952,
   "asr": "bölüm"
  },
  {
   "word": "başladı.",
-  "start": 0.54,
-  "end": 0.96,
-  "p": 0.987,
+  "start": 0.58,
+  "end": 1.04,
+  "p": 0.993,
   "asr": "başladı."
  }
 ]

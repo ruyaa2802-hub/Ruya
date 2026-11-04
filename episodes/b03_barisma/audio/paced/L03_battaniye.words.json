@@ -2,55 +2,71 @@
  {
   "word": "Geçen",
   "start": 0.0,
-  "end": 0.34,
-  "p": 0.787
+  "end": 0.44,
+  "p": 0.706,
+  "asr": "Geçen"
  },
  {
-  "word": "seferde",
-  "start": 0.34,
-  "end": 0.82,
-  "p": 0.92
+  "word": "sefer",
+  "start": 0.44,
+  "end": 0.74,
+  "p": 0.995,
+  "asr": "sefer"
+ },
+ {
+  "word": "de",
+  "start": 0.74,
+  "end": 0.84,
+  "p": 0.698,
+  "asr": "de"
  },
  {
   "word": "kesin",
-  "start": 0.82,
-  "end": 1.16,
-  "p": 0.934
+  "start": 0.84,
+  "end": 1.2,
+  "p": 0.984,
+  "asr": "kesin"
  },
  {
-  "word": "demiştin",
-  "start": 1.16,
-  "end": 1.58,
-  "p": 0.906
+  "word": "demiştin.",
+  "start": 1.2,
+  "end": 1.62,
+  "p": 0.958,
+  "asr": "demiştin,"
  },
  {
-  "word": "2",
-  "start": 1.58,
-  "end": 1.92,
-  "p": 0.23
+  "word": "İki",
+  "start": 1.82,
+  "end": 2.06,
+  "p": 0.861,
+  "asr": "iki"
  },
  {
   "word": "saat",
-  "start": 1.92,
-  "end": 2.22,
-  "p": 0.989
+  "start": 2.06,
+  "end": 2.34,
+  "p": 0.994,
+  "asr": "saat"
  },
  {
   "word": "sonra",
-  "start": 2.22,
-  "end": 2.56,
-  "p": 0.994
+  "start": 2.34,
+  "end": 2.68,
+  "p": 0.993,
+  "asr": "sonra"
  },
  {
   "word": "üstümde",
-  "start": 2.56,
-  "end": 3.08,
-  "p": 0.88
+  "start": 2.68,
+  "end": 3.1,
+  "p": 0.818,
+  "asr": "üstümde"
  },
  {
-  "word": "öpüşüyorlardı.",
-  "start": 3.08,
-  "end": 3.82,
-  "p": 0.97
+  "word": "öpüşüyorlardı!",
+  "start": 3.1,
+  "end": 3.88,
+  "p": 0.976,
+  "asr": "öpüşüyorlardı."
  }
 ]

@@ -2,64 +2,64 @@
  {
   "word": "Ben",
   "start": 0.0,
-  "end": 0.14,
-  "p": 0.538,
+  "end": 0.24,
+  "p": 0.795,
   "asr": "Ben"
  },
  {
   "word": "beklemiyorum.",
-  "start": 0.14,
-  "end": 0.7,
-  "p": 0.745,
+  "start": 0.24,
+  "end": 0.88,
+  "p": 0.965,
   "asr": "beklemiyorum."
  },
  {
   "word": "Her",
-  "start": 0.9,
-  "end": 1.08,
-  "p": 0.972,
+  "start": 1.24,
+  "end": 1.44,
+  "p": 0.966,
   "asr": "Her"
  },
  {
   "word": "barışmalarında",
-  "start": 1.08,
-  "end": 1.92,
-  "p": 0.95,
+  "start": 1.44,
+  "end": 2.2,
+  "p": 0.948,
   "asr": "barışmalarında"
  },
  {
   "word": "üstümde",
-  "start": 1.92,
-  "end": 2.66,
-  "p": 0.802,
+  "start": 2.2,
+  "end": 2.84,
+  "p": 0.794,
   "asr": "üstümde"
  },
  {
   "word": "sabaha",
-  "start": 2.66,
-  "end": 3.0,
-  "p": 0.944,
+  "start": 2.84,
+  "end": 3.28,
+  "p": 0.984,
   "asr": "sabaha"
  },
  {
   "word": "kadar",
-  "start": 3.0,
-  "end": 3.3,
-  "p": 0.847,
+  "start": 3.28,
+  "end": 3.56,
+  "p": 0.981,
   "asr": "kadar"
  },
  {
   "word": "dönüp",
-  "start": 3.3,
-  "end": 3.7,
-  "p": 0.768,
-  "asr": "dönük"
+  "start": 3.56,
+  "end": 3.92,
+  "p": 0.996,
+  "asr": "dönüp"
  },
  {
   "word": "duruyorlar!",
-  "start": 3.7,
-  "end": 4.16,
-  "p": 0.962,
+  "start": 3.92,
+  "end": 4.46,
+  "p": 0.989,
   "asr": "duruyorlar."
  }
 ]

@@ -3,28 +3,28 @@
   "word": "BİR",
   "start": 0.0,
   "end": 0.14,
-  "p": 0.773,
+  "p": 0.776,
   "asr": "Bir"
  },
  {
   "word": "DAHA",
   "start": 0.14,
-  "end": 0.38,
-  "p": 0.977,
+  "end": 0.4,
+  "p": 0.991,
   "asr": "daha"
  },
  {
   "word": "BENİ",
-  "start": 0.38,
+  "start": 0.4,
   "end": 0.58,
-  "p": 0.98,
+  "p": 0.731,
   "asr": "beni"
  },
  {
   "word": "ARAMA!",
   "start": 0.58,
-  "end": 0.9,
-  "p": 0.947,
+  "end": 0.98,
+  "p": 0.916,
   "asr": "arama."
  }
 ]

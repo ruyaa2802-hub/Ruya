@@ -73,11 +73,11 @@ def build(tl, ep):
     l03 = tl.say(B, l02.end + 0.2, A("L03_battaniye"), bob=0.7)
     l04 = tl.say(Y, l03.end + 0.25, A("L04_yastik"), bob=0.6)
     l05 = tl.say(B, l04.end + 0.25, A("L05_battaniye"), intensity=1.05, bob=0.9)
-    t_ring = l05.end + 1.9
+    t_ring = l05.end + 1.4
     t_grab, t_lift = t_ring + 1.5, t_ring + 1.75
     l06 = tl.offscreen("insan", t_lift + 0.55, A("L06_insan"))
     t_look = l06.end + 0.2                                   # they look at each other
-    l07 = tl.say(B, t_look + 2.3, A("L07_battaniye"), intensity=0.8, bob=0.3)
+    l07 = tl.say(B, t_look + 1.8, A("L07_battaniye"), intensity=0.8, bob=0.3)
     t_cam = l07.end + 0.1
     tl.duration = LENGTH
 
