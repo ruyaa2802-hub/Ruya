@@ -15,7 +15,11 @@ o('''<defs>
   <filter id="blur"><feGaussianBlur stdDeviation="14"/></filter>
   <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><line x1="0" y1="0" x2="0" y2="7" stroke="#3a2a22" stroke-width="1.1" opacity="0.5"/></pattern>
   <pattern id="dots" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="0.9" fill="#3a2a22" opacity="0.4"/></pattern>
-  <pattern id="pores" width="26" height="22" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="1.6" fill="#8a4a52" opacity="0.45"/><circle cx="19" cy="15" r="1.2" fill="#8a4a52" opacity="0.4"/></pattern>
+  <pattern id="pores" width="26" height="22" patternUnits="userSpaceOnUse"><circle cx="6" cy="6" r="1.6" fill="#2f6b62" opacity="0.4"/><circle cx="19" cy="15" r="1.2" fill="#2f6b62" opacity="0.35"/></pattern>
+  <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe3d8"/><stop offset="1" stop-color="#d9dca0"/></linearGradient>
+  <linearGradient id="g2" x1="0" y1="0" x2="0.3" y2="1"><stop offset="0" stop-color="#9fd1c4"/><stop offset="1" stop-color="#e3cf7e"/></linearGradient>
+  <linearGradient id="g3" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#86c2b4"/><stop offset="1" stop-color="#e6c66c"/></linearGradient>
+  <linearGradient id="g4" x1="0" y1="0" x2="0.5" y2="1"><stop offset="0" stop-color="#5f9f93"/><stop offset="1" stop-color="#caa64e"/></linearGradient>
   <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#f4d6cf"/><stop offset="0.55" stop-color="#efc0c2"/><stop offset="1" stop-color="#e6a9b3"/>
   </linearGradient>
@@ -312,23 +316,21 @@ o('''<g stroke="#3a2a22" stroke-width="2.5">
 
 # bulutlar, adalar, denizanaları, uçan balıklar
 o('<g filter="url(#wobble)">')
-for x,y,w in [(470,70,360),(820,300,250),(-80,560,320),(520,470,220)]:
+for x,y,w in [(470,70,360),(-80,560,320)]:
     o(f'<use href="#cloud" xlink:href="#cloud" x="{x}" y="{y}" width="{w}" height="{w*0.4:.0f}"/>')
 o('<use href="#island" xlink:href="#island" x="600" y="140" width="200" height="216"/>')
-o('<use href="#island" xlink:href="#island" x="410" y="300" width="130" height="140"/>')
-for x,y,w in [(930,520,90),(1000,690,56),(420,610,72),(150,450,52)]:
+for x,y,w in [(930,520,90),(420,610,72)]:
     o(f'<use href="#jelly" xlink:href="#jelly" x="{x}" y="{y}" width="{w}" height="{w*2.17:.0f}"/>')
 o('<use href="#airfish" xlink:href="#airfish" x="120" y="520" width="190" height="95"/>')
-o('<g transform="translate(1160 0) scale(-1 1)"><use href="#airfish" xlink:href="#airfish" x="560" y="430" width="130" height="65"/></g>')
 o('</g>')
 # uzak nefes alan tepeler
 o('<g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round">')
-o('<path d="M0 1060 C140 900 300 930 420 1010 C560 880 760 900 860 990 C960 930 1040 940 1080 960 L1080 1920 L0 1920 Z" fill="#d89dab" stroke-width="3"/>')
+o('<path d="M0 1060 C140 900 300 930 420 1010 C560 880 760 900 860 990 C960 930 1040 940 1080 960 L1080 1920 L0 1920 Z" fill="url(#g1)" stroke-width="3"/>')
 o('<path d="M120 1000 C180 980 240 990 300 1010 M560 950 C620 930 700 935 760 960" fill="none" stroke-width="1.8"/>')
 
 
 o('<g opacity="0.85">')
-for x,b,h in [(10,1030,230),(250,975,170),(470,985,150),(940,965,210),(1010,975,150)]:
+for x,b,h in [(10,1030,230),(940,965,210)]:
     w=h*0.44
     o(f'<use href="#mushtree" xlink:href="#mushtree" x="{x}" y="{b-h}" width="{w:.0f}" height="{h}"/>')
 o('</g>')
@@ -360,41 +362,39 @@ o('<path d="M0 1060 C200 1020 420 1090 640 1050 C820 1020 960 1070 1080 1040 L10
 o('<g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round">')
 
 # orta tepeler (deri gibi)
-o('<path d="M0 1190 C200 1090 380 1130 540 1180 C700 1110 900 1120 1080 1170 L1080 1920 L0 1920 Z" fill="#e2aab0" stroke-width="3"/>')
+o('<path d="M0 1190 C200 1090 380 1130 540 1180 C700 1110 900 1120 1080 1170 L1080 1920 L0 1920 Z" fill="url(#g2)" stroke-width="3"/>')
 o('<path d="M0 1190 C200 1090 380 1130 540 1180 C700 1110 900 1120 1080 1170 L1080 1920 L0 1920 Z" fill="url(#pores)" stroke="none"/>')
 o('<path d="M60 1180 C140 1150 240 1150 320 1170 M640 1160 C720 1140 820 1142 900 1160 M200 1240 C320 1220 440 1226 520 1250" fill="none" stroke-width="1.8"/>')
 
 
 o('<use href="#eyetree" xlink:href="#eyetree" x="90" y="720" width="290" height="472"/>')
 o('<use href="#lungtree" xlink:href="#lungtree" x="400" y="790" width="240" height="400"/>')
-o('<use href="#corktree" xlink:href="#corktree" x="930" y="770" width="150" height="400"/>')
-for i in range(16):
+for i in range(7):
     x=random.uniform(-20,1060); y=random.uniform(1175,1215); w=random.uniform(50,80)
-    c=random.choice(['#6f8f86','#9a6f9e','#c58aa8','#7a9a6a'])
+    c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
-for i in range(14):
+for i in range(5):
     x=random.uniform(0,1040); y=random.uniform(1240,1420); w=random.uniform(40,70)
-    c=random.choice(['#6f8f86','#9a6f9e','#c58aa8','#7a9a6a'])
+    c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
-o('<use href="#walkeye" xlink:href="#walkeye" x="610" y="1250" width="44" height="82"/>')
 # uzak fanus sırası
 for x,y,s in [(90,1150,0.3),(210,1140,0.3),(330,1150,0.32),(460,1172,0.34),(560,1150,0.36),(880,1150,0.3),(980,1166,0.32)]:
     w=200*s; h=270*s
     o(f'<use xlink:href="#jar" href="#jar" x="{x-w/2:.1f}" y="{y-h:.1f}" width="{w:.1f}" height="{h:.1f}"/>')
 # orta plan küre çimenler
-for x in [150,400,720,1010]:
+for x in [720]:
     o(f'<use href="#bulb" xlink:href="#bulb" x="{x}" y="1060" width="30" height="150"/>')
 o('<use href="#shellplant" xlink:href="#shellplant" x="740" y="1130" width="110" height="210"/>')
 
 # ön zemin
-o('<path d="M0 1460 C250 1380 500 1420 700 1470 C850 1430 980 1420 1080 1450 L1080 1920 L0 1920 Z" fill="#e9b5ae" stroke-width="3"/>')
+o('<path d="M0 1460 C250 1380 500 1420 700 1470 C850 1430 980 1420 1080 1450 L1080 1920 L0 1920 Z" fill="url(#g3)" stroke-width="3"/>')
 o('<path d="M0 1460 C250 1380 500 1420 700 1470 C850 1430 980 1420 1080 1450 L1080 1920 L0 1920 Z" fill="url(#pores)" stroke="none"/>')
 o('<path d="M80 1500 C200 1470 330 1474 420 1496 M560 1520 C680 1496 800 1500 900 1520 M220 1600 C380 1570 560 1580 700 1610" fill="none" stroke-width="2"/>')
 
 
-for i in range(18):
+for i in range(8):
     x=random.uniform(-20,1060); y=random.uniform(1470,1700); w=random.uniform(60,110)
-    c=random.choice(['#6f8f86','#9a6f9e','#c58aa8','#7a9a6a'])
+    c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 # ön plan fanusları
 for x,y,s in [(330,1500,0.85),(700,1560,1.0)]:
@@ -405,11 +405,11 @@ for x,y,s in [(330,1500,0.85),(700,1560,1.0)]:
 o('<use href="#handplant" xlink:href="#handplant" x="-30" y="1060" width="250" height="525"/>')
 o('<use href="#earplant" xlink:href="#earplant" x="870" y="1160" width="220" height="440"/>')
 o('<use href="#eyeflower" xlink:href="#eyeflower" x="470" y="1380" width="150" height="300"/>')
-for x in [420,836]:
+for x in [836]:
     o(f'<use href="#bulb" xlink:href="#bulb" x="{x}" y="1380" width="46" height="230"/>')
 
 # en ön kabarık deri tümseği
-o('<path d="M0 1740 C200 1660 460 1690 640 1740 C800 1700 960 1690 1080 1720 L1080 1920 L0 1920 Z" fill="#d6959e" stroke-width="3"/>')
+o('<path d="M0 1740 C200 1660 460 1690 640 1740 C800 1700 960 1690 1080 1720 L1080 1920 L0 1920 Z" fill="url(#g4)" stroke-width="3"/>')
 o('<path d="M0 1740 C200 1660 460 1690 640 1740 C800 1700 960 1690 1080 1720 L1080 1920 L0 1920 Z" fill="url(#hatch)" stroke="none" opacity="0.6"/>')
 o('<path d="M120 1760 C240 1730 380 1736 480 1760 M700 1770 C820 1746 940 1748 1040 1766" fill="none" stroke-width="2"/>')
 o('</g>')
@@ -418,24 +418,21 @@ o('</g>')
 o('<g filter="url(#wobble)">')
 o('<use href="#bigmush" xlink:href="#bigmush" x="-40" y="1600" width="260" height="282"/>')
 o('<use href="#fern" xlink:href="#fern" x="900" y="1560" width="110" height="275"/>')
-o('<use href="#fern" xlink:href="#fern" x="980" y="1620" width="80" height="200"/>')
 o('<use href="#caterpillar" xlink:href="#caterpillar" x="600" y="1700" width="200" height="64"/>')
 o('<use href="#walkeye" xlink:href="#walkeye" x="300" y="1640" width="60" height="112"/>')
-for i in range(16):
+for i in range(7):
     x=random.uniform(150,1060); y=random.uniform(1760,1920); w=random.uniform(80,140)
-    c=random.choice(['#6f8f86','#9a6f9e','#7a9a6a'])
+    c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 # uçan böcekler
 o('<use href="#moth" xlink:href="#moth" x="560" y="1220" width="120" height="90"/>')
-o('<use href="#moth" xlink:href="#moth" x="70" y="960" width="96" height="72"/>')
 o('<use href="#moth" xlink:href="#moth" x="860" y="1680" width="150" height="112"/>')
 o('<use href="#dragonfly" xlink:href="#dragonfly" x="380" y="1330" width="180" height="74"/>')
-o('<use href="#dragonfly" xlink:href="#dragonfly" x="120" y="1880" width="140" height="58" transform="rotate(-12 190 1900)"/>')
-for x,y,w in [(300,1240,46),(780,1360,40),(160,1500,52),(520,1700,44),(980,1500,38),(860,880,36),(240,1080,34),(640,640,30),(470,1560,40)]:
+for x,y,w in [(300,1240,46),(780,1360,40),(520,1700,44),(860,880,36)]:
     o(f'<use href="#fly" xlink:href="#fly" x="{x}" y="{y}" width="{w}" height="{w*0.75:.0f}"/>')
 o('</g>')
 # havada süzülen altın toz
-for _ in range(70):
+for _ in range(40):
     x=random.uniform(0,W); y=random.uniform(500,1750); r=random.uniform(1.2,3.6)
     o(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r:.1f}" fill="#e2b33a" opacity="{random.uniform(0.5,0.95):.2f}"/>')
 
