@@ -5,8 +5,8 @@ The phone lands on the bed. The pillow and the blanket gossip in whispers.
 Then the phone rings: "Aşkım…". New season.
 
 Same Yastık and Battaniye rigs and the same bedroom as B01. Free tools only:
-voices are the offline Piper TTS (Yastık "fahrettin" slightly lowered, Battaniye
-"fettah" pitched up, the owner "dfki"), music and sound effects are synthesised
+voices are offline and free: Yastık is Piper "fahrettin" slightly lowered; Battaniye
+and the owner are Chatterbox (tools/chatterbox_lines.py, refs in assets/voices); music and sfx are synthesised
 in ig/music.py and ig/sfx.py.
 
 Dialogue (audio/*.wav, paced into audio/paced/):
