@@ -236,7 +236,10 @@ def build(tl, ep):
     tl.sfx(t_throw, S("whoosh.wav"), -10)
     tl.sfx(t_land, S("poof.wav"), -6)
     tl.sfx(l01.end + 0.1, S("hangup.wav"), -2)
-    tl.sfx(2.95, S("music_playful.wav"), -14, dur=t_ring - 0.1 - 2.95, fade=0.15)
+    # background: an original carefree tune hummed softly ("mmm") over plucked chords (ig/music.py hum);
+    # it stops when the phone rings and comes back once the owner has melted
+    tl.sfx(2.95, S("music_hum.wav"), -18, dur=t_ring - 0.1 - 2.95, fade=0.25)
+    tl.sfx(t_look, S("music_hum.wav"), -19, dur=LENGTH - t_look, fade=0.6)
     tl.sfx(t_ring, S("ringtone.wav"), -4, dur=t_lift - t_ring + 0.05)
     tl.sfx(t_ring, S("buzz.wav"), -6, dur=t_grab - t_ring)
     tl.sfx(t_cam + 0.25, S("rimshot.wav"), -2)
