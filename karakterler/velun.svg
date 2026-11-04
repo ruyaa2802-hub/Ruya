@@ -43,15 +43,23 @@
   <circle cx="140" cy="170" r="46" fill="#e9d6a8" stroke="#3a2a22" stroke-width="2"/>
   <circle cx="190" cy="120" r="18" fill="#e9d6a8" stroke="#3a2a22" stroke-width="2"/>
 
-  <g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round" transform="translate(63 190) scale(0.86)">
+  <g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round" transform="translate(144 160) scale(0.68)">
 
-    <!-- CÜBBE / GÖVDE -->
-    <path d="M300 690 C250 760 210 900 170 1200 L730 1200 C690 900 650 760 600 690 Z" fill="#6f8f86" stroke-width="3"/>
-    <path d="M450 700 C470 850 520 1000 560 1200 L730 1200 C690 900 650 760 600 690 Z" fill="url(#hatch)" stroke="none"/>
-    <!-- cübbe kıvrımları -->
-    <path d="M360 760 C340 900 320 1050 300 1200" fill="none" stroke-width="2"/>
-    <path d="M450 740 C450 900 455 1050 460 1200" fill="none" stroke-width="2"/>
-    <path d="M540 760 C565 900 590 1050 610 1200" fill="none" stroke-width="2"/>
+    <!-- VÜCUDU SARAN DAR KIYAFET -->
+    <path d="M318 712 C326 780 352 880 384 950 C370 990 358 1030 362 1070 C370 1200 392 1340 402 1452 L436 1452 C440 1330 446 1200 450 1100 C454 1200 460 1330 464 1452 L498 1452 C508 1340 530 1200 538 1070 C542 1030 530 990 516 950 C548 880 574 780 582 712 Z" fill="#6f8f86" stroke-width="3"/>
+    <path d="M450 712 L582 712 C574 780 548 880 516 950 C530 990 542 1030 538 1070 C530 1200 508 1340 498 1452 L464 1452 C460 1330 454 1200 450 1100 Z" fill="url(#hatch)" stroke="none"/>
+    <!-- dikiş çizgileri vücut hatlarını takip ediyor -->
+    <path d="M336 770 C400 812 500 812 564 770" fill="none" stroke-width="1.8"/>
+    <path d="M450 745 L450 1095" fill="none" stroke-width="1.8"/>
+    <path d="M372 1020 C400 1035 500 1035 528 1020" fill="none" stroke-width="1.6"/>
+    <path d="M392 1250 C405 1260 425 1260 440 1250 M460 1250 C475 1260 495 1260 508 1250" fill="none" stroke-width="1.6"/>
+    <!-- altın kemer ve göz rengindeki taş -->
+    <path d="M380 942 C420 960 480 960 520 942 L524 966 C480 984 420 984 376 966 Z" fill="#d6a52a" stroke-width="2.5"/>
+    <ellipse cx="450" cy="964" rx="10" ry="8" fill="#f2c230" stroke-width="2.2"/>
+    <circle cx="447" cy="961" r="2.4" fill="#fff8e0" stroke="none"/>
+    <!-- uzun, sivri çıplak ayaklar -->
+    <path d="M402 1450 C392 1470 370 1482 346 1488 C380 1494 420 1492 438 1478 L436 1450 Z" fill="#8e6aa8" stroke-width="2.8"/>
+    <path d="M498 1450 C508 1470 530 1482 554 1488 C520 1494 480 1492 462 1478 L464 1450 Z" fill="#8e6aa8" stroke-width="2.8"/>
 
     <!-- SOL KOL (aşağıda, gövdeye yapışık, absürt uzun) -->
     <path d="M305 700 C250 760 230 860 238 980 C240 1010 262 1012 266 985 C270 880 285 790 330 720 Z" fill="#8e6aa8" stroke-width="3"/>
