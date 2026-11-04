@@ -316,12 +316,10 @@ o('''<g stroke="#3a2a22" stroke-width="2.5">
 
 # bulutlar, adalar, denizanaları, uçan balıklar
 o('<g filter="url(#wobble)">')
-for x,y,w in [(470,70,360),(-80,560,320)]:
+for x,y,w in [(470,70,360)]:
     o(f'<use href="#cloud" xlink:href="#cloud" x="{x}" y="{y}" width="{w}" height="{w*0.4:.0f}"/>')
-o('<use href="#island" xlink:href="#island" x="600" y="140" width="200" height="216"/>')
-for x,y,w in [(930,520,90),(420,610,72)]:
+for x,y,w in []:
     o(f'<use href="#jelly" xlink:href="#jelly" x="{x}" y="{y}" width="{w}" height="{w*2.17:.0f}"/>')
-o('<use href="#airfish" xlink:href="#airfish" x="120" y="520" width="190" height="95"/>')
 o('</g>')
 # uzak nefes alan tepeler
 o('<g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round">')
@@ -330,7 +328,7 @@ o('<path d="M120 1000 C180 980 240 990 300 1010 M560 950 C620 930 700 935 760 96
 
 
 o('<g opacity="0.85">')
-for x,b,h in [(10,1030,230),(940,965,210)]:
+for x,b,h in [(10,1030,230)]:
     w=h*0.44
     o(f'<use href="#mushtree" xlink:href="#mushtree" x="{x}" y="{b-h}" width="{w:.0f}" height="{h}"/>')
 o('</g>')
@@ -395,6 +393,7 @@ o('<path d="M80 1500 C200 1470 330 1474 420 1496 M560 1520 C680 1496 800 1500 90
 for i in range(8):
     x=random.uniform(-20,1060); y=random.uniform(1470,1700); w=random.uniform(60,110)
     c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
+    if 820 < x+w/2 < 960 and 1440 < y < 1580: continue
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 # ön plan fanusları
 for x,y,s in [(330,1500,0.85),(700,1560,1.0)]:
@@ -402,7 +401,6 @@ for x,y,s in [(330,1500,0.85),(700,1560,1.0)]:
     o(f'<use href="#jar" xlink:href="#jar" x="{x-w/2:.1f}" y="{y-h:.1f}" width="{w:.1f}" height="{h:.1f}"/>')
 
 # bitkiler
-o('<use href="#handplant" xlink:href="#handplant" x="-30" y="1060" width="250" height="525"/>')
 o('<use href="#earplant" xlink:href="#earplant" x="870" y="1160" width="220" height="440"/>')
 o('<use href="#eyeflower" xlink:href="#eyeflower" x="470" y="1380" width="150" height="300"/>')
 for x in [836]:
@@ -417,7 +415,6 @@ o('</g>')
 
 o('<g filter="url(#wobble)">')
 o('<use href="#bigmush" xlink:href="#bigmush" x="-40" y="1600" width="260" height="282"/>')
-o('<use href="#fern" xlink:href="#fern" x="900" y="1560" width="110" height="275"/>')
 o('<use href="#caterpillar" xlink:href="#caterpillar" x="600" y="1700" width="200" height="64"/>')
 o('<use href="#walkeye" xlink:href="#walkeye" x="300" y="1640" width="60" height="112"/>')
 for i in range(7):
@@ -426,7 +423,6 @@ for i in range(7):
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 # uçan böcekler
 o('<use href="#moth" xlink:href="#moth" x="560" y="1220" width="120" height="90"/>')
-o('<use href="#moth" xlink:href="#moth" x="860" y="1680" width="150" height="112"/>')
 o('<use href="#dragonfly" xlink:href="#dragonfly" x="380" y="1330" width="180" height="74"/>')
 for x,y,w in [(300,1240,46),(780,1360,40),(520,1700,44),(860,880,36)]:
     o(f'<use href="#fly" xlink:href="#fly" x="{x}" y="{y}" width="{w}" height="{w*0.75:.0f}"/>')

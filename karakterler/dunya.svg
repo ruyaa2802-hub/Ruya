@@ -308,18 +308,12 @@
 </g>
 <g filter="url(#wobble)">
 <use href="#cloud" xlink:href="#cloud" x="470" y="70" width="360" height="144"/>
-<use href="#cloud" xlink:href="#cloud" x="-80" y="560" width="320" height="128"/>
-<use href="#island" xlink:href="#island" x="600" y="140" width="200" height="216"/>
-<use href="#jelly" xlink:href="#jelly" x="930" y="520" width="90" height="195"/>
-<use href="#jelly" xlink:href="#jelly" x="420" y="610" width="72" height="156"/>
-<use href="#airfish" xlink:href="#airfish" x="120" y="520" width="190" height="95"/>
 </g>
 <g filter="url(#wobble)" stroke="#2b1e18" stroke-linejoin="round" stroke-linecap="round">
 <path d="M0 1060 C140 900 300 930 420 1010 C560 880 760 900 860 990 C960 930 1040 940 1080 960 L1080 1920 L0 1920 Z" fill="url(#g1)" stroke-width="3"/>
 <path d="M120 1000 C180 980 240 990 300 1010 M560 950 C620 930 700 935 760 960" fill="none" stroke-width="1.8"/>
 <g opacity="0.85">
 <use href="#mushtree" xlink:href="#mushtree" x="10" y="800" width="101" height="230"/>
-<use href="#mushtree" xlink:href="#mushtree" x="940" y="755" width="92" height="210"/>
 </g>
 <g opacity="0.82" stroke-width="3">
   <path d="M752 922 C760 980 776 1030 778 1062 C770 1090 764 1120 766 1300 L834 1300 C836 1120 830 1090 822 1062 C824 1030 840 980 848 922 Z" fill="#6f8f86"/>
@@ -381,12 +375,10 @@
 <use href="#tuft" xlink:href="#tuft" x="194" y="1561" width="77" height="64" style="color:#c9a24a"/>
 <use href="#tuft" xlink:href="#tuft" x="339" y="1610" width="98" height="81" style="color:#3f7f74"/>
 <use href="#tuft" xlink:href="#tuft" x="125" y="1582" width="61" height="50" style="color:#c9a24a"/>
-<use href="#tuft" xlink:href="#tuft" x="841" y="1438" width="88" height="73" style="color:#c9a24a"/>
 <use href="#tuft" xlink:href="#tuft" x="530" y="1615" width="98" height="82" style="color:#c9a24a"/>
 <use href="#tuft" xlink:href="#tuft" x="675" y="1430" width="81" height="67" style="color:#3f7f74"/>
 <use href="#jar" xlink:href="#jar" x="245.0" y="1270.5" width="170.0" height="229.5"/>
 <use href="#jar" xlink:href="#jar" x="600.0" y="1290.0" width="200.0" height="270.0"/>
-<use href="#handplant" xlink:href="#handplant" x="-30" y="1060" width="250" height="525"/>
 <use href="#earplant" xlink:href="#earplant" x="870" y="1160" width="220" height="440"/>
 <use href="#eyeflower" xlink:href="#eyeflower" x="470" y="1380" width="150" height="300"/>
 <use href="#bulb" xlink:href="#bulb" x="836" y="1380" width="46" height="230"/>
@@ -396,7 +388,6 @@
 </g>
 <g filter="url(#wobble)">
 <use href="#bigmush" xlink:href="#bigmush" x="-40" y="1600" width="260" height="282"/>
-<use href="#fern" xlink:href="#fern" x="900" y="1560" width="110" height="275"/>
 <use href="#caterpillar" xlink:href="#caterpillar" x="600" y="1700" width="200" height="64"/>
 <use href="#walkeye" xlink:href="#walkeye" x="300" y="1640" width="60" height="112"/>
 <use href="#tuft" xlink:href="#tuft" x="150" y="1783" width="138" height="115" style="color:#c58aa8"/>
@@ -407,7 +398,6 @@
 <use href="#tuft" xlink:href="#tuft" x="340" y="1795" width="81" height="67" style="color:#c9a24a"/>
 <use href="#tuft" xlink:href="#tuft" x="488" y="1718" width="138" height="114" style="color:#c9a24a"/>
 <use href="#moth" xlink:href="#moth" x="560" y="1220" width="120" height="90"/>
-<use href="#moth" xlink:href="#moth" x="860" y="1680" width="150" height="112"/>
 <use href="#dragonfly" xlink:href="#dragonfly" x="380" y="1330" width="180" height="74"/>
 <use href="#fly" xlink:href="#fly" x="300" y="1240" width="46" height="34"/>
 <use href="#fly" xlink:href="#fly" x="780" y="1360" width="40" height="30"/>
