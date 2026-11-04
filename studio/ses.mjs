@@ -32,7 +32,7 @@ export function sesYatagiUret(TL, dosya) {
     evrim: [87.31, 130.81, 220.0, 261.63],      // F major renkli, geniş
     sonuc: [110.0, 130.81, 164.81, 246.94],     // Am(add9) → huzurlu kapanış
   };
-  const padSeviye = 0.05;
+  const padSeviye = 0.05 * ((TL.ses && TL.ses.pad) ?? 1);
   for (let i = 0; i < N; i++) {
     const t = i / SR;
     let l = 0, rr = 0;
@@ -89,7 +89,7 @@ export function sesYatagiUret(TL, dosya) {
       const u = j / (d * SR);
       const zarf = Math.pow(Math.sin(Math.PI * Math.pow(u, 0.8)), 2);
       const fc = 250 + 4200 * Math.pow(Math.sin(Math.PI * u), 2);
-      const v = f(r() * 2 - 1, fc, 1.2).bp * zarf * 0.32;
+      const v = f(r() * 2 - 1, fc, 1.2).bp * zarf * 0.32 * ((TL.ses && TL.ses.whoosh) ?? 1);
       const pan = 0.5 + 0.45 * Math.cos(Math.PI * u);
       ekle(n0 + j, v * (1 - pan) * 1.6, v * pan * 1.6, 0.6);
     }
@@ -151,6 +151,68 @@ export function sesYatagiUret(TL, dosya) {
         const t = j / SR;
         const v = Math.sin(2 * Math.PI * (300 + 1500 * t) * t + 3 * Math.sin(2 * Math.PI * 37 * t)) * Math.exp(-t * 2.5) * clamp(t * 30) * 0.08 * sev;
         ekle(n0 + j, v, v * 0.7, 0.8);
+      }
+    }
+  }
+
+  // ---- 6c) Ortam sesleri (senaryo.ses.ortam): oda, yagmur, saat, kus ----
+  const araliK = (o) => {
+    const b0 = bolumZaman(o.bas) || B[0], b1 = bolumZaman(o.son) || B[B.length - 1];
+    return [b0.start + (o.basOfs || 0), b1.end + (o.sonOfs || 0)];
+  };
+  for (const o of (TL.ses && TL.ses.ortam) || []) {
+    const [a, z] = araliK(o), sev = o.seviye ?? 1, rr = rng(11 + a * 100 | 0);
+    const zarf = t => clamp((t - a) / 1.5) * clamp((z - t) / 1.5);
+    if (o.tip === 'oda') {
+      const f1 = svf(), f2 = svf();
+      for (let i = Math.floor(a * SR); i < Math.min(N, z * SR); i++) {
+        const t = i / SR, w = zarf(t);
+        const v = f1(rr() * 2 - 1, 180, 0.7).lo * 0.10 * w * sev, u = f2(rr() * 2 - 1, 140, 0.7).lo * 0.10 * w * sev;
+        ekle(i, v, u, 0);
+      }
+    } else if (o.tip === 'yagmur') {
+      const f1 = svf(), f2 = svf();
+      for (let i = Math.floor(a * SR); i < Math.min(N, z * SR); i++) {
+        const t = i / SR, w = zarf(t);
+        let v = f1(rr() * 2 - 1, 2400, 0.6).bp * 0.05, u = f2(rr() * 2 - 1, 2100, 0.6).bp * 0.05;
+        if (rr() < 0.0009) { const d = 0.02 + rr() * 0.04; v += d; u += d * rr(); } // cama damlalar
+        ekle(i, v * w * sev, u * w * sev, 0.1);
+      }
+    } else if (o.tip === 'saat') {
+      for (let t0 = a + 0.3; t0 < z; t0 += 1.0) {
+        const n0 = Math.floor(t0 * SR), tok = Math.round((t0 - a) % 2) === 0;
+        for (let j = 0; j < SR * 0.03; j++) {
+          const t = j / SR, v = Math.sin(2 * Math.PI * (tok ? 3200 : 2600) * t) * Math.exp(-t * 260) * 0.05 * sev * zarf(t0);
+          ekle(n0 + j, v * 0.6, v, 0.4);
+        }
+      }
+    } else if (o.tip === 'kus') {
+      for (let t0 = a + 0.8; t0 < z - 0.5; t0 += 0.9 + rr() * 1.6) {
+        const n0 = Math.floor(t0 * SR), f0 = 2600 + rr() * 1800, adet = 2 + Math.floor(rr() * 4), pan = rr();
+        for (let k = 0; k < adet; k++) for (let j = 0; j < SR * 0.09; j++) {
+          const t = j / SR, u = t / 0.09;
+          const v = Math.sin(2 * Math.PI * (f0 + 900 * Math.sin(Math.PI * u)) * t) * Math.sin(Math.PI * u) * 0.025 * sev * zarf(t0);
+          ekle(n0 + Math.floor(k * 0.12 * SR) + j, v * (1 - pan), v * pan, 0.6);
+        }
+      }
+    }
+  }
+
+  // ---- 6d) Yumuşak piyano (senaryo.ses.piyano): bölüm akorundan arpej ----
+  if (TL.ses && TL.ses.piyano) {
+    const pv = TL.ses.piyano === true ? 1 : TL.ses.piyano;
+    for (const b of B) {
+      const ozel = TL.ses.akorlar && TL.ses.akorlar[b.sahne];
+      const a = (ozel || [110, 130.81, 164.81, 196]).map(f => f * 2);
+      let k = 0;
+      for (let t0 = b.start + 0.4; t0 < b.end - 0.3; t0 += 1.35, k++) {
+        const f = a[[0, 2, 1, 3, 2, 1][k % 6]] * (k % 6 === 3 ? 2 : 1), n0 = Math.floor(t0 * SR);
+        const ses0 = (k % 6 === 0 ? 1 : 0.7) * 0.06 * pv;
+        for (let j = 0; j < SR * 3.5; j++) {
+          const t = j / SR, env = Math.exp(-t * 1.4) * clamp(t * 200);
+          const v = (Math.sin(2 * Math.PI * f * t) + 0.35 * Math.sin(2 * Math.PI * f * 2.002 * t) * Math.exp(-t * 2) + 0.12 * Math.sin(2 * Math.PI * f * 3.01 * t) * Math.exp(-t * 4)) * env * ses0;
+          ekle(n0 + j, v * 0.9, v, 0.9);
+        }
       }
     }
   }
