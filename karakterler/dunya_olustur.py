@@ -1,4 +1,9 @@
 import random
+SKIP=[(0,90,1170,1280),(380,480,1340,1430),(520,760,1170,1220),(860,940,1170,1220),(60,180,1300,1420),
+      (100,300,1540,1640),(530,650,1600,1700),(400,640,1760,1925)]
+def ok(x,w,y):
+    cx=x+w/2
+    return not any(a<cx<b and c<y<d for a,b,c,d in SKIP)
 random.seed(11)
 W,H=1080,1920
 out=[]
@@ -366,14 +371,15 @@ o('<path d="M60 1180 C140 1150 240 1150 320 1170 M640 1160 C720 1140 820 1142 90
 
 
 o('<use href="#eyetree" xlink:href="#eyetree" x="90" y="720" width="290" height="472"/>')
-o('<use href="#lungtree" xlink:href="#lungtree" x="400" y="790" width="240" height="400"/>')
 for i in range(7):
     x=random.uniform(-20,1060); y=random.uniform(1175,1215); w=random.uniform(50,80)
     c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
+    if not ok(x,w,y): continue
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 for i in range(5):
     x=random.uniform(0,1040); y=random.uniform(1240,1420); w=random.uniform(40,70)
     c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
+    if not ok(x,w,y): continue
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 # uzak fanus sırası
 for x,y,s in [(90,1150,0.3),(210,1140,0.3),(330,1150,0.32),(460,1172,0.34),(560,1150,0.36),(880,1150,0.3),(980,1166,0.32)]:
@@ -382,7 +388,6 @@ for x,y,s in [(90,1150,0.3),(210,1140,0.3),(330,1150,0.32),(460,1172,0.34),(560,
 # orta plan küre çimenler
 for x in [720]:
     o(f'<use href="#bulb" xlink:href="#bulb" x="{x}" y="1060" width="30" height="150"/>')
-o('<use href="#shellplant" xlink:href="#shellplant" x="740" y="1130" width="110" height="210"/>')
 
 # ön zemin
 o('<path d="M0 1460 C250 1380 500 1420 700 1470 C850 1430 980 1420 1080 1450 L1080 1920 L0 1920 Z" fill="url(#g3)" stroke-width="3"/>')
@@ -394,6 +399,7 @@ for i in range(8):
     x=random.uniform(-20,1060); y=random.uniform(1470,1700); w=random.uniform(60,110)
     c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
     if 820 < x+w/2 < 960 and 1440 < y < 1580: continue
+    if not ok(x,w,y): continue
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 # ön plan fanusları
 for x,y,s in [(330,1500,0.85),(700,1560,1.0)]:
@@ -402,7 +408,6 @@ for x,y,s in [(330,1500,0.85),(700,1560,1.0)]:
 
 # bitkiler
 o('<use href="#earplant" xlink:href="#earplant" x="870" y="1160" width="220" height="440"/>')
-o('<use href="#eyeflower" xlink:href="#eyeflower" x="470" y="1380" width="150" height="300"/>')
 for x in [836]:
     o(f'<use href="#bulb" xlink:href="#bulb" x="{x}" y="1380" width="46" height="230"/>')
 
@@ -420,11 +425,10 @@ o('<use href="#walkeye" xlink:href="#walkeye" x="300" y="1640" width="60" height
 for i in range(7):
     x=random.uniform(150,1060); y=random.uniform(1760,1920); w=random.uniform(80,140)
     c=random.choice(['#3f7f74','#c9a24a','#c58aa8'])
+    if not ok(x,w,y): continue
     o(f'<use href="#tuft" xlink:href="#tuft" x="{x:.0f}" y="{y-w*0.83:.0f}" width="{w:.0f}" height="{w*0.83:.0f}" style="color:{c}"/>')
 # uçan böcekler
-o('<use href="#moth" xlink:href="#moth" x="560" y="1220" width="120" height="90"/>')
-o('<use href="#dragonfly" xlink:href="#dragonfly" x="380" y="1330" width="180" height="74"/>')
-for x,y,w in [(300,1240,46),(780,1360,40),(520,1700,44),(860,880,36)]:
+for x,y,w in [(780,1360,40),(520,1700,44),(860,880,36)]:
     o(f'<use href="#fly" xlink:href="#fly" x="{x}" y="{y}" width="{w}" height="{w*0.75:.0f}"/>')
 o('</g>')
 # havada süzülen altın toz
