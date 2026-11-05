@@ -10,9 +10,9 @@
  "altyaziY": 1420,
  "ses": {
   "sting": false,
-  "whoosh": 0.7,
-  "pad": 0.9,
-  "piyano": 0.85,
+  "whoosh": 0.55,
+  "pad": 1.15,
+  "piyano": 1.35,
   "akorlar": {
    "kanca": [
     61.74,
@@ -89,7 +89,20 @@
     "oran": 1.1,
     "seviye": 1
    }
-  ]
+  ],
+  "yayli": {
+   "seviye": 1,
+   "bolumler": {
+    "kanca": 0.5,
+    "zihin": 0.9,
+    "koridor": 0.9,
+    "fark": 1.4,
+    "son": 1.7
+   }
+  },
+  "anlatim": "highpass=f=70,equalizer=f=200:t=q:w=1.2:g=2.5,equalizer=f=3500:t=q:w=1.5:g=-1.5,aecho=0.85:0.6:45|95:0.13|0.08",
+  "ducking": 4,
+  "release": 700
  },
  "acilis": 0,
  "bolumler": [

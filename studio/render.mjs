@@ -129,9 +129,9 @@ try {
     const cikis = path.join(CIKTI, 'final.mp4');
     const gecikme = Math.round(TL.giris * 1000);
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', sessiz, '-i', ses, '-i', yatak, '-filter_complex',
-      `[1:a]aresample=48000,aformat=channel_layouts=stereo,adelay=${gecikme}|${gecikme},apad,asplit=2[an][yan];` +
+      `[1:a]aresample=48000,aformat=channel_layouts=stereo,${(TL.ses && TL.ses.anlatim) ? TL.ses.anlatim + ',' : ''}adelay=${gecikme}|${gecikme},apad,asplit=2[an][yan];` +
       `[2:a]aresample=48000,aformat=channel_layouts=stereo[ya];` +
-      `[ya][yan]sidechaincompress=threshold=0.04:ratio=6:attack=20:release=450:makeup=1[yd];` +
+      `[ya][yan]sidechaincompress=threshold=0.04:ratio=${(TL.ses && TL.ses.ducking) || 6}:attack=20:release=${(TL.ses && TL.ses.release) || 450}:makeup=1[yd];` +
       `[an][yd]amix=inputs=2:normalize=0:duration=longest,loudnorm=I=-14:TP=-1.5:LRA=11[a]`,
       '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
       '-t', TL.toplam.toFixed(3), '-movflags', '+faststart', cikis]);

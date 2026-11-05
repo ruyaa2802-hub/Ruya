@@ -230,6 +230,36 @@ export function sesYatagiUret(TL, dosya) {
     }
   }
 
+  // ---- 6e) Yaylı çalgı katmanı (senaryo.ses.yayli): akordan yavaş kabaran sıcak doku ----
+  if (TL.ses && TL.ses.yayli) {
+    const Y = TL.ses.yayli, sev0 = Y.seviye ?? 1;
+    for (const b of B) {
+      const ozel = TL.ses.akorlar && TL.ses.akorlar[b.sahne];
+      if (!ozel) continue;
+      const bs = ((Y.bolumler || {})[b.sahne] ?? 1) * sev0;
+      if (bs <= 0) continue;
+      const a = Math.max(0, b.start - 0.8), z = Math.min(TL.toplam, b.end + 1.2);
+      const notalar = [ozel[1] * 2, ozel[2] * 2, ozel[3] * 2, ozel[0] * 4];
+      const lp = notalar.map(() => 0);
+      for (let i = Math.floor(a * SR); i < Math.min(N, z * SR); i++) {
+        const t = i / SR;
+        const env = clamp((t - a) / 2.2) * clamp((z - t) / 1.6) * (0.75 + 0.25 * Math.sin(2 * Math.PI * 0.11 * t));
+        if (env <= 0) continue;
+        let l = 0, rr = 0;
+        notalar.forEach((f, k) => {
+          const vib = 1 + 0.003 * Math.sin(2 * Math.PI * (5.1 + k * 0.3) * t + k);
+          let v = 0;
+          for (let h = 1; h <= 6; h++) v += Math.sin(2 * Math.PI * f * vib * h * t + h * k) / h;
+          const c = 0.06 + 0.05 * env;
+          lp[k] += c * (v - lp[k]);
+          const o = lp[k] * env * 0.018 * bs;
+          l += o * (k % 2 ? 0.7 : 1); rr += o * (k % 2 ? 1 : 0.7);
+        });
+        ekle(i, l, rr, 0.9);
+      }
+    }
+  }
+
   // ---- 7) Kapanış darbesi ----
   {
     const t0 = TL.konusmaSon + 0.15, n0 = Math.floor(t0 * SR);

@@ -9,26 +9,99 @@
   "altyaziY": 1420,
   "ses": {
     "sting": false,
-    "whoosh": 0.7,
-    "pad": 0.9,
-    "piyano": 0.85,
+    "whoosh": 0.55,
+    "pad": 1.15,
+    "piyano": 1.35,
     "akorlar": {
-      "kanca": [61.74, 92.5, 146.83, 185.0],
-      "zihin": [73.42, 110.0, 146.83, 220.0],
-      "koridor": [65.41, 98.0, 155.56, 196.0],
-      "fark": [87.31, 130.81, 174.61, 220.0],
-      "son": [98.0, 146.83, 196.0, 293.66]
+      "kanca": [
+        61.74,
+        92.5,
+        146.83,
+        185.0
+      ],
+      "zihin": [
+        73.42,
+        110.0,
+        146.83,
+        220.0
+      ],
+      "koridor": [
+        65.41,
+        98.0,
+        155.56,
+        196.0
+      ],
+      "fark": [
+        87.31,
+        130.81,
+        174.61,
+        220.0
+      ],
+      "son": [
+        98.0,
+        146.83,
+        196.0,
+        293.66
+      ]
     },
     "ortam": [
-      { "tip": "oda", "bas": "kanca", "son": "kanca", "seviye": 1 }
+      {
+        "tip": "oda",
+        "bas": "kanca",
+        "son": "kanca",
+        "seviye": 1
+      }
     ],
     "isaretler": [
-      { "tip": "titresim", "bolum": "kanca", "cumle": 0, "oran": -0.3, "seviye": 1 },
-      { "tip": "parilti", "bolum": "zihin", "cumle": 1, "oran": 0.05, "seviye": 0.8 },
-      { "tip": "parilti", "bolum": "fark", "cumle": 0, "oran": 0.25, "seviye": 0.9 },
-      { "tip": "nefes", "bolum": "fark", "cumle": 0, "oran": 0.75, "seviye": 0.8 },
-      { "tip": "parilti", "bolum": "son", "cumle": 0, "oran": 1.1, "seviye": 1 }
-    ]
+      {
+        "tip": "titresim",
+        "bolum": "kanca",
+        "cumle": 0,
+        "oran": -0.3,
+        "seviye": 1
+      },
+      {
+        "tip": "parilti",
+        "bolum": "zihin",
+        "cumle": 1,
+        "oran": 0.05,
+        "seviye": 0.8
+      },
+      {
+        "tip": "parilti",
+        "bolum": "fark",
+        "cumle": 0,
+        "oran": 0.25,
+        "seviye": 0.9
+      },
+      {
+        "tip": "nefes",
+        "bolum": "fark",
+        "cumle": 0,
+        "oran": 0.75,
+        "seviye": 0.8
+      },
+      {
+        "tip": "parilti",
+        "bolum": "son",
+        "cumle": 0,
+        "oran": 1.1,
+        "seviye": 1
+      }
+    ],
+    "yayli": {
+      "seviye": 1.0,
+      "bolumler": {
+        "kanca": 0.5,
+        "zihin": 0.9,
+        "koridor": 0.9,
+        "fark": 1.4,
+        "son": 1.7
+      }
+    },
+    "anlatim": "highpass=f=70,equalizer=f=200:t=q:w=1.2:g=2.5,equalizer=f=3500:t=q:w=1.5:g=-1.5,aecho=0.85:0.6:45|95:0.13|0.08",
+    "ducking": 4,
+    "release": 700
   },
   "bolumler": [
     {
