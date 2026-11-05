@@ -279,3 +279,30 @@ export function photoBack() {
   x.restore();
   return tex(c, true);
 }
+
+// Gece manzarasi: koyu lacivert gok, ay, karanlik bina siluetleri, seyrek yanan pencereler
+export function nightView(seedN = 404) {
+  const W = 512, H = 640; const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#05070d'); g.addColorStop(0.55, '#0e1626'); g.addColorStop(1, '#1a1f2a');
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  // ay + hale
+  const mg = x.createRadialGradient(360, 120, 8, 360, 120, 110); mg.addColorStop(0, 'rgba(210,220,255,0.55)'); mg.addColorStop(1, 'rgba(210,220,255,0)');
+  x.fillStyle = mg; x.fillRect(0, 0, W, H);
+  x.fillStyle = '#e6ebff'; x.beginPath(); x.arc(360, 120, 26, 0, 6.28); x.fill();
+  x.fillStyle = 'rgba(120,130,160,0.35)'; x.beginPath(); x.arc(352, 112, 6, 0, 6.28); x.fill(); x.beginPath(); x.arc(368, 128, 4, 0, 6.28); x.fill();
+  // bulut seritleri
+  x.fillStyle = 'rgba(20,28,45,0.7)'; x.fillRect(250, 135, 260, 10); x.fillRect(300, 98, 200, 6);
+  // binalar
+  setSeed(seedN); let bx = -10;
+  while (bx < W) {
+    const bw = 50 + rnd() * 90, bh = 180 + rnd() * 300, top = H - bh;
+    x.fillStyle = '#040508'; x.fillRect(bx, top, bw, bh);
+    for (let wy = top + 14; wy < H - 10; wy += 22) for (let wx = bx + 8; wx < bx + bw - 10; wx += 16)
+      if (rnd() < 0.06) { x.fillStyle = rnd() < 0.7 ? 'rgba(255,190,110,0.85)' : 'rgba(170,200,255,0.7)'; x.fillRect(wx, wy, 7, 10); }
+    bx += bw + 4 + rnd() * 10;
+  }
+  // uzaktan sokak lambasi turuncu isigi (alt kenar)
+  const sg = x.createRadialGradient(140, H, 10, 140, H, 220); sg.addColorStop(0, 'rgba(255,140,50,0.35)'); sg.addColorStop(1, 'rgba(255,140,50,0)');
+  x.fillStyle = sg; x.fillRect(0, 0, W, H);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}

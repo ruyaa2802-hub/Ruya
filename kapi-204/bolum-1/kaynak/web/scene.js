@@ -97,13 +97,13 @@ async function init() {
         vec2 d = vUv-0.5;
         vec3 c;
         c.r = texture2D(tex, vUv - d*ca).r; c.g = texture2D(tex, vUv).g; c.b = texture2D(tex, vUv + d*ca).b;
-        c += texture2D(bloom, vUv).rgb * 0.4;
+        c += texture2D(bloom, vUv).rgb * 0.12;
         c *= exposure;
         c = aces(c);
         // sinematik renk: golgelerde camgobegi, isiklarda sicak
         float l = dot(c, vec3(0.299,0.587,0.114));
         c = mix(vec3(l), c, 0.82);
-        c += vec3(-0.012, 0.006, 0.02) * (1.0 - smoothstep(0.0, 0.5, l));
+        c += vec3(-0.016, 0.002, 0.016) * (1.0 - smoothstep(0.0, 0.5, l));
         c *= mix(vec3(1.0), vec3(1.05, 0.99, 0.92), smoothstep(0.3, 0.9, l));
         c = pow(c, vec3(1.0/2.2));
         // kontrast egrisi
@@ -113,7 +113,7 @@ async function init() {
         c *= mix(1.0, v, 0.85*vig);
         // film greni
         float g = h(vUv*vec2(720.,1280.) + fract(time*17.31)*91.7) - 0.5;
-        c += g * 0.055 * (1.0 - l*0.5);
+        c += g * 0.014 * (1.0 - l*0.5);
         c = mix(c, vec3(1.0), flash);
         c *= fade;
         vec4 o = texture2D(ov, vUv);
@@ -267,7 +267,7 @@ function update(t) {
   man.root.visible = true; photo.group.visible = false; insertHands.group.visible = false;
   if (phone.group.parent) phone.group.parent.remove(phone.group);
   man.gaze(0, 0);
-  dust.material.opacity = 0.3;
+  dust.material.opacity = 0.3; dust.visible = false;
   flat.pkg.group.visible = true; flat.pkg.lid.position.set(0, 0.13, 0); flat.pkg.lid.rotation.set(0, 0, 0);
   flat.pkg.group.position.set(0, 0.76, 0.18); flat.pkg.group.rotation.set(0, 0.15, 0);
   flat.shadowM.uniforms.prog.value = 0; flat.shadowM.uniforms.time.value = t;
@@ -277,6 +277,7 @@ function update(t) {
   if (t < 5.6) {
     // ------------------------------------------- SAHNE 1-2: KORIDOR
     setVisible(true);
+    cor.figure.visible = t < 1.95;  // floresan titreyip sonunce kaybolur
     const f = fluoAt(t);
     cor.fluo.intensity = 26 * f; cor.tubeM.emissiveIntensity = 6 * f;
     scene.fog.color.set(0x0d1118); scene.fog.density = 0.07;
@@ -300,7 +301,9 @@ function update(t) {
     if (t < 3.0) {
       shotName = 'A';
       const k = ss(0.55, 3.0, t);
-      setCam([lerp(-0.55, -0.4, k), lerp(1.58, 1.32, k), lerp(3.7, 2.35, k)], [lerp(0.7, 0.72, k), lerp(0.75, 0.38, k), lerp(0.0, 0.05, k)], 56, 0.008, t);
+      // once koridorun ucundaki ay isikli pencere ve karalti, sonra yavasca kapiya/pakete donus
+      const look = key(t, [[0.55, [0.12, 1.42, -10.5]], [1.85, [0.12, 1.4, -10.5]], [2.95, [0.72, 0.42, 0.05]]]);
+      setCam([lerp(-0.5, -0.4, k), lerp(1.58, 1.34, k), lerp(3.7, 2.45, k)], look, 56, 0.008, t);
       exposure = t < 0.55 ? 0 : 1.1;
       dust.position.set(0.0, 0, 1.0);
     } else {
@@ -328,7 +331,7 @@ function update(t) {
   } else {
     // ------------------------------------------- DAIRE ICI
     setVisible(false);
-    scene.fog.color.set(0x07090d); scene.fog.density = 0.045;
+    scene.fog.color.set(0x080c14); scene.fog.density = 0.035;
     man.root.position.set(0, 0, -0.36); man.root.rotation.y = 0;
     seated();
     if (t >= 11.0) flat.pkg.lid.position.set(-0.33, 0.03, 0.05);
@@ -565,7 +568,7 @@ function renderAt(frame) {
   scene.updateMatrixWorld(true);
   renderer.setRenderTarget(sceneRT); renderer.render(scene, camera);
   // bloom
-  blurMat.uniforms.tex.value = sceneRT.texture; blurMat.uniforms.dir.value.set(1.5 / (W / 4), 0); blurMat.uniforms.thr.value = 1.6;
+  blurMat.uniforms.tex.value = sceneRT.texture; blurMat.uniforms.dir.value.set(1.5 / (W / 4), 0); blurMat.uniforms.thr.value = 4.0;
   quad.material = blurMat; renderer.setRenderTarget(bloomA); renderer.render(quadScene, quadCam);
   blurMat.uniforms.tex.value = bloomA.texture; blurMat.uniforms.dir.value.set(0, 1.5 / (H / 4)); blurMat.uniforms.thr.value = 0;
   renderer.setRenderTarget(bloomB); renderer.render(quadScene, quadCam);

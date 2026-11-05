@@ -156,7 +156,7 @@ export function flatProps(G) {
   m(C(0.012, 0.012, 1.55), M.darkMetal, G, -1.45, 0.8, -2.25);
   m(new THREE.CylinderGeometry(0.14, 0.2, 0.26, 20, 1, true), std({ color: 0x5c5040, roughness: 1, side: THREE.DoubleSide }), G, -1.45, 1.62, -2.25);
   m(new THREE.SphereGeometry(0.03, 10, 8), std({ color: 0x000000, emissive: 0xffb06a, emissiveIntensity: 6 }), G, -1.45, 1.58, -2.25, 0, false);
-  const fl = new THREE.PointLight(0xff9f5a, 1.4, 4.5, 2); fl.position.set(-1.45, 1.55, -2.2); fl.intensity = 1.8; G.add(fl);
+  const fl = new THREE.PointLight(0xff9f5a, 1.4, 4.5, 2); fl.position.set(-1.45, 1.55, -2.2); fl.intensity = 0.75; G.add(fl);
   // kanepe uzerinde battaniye
   const bl = m(B(0.7, 0.05, 0.6), M.fabricRed, G, -1.8, 0.45, 0.85, 0.2); bl.rotation.z = 0.08;
   // sol duvarda ek cerceveler

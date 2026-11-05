@@ -109,19 +109,26 @@ export function buildCorridor(shared) {
   box(G, 0.3, 0.12, 0.03, exitM, 0, 2.35, -10.8, false);
   const exitL = new THREE.PointLight(0x30ff80, 0.6, 3, 2); exitL.position.set(0, 2.25, -10.5); G.add(exitL);
   // koridor sonu pencere
-  const win = mesh(new THREE.PlaneGeometry(1.0, 1.3), std({ color: 0x000000, emissive: 0x2a3d66, emissiveIntensity: 1.2 }), G, 0, 1.5, -10.98, false);
+  const nv = TX.nightView(404); const win = mesh(new THREE.PlaneGeometry(1.0, 1.3), std({ color: 0x000000, emissive: 0xffffff, emissiveMap: nv, emissiveIntensity: 2.6 }), G, 0, 1.5, -10.98, false);
   const wf = std({ color: 0x1a1a1a, roughness: 0.7 });
   box(G, 1.05, 0.04, 0.05, wf, 0, 1.5, -10.96, false); box(G, 0.04, 1.35, 0.05, wf, 0, 1.5, -10.96, false);
   wall(G, wallT, 1.9, 0, 2.7, [0, -11], 0);
-  const moon = new THREE.SpotLight(0x6f8cff, 14, 16, 0.5, 1, 1.2);
+  const moon = new THREE.SpotLight(0x7d98ff, 30, 16, 0.5, 1, 1.1);
   moon.position.set(0, 1.8, -10.7); moon.target.position.set(0, 0, -3); G.add(moon, moon.target);
-  const amb = new THREE.HemisphereLight(0x223047, 0x0d0b09, 0.32); G.add(amb);
+  const amb = new THREE.HemisphereLight(0x2c3f66, 0x0a0b0f, 0.42); G.add(amb);
 
+  // karanlik siluet: koridorun ucunda, pencerenin onunde (yalnizca acilis cekiminde)
+  const figM = new THREE.MeshBasicMaterial({ color: 0x010102 });
+  const figure = new THREE.Group(); figure.position.set(0.22, 0, -10.05); G.add(figure);
+  const fb = mesh(new THREE.CapsuleGeometry(0.19, 0.95, 6, 12), figM, figure, 0, 0.95, 0, false, false); fb.scale.z = 0.55;
+  mesh(new THREE.SphereGeometry(0.11, 16, 12), figM, figure, 0, 1.78, 0, false, false);
+  for (const sx of [-1, 1]) { const a = mesh(new THREE.CapsuleGeometry(0.05, 0.62, 4, 8), figM, figure, 0.23 * sx, 1.08, 0, false, false); a.rotation.z = 0.05 * sx; }
+  for (const sx of [-1, 1]) mesh(new THREE.CapsuleGeometry(0.07, 0.6, 4, 8), figM, figure, 0.09 * sx, 0.35, 0, false, false);
   // ---- PAKET (koridor)
   const pkg = shared.makePackage(); pkg.group.position.set(0.66, 0.0, 0.05); pkg.group.rotation.y = 0.35; G.add(pkg.group);
 
   corridorProps(G);
-  return { G, door: pivot, fluo, tubeM, tube2, pkg, warm, warmFill, led };
+  return { G, figure, door: pivot, fluo, tubeM, tube2, pkg, warm, warmFill, led };
 }
 
 // ======================================================= DAIRE ICI
@@ -212,7 +219,7 @@ export function buildFlat(shared) {
   box(G, 0.03, 0.6, 0.8, std({ color: 0x15110d, roughness: 0.5 }), -2.38, 1.6, 0.3, false);
   box(G, 0.01, 0.5, 0.7, std({ color: 0x3a4038, roughness: 0.9 }), -2.36, 1.6, 0.3, false);
   // pencere + jaluzi (sag duvar x=2.4, z=0.1..0.8)
-  const winM = std({ color: 0x000000, emissive: 0x1b2a4a, emissiveIntensity: 1.2 });
+  const winM = std({ color: 0x000000, emissive: 0xffffff, emissiveMap: TX.nightView(505), emissiveIntensity: 1.6 });
   mesh(new THREE.PlaneGeometry(0.7, 1.3), winM, G, 2.42, 1.55, 0.45, false).rotation.y = -Math.PI / 2;
   const slatM = std({ color: 0x8d877a, roughness: 0.7 });
   for (let i = 0; i < 20; i++) { const s = box(G, 0.01, 0.035, 0.72, slatM, 2.37, 0.92 + i * 0.065, 0.45, true); s.rotation.z = 0.5; }
@@ -230,11 +237,15 @@ export function buildFlat(shared) {
   G.add(lampL, lampL.target);
   const lampFill = new THREE.PointLight(0xff9c55, 0.7, 4, 2); lampFill.position.set(0.4, 1.15, 0.0); G.add(lampFill);
   // ay isigi (jaluziden cizgili)
-  const moon = new THREE.SpotLight(0x8aa2ff, 34, 9, 0.42, 0.5, 1.2);
+  const moon = new THREE.SpotLight(0x8aa2ff, 60, 9, 0.42, 0.5, 1.1);
   moon.position.set(4.2, 2.8, 0.6); moon.target.position.set(0.2, 0.3, 0.2); moon.map = TX.blindsCookie(); moon.castShadow = true;
   moon.shadow.mapSize.set(1024, 1024); moon.shadow.bias = -0.0004; moon.shadow.normalBias = 0.02;
   G.add(moon, moon.target);
-  const amb = new THREE.HemisphereLight(0x1c2436, 0x0c0907, 0.3); G.add(amb);
+  const amb = new THREE.HemisphereLight(0x263759, 0x090a0d, 0.42); G.add(amb);
+  // ikinci ay isigi: jaluziden arka duvara ve koridor agzina cizgili soguk isik (gece hissi)
+  const moon2 = new THREE.SpotLight(0x8aa2ff, 45, 10, 0.5, 0.45, 1.1);
+  moon2.position.set(4.0, 2.5, 0.5); moon2.target.position.set(-1.1, 1.1, -2.6); moon2.map = TX.blindsCookie();
+  G.add(moon2, moon2.target);
 
   // golge (yatak odasi kapisinin altindan surunen) - shader decal
   const shadowM = new THREE.ShaderMaterial({

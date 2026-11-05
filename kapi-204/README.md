@@ -13,10 +13,10 @@ Instagram Reels / YouTube Shorts için izleyici seçimleriyle ilerleyen psikoloj
 | Zaman | Çekim | Ses |
 |---|---|---|
 | 0,00–0,55 | Siyah ekran | 0,30'da derin kapı zili (ding) |
-| 0,55–3,00 | Koridor: 204 numaralı kapı, paspasın üstünde siyah paket, ayakkabılık, ayakkabılar, şemsiye, sayaç panosu. Yazı: “SAAT 02.04. KAPININ ÖNÜNDE BİR PAKET VARDI…” | 0,88'de “dong”, uzun koridor yankısı, floresan uğultusu ve titreme çıtırtıları, düşük drone |
+| 0,55–3,00 | Gece, mavi ay ışığıyla koridor. Kamera önce koridorun ucundaki pencereye bakar: ay, uzak binalar ve **ayın önünde duran karanlık bir siluet**. Floresan titreyip sönünce siluet kaybolur; kamera 204 numaralı kapıya ve paspasın üstündeki siyah pakete döner. Yazı: “SAAT 02.04. KAPININ ÖNÜNDE BİR PAKET VARDI…” | 0,88'de “dong”, uzun koridor yankısı, floresan uğultusu ve titreme çıtırtıları, düşük drone |
 | 3,00–5,60 | Kapı içeri açılıyor, sıcak ışıkta adamın silueti; sola sağa bakıyor, koridor boş | Kilit sesi, kapı gıcırtısı, gerilim pedi giriyor |
 | 5,60–8,00 | Yerden alçak açı, paket ön planda, adamın yüzüne yaklaşma | |
-| 8,00–11,00 | Masa lambası ışığında (kupa, kitaplar, anahtarlar) paketi masaya koyar, kapağı kaldırır | Karton “tok” sesi, kapak sürtünmesi, müzik yükselir |
+| 8,00–11,00 | Masa lambası ışığında (kupa, kitaplar, anahtarlar) paketi masaya koyar, kapağı kaldırır; jaluziden düşen çizgili ay ışığı | Karton “tok” sesi, kapak sürtünmesi, müzik yükselir |
 | 11,00–12,20 | Üstten: kutunun içinde fotoğraf, el uzanıp alır | Kâğıt hışırtısı, ters yankı şişmesi |
 | 12,20–13,00 | Fotoğraf yakın plan: evin İÇİNDEN, karanlık koridordan salona flaşla çekilmiş; tarih damgası 01:58 | **Gerilim vuruşu** |
 | 13,00–15,00 | Yüz yakın plan, şaşkın bakış | |
@@ -44,6 +44,7 @@ Daha önce denenen seslendirme sürümleri (Piper TTS) kullanıcı isteğiyle vi
 
 ## Dürüst sınırlar
 
+* **Görüntü temizliği:** havada uçuşan toz parçacıkları, parlak hâle (bloom) ve yoğun film greni kullanıcı isteğiyle kaldırıldı; yalnızca çok ince bir gren kaldı.
 * **Görüntüler fotogerçekçi değil.** Ücretsiz bir yapay zekâ video üreticisi ya da GPU yok. Tüm görüntü gerçek zamanlı 3D render. Karakter stilize, mankene yakın bir figür.
 
 ## Yeniden üretme
