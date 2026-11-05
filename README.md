@@ -10,6 +10,7 @@ karakterler, Türkçe dudak senkronu, kamera kurgusu, ses miksajı ve 9:16 MP4 �
 | B02 — Soğudum (Kupa) | ~41 sn | `renders/b02_v1/b02_v1_final.mp4` |
 | K01 — Gece Yarısı Buzdolabı Toplantısı (mutfak) | ~51 sn | `renders/k01_v2/k01_v2_final.mp4` |
 | B03 — Yine mi Barıştılar? (Yastık, Battaniye; ücretsiz Piper + Chatterbox sesleri, özgün mırıltı müziği) | 30 sn | `renders/b03_v2/b03_v2_final.mp4` |
+| B04 — Yastığın Kaçışı (seri Bölüm 2: gece kaçışı, sisli sokak, gölgeler, izleyici oylaması) | 30 sn | `renders/b04_v1/b04_v1_final.mp4` |
 
 ## Kurulum
 
