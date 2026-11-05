@@ -512,12 +512,12 @@ function drawOverlay(t) {
   }
   // altyazilar
   const subs = [
-    [5.72, 7.95, 'Ben hiçbir şey sipariş etmedim…', 0],
-    [13.05, 14.98, 'Bu fotoğraf… benim evim.', 0],
+    [5.77, 7.97, 'Ben hiçbir şey sipariş etmedim ki…', 0],
+    [12.95, 14.96, 'Bu fotoğraf… benim evim.', 0],
     [20.3, 21.95, 'Paketi açmamalıydın…', 1],
-    [22.35, 23.85, 'Polisi mi aramalıyım…', 0],
-    [23.9, 25.85, '…yoksa o kapıyı mı açmalıyım?', 0],
-    [26.3, 27.7, 'Kararı siz verin…', 0],
+    [22.25, 23.95, 'Polisi mi… aramalıyım?', 0],
+    [24.05, 26.1, '…yoksa o kapıyı mı açmalıyım?', 0],
+    [26.35, 27.8, 'Kararı… siz verin.', 0],
   ];
   for (const [a, b, s, wsp] of subs) {
     if (t < a - 0.05 || t > b + 0.1) continue;

@@ -13,15 +13,15 @@ Instagram Reels / YouTube Shorts için izleyici seçimleriyle ilerleyen psikoloj
 | 0,00–0,55 | Siyah ekran | 0,30'da derin kapı zili (ding) |
 | 0,55–3,00 | Koridor, 204 numaralı kapı, paspasın üstünde siyah paket. Kamera yavaşça ilerliyor; yazı: “SAAT 02.04. KAPININ ÖNÜNDE BİR PAKET VARDI…” | 0,88'de “dong”, uzun koridor yankısı, floresan uğultusu ve titreme çıtırtıları, düşük drone |
 | 3,00–5,60 | Kapı içeri açılıyor, sıcak ışıkta adamın silueti; sola sağa bakıyor, koridor boş | Kilit sesi, kapı gıcırtısı, gerilim pedi giriyor |
-| 5,60–8,00 | Yerden alçak açı, paket ön planda, yüze yaklaşma: “Ben hiçbir şey sipariş etmedim…” | Diyalogda müzik otomatik kısılır |
+| 5,60–8,00 | Yerden alçak açı, paket ön planda, yüze yaklaşma: “Ben hiçbir şey sipariş etmedim ki…” | Önce uykulu bir nefes; diyalogda müzik otomatik kısılır |
 | 8,00–11,00 | Masa lambası ışığında paketi masaya koyar, kapağı kaldırır | Karton “tok” sesi, kapak sürtünmesi, müzik yükselir |
 | 11,00–12,20 | Üstten: kutunun içinde fotoğraf, el uzanıp alır | Kâğıt hışırtısı, ters yankı şişmesi |
 | 12,20–13,00 | Fotoğraf yakın plan: evin İÇİNDEN, karanlık koridordan salona flaşla çekilmiş; tarih damgası 01:58 | **Gerilim vuruşu** (derin vuruş + metalik tını) |
-| 13,00–15,00 | Yüz yakın plan: “Bu fotoğraf… benim evim.” | |
+| 12,95–15,00 | Yüz yakın plan: “Bu fotoğraf… [titrek nefes] benim evim.” | Ses titriyor, cümle sonu düşüyor |
 | 15,00–17,40 | Fotoğraf çevrilir, el yazısı: “BU GECE YALNIZ DEĞİLSİN.” | Müzik **aniden kesilir**, sadece oda tonu kalır |
 | 17,40–20,25 | Adam yavaşça arkasına döner; karanlık koridorun sonundaki yatak odası kapısı kendi kendine kapanır | Yavaş gıcırtı + yumuşak mandal sesi |
 | 20,25–22,00 | Karanlık koridor; kapının altındaki ışığı bir şey bir an kesiyor | **Fısıltı:** “Paketi açmamalıydın…” (müzik neredeyse sıfır, hafif yankılı, soldan merkeze kayar) |
-| 22,00–28,00 | Telefon elde, kameraya bakar: “Polisi mi aramalıyım… yoksa o kapıyı mı açmalıyım?” → **A — POLİSİ ARA / B — YATAK ODASININ KAPISINI AÇ** → “Kararı siz verin…” | Hızlanan kalp atışı, yükselen yüksek tel gerilimi |
+| 22,00–28,00 | Telefon elde, kameraya bakar. Panikle, alçak sesle: “Polisi mi… aramalıyım? [hızlı nefes] Yoksa… o kapıyı mı açmalıyım?” → **A — POLİSİ ARA / B — YATAK ODASININ KAPISINI AÇ** → ağır ve alçak: “Kararı… siz verin.” [titrek nefes verme] | Hızlanan kalp atışı, yükselen yüksek tel gerilimi |
 | 28,00–30,00 | Yer seviyesi: kapının altından karanlık gölge adamın ayaklarına doğru uzanıyor. “BİR SONRAKİ BÖLÜMÜ SİZ BELİRLİYORSUNUZ. A MI, B Mİ?” — gölge hareket ederken **sert kesim** | 28,05'te final vuruşu (braam + derin vuruş), sürünme sesi, 30,0'da kesim |
 
 ## Sıfır maliyetli üretim hattı
@@ -33,8 +33,9 @@ Hiçbir ücretli servis, API, abonelik, kredi ya da deneme sürümü kullanılma
 | 3D sahne, ışık, gölge, sis, toz, kamera | [three.js](https://threejs.org) r160, başsız Chromium (yazılımsal WebGL / SwiftShader) | MIT |
 | Dokular (terrazzo, duvar, ahşap, parke, halı, pirinç plaka, el yazısı) | Kodla prosedürel üretim (`textures.js`), harici görsel yok | — |
 | Karakter | Kodla modellenmiş tek bir model (`man.js`): yüz geometrisi, saç, göz, kapüşonlu, kot, çorap; kol IK, göz kırpma, sese göre ağız hareketi | — |
-| Seslendirme | [Piper](https://github.com/rhasspy/piper) yerel TTS, Türkçe erkek sesi `tr_TR-fettah-medium` | Model: CC0, Piper: MIT/GPL |
-| Fısıltı | Aynı TTS kaydından rastgele-faz STFT ile gerçek fısıltı spektrumu (canavar efekti yok) | — |
+| Seslendirme (adam) | [Piper](https://github.com/rhasspy/piper) yerel TTS, Türkçe erkek sesi `tr_TR-fahrettin-medium` + [WORLD](https://github.com/mmorise/World) vokoder (`pyworld`) ile duygu işleme (`emo.py`) | Model: CC0, Piper: MIT/GPL, pyworld: MIT |
+| Çekim seçimi ve anlaşılırlık kontrolü | Yerel Whisper-small (sherpa-onnx): her replik için 8–12 çekim, doğru anlaşılanlar arasından en hareketli tonlama seçildi (`secim/`) | Whisper: MIT, sherpa-onnx: Apache-2.0 |
+| Fısıltı | Ayrı bir CC0 ses (`tr_TR-fettah-medium`) kaydından rastgele-faz STFT ile gerçek fısıltı spektrumu (canavar efekti yok) | — |
 | Müzik ve tüm ses efektleri | numpy/scipy ile sentez (`audio.py`): zil, gıcırtılar, drone, gerilim pedi, kalp atışı, vuruşlar, sentetik yankılar | Özgün, telifsiz |
 | Yazı tipleri | Oswald, Cormorant Garamond, Caveat (Fontsource) | SIL OFL 1.1 |
 | Kurgu, renk, kodlama | ffmpeg (renk düzenleme ve film greni shader içinde) | LGPL/GPL |
@@ -42,7 +43,7 @@ Hiçbir ücretli servis, API, abonelik, kredi ya da deneme sürümü kullanılma
 ## Dürüst sınırlar
 
 * **Görüntüler fotogerçekçi değil.** Bu ortamda ücretsiz bir yapay zekâ video/görüntü üreticisi ya da GPU yok. Tüm görüntü gerçek zamanlı 3D render: gerçek gölgeler, hacimli ışık hissi, sis, renk düzenleme ve kamera hareketleri var, ama karakter stilize bir 3D figür (mankene yakın), gerçek bir oyuncu değil. Bunu kısmak için yüzler çoğunlukla düşük anahtarlı ışıkta ve karanlıkta tutuldu.
-* **Seslendirme sentetik.** Piper doğal ama tamamen insan performansı değil; korku tonlaması sınırlı.
+* **Seslendirme hâlâ sentetik.** Ücretsiz Türkçe erkek seslerinden en kalın ve tonlaması en hareketli olanı (fahrettin) seçildi. Üstüne her replik için ayrı duygu işleme yapıldı: perde, tonlama genişliği, korku titremesi, nefeslilik, cümle sonu eğrisi, konuşmacının kendi ses renginde nefesler. Yine de bu gerçek bir oyuncu performansı değil. En iyi sonuç için replikleri bir insanın seslendirmesi önerilir; kayıt gelirse aynı miks hattına takılır. Eski ve yeni ses karşılaştırması: [`bolum-1/ses_karsilastirma.m4a`](bolum-1/ses_karsilastirma.m4a).
 * Altyazılar eklendi (Reels'in çoğu sessiz izleniyor). İstenmezse `scene.js` içindeki `subs` dizisi boşaltılabilir.
 
 ## Yeniden üretme
@@ -54,7 +55,9 @@ pip install piper-tts numpy scipy
 npm pack three@0.160.0 && mkdir -p web/lib && tar xzf three-0.160.0.tgz && cp package/build/three.module.js web/lib/
 # 2) Türkçe ses modeli (CC0): sherpa-onnx GitHub sürümlerindeki vits-piper-tr_TR-fettah-medium.tar.bz2
 #    açıp modeller/vits-piper-tr_TR-fettah-medium/ altına koyun
-python3 tts.py          # repliklerin wav dosyaları -> tts/
+python3 tts.py          # fısıltı kaynağı -> tts/w.wav
+python3 emo.py          # takes/ içindeki seçilmiş çekimler -> duygulu replikler tts/l1..l4.wav + meta.json
+                        # (çekim üretme/seçme araçları: secim/; ek olarak: pip install pyworld sherpa-onnx soundfile)
 python3 audio.py        # müzik + efekt + miks -> mix.wav, dudak senkronu -> web/env.json
 (cd web && python3 -m http.server 8204 --bind 127.0.0.1 &)
 node render.js full     # 720 kare -> visual.mp4 (4 çekirdekte ~25 dk)

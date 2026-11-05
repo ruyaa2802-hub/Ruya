@@ -275,35 +275,42 @@ slither = lp(rng.standard_normal(n), 380) * (0.4 + 0.6 * np.abs(lp(rng.standard_
 place(sfx, slither, 28.05, 0.5, -0.1)
 
 # ----------------------------------------------------------------- DIYALOG
-def load_tts(name):
+def load_tts(name, trim=True):
     with wave.open(f'{OUT}tts/{name}.wav') as w:
         sr = w.getframerate(); x = np.frombuffer(w.readframes(w.getnframes()), np.int16) / 32768.0
     x = resample_poly(x, 320, 147)  # 22050 -> 48000
-    # kafa basi bosluklarini kirp
-    a = np.nonzero(np.abs(x) > 0.01)[0]
-    x = x[max(a[0] - 200, 0): a[-1] + 2400]
+    if trim:  # kafa basi bosluklarini kirp
+        a = np.nonzero(np.abs(x) > 0.01)[0]
+        x = x[max(a[0] - 200, 0): a[-1] + 2400]
     return x
 
 def voice_fx(x, ir, wet):
-    x = hp(x, 90)
+    x = hp(x, 70)
     x = x + 0.25 * bp(x, 2500, 5000)        # hafif netlik
     x = x * 0.9 / np.max(np.abs(x))
     return reverb(x, ir, wet)
 
+# emo.py ciktilari: nefesler dahil tam replikler; meta.json konusulan (sesli) araliklari verir
+META = json.load(open(OUT + 'tts/meta.json'))
 LINES = [  # (dosya, baslangic sn, ortam)
-    ('l1', 5.72, 'hall'),
-    ('l2a', 13.05, 'room'), ('l2b', 14.12, 'room'),
-    ('l3a', 22.35, 'room'), ('l3b', 23.95, 'room'),
-    ('l4', 26.30, 'room'),
+    ('l1', 5.35, 'hall'),
+    ('l2', 12.95, 'room'),
+    ('l3', 22.25, 'room'),
+    ('l4', 26.35, 'room'),
 ]
 timing = {}
 mouth_src = np.zeros(N)
 for name, t0, sp in LINES:
-    x = load_tts(name)
+    x = load_tts(name, trim=False)
     y = voice_fx(x, IR_HALL if sp == 'hall' else IR_ROOM, 0.22 if sp == 'hall' else 0.12)
     place(dlg, y, t0, 0.62)
-    i0 = int(t0 * SR); mouth_src[i0:i0 + len(x)] += x[: max(0, min(len(x), N - i0))]
-    timing[name] = [t0, t0 + len(x) / SR]
+    # dudak senkronu sadece konusulan bolumlerden (nefesler haric)
+    for a, b in META[name]['voiced']:
+        i0, i1 = int((t0 + a) * SR), int((t0 + b) * SR)
+        seg = x[int(a * SR):int(a * SR) + (i1 - i0)]
+        mouth_src[i0:i0 + len(seg)] += seg
+    timing[name] = [round(t0 + a, 3) for a, _ in META[name]['voiced']][:1] + [round(t0 + META[name]['voiced'][-1][1], 3)]
+    timing[name + '_parts'] = [[round(t0 + a, 3), round(t0 + b, 3)] for a, b in META[name]['voiced']]
 
 # FISILTI: TTS sesinden rastgele-faz STFT ile gercekci insan fisiltisi
 def whisperize(x):
