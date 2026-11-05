@@ -291,13 +291,7 @@ def voice_fx(x, ir, wet):
     return reverb(x, ir, wet)
 
 # emo.py ciktilari: nefesler dahil tam replikler; meta.json konusulan (sesli) araliklari verir
-META = json.load(open(OUT + 'tts/meta.json'))
-LINES = [  # (dosya, baslangic sn, ortam)
-    ('l1', 5.35, 'hall'),
-    ('l2', 12.95, 'room'),
-    ('l3', 22.25, 'room'),
-    ('l4', 26.35, 'room'),
-]
+LINES = []  # videoda konusma yok (diyalogsuz surum)
 timing = {}
 mouth_src = np.zeros(N)
 for name, t0, sp in LINES:
@@ -324,14 +318,9 @@ def whisperize(x):
     y += 0.06 * hp(rng.standard_normal(len(y)), 4000) * np.abs(lp(np.abs(y), 30)) * 20
     return y / np.max(np.abs(y))
 
-w = whisperize(load_tts('w'))
-w_dur = len(w) / SR
-# karanlikta hafif hareket eden konum (soldan merkeze)
-pan_env = np.linspace(-0.55, -0.1, len(w))
-ws = np.stack([w * np.cos((pan_env + 1) * np.pi / 4), w * np.sin((pan_env + 1) * np.pi / 4)]) * 1.414
-ws = reverb(ws, IR_HALL, 0.35, 1.0)
-place(dlg, ws, 20.30, 0.5)
-timing['w'] = [20.30, 20.30 + w_dur]
+# fisilti yerine: kapinin arkasinda agir bir adimin dosemeyi gicirdatmasi (20.85) + tok ses (21.3)
+place(sfx, reverb(creak(0.55, f_res=(240, 610, 1350), rate=(10, 26), seed=41), IR_HALL, 0.5)[:, :int(2.5 * SR)], 20.85, 0.22, -0.2)
+place(sfx, reverb(thud(0.35, 70, 42, 0.15), IR_HALL, 0.55)[:, :int(2.5 * SR)], 21.3, 0.35, -0.2)
 
 # --------------------------------------------------------- DUCKING + MIX
 dl_env = np.abs(dlg).max(axis=0)
@@ -359,7 +348,7 @@ with wave.open(OUT + 'mix.wav', 'wb') as wf:
 FPS = 24
 hop = SR // FPS
 m = np.array([np.sqrt(np.mean(mouth_src[i * hop:(i + 1) * hop] ** 2)) for i in range(int(DUR * FPS))])
-m = np.clip(m / (np.percentile(m[m > 0], 90) + 1e-9), 0, 1.2)
+m = np.clip(m / (np.percentile(m[m > 0], 90) + 1e-9), 0, 1.2) if (m > 0).any() else m
 m = np.convolve(m, [0.25, 0.5, 0.25], 'same')
 json.dump({'fps': FPS, 'mouth': [round(float(v), 3) for v in m], 'timing': timing}, open(OUT + 'web/env.json', 'w'))
 print('ok', timing)

@@ -331,6 +331,7 @@ function update(t) {
     scene.fog.color.set(0x07090d); scene.fog.density = 0.045;
     man.root.position.set(0, 0, -0.36); man.root.rotation.y = 0;
     seated();
+    if (t >= 11.0) flat.pkg.lid.position.set(-0.33, 0.03, 0.05);
     flat.bdPivot.rotation.y = 0.6;
     flat.lampL.intensity = 7; flat.moon.intensity = 34;
     const fear = ss(12.0, 16, t) * 0.5 + 0.4;
@@ -511,13 +512,7 @@ function drawOverlay(t) {
     txt('KAPI 204  ·  BÖLÜM 1', W / 2, H * 0.085, '400 24px Oswald', '#c9c2b6', a, 8, 8);
   }
   // altyazilar
-  const subs = [
-    [5.77, 7.97, 'Ben hiçbir şey sipariş etmedim ki…', 0],
-    [12.95, 14.96, 'Bu fotoğraf… benim evim.', 0],
-    [20.3, 21.95, 'Paketi açmamalıydın…', 1],
-    [22.25, 23.95, 'Polisi mi… aramalıyım?', 0],
-    [24.05, 26.1, '…yoksa o kapıyı mı açmalıyım?', 0],
-    [26.35, 27.8, 'Kararı… siz verin.', 0],
+  const subs = [  // konusma yok: diyalog altyazisi yok
   ];
   for (const [a, b, s, wsp] of subs) {
     if (t < a - 0.05 || t > b + 0.1) continue;

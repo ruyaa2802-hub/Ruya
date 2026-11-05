@@ -1,6 +1,7 @@
 // Mekanlar: apartman koridoru (Kapi 204) ve daire ici (salon + karanlik koridor + yatak odasi kapisi)
 import * as THREE from 'three';
 import * as TX from './textures.js';
+import { corridorProps, flatProps } from './props.js';
 
 const std = (o) => new THREE.MeshStandardMaterial(o);
 function mesh(geo, mat, parent, x = 0, y = 0, z = 0, cast = true, recv = true) {
@@ -114,11 +115,12 @@ export function buildCorridor(shared) {
   wall(G, wallT, 1.9, 0, 2.7, [0, -11], 0);
   const moon = new THREE.SpotLight(0x6f8cff, 14, 16, 0.5, 1, 1.2);
   moon.position.set(0, 1.8, -10.7); moon.target.position.set(0, 0, -3); G.add(moon, moon.target);
-  const amb = new THREE.HemisphereLight(0x223047, 0x0d0b09, 0.22); G.add(amb);
+  const amb = new THREE.HemisphereLight(0x223047, 0x0d0b09, 0.32); G.add(amb);
 
   // ---- PAKET (koridor)
   const pkg = shared.makePackage(); pkg.group.position.set(0.66, 0.0, 0.05); pkg.group.rotation.y = 0.35; G.add(pkg.group);
 
+  corridorProps(G);
   return { G, door: pivot, fluo, tubeM, tube2, pkg, warm, warmFill, led };
 }
 
@@ -232,7 +234,7 @@ export function buildFlat(shared) {
   moon.position.set(4.2, 2.8, 0.6); moon.target.position.set(0.2, 0.3, 0.2); moon.map = TX.blindsCookie(); moon.castShadow = true;
   moon.shadow.mapSize.set(1024, 1024); moon.shadow.bias = -0.0004; moon.shadow.normalBias = 0.02;
   G.add(moon, moon.target);
-  const amb = new THREE.HemisphereLight(0x1c2436, 0x0c0907, 0.16); G.add(amb);
+  const amb = new THREE.HemisphereLight(0x1c2436, 0x0c0907, 0.3); G.add(amb);
 
   // golge (yatak odasi kapisinin altindan surunen) - shader decal
   const shadowM = new THREE.ShaderMaterial({
@@ -266,6 +268,7 @@ export function buildFlat(shared) {
   // ---- PAKET (daire ici, ayni nesne tasarimi)
   const pkg = shared.makePackage(); pkg.group.position.set(0, 0.76, 0.18); G.add(pkg.group);
 
+  flatProps(G);
   return { G, hallL, table, chair, bdPivot, gapGlowM, gapLine, lampL, lampFill, moon, shadowM, pkg, bulb, bedMoon, amb };
 }
 
