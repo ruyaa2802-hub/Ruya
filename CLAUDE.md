@@ -10,7 +10,7 @@
 2. `videolar/<kisa-ad>/sahneler.js` — her bölüm için `VIDEO.sahne(id, { ciz(ctx, S) })`. Örnek: `videolar/neden-gidiklaniriz/sahneler.js` (ortak kütüphaneyi `STUDIO.K` ile kullanır). Müzik akorları ve ses efektleri `senaryo.json` → `ses` alanından ayarlanır. Zamanlama için `S.at(cumle, oran)` ve `S.ci(...)` kullan ki görüntü sese otomatik otursun.
 3. Kontrol kareleri: `node studio/render.mjs <kisa-ad> --kare 2,10,25` → `cikti/kareler/` (bak, düzelt).
 4. Sessiz önizleme: `node studio/render.mjs <kisa-ad>` → `cikti/onizleme.mp4`.
-5. `ELEVENLABS.md` yaz (metin + ayarlar). Kullanıcı `ses/seslendirme.mp3` yükleyene kadar bekle.
+5. `ELEVENLABS.md` yaz (metin + ayarlar). Kullanıcı `ses/seslendirme.mp3` yükleyene kadar bekle. Kullanıcı ücretsiz ses isterse: `python3 studio/seslendir.py <kisa-ad>` (Piper, kredisiz; `pip install piper-tts`).
 6. Final: `node studio/render.mjs <kisa-ad> --final` → `cikti/final.mp4` (sese göre yeniden zamanlama, animasyonlu altyazı, sentez müzik/efekt, -14 LUFS).
 
 ## Ortam notları

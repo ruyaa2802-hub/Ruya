@@ -1,0 +1,43 @@
+{
+  "seri": "İnsan Vücudu Hakkında Bilinmeyenler",
+  "baslik": "Yüzümüzde Bizimle Yaşayan Canlılar",
+  "fps": 30,
+  "giris": 0.35,
+  "kapanis": 2.4,
+  "acilis": 0,
+  "altyaziY": 1430,
+  "ses": {
+    "sting": false,
+    "whoosh": 1.0,
+    "pad": 1.1,
+    "piyano": 0.6,
+    "akorlar": {
+      "yuz": [55.0, 82.41, 130.81, 155.56],
+      "demodex": [51.91, 77.78, 123.47, 155.56],
+      "gece": [49.0, 73.42, 116.54, 146.83],
+      "final": [65.41, 98.0, 164.81, 196.0]
+    },
+    "yayli": { "seviye": 0.7, "bolumler": { "yuz": 0.4, "demodex": 0.8, "gece": 1.0, "final": 0.9 } },
+    "ortam": [
+      { "tip": "oda", "bas": "yuz", "son": "yuz", "seviye": 0.8 },
+      { "tip": "kipirti", "bas": "demodex", "son": "gece", "seviye": 0.8 }
+    ],
+    "isaretler": [
+      { "tip": "nefes", "bolum": "yuz", "cumle": 0, "oran": -0.2, "seviye": 0.6 },
+      { "tip": "parilti", "bolum": "final", "cumle": 2, "oran": 0.2, "seviye": 0.8 }
+    ],
+    "anlatim": "highpass=f=80,equalizer=f=220:t=q:w=1.2:g=2,acompressor=threshold=-20dB:ratio=3:attack=5:release=120,aecho=0.85:0.6:40|80:0.10|0.06",
+    "ducking": 5,
+    "release": 500
+  },
+  "bolumler": [
+    { "id": "yuz", "sahne": "yuz", "gecis": "dalis", "gecisSure": 1.0,
+      "metin": "Şu an yüzünde yaşayan canlılar var… Üstelik gece sen uyurken hareket ediyorlar!" },
+    { "id": "demodex", "sahne": "demodex", "gecis": "capraz", "gecisSure": 0.8,
+      "metin": "Adları Demodex. Mikroskobik boyuttaki bu canlılar, yüzündeki kıl köklerinde ve yağ bezlerinde yaşıyor." },
+    { "id": "gece", "sahne": "gece", "gecis": "capraz", "gecisSure": 0.6,
+      "metin": "Özellikle gece hareketleniyor, besleniyor ve çoğalıyorlar. Kirpik diplerin bile onların yaşam alanlarından biri!" },
+    { "id": "final", "sahne": "final",
+      "metin": "Ama korkma! Çoğu insanda bulunurlar ve genellikle hiçbir zarar vermezler. Yani yalnızca kendi yüzünde yaşamıyorsun!" }
+  ]
+}

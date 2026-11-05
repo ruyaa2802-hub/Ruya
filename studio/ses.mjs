@@ -199,6 +199,16 @@ export function sesYatagiUret(TL, dosya) {
           ekle(n0 + j, v * 0.6, v, 0.4);
         }
       }
+    } else if (o.tip === 'kipirti') {
+      // mikroskobik kıpırtı: çok kısa, ince tıkırtılar ve sürtünmeler
+      const f1 = svf();
+      for (let t0 = a + 0.2; t0 < z - 0.2; t0 += 0.05 + rr() * 0.22) {
+        const n0 = Math.floor(t0 * SR), pan = rr(), fr = 2500 + rr() * 4000, uz = 0.006 + rr() * 0.02;
+        for (let j = 0; j < SR * uz; j++) {
+          const t = j / SR, v = f1(rr() * 2 - 1, fr, 3).bp * Math.exp(-t * 300) * 0.09 * sev * zarf(t0);
+          ekle(n0 + j, v * (1 - pan), v * pan, 0.2);
+        }
+      }
     } else if (o.tip === 'kus') {
       for (let t0 = a + 0.8; t0 < z - 0.5; t0 += 0.9 + rr() * 1.6) {
         const n0 = Math.floor(t0 * SR), f0 = 2600 + rr() * 1800, adet = 2 + Math.floor(rr() * 4), pan = rr();

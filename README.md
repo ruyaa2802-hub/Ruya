@@ -46,6 +46,9 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 
 > GitHub Actions herkese açık repolarda ücretsizdir; özel repolarda ayda 2.000 ücretsiz dakika vardır (bir video ≈ 15–20 dk).
 
+## Ücretsiz seslendirme (isteğe bağlı)
+`python3 studio/seslendir.py <video> [--ses fahrettin|dfki|fettah]` — açık kaynak Piper TTS ile Türkçe seslendirme üretir, kredi harcamaz (erkek sesleri; ElevenLabs kadar doğal değildir). İlk çalıştırmada model Hugging Face'ten indirilir.
+
 ## Kredi koruma
 - `.claude/settings.json`: ücretli üretim araçları (görüntü/video/ses üretimi) **engelli**; diğer harici araçlar ve ağ istekleri her seferinde **onay ister**.
 - `CLAUDE.md`: Claude'un uyduğu kurallar (izin almadan hiçbir harici API çağrısı yok).
