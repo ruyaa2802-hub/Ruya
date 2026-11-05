@@ -33,7 +33,7 @@ Hiçbir ücretli servis, API, abonelik, kredi ya da deneme sürümü kullanılma
 | 3D sahne, ışık, gölge, sis, toz, kamera | [three.js](https://threejs.org) r160, başsız Chromium (yazılımsal WebGL / SwiftShader) | MIT |
 | Dokular (terrazzo, duvar, ahşap, parke, halı, pirinç plaka, el yazısı) | Kodla prosedürel üretim (`textures.js`), harici görsel yok | — |
 | Karakter | Kodla modellenmiş tek bir model (`man.js`): yüz geometrisi, saç, göz, kapüşonlu, kot, çorap; kol IK, göz kırpma, sese göre ağız hareketi | — |
-| Seslendirme (adam) | [Piper](https://github.com/rhasspy/piper) yerel TTS, Türkçe erkek sesi `tr_TR-fahrettin-medium` + [WORLD](https://github.com/mmorise/World) vokoder (`pyworld`) ile duygu işleme (`emo.py`) | Model: CC0, Piper: MIT/GPL, pyworld: MIT |
+| Seslendirme (adam) | [Piper](https://github.com/rhasspy/piper) yerel TTS, Türkçe erkek sesi `tr_TR-fahrettin-medium`. Ham kayıt korunur (perde/zaman işlemesi yok); duraklamalar, nefesler, konuşmaya kilitli hava katmanı, yakın mikrofon EQ'su ve hafif sıkıştırma (`natural.py`) | Model: CC0, Piper: MIT/GPL |
 | Çekim seçimi ve anlaşılırlık kontrolü | Yerel Whisper-small (sherpa-onnx): her replik için 8–12 çekim, doğru anlaşılanlar arasından en hareketli tonlama seçildi (`secim/`) | Whisper: MIT, sherpa-onnx: Apache-2.0 |
 | Fısıltı | Ayrı bir CC0 ses (`tr_TR-fettah-medium`) kaydından rastgele-faz STFT ile gerçek fısıltı spektrumu (canavar efekti yok) | — |
 | Müzik ve tüm ses efektleri | numpy/scipy ile sentez (`audio.py`): zil, gıcırtılar, drone, gerilim pedi, kalp atışı, vuruşlar, sentetik yankılar | Özgün, telifsiz |
@@ -43,7 +43,7 @@ Hiçbir ücretli servis, API, abonelik, kredi ya da deneme sürümü kullanılma
 ## Dürüst sınırlar
 
 * **Görüntüler fotogerçekçi değil.** Bu ortamda ücretsiz bir yapay zekâ video/görüntü üreticisi ya da GPU yok. Tüm görüntü gerçek zamanlı 3D render: gerçek gölgeler, hacimli ışık hissi, sis, renk düzenleme ve kamera hareketleri var, ama karakter stilize bir 3D figür (mankene yakın), gerçek bir oyuncu değil. Bunu kısmak için yüzler çoğunlukla düşük anahtarlı ışıkta ve karanlıkta tutuldu.
-* **Seslendirme hâlâ sentetik.** Ücretsiz Türkçe erkek seslerinden en kalın ve tonlaması en hareketli olanı (fahrettin) seçildi. Üstüne her replik için ayrı duygu işleme yapıldı: perde, tonlama genişliği, korku titremesi, nefeslilik, cümle sonu eğrisi, konuşmacının kendi ses renginde nefesler. Yine de bu gerçek bir oyuncu performansı değil. En iyi sonuç için replikleri bir insanın seslendirmesi önerilir; kayıt gelirse aynı miks hattına takılır. Eski ve yeni ses karşılaştırması: [`bolum-1/ses_karsilastirma.m4a`](bolum-1/ses_karsilastirma.m4a).
+* **Seslendirme hâlâ sentetik.** Ücretsiz Türkçe erkek seslerinden en kalını ve tonlaması en hareketlisi (fahrettin) kullanıldı. İlk duygu denemesindeki vokoder işlemesi sesi robotikleştirdiği için kaldırıldı (`kaynak/eski/emo_vokoder.py`). Şimdiki sürüm ham kaydı bozmadan; seçilmiş çekim, duraklama, nefes ve doğal mikrofon/oda işlemesiyle duygu veriyor. Yine de gerçek bir oyuncu performansı değil. Kayıt gelirse aynı miks hattına takılır. Denenen ses örnekleri: [`bolum-1/ses_ornekleri/`](bolum-1/ses_ornekleri/) (A videoda kullanılan).
 * Altyazılar eklendi (Reels'in çoğu sessiz izleniyor). İstenmezse `scene.js` içindeki `subs` dizisi boşaltılabilir.
 
 ## Yeniden üretme
@@ -56,7 +56,7 @@ npm pack three@0.160.0 && mkdir -p web/lib && tar xzf three-0.160.0.tgz && cp pa
 # 2) Türkçe ses modeli (CC0): sherpa-onnx GitHub sürümlerindeki vits-piper-tr_TR-fettah-medium.tar.bz2
 #    açıp modeller/vits-piper-tr_TR-fettah-medium/ altına koyun
 python3 tts.py          # fısıltı kaynağı -> tts/w.wav
-python3 emo.py          # takes/ içindeki seçilmiş çekimler -> duygulu replikler tts/l1..l4.wav + meta.json
+python3 natural.py A fahrettin  # takes/ içindeki seçilmiş çekimler -> tts_A_fahrettin/ (sonra tts/ içine kopyalayın)
                         # (çekim üretme/seçme araçları: secim/; ek olarak: pip install pyworld sherpa-onnx soundfile)
 python3 audio.py        # müzik + efekt + miks -> mix.wav, dudak senkronu -> web/env.json
 (cd web && python3 -m http.server 8204 --bind 127.0.0.1 &)

@@ -278,7 +278,7 @@ place(sfx, slither, 28.05, 0.5, -0.1)
 def load_tts(name, trim=True):
     with wave.open(f'{OUT}tts/{name}.wav') as w:
         sr = w.getframerate(); x = np.frombuffer(w.readframes(w.getnframes()), np.int16) / 32768.0
-    x = resample_poly(x, 320, 147)  # 22050 -> 48000
+    if sr == 22050: x = resample_poly(x, 320, 147)  # 22050 -> 48000
     if trim:  # kafa basi bosluklarini kirp
         a = np.nonzero(np.abs(x) > 0.01)[0]
         x = x[max(a[0] - 200, 0): a[-1] + 2400]
@@ -286,7 +286,7 @@ def load_tts(name, trim=True):
 
 def voice_fx(x, ir, wet):
     x = hp(x, 70)
-    x = x + 0.25 * bp(x, 2500, 5000)        # hafif netlik
+    x = x + 0.1 * bp(x, 2500, 5000)         # hafif netlik (zincir natural.py'de)
     x = x * 0.9 / np.max(np.abs(x))
     return reverb(x, ir, wet)
 

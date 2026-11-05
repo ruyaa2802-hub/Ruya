@@ -1,0 +1,866 @@
+{
+"fettah_l1_0": {
+"dur": 2.54,
+"med": 190.8,
+"rng": 4.03,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "ben hiçbir şeyz, parış etmedim ki.",
+"cer": 0.107
+},
+"fettah_l1_1": {
+"dur": 2.48,
+"med": 192.1,
+"rng": 4.53,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "ben hiçbir şey sipariş etmedim ki",
+"cer": 0.0
+},
+"fettah_l1_2": {
+"dur": 2.52,
+"med": 193.3,
+"rng": 3.69,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "ben hiçbir şeyz parış etmedim ki.",
+"cer": 0.107
+},
+"fettah_l1_3": {
+"dur": 2.54,
+"med": 193.7,
+"rng": 5.6,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "ben hiçbir şey parış etmedim ki.",
+"cer": 0.107
+},
+"fettah_l1_4": {
+"dur": 2.59,
+"med": 191.9,
+"rng": 4.74,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "ben hiçbir şeyz farış etmedim ki",
+"cer": 0.143
+},
+"fettah_l1_5": {
+"dur": 2.61,
+"med": 193.9,
+"rng": 4.29,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "ben hiçbir şey sipariş etmedim ki",
+"cer": 0.0
+},
+"fettah_l1_6": {
+"dur": 2.53,
+"med": 191.8,
+"rng": 5.44,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "ben hiçbir şey sipariş etmedim ki.",
+"cer": 0.0
+},
+"fettah_l1_7": {
+"dur": 2.48,
+"med": 192.6,
+"rng": 4.56,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "ben hiçbir şey sipariş etmedim ki.",
+"cer": 0.0
+},
+"fettah_l2a_0": {
+"dur": 0.89,
+"med": 188.9,
+"rng": 18.78,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "bu fotoğraf.",
+"cer": 0.0
+},
+"fettah_l2a_1": {
+"dur": 0.91,
+"med": 191.4,
+"rng": 2.73,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "bu fotoğrafı",
+"cer": 0.1
+},
+"fettah_l2a_2": {
+"dur": 0.88,
+"med": 193.9,
+"rng": 2.38,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "bu fotoğraf",
+"cer": 0.0
+},
+"fettah_l2a_3": {
+"dur": 0.88,
+"med": 193.2,
+"rng": 2.96,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "bu fotoğrafı",
+"cer": 0.1
+},
+"fettah_l2a_4": {
+"dur": 0.92,
+"med": 194.2,
+"rng": 2.73,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Bu fotoğraf.",
+"cer": 0.0
+},
+"fettah_l2a_5": {
+"dur": 0.93,
+"med": 192.3,
+"rng": 4.45,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "ufak örer",
+"cer": 0.7
+},
+"fettah_l2a_6": {
+"dur": 0.92,
+"med": 193.6,
+"rng": 2.48,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "bu fotoğraf",
+"cer": 0.0
+},
+"fettah_l2a_7": {
+"dur": 0.87,
+"med": 190.0,
+"rng": 3.38,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "bu fotoğraf",
+"cer": 0.0
+},
+"fettah_l2b_0": {
+"dur": 0.89,
+"med": 188.8,
+"rng": 3.99,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fettah_l2b_1": {
+"dur": 0.89,
+"med": 188.2,
+"rng": 4.63,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fettah_l2b_2": {
+"dur": 0.95,
+"med": 190.5,
+"rng": 4.53,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fettah_l2b_3": {
+"dur": 0.88,
+"med": 187.8,
+"rng": 5.32,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fettah_l2b_4": {
+"dur": 0.88,
+"med": 187.3,
+"rng": 4.68,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fettah_l2b_5": {
+"dur": 0.93,
+"med": 188.0,
+"rng": 3.79,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fettah_l2b_6": {
+"dur": 0.91,
+"med": 189.7,
+"rng": 5.14,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Benim evin.",
+"cer": 0.111
+},
+"fettah_l2b_7": {
+"dur": 0.84,
+"med": 185.7,
+"rng": 5.32,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fettah_l3a_0": {
+"dur": 1.38,
+"med": 192.9,
+"rng": 7.37,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "Polisi mi aramadı?",
+"cer": 0.222
+},
+"fettah_l3a_1": {
+"dur": 1.43,
+"med": 188.1,
+"rng": 6.66,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Polisi mi aramalıyım",
+"cer": 0.0
+},
+"fettah_l3a_2": {
+"dur": 1.37,
+"med": 186.9,
+"rng": 7.14,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Polisimi aramadayım.",
+"cer": 0.111
+},
+"fettah_l3a_3": {
+"dur": 1.37,
+"med": 193.9,
+"rng": 7.46,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Borlisi aramalı.",
+"cer": 0.389
+},
+"fettah_l3a_4": {
+"dur": 1.49,
+"med": 191.1,
+"rng": 7.51,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Polisi mi aramalıyım",
+"cer": 0.0
+},
+"fettah_l3a_5": {
+"dur": 1.37,
+"med": 186.5,
+"rng": 6.91,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Polisi mi aramalıyım",
+"cer": 0.0
+},
+"fettah_l3a_6": {
+"dur": 1.32,
+"med": 192.5,
+"rng": 7.7,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Borisimi aramalıyım",
+"cer": 0.111
+},
+"fettah_l3a_7": {
+"dur": 1.42,
+"med": 189.4,
+"rng": 6.81,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "Polisi mearamadı.",
+"cer": 0.278
+},
+"fettah_l3b_0": {
+"dur": 1.8,
+"med": 194.3,
+"rng": 4.43,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "yoksa o kapı maç malim",
+"cer": 0.261
+},
+"fettah_l3b_1": {
+"dur": 1.83,
+"med": 195.5,
+"rng": 4.6,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Yoksa kabin mi açmanıyım?",
+"cer": 0.304
+},
+"fettah_l3b_2": {
+"dur": 1.79,
+"med": 197.1,
+"rng": 4.23,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Yoksa kapıyı maçmanıyım.",
+"cer": 0.13
+},
+"fettah_l3b_3": {
+"dur": 1.78,
+"med": 197.8,
+"rng": 5.45,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Yoksa kapıyı maçmalıyım.",
+"cer": 0.087
+},
+"fettah_l3b_4": {
+"dur": 1.86,
+"med": 194.3,
+"rng": 4.94,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Yoksa kabin mi açmalıyım?",
+"cer": 0.261
+},
+"fettah_l3b_5": {
+"dur": 1.83,
+"med": 198.6,
+"rng": 4.84,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Yoksa o kapı maç malim.",
+"cer": 0.261
+},
+"fettah_l3b_6": {
+"dur": 1.87,
+"med": 195.6,
+"rng": 4.5,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Yoksa o kapı maç malim.",
+"cer": 0.261
+},
+"fettah_l3b_7": {
+"dur": 1.79,
+"med": 197.3,
+"rng": 4.33,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "yoksa kapıyı açmalıyım",
+"cer": 0.13
+},
+"fettah_l4_0": {
+"dur": 1.17,
+"med": 192.7,
+"rng": 6.46,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "kararız siz verin.",
+"cer": 0.071
+},
+"fettah_l4_1": {
+"dur": 1.24,
+"med": 191.2,
+"rng": 6.52,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Kararısız birini ver",
+"cer": 0.5
+},
+"fettah_l4_2": {
+"dur": 1.2,
+"med": 193.0,
+"rng": 5.23,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "ve bu kadar da siz verin",
+"cer": 0.5
+},
+"fettah_l4_3": {
+"dur": 1.2,
+"med": 193.5,
+"rng": 6.76,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Karara siz verin.",
+"cer": 0.071
+},
+"fettah_l4_4": {
+"dur": 1.23,
+"med": 193.2,
+"rng": 6.01,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "kararız siz verin.",
+"cer": 0.071
+},
+"fettah_l4_5": {
+"dur": 1.11,
+"med": 188.9,
+"rng": 5.83,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Karar-ı siz ver",
+"cer": 0.143
+},
+"fettah_l4_6": {
+"dur": 1.2,
+"med": 194.7,
+"rng": 6.65,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "kararız siz verin.",
+"cer": 0.071
+},
+"fettah_l4_7": {
+"dur": 1.24,
+"med": 189.6,
+"rng": 5.59,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "kararı siz verin.",
+"cer": 0.0
+},
+"fahrettin_l1_0": {
+"dur": 2.24,
+"med": 101.6,
+"rng": 8.92,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "ben hiçbir şeysi parış etmedim ki.",
+"cer": 0.036
+},
+"fahrettin_l1_1": {
+"dur": 2.28,
+"med": 104.3,
+"rng": 7.73,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "ben hiçbir şeysi parış etmedim ki.",
+"cer": 0.036
+},
+"fahrettin_l1_2": {
+"dur": 2.37,
+"med": 104.1,
+"rng": 9.5,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "ben hiçbir şeysi parış etmedim ki.",
+"cer": 0.036
+},
+"fahrettin_l1_3": {
+"dur": 2.29,
+"med": 103.7,
+"rng": 7.03,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "ben hiçbir şey sipariş etmedim ki.",
+"cer": 0.0
+},
+"fahrettin_l1_4": {
+"dur": 2.25,
+"med": 105.4,
+"rng": 9.56,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Ben hiçbir şey sipariş etmedim ki.",
+"cer": 0.0
+},
+"fahrettin_l1_5": {
+"dur": 2.38,
+"med": 103.6,
+"rng": 9.78,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "ben hiçbir şey sipariş etmedim ki.",
+"cer": 0.0
+},
+"fahrettin_l1_6": {
+"dur": 2.29,
+"med": 104.3,
+"rng": 8.36,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "ben hiçbir şey sipariş etmedim ki.",
+"cer": 0.0
+},
+"fahrettin_l1_7": {
+"dur": 2.28,
+"med": 105.3,
+"rng": 10.68,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "ben hiçbir şeysi parış etmedim ki.",
+"cer": 0.036
+},
+"fahrettin_l2a_0": {
+"dur": 0.77,
+"med": 102.0,
+"rng": 10.82,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "Buf altı",
+"cer": 0.7
+},
+"fahrettin_l2a_1": {
+"dur": 0.78,
+"med": 101.4,
+"rng": 9.18,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Bu fotoğraf",
+"cer": 0.0
+},
+"fahrettin_l2a_2": {
+"dur": 0.77,
+"med": 103.8,
+"rng": 12.65,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Bu 412",
+"cer": 0.8
+},
+"fahrettin_l2a_3": {
+"dur": 0.79,
+"med": 103.2,
+"rng": 13.52,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Bu fotoğraf",
+"cer": 0.0
+},
+"fahrettin_l2a_4": {
+"dur": 0.78,
+"med": 100.1,
+"rng": 10.21,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Bu fotoğraf",
+"cer": 0.0
+},
+"fahrettin_l2a_5": {
+"dur": 0.8,
+"med": 101.0,
+"rng": 12.38,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Bu fotoğraf",
+"cer": 0.0
+},
+"fahrettin_l2a_6": {
+"dur": 0.77,
+"med": 101.3,
+"rng": 9.09,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Bu fotoğraf",
+"cer": 0.0
+},
+"fahrettin_l2a_7": {
+"dur": 0.73,
+"med": 99.5,
+"rng": 7.01,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "Bu fotoğraf",
+"cer": 0.0
+},
+"fahrettin_l2b_0": {
+"dur": 0.78,
+"med": 102.0,
+"rng": 11.41,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fahrettin_l2b_1": {
+"dur": 0.8,
+"med": 100.9,
+"rng": 11.62,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Benim elim.",
+"cer": 0.111
+},
+"fahrettin_l2b_2": {
+"dur": 0.79,
+"med": 99.9,
+"rng": 9.02,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fahrettin_l2b_3": {
+"dur": 0.74,
+"med": 103.5,
+"rng": 8.81,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Benim ero.",
+"cer": 0.333
+},
+"fahrettin_l2b_4": {
+"dur": 0.8,
+"med": 97.7,
+"rng": 9.38,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Benim elim.",
+"cer": 0.111
+},
+"fahrettin_l2b_5": {
+"dur": 0.78,
+"med": 98.9,
+"rng": 9.71,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Benim Elim.",
+"cer": 0.111
+},
+"fahrettin_l2b_6": {
+"dur": 0.75,
+"med": 95.0,
+"rng": 7.03,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Benim evim.",
+"cer": 0.0
+},
+"fahrettin_l2b_7": {
+"dur": 0.73,
+"med": 99.4,
+"rng": 9.26,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "Benim elim.",
+"cer": 0.111
+},
+"fahrettin_l3a_0": {
+"dur": 1.16,
+"med": 109.4,
+"rng": 15.31,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "Polisi mi haram al",
+"cer": 0.278
+},
+"fahrettin_l3a_1": {
+"dur": 1.17,
+"med": 94.8,
+"rng": 15.23,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Polisi mi aramalıy",
+"cer": 0.111
+},
+"fahrettin_l3a_2": {
+"dur": 1.16,
+"med": 102.8,
+"rng": 14.44,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Polisi mi haram al",
+"cer": 0.278
+},
+"fahrettin_l3a_3": {
+"dur": 1.15,
+"med": 102.0,
+"rng": 15.34,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Polisi mi haram al",
+"cer": 0.278
+},
+"fahrettin_l3a_4": {
+"dur": 1.16,
+"med": 100.8,
+"rng": 15.58,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Polisi mi haram al",
+"cer": 0.278
+},
+"fahrettin_l3a_5": {
+"dur": 1.13,
+"med": 105.1,
+"rng": 15.86,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Boris'i mi haram",
+"cer": 0.5
+},
+"fahrettin_l3a_6": {
+"dur": 1.17,
+"med": 107.1,
+"rng": 15.69,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Polisi mi haram alayım",
+"cer": 0.111
+},
+"fahrettin_l3a_7": {
+"dur": 1.14,
+"med": 102.0,
+"rng": 14.42,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "Polisi mi harama al",
+"cer": 0.333
+},
+"fahrettin_l3b_0": {
+"dur": 1.59,
+"med": 105.3,
+"rng": 14.09,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "Yoksa o kapı match malıyım",
+"cer": 0.261
+},
+"fahrettin_l3b_1": {
+"dur": 1.68,
+"med": 106.6,
+"rng": 15.47,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Yoksa kapı match malim.",
+"cer": 0.435
+},
+"fahrettin_l3b_2": {
+"dur": 1.61,
+"med": 103.2,
+"rng": 14.91,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Yoksa o kapı imaç mal",
+"cer": 0.304
+},
+"fahrettin_l3b_3": {
+"dur": 1.59,
+"med": 110.7,
+"rng": 14.79,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Yoksa o kapı maç malin",
+"cer": 0.304
+},
+"fahrettin_l3b_4": {
+"dur": 1.67,
+"med": 109.4,
+"rng": 14.87,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Yoksa kapıyı maaşmalıyım.",
+"cer": 0.13
+},
+"fahrettin_l3b_5": {
+"dur": 1.63,
+"med": 109.6,
+"rng": 14.07,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Yoksa o kapı imaç mal",
+"cer": 0.304
+},
+"fahrettin_l3b_6": {
+"dur": 1.67,
+"med": 104.5,
+"rng": 13.47,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Yoksa o kapıyı maaşmalıyım",
+"cer": 0.087
+},
+"fahrettin_l3b_7": {
+"dur": 1.63,
+"med": 107.2,
+"rng": 15.0,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "Yoksa o kapı imaçmal",
+"cer": 0.304
+},
+"fahrettin_l4_0": {
+"dur": 1.11,
+"med": 97.2,
+"rng": 18.97,
+"ns": 0.667,
+"nw": 0.8,
+"asr": "Kararız siz verin",
+"cer": 0.071
+},
+"fahrettin_l4_1": {
+"dur": 1.21,
+"med": 98.1,
+"rng": 10.1,
+"ns": 0.8,
+"nw": 0.8,
+"asr": "Katara siz verin.",
+"cer": 0.143
+},
+"fahrettin_l4_2": {
+"dur": 1.21,
+"med": 98.4,
+"rng": 7.49,
+"ns": 0.9,
+"nw": 0.8,
+"asr": "Karar siz verin.",
+"cer": 0.071
+},
+"fahrettin_l4_3": {
+"dur": 1.13,
+"med": 107.4,
+"rng": 8.16,
+"ns": 1.0,
+"nw": 0.8,
+"asr": "Karar siz verin.",
+"cer": 0.071
+},
+"fahrettin_l4_4": {
+"dur": 1.22,
+"med": 96.7,
+"rng": 6.87,
+"ns": 0.667,
+"nw": 1.0,
+"asr": "Karar siz verin.",
+"cer": 0.071
+},
+"fahrettin_l4_5": {
+"dur": 1.15,
+"med": 96.7,
+"rng": 7.64,
+"ns": 0.8,
+"nw": 1.0,
+"asr": "Karar siz verin.",
+"cer": 0.071
+},
+"fahrettin_l4_6": {
+"dur": 1.13,
+"med": 106.1,
+"rng": 7.45,
+"ns": 0.9,
+"nw": 1.0,
+"asr": "Karar siz verin.",
+"cer": 0.071
+},
+"fahrettin_l4_7": {
+"dur": 1.21,
+"med": 104.6,
+"rng": 7.25,
+"ns": 1.0,
+"nw": 1.0,
+"asr": "Kazarız siz veydin",
+"cer": 0.286
+}
+}

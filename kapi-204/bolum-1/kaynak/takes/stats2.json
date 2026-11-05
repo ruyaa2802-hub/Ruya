@@ -1,0 +1,578 @@
+{
+"fahrettin_l3a1_0": {
+"cer": 0.125,
+"rng": 11.37,
+"dur": 0.67,
+"asr": "Polisime",
+"ls": 1.2,
+"ns": 0.667
+},
+"fahrettin_l3a1_1": {
+"cer": 0.0,
+"rng": 9.16,
+"dur": 0.75,
+"asr": "Polisimi",
+"ls": 1.3,
+"ns": 0.667
+},
+"fahrettin_l3a1_2": {
+"cer": 0.125,
+"rng": 15.61,
+"dur": 0.82,
+"asr": "Polisime",
+"ls": 1.4,
+"ns": 0.667
+},
+"fahrettin_l3a1_3": {
+"cer": 0.125,
+"rng": 10.85,
+"dur": 0.67,
+"asr": "Polis mi mi",
+"ls": 1.2,
+"ns": 0.8
+},
+"fahrettin_l3a1_4": {
+"cer": 0.0,
+"rng": 5.36,
+"dur": 0.72,
+"asr": "Polisimi",
+"ls": 1.3,
+"ns": 0.8
+},
+"fahrettin_l3a1_5": {
+"cer": 0.125,
+"rng": 8.59,
+"dur": 0.78,
+"asr": "Polis mi?",
+"ls": 1.4,
+"ns": 0.8
+},
+"fahrettin_l3a1_6": {
+"cer": 0.5,
+"rng": 5.66,
+"dur": 0.68,
+"asr": "Polis emret",
+"ls": 1.2,
+"ns": 0.9
+},
+"fahrettin_l3a1_7": {
+"cer": 0.125,
+"rng": 6.39,
+"dur": 0.75,
+"asr": "Polisime",
+"ls": 1.3,
+"ns": 0.9
+},
+"fahrettin_l3a1_8": {
+"cer": 0.125,
+"rng": 15.69,
+"dur": 0.86,
+"asr": "Polisime",
+"ls": 1.4,
+"ns": 0.9
+},
+"fahrettin_l3a1_9": {
+"cer": 0.125,
+"rng": 5.89,
+"dur": 0.72,
+"asr": "Polisime",
+"ls": 1.2,
+"ns": 1.0
+},
+"fahrettin_l3a1_10": {
+"cer": 0.0,
+"rng": 6.39,
+"dur": 0.73,
+"asr": "Polisimi",
+"ls": 1.3,
+"ns": 1.0
+},
+"fahrettin_l3a1_11": {
+"cer": 0.375,
+"rng": 9.62,
+"dur": 0.81,
+"asr": "Polis'e",
+"ls": 1.4,
+"ns": 1.0
+},
+"fahrettin_l3a2_0": {
+"cer": 0.2,
+"rng": 6.04,
+"dur": 0.8,
+"asr": "Aramadayım",
+"ls": 1.2,
+"ns": 0.667
+},
+"fahrettin_l3a2_1": {
+"cer": 0.0,
+"rng": 5.79,
+"dur": 1.06,
+"asr": "Aramalıyım.",
+"ls": 1.3,
+"ns": 0.667
+},
+"fahrettin_l3a2_2": {
+"cer": 0.0,
+"rng": 6.01,
+"dur": 1.13,
+"asr": "Aramalıyım.",
+"ls": 1.4,
+"ns": 0.667
+},
+"fahrettin_l3a2_3": {
+"cer": 0.3,
+"rng": 8.2,
+"dur": 0.81,
+"asr": "Alamadayım",
+"ls": 1.2,
+"ns": 0.8
+},
+"fahrettin_l3a2_4": {
+"cer": 0.6,
+"rng": 6.41,
+"dur": 1.13,
+"asr": "Ama diyeyim.",
+"ls": 1.3,
+"ns": 0.8
+},
+"fahrettin_l3a2_5": {
+"cer": 0.0,
+"rng": 6.4,
+"dur": 0.95,
+"asr": "Aramalıyım",
+"ls": 1.4,
+"ns": 0.8
+},
+"fahrettin_l3a2_6": {
+"cer": 0.2,
+"rng": 4.94,
+"dur": 0.81,
+"asr": "Aramadayım",
+"ls": 1.2,
+"ns": 0.9
+},
+"fahrettin_l3a2_7": {
+"cer": 0.2,
+"rng": 5.17,
+"dur": 0.81,
+"asr": "Aramalıy",
+"ls": 1.3,
+"ns": 0.9
+},
+"fahrettin_l3a2_8": {
+"cer": 0.1,
+"rng": 5.35,
+"dur": 0.95,
+"asr": "Aramanıyım.",
+"ls": 1.4,
+"ns": 0.9
+},
+"fahrettin_l3a2_9": {
+"cer": 0.7,
+"rng": 16.47,
+"dur": 0.84,
+"asr": "Amarin",
+"ls": 1.2,
+"ns": 1.0
+},
+"fahrettin_l3a2_10": {
+"cer": 0.8,
+"rng": 5.45,
+"dur": 0.86,
+"asr": "Amin.",
+"ls": 1.3,
+"ns": 1.0
+},
+"fahrettin_l3a2_11": {
+"cer": 0.7,
+"rng": 6.15,
+"dur": 0.89,
+"asr": "Ama değil",
+"ls": 1.4,
+"ns": 1.0
+},
+"fahrettin_l3b1_0": {
+"cer": 0.4,
+"rng": 8.94,
+"dur": 0.6,
+"asr": "Yöks",
+"ls": 1.2,
+"ns": 0.667
+},
+"fahrettin_l3b1_1": {
+"cer": 0.0,
+"rng": 9.15,
+"dur": 0.71,
+"asr": "Yoksa.",
+"ls": 1.3,
+"ns": 0.667
+},
+"fahrettin_l3b1_2": {
+"cer": 0.0,
+"rng": 5.37,
+"dur": 0.73,
+"asr": "Yoksa",
+"ls": 1.4,
+"ns": 0.667
+},
+"fahrettin_l3b1_3": {
+"cer": 0.4,
+"rng": 6.44,
+"dur": 0.57,
+"asr": "Yöks",
+"ls": 1.2,
+"ns": 0.8
+},
+"fahrettin_l3b1_4": {
+"cer": 0.0,
+"rng": 5.37,
+"dur": 0.7,
+"asr": "Yoksa",
+"ls": 1.3,
+"ns": 0.8
+},
+"fahrettin_l3b1_5": {
+"cer": 0.0,
+"rng": 8.11,
+"dur": 0.75,
+"asr": "Yoksa",
+"ls": 1.4,
+"ns": 0.8
+},
+"fahrettin_l3b1_6": {
+"cer": 0.0,
+"rng": 7.28,
+"dur": 0.62,
+"asr": "Yoksa?",
+"ls": 1.2,
+"ns": 0.9
+},
+"fahrettin_l3b1_7": {
+"cer": 0.6,
+"rng": 6.76,
+"dur": 0.63,
+"asr": "Yöps",
+"ls": 1.3,
+"ns": 0.9
+},
+"fahrettin_l3b1_8": {
+"cer": 0.2,
+"rng": 13.68,
+"dur": 0.64,
+"asr": "Yoksat",
+"ls": 1.4,
+"ns": 0.9
+},
+"fahrettin_l3b1_9": {
+"cer": 0.0,
+"rng": 10.74,
+"dur": 0.66,
+"asr": "yoksa",
+"ls": 1.2,
+"ns": 1.0
+},
+"fahrettin_l3b1_10": {
+"cer": 0.4,
+"rng": 4.95,
+"dur": 0.68,
+"asr": "Yöksal",
+"ls": 1.3,
+"ns": 1.0
+},
+"fahrettin_l3b1_11": {
+"cer": 0.0,
+"rng": 10.98,
+"dur": 0.73,
+"asr": "yoksa",
+"ls": 1.4,
+"ns": 1.0
+},
+"fahrettin_l3b2_0": {
+"cer": 0.333,
+"rng": 15.07,
+"dur": 1.29,
+"asr": "O kapı maç malim",
+"ls": 1.2,
+"ns": 0.667
+},
+"fahrettin_l3b2_1": {
+"cer": 0.278,
+"rng": 14.14,
+"dur": 1.57,
+"asr": "O kapıyı maç malin.",
+"ls": 1.3,
+"ns": 0.667
+},
+"fahrettin_l3b2_2": {
+"cer": 0.111,
+"rng": 13.26,
+"dur": 1.58,
+"asr": "O kapıyı açmalıyım.",
+"ls": 1.4,
+"ns": 0.667
+},
+"fahrettin_l3b2_3": {
+"cer": 0.111,
+"rng": 13.58,
+"dur": 1.27,
+"asr": "O kapıyı mı açmalıy",
+"ls": 1.2,
+"ns": 0.8
+},
+"fahrettin_l3b2_4": {
+"cer": 0.0,
+"rng": 14.81,
+"dur": 1.5,
+"asr": "O kapıyı mı açmalıyım?",
+"ls": 1.3,
+"ns": 0.8
+},
+"fahrettin_l3b2_5": {
+"cer": 0.556,
+"rng": 14.07,
+"dur": 1.52,
+"asr": "O kapı match malin.",
+"ls": 1.4,
+"ns": 0.8
+},
+"fahrettin_l3b2_6": {
+"cer": 0.222,
+"rng": 14.28,
+"dur": 1.35,
+"asr": "...ob kapıyı maçmalıy",
+"ls": 1.2,
+"ns": 0.9
+},
+"fahrettin_l3b2_7": {
+"cer": 0.111,
+"rng": 14.7,
+"dur": 1.51,
+"asr": "O kapıyı açmalıyım.",
+"ls": 1.3,
+"ns": 0.9
+},
+"fahrettin_l3b2_8": {
+"cer": 0.0,
+"rng": 13.81,
+"dur": 1.6,
+"asr": "O kapıyı mı açmalıyım?",
+"ls": 1.4,
+"ns": 0.9
+},
+"fahrettin_l3b2_9": {
+"cer": 0.0,
+"rng": 13.9,
+"dur": 1.39,
+"asr": "O kapıyı mı açmalıyım",
+"ls": 1.2,
+"ns": 1.0
+},
+"fahrettin_l3b2_10": {
+"cer": 0.056,
+"rng": 14.2,
+"dur": 1.51,
+"asr": "O kapıyı mı açmalıyın?",
+"ls": 1.3,
+"ns": 1.0
+},
+"fahrettin_l3b2_11": {
+"cer": 0.278,
+"rng": 14.66,
+"dur": 1.45,
+"asr": "O kapıyı maç malin.",
+"ls": 1.4,
+"ns": 1.0
+},
+"fahrettin_l4a_0": {
+"cer": 0.167,
+"rng": 5.74,
+"dur": 0.35,
+"asr": "Karar",
+"ls": 1.2,
+"ns": 0.667
+},
+"fahrettin_l4a_1": {
+"cer": 0.333,
+"rng": 18.06,
+"dur": 0.43,
+"asr": "Kasar",
+"ls": 1.3,
+"ns": 0.667
+},
+"fahrettin_l4a_2": {
+"cer": 0.333,
+"rng": 7.18,
+"dur": 0.51,
+"asr": "Karada",
+"ls": 1.4,
+"ns": 0.667
+},
+"fahrettin_l4a_3": {
+"cer": 0.167,
+"rng": 5.97,
+"dur": 0.43,
+"asr": "Karar",
+"ls": 1.2,
+"ns": 0.8
+},
+"fahrettin_l4a_4": {
+"cer": 0.5,
+"rng": 7.51,
+"dur": 0.41,
+"asr": "Kazade",
+"ls": 1.3,
+"ns": 0.8
+},
+"fahrettin_l4a_5": {
+"cer": 0.667,
+"rng": 5.76,
+"dur": 0.49,
+"asr": "Kad",
+"ls": 1.4,
+"ns": 0.8
+},
+"fahrettin_l4a_6": {
+"cer": 0.667,
+"rng": 6.92,
+"dur": 0.39,
+"asr": "Tata",
+"ls": 1.2,
+"ns": 0.9
+},
+"fahrettin_l4a_7": {
+"cer": 0.667,
+"rng": 5.23,
+"dur": 0.44,
+"asr": "Kahret",
+"ls": 1.3,
+"ns": 0.9
+},
+"fahrettin_l4a_8": {
+"cer": 0.5,
+"rng": 5.34,
+"dur": 0.5,
+"asr": "Kasale",
+"ls": 1.4,
+"ns": 0.9
+},
+"fahrettin_l4a_9": {
+"cer": 0.5,
+"rng": 7.9,
+"dur": 0.38,
+"asr": "Kasaret",
+"ls": 1.2,
+"ns": 1.0
+},
+"fahrettin_l4a_10": {
+"cer": 0.5,
+"rng": 5.68,
+"dur": 0.6,
+"asr": "Kazade",
+"ls": 1.3,
+"ns": 1.0
+},
+"fahrettin_l4a_11": {
+"cer": 0.5,
+"rng": 9.07,
+"dur": 0.44,
+"asr": "Kalade",
+"ls": 1.4,
+"ns": 1.0
+},
+"fahrettin_l4b_0": {
+"cer": 0.0,
+"rng": 7.92,
+"dur": 0.84,
+"asr": "Siz verin.",
+"ls": 1.2,
+"ns": 0.667
+},
+"fahrettin_l4b_1": {
+"cer": 0.0,
+"rng": 7.89,
+"dur": 0.88,
+"asr": "Siz verin.",
+"ls": 1.3,
+"ns": 0.667
+},
+"fahrettin_l4b_2": {
+"cer": 0.0,
+"rng": 7.04,
+"dur": 0.95,
+"asr": "Siz verin.",
+"ls": 1.4,
+"ns": 0.667
+},
+"fahrettin_l4b_3": {
+"cer": 0.0,
+"rng": 9.56,
+"dur": 0.8,
+"asr": "Siz verin.",
+"ls": 1.2,
+"ns": 0.8
+},
+"fahrettin_l4b_4": {
+"cer": 0.0,
+"rng": 8.05,
+"dur": 0.89,
+"asr": "Siz verin.",
+"ls": 1.3,
+"ns": 0.8
+},
+"fahrettin_l4b_5": {
+"cer": 0.125,
+"rng": 14.24,
+"dur": 0.99,
+"asr": "Sez verin.",
+"ls": 1.4,
+"ns": 0.8
+},
+"fahrettin_l4b_6": {
+"cer": 0.0,
+"rng": 7.43,
+"dur": 0.81,
+"asr": "Siz verin.",
+"ls": 1.2,
+"ns": 0.9
+},
+"fahrettin_l4b_7": {
+"cer": 0.0,
+"rng": 7.3,
+"dur": 0.88,
+"asr": "Siz verin.",
+"ls": 1.3,
+"ns": 0.9
+},
+"fahrettin_l4b_8": {
+"cer": 0.0,
+"rng": 7.4,
+"dur": 0.98,
+"asr": "Siz verin.",
+"ls": 1.4,
+"ns": 0.9
+},
+"fahrettin_l4b_9": {
+"cer": 0.0,
+"rng": 9.51,
+"dur": 0.74,
+"asr": "Siz verin.",
+"ls": 1.2,
+"ns": 1.0
+},
+"fahrettin_l4b_10": {
+"cer": 0.0,
+"rng": 6.52,
+"dur": 0.88,
+"asr": "Siz verin.",
+"ls": 1.3,
+"ns": 1.0
+},
+"fahrettin_l4b_11": {
+"cer": 0.0,
+"rng": 9.29,
+"dur": 0.99,
+"asr": "Siz verin.",
+"ls": 1.4,
+"ns": 1.0
+}
+}
