@@ -132,8 +132,13 @@ def _leaf(length, width, bend):
     return verts, faces
 
 
-def build(exclude=()):
-    """exclude: names of props to leave out (e.g. "mug" when the mug is a character)."""
+DOOR_Y = (-2.0, -1.1)          # door opening in the left wall (y range), 2.05 m high, hinge at DOOR_Y[1]
+DOOR_H = 2.05
+
+
+def build(exclude=(), door=False):
+    """exclude: names of props to leave out (e.g. "mug" when the mug is a character).
+    door: cut a door into the left wall (hinged empty "door_hinge", swings out into a dim hallway)."""
     col = collection("Set")
     floor_m = M.wood("floor_oak", light=(0.66, 0.45, 0.26), dark=(0.38, 0.21, 0.1), roughness=0.4,
                      planks=True, scale=1.2, coat=0.35)
@@ -150,11 +155,48 @@ def build(exclude=()):
     box("wall_back", (6, 0.1, 3.2), (0, 1.6, 1.6), wall_m, col)
     box("baseboard_back", (6, 0.02, 0.1), (0, 1.545, 0.05), trim_m, col)
     wx = -1.75     # left wall with a window: y in [-0.6, 0.6], z in [0.9, 2.2]
-    box("wall_left_a", (0.1, 2.4, 3.2), (wx, -1.8, 1.6), wall2_m, col)
+    if door:
+        d0, d1 = DOOR_Y
+        box("wall_left_a1", (0.1, d0 + 3.0, 3.2), (wx, (d0 - 3.0) / 2, 1.6), wall2_m, col)
+        box("wall_left_a2", (0.1, -0.6 - d1, 3.2), (wx, (d1 - 0.6) / 2, 1.6), wall2_m, col)
+        box("wall_left_lintel", (0.1, d1 - d0, 3.2 - DOOR_H), (wx, (d0 + d1) / 2, (3.2 + DOOR_H) / 2), wall2_m, col)
+        for k, y in enumerate((d0, d1)):                        # casing around the opening
+            box(f"door_jamb_{k}", (0.14, 0.07, DOOR_H + 0.06), (wx, y + (0.035 if k == 0 else -0.035),
+                                                                  (DOOR_H + 0.06) / 2), trim_m, col, bevel=0.006)
+        box("door_head", (0.14, d1 - d0, 0.07), (wx, (d0 + d1) / 2, DOOR_H + 0.03), trim_m, col, bevel=0.006)
+        hinge = bpy.data.objects.new("door_hinge", None)
+        link(hinge, col)
+        hinge.location = (wx, d1 - 0.07, 0.0)
+        door_m = M.paint("door_cream", (0.9, 0.86, 0.76), roughness=0.4, texture=0.01)
+        w = d1 - d0 - 0.14
+        panel = box("door_panel", (0.045, w, DOOR_H - 0.02), (wx, d1 - 0.07 - w / 2, DOOR_H / 2), door_m, col,
+                    bevel=0.008)
+        parts = [panel]
+        for z0 in (0.35, 1.2):                                  # two raised panels
+            parts.append(box("door_inset", (0.012, w * 0.7, 0.62), (wx + 0.026, d1 - 0.07 - w / 2, z0 + 0.31),
+                             door_m, col, bevel=0.004))
+        knob = cylinder("door_knob", 0.028, 0.05, (wx + 0.045, d0 + 0.14, 1.0),
+                        M.metal("knob_brass", (0.85, 0.65, 0.3), 0.25), col)
+        knob.rotation_euler = (0, math.pi / 2, 0)
+        parts.append(knob)
+        bpy.context.view_layer.update()
+        for ob in parts:
+            ob.parent = hinge
+            ob.matrix_parent_inverse = hinge.matrix_world.inverted()
+        # the hallway behind: a darker wall and floor strip
+        box("hall_wall", (0.1, 2.6, 3.2), (wx - 1.1, (d0 + d1) / 2, 1.6), M.paint("hall_blue", (0.3, 0.34, 0.5)), col)
+        box("hall_side_a", (1.1, 0.1, 3.2), (wx - 0.55, d0 - 0.45, 1.6), M.paint("hall_blue2", (0.3, 0.34, 0.5)), col)
+        box("hall_side_b", (1.1, 0.1, 3.2), (wx - 0.55, d1 + 0.45, 1.6), M.paint("hall_blue3", (0.3, 0.34, 0.5)), col)
+    else:
+        box("wall_left_a", (0.1, 2.4, 3.2), (wx, -1.8, 1.6), wall2_m, col)
     box("wall_left_b", (0.1, 1.0, 3.2), (wx, 1.1, 1.6), wall2_m, col)
     box("wall_left_low", (0.1, 1.2, 0.9), (wx, 0.0, 0.45), wall2_m, col)
     box("wall_left_high", (0.1, 1.2, 1.0), (wx, 0.0, 2.7), wall2_m, col)
-    box("baseboard_left", (0.02, 6, 0.1), (wx + 0.055, 0, 0.05), trim_m, col)
+    if door:
+        box("baseboard_left_a", (0.02, DOOR_Y[0] + 3, 0.1), (wx + 0.055, (DOOR_Y[0] - 3) / 2, 0.05), trim_m, col)
+        box("baseboard_left_b", (0.02, 3 - DOOR_Y[1], 0.1), (wx + 0.055, (DOOR_Y[1] + 3) / 2, 0.05), trim_m, col)
+    else:
+        box("baseboard_left", (0.02, 6, 0.1), (wx + 0.055, 0, 0.05), trim_m, col)
     box("sill", (0.22, 1.3, 0.04), (wx + 0.05, 0.0, 0.9), trim_m, col, bevel=0.008)
     box("mullion", (0.05, 0.04, 1.3), (wx, 0.0, 1.55), trim_m, col)
     box("transom", (0.05, 1.2, 0.04), (wx, 0.0, 1.75), trim_m, col)
@@ -330,7 +372,8 @@ def build(exclude=()):
     return col
 
 
-def lighting(sun_strength=4.0):
+def lighting(sun_strength=4.0, night=False):
+    """night: moonlight through the window, dim blue fill, fairy lights and a hallway night-light."""
     scene = bpy.context.scene
     world = bpy.data.worlds.new("World")
     scene.world = world
@@ -371,6 +414,20 @@ def lighting(sun_strength=4.0):
         obj.rotation_euler = d.to_track_quat("-Z", "Y").to_euler()
         return obj
 
+    if night:
+        for lk in list(bg.inputs["Color"].links):
+            nt.links.remove(lk)
+        bg.inputs["Color"].default_value = (0.015, 0.022, 0.06, 1)
+        bg.inputs["Strength"].default_value = 0.25
+        sun.energy = sun_strength * 0.12
+        sun.color = (0.5, 0.64, 1.0)
+        area("Fill", 8, 2.5, (2.4, -3.0, 1.6), (0.4, 0.2, 0.6), color=(0.4, 0.5, 1.0))
+        area("Rim", 6, 1.2, (-1.0, 1.4, 2.2), (0.5, -0.2, 0.5), color=(1.0, 0.65, 0.4))
+        area("Window", 11, 1.2, (-1.85, 0.0, 1.5), (0.0, 0.0, 0.6), color=(0.42, 0.58, 1.0), size_y=1.3)
+        area("FairyGlow", 4, 1.6, (0.0, 0.9, 1.45), (0.0, 0.3, 0.6), color=(1.0, 0.6, 0.28), size_y=0.3)
+        area("HallLight", 90, 0.4, (-2.6, (DOOR_Y[0] + DOOR_Y[1]) / 2, 2.4), (-2.4, (DOOR_Y[0] + DOOR_Y[1]) / 2, 0.0),
+             color=(1.0, 0.7, 0.4))
+        return
     area("Fill", 55, 2.5, (2.4, -3.0, 1.6), (0.4, 0.2, 0.6), color=(0.8, 0.88, 1.0))
     area("Rim", 60, 1.2, (-1.0, 1.4, 2.2), (0.5, -0.2, 0.5), color=(1.0, 0.85, 0.7))
     area("Window", 90, 1.2, (-1.85, 0.0, 1.5), (0.0, 0.0, 0.6), color=(0.9, 0.95, 1.0), size_y=1.3)

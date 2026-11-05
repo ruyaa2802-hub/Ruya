@@ -195,11 +195,41 @@ def hum(dur=20.0, bpm=96, seed=41):
     return _norm(_room(_band(mix, 70, 8000), 0.6, 0.3, seed)[:n], -6)
 
 
+def tension(dur=18.0, seed=51):
+    """Creeping night tension in D minor: a low drone with a slow swell, a pulsing heartbeat bass,
+    sparse high glassy notes and a rising tremolo string, getting tighter toward the end."""
+    rng = np.random.default_rng(seed)
+    n = int(SR * dur)
+    t = np.arange(n) / SR
+    grow = (t / dur) ** 1.3
+    drone = sum(a * np.sin(2 * np.pi * f * t + rng.random() * 6) for f, a in ((73.4, 1.0), (110.0, 0.5),
+                                                                            (146.8, 0.3), (155.6, 0.12 + 0.2 * grow)))
+    drone *= 0.6 + 0.4 * np.sin(2 * np.pi * t / 5.7) ** 2
+    pulse = np.zeros(n)
+    beat = 60 / 84
+    k = 0.0
+    while k < dur:
+        i = int(k * SR)
+        tt = np.arange(int(0.3 * SR)) / SR
+        hit = np.sin(2 * np.pi * 55 * tt) * np.exp(-tt * 14)
+        pulse[i:i + len(tt)] += hit[: n - i]
+        k += beat * (1.0 if k < dur * 0.6 else 0.5)                      # doubles up as it closes in
+    glass = np.zeros(n + SR * 3)
+    for k, name in enumerate(["A5", "F5", "E5", "D6", "C#6", "A5", "Bb5", "A5"]):
+        _add(glass, int((1.0 + k * 2.1) * SR), np.sin(2 * np.pi * freq(name) * np.arange(int(2.5 * SR)) / SR)
+             * np.exp(-np.arange(int(2.5 * SR)) / SR * 1.6) * 0.5)
+    trem = np.sin(2 * np.pi * freq("D5") * (1 + 0.06 * grow) * t) * (0.5 + 0.5 * np.sin(2 * np.pi * 9 * t)) * grow
+    mix = _norm(drone, -6) + _norm(pulse, -9) * 0.9 + _norm(glass[:n], -10) * 0.7 + _norm(trem, -12) * 0.8
+    mix *= np.minimum(1, t / 1.5)
+    return _norm(_room(_band(mix, 35, 9000), 1.2, 0.45, seed)[:n], -6)
+
+
 def write_all(folder):
     os.makedirs(folder, exist_ok=True)
     sf.write(os.path.join(folder, "music_sneaky.wav"), sneaky().astype(np.float32), SR)
     sf.write(os.path.join(folder, "music_playful.wav"), playful().astype(np.float32), SR)
     sf.write(os.path.join(folder, "music_hum.wav"), hum().astype(np.float32), SR)
+    sf.write(os.path.join(folder, "music_tension.wav"), tension().astype(np.float32), SR)
 
 
 if __name__ == "__main__":

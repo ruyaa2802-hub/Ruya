@@ -1,0 +1,30 @@
+[
+ {
+  "word": "Ben",
+  "start": 0.0,
+  "end": 0.2,
+  "p": 0.816,
+  "asr": "Ben"
+ },
+ {
+  "word": "sadece",
+  "start": 0.2,
+  "end": 0.48,
+  "p": 0.968,
+  "asr": "sadece"
+ },
+ {
+  "word": "huzur",
+  "start": 0.48,
+  "end": 0.8,
+  "p": 0.968,
+  "asr": "huzur"
+ },
+ {
+  "word": "istedim…",
+  "start": 0.8,
+  "end": 1.16,
+  "p": 0.97,
+  "asr": "istedim."
+ }
+]

@@ -7,3 +7,5 @@ episodes/*/audio/test/
 episodes/*/audio/paced/*.tmp.wav
 assets/sfx/
 assets/piper/
+episodes/*/audio/test/p/
+episodes/*/audio/test/crop/

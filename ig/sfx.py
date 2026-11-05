@@ -319,11 +319,121 @@ def room_tone(dur, seed=7):
     return _norm(x, -48)
 
 
+def snore(seed=30, dur=4.4, period=2.2):
+    """A sleeper's slow snore: a rasping, low, throaty inhale then a soft breath out."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    ph = (t % period) / period
+    inhale = np.clip(np.sin(np.clip(ph / 0.45, 0, 1) * np.pi), 0, 1) ** 1.5
+    exhale = np.clip(np.sin(np.clip((ph - 0.5) / 0.4, 0, 1) * np.pi), 0, 1) * 0.35
+    flutter = 0.55 + 0.45 * np.sign(np.sin(2 * np.pi * (28 + 6 * ph) * t))          # soft palate rattle
+    noise = rng.standard_normal(len(t))
+    x = _band(noise, 90, 700) * inhale * flutter + _band(noise, 400, 2500) * exhale * 0.4
+    x += np.sin(2 * np.pi * 85 * t) * inhale * flutter * 0.25
+    return _norm(_room(x, 0.3, 0.2, seed), -6)
+
+
+def creak(seed=31, dur=1.1):
+    """A slow door hinge creak: a stick-slip squeal gliding in pitch."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    f = 380 + 260 * np.sin(np.pi * t / dur) + 40 * np.sin(2 * np.pi * 3.1 * t)
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    grain = (np.abs(rng.standard_normal(len(t))) > 1.6).astype(float)
+    grain = np.convolve(grain, np.hanning(60), mode="same")
+    x = (np.sin(ph) + 0.5 * np.sin(2 * ph) + 0.3 * np.sin(3.1 * ph)) * (0.4 + 0.6 * np.clip(grain, 0, 1))
+    env = np.sin(np.pi * t / dur) ** 0.6
+    return _norm(_room(_band(x * env, 200, 5000), 0.4, 0.3, seed), -4)
+
+
+def sigh(seed=32, dur=1.1):
+    """A long breathy exhale."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    env = np.minimum(1, t / 0.12) * np.exp(-np.maximum(t - 0.12, 0) * 2.6)
+    x = _band(rng.standard_normal(len(t)), 300, 3500) * env
+    x += _band(rng.standard_normal(len(t)), 900, 1400) * env * 0.6           # a vowel-ish 'hhh-aa'
+    return _norm(_room(x, 0.25, 0.2, seed), -10)
+
+
+def heartbeat(seed=33, beats=6, bpm=96):
+    t_beat = 60 / bpm
+    out = np.zeros(int(SR * (beats * t_beat + 0.5)))
+    for k in range(beats):
+        for off, amp in ((0.0, 1.0), (0.17, 0.65)):
+            i = int((k * t_beat + off) * SR)
+            tt = _t(0.18)
+            thump = np.sin(2 * np.pi * (55 - 20 * tt / 0.18) * tt) * np.exp(-tt * 28) * amp
+            out[i:i + len(tt)] += thump[: len(out) - i]
+    return _norm(out, -3)
+
+
+def sting(seed=34, dur=2.4):
+    """Tension hit: a low boom, a dissonant cluster swell and a high scrape."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    boom = np.sin(2 * np.pi * (48 - 14 * np.minimum(t, 0.5)) * t) * np.exp(-t * 3.2)
+    cluster = sum(np.sin(2 * np.pi * f * t + rng.random() * 6) for f in (311, 330, 466, 494)) * \
+        np.exp(-t * 1.4) * np.minimum(1, t / 0.05) * 0.18
+    scrape = _band(rng.standard_normal(len(t)), 3000, 9000) * np.exp(-t * 4) * 0.25
+    return _norm(_room(boom + cluster + scrape, 0.9, 0.4, seed), -2)
+
+
+def night_amb(dur=14.0, seed=35):
+    """Bedroom at night: faint crickets through the window and a clock ticking."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    chirp = np.zeros(len(t))
+    k = 0.3
+    while k < dur - 0.3:
+        i = int(k * SR)
+        tt = _t(0.16)
+        c = np.sin(2 * np.pi * 4300 * tt) * (np.sin(2 * np.pi * 30 * tt) > 0) * np.sin(np.pi * tt / 0.16)
+        chirp[i:i + len(tt)] += c[: len(chirp) - i] * rng.uniform(0.4, 1.0)
+        k += rng.uniform(0.45, 0.9)
+    tick = np.zeros(len(t))
+    for k in np.arange(0.2, dur, 1.0):
+        i = int(k * SR)
+        tt = _t(0.02)
+        tick[i:i + len(tt)] += _band(rng.standard_normal(len(tt)), 2000, 7000)[: len(tick) - i] * np.exp(-tt * 300)
+    return _norm(_band(chirp, 3000, 6000) * 0.25 + tick * 0.5 + room_tone(dur, seed) * 30, -14)
+
+
+def street_amb(dur=20.0, seed=36):
+    """Empty street at night: a low wind, distant traffic rumble, a far-off dog-less hush."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    wind = _band(rng.standard_normal(len(t)), 150, 900) * (0.6 + 0.4 * np.sin(2 * np.pi * t / 6.3) ** 2)
+    rumble = _band(np.cumsum(rng.standard_normal(len(t))), 30, 120) * 0.002
+    drip = np.zeros(len(t))
+    for k in np.cumsum(rng.uniform(0.7, 1.9, 40)):
+        if k < dur - 0.1:
+            i = int(k * SR)
+            tt = _t(0.05)
+            drip[i:i + len(tt)] += (np.sin(2 * np.pi * (1800 - 6000 * tt) * tt) * np.exp(-tt * 90))[: len(drip) - i]
+    return _norm(wind * 0.5 + rumble + drip * 0.15, -12)
+
+
+def scuttle(seed=37, dur=0.7):
+    """Something small scurrying behind the bins (claws on asphalt, a can tipping)."""
+    rng = np.random.default_rng(seed)
+    out = np.zeros(int(SR * dur))
+    k = 0.0
+    while k < dur - 0.06:
+        i = int(k * SR)
+        tt = _t(0.025)
+        out[i:i + len(tt)] += _band(rng.standard_normal(len(tt)), 2500, 8000)[: len(out) - i] * np.exp(-tt * 200)
+        k += rng.uniform(0.03, 0.07)
+    return _norm(_room(out, 0.4, 0.3, seed), -6)
+
+
 EFFECTS = {"door_slam": door_slam, "keys": keys, "rustle": rustle, "rustle_long": lambda: rustle(8, 1.4),
            "poof": poof, "whoosh": whoosh, "sniff": sniff, "chatter": chatter, "clink": clink, "ding": ding,
            "jitter": jitter, "fridge_open": fridge_open, "fridge_close": fridge_close,
            "fridge_hum": fridge_hum, "footsteps": footsteps, "rattle": rattle, "siren": siren, "bloop": bloop,
-           "thunk": thunk, "hangup": hangup, "ringtone": ringtone, "buzz": buzz, "rimshot": rimshot}
+           "thunk": thunk, "hangup": hangup, "ringtone": ringtone, "buzz": buzz, "rimshot": rimshot,
+           "snore": snore, "creak": creak, "sigh": sigh, "heartbeat": heartbeat, "sting": sting,
+           "night_amb": night_amb, "street_amb": street_amb, "scuttle": scuttle}
 
 
 def write_all(folder):

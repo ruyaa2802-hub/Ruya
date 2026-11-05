@@ -1,0 +1,37 @@
+[
+ {
+  "word": "Kararı",
+  "start": 0.0,
+  "end": 0.48,
+  "p": 0.878,
+  "asr": "Kararı"
+ },
+ {
+  "word": "siz",
+  "start": 0.48,
+  "end": 0.64,
+  "p": 0.989,
+  "asr": "siz"
+ },
+ {
+  "word": "verin,",
+  "start": 0.64,
+  "end": 0.98,
+  "p": 0.964,
+  "asr": "verin,"
+ },
+ {
+  "word": "yorumlara",
+  "start": 1.06,
+  "end": 1.48,
+  "p": 0.981,
+  "asr": "yorumlara"
+ },
+ {
+  "word": "yazın!",
+  "start": 1.48,
+  "end": 1.82,
+  "p": 0.999,
+  "asr": "yazın."
+ }
+]

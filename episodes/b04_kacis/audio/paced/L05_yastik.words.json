@@ -1,0 +1,16 @@
+[
+ {
+  "word": "Özgürlük…",
+  "start": 0.0,
+  "end": 0.58,
+  "p": 0.991,
+  "asr": "Özgürlük,"
+ },
+ {
+  "word": "sonunda!",
+  "start": 0.72,
+  "end": 1.06,
+  "p": 0.987,
+  "asr": "sonunda."
+ }
+]

@@ -13,7 +13,7 @@ from ..face import Face
 from ..util import link, set_parent_keep
 
 CHANNELS = (
-    "pos_x", "pos_y", "pos_z", "turn", "lean_f", "lean_s", "squash",
+    "pos_x", "pos_y", "pos_z", "turn", "pitch", "lean_f", "lean_s", "squash",
     "nod", "tilt", "twist",
     "arm_L_raise", "arm_L_fold", "arm_L_curl", "arm_R_raise", "arm_R_fold", "arm_R_curl",
     "gaze_x", "gaze_y", "blink", "lid_u", "lid_l", "lid_u_L", "lid_u_R", "squint",
@@ -90,7 +90,7 @@ class Character:
     def apply(self, ch):
         g = lambda k: ch.get(k, 0.0)
         self.arm.location = self.base_loc + Vector((g("pos_x"), g("pos_y"), g("pos_z")))
-        self.arm.rotation_euler = (self.base_rot.x, self.base_rot.y, self.base_rot.z + g("turn"))
+        self.arm.rotation_euler = (self.base_rot.x + g("pitch"), self.base_rot.y, self.base_rot.z + g("turn"))
         pose = self.arm.pose.bones
         rots = {b.name: [0.0, 0.0, 0.0] for b in pose}
         for chan, targets in self.rot_map.items():

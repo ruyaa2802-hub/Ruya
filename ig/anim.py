@@ -324,6 +324,8 @@ class Timeline:
                 p = lambda j, c: seq[min(max(j, 0), len(seq) - 1)].get(c, 0.0)
                 az = (p(i + 1, "pos_z") - 2 * p(i, "pos_z") + p(i - 1, "pos_z")) / dt ** 2
                 ax = (p(i + 1, "pos_x") - 2 * p(i, "pos_x") + p(i - 1, "pos_x")) / dt ** 2
+                if any(abs(p(i + d, c) - p(i + d - 1, c)) > 0.5 for d in (0, 1) for c in ("pos_x", "pos_y", "pos_z")):
+                    az = ax = 0.0                        # a teleport between sets (a cut), not real motion
                 a = -(v * 9 + x * 160) - az * 0.004
                 v += a * dt
                 x += v * dt

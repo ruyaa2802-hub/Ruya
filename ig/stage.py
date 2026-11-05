@@ -21,13 +21,15 @@ HOME = {
 }
 
 
-def build(cast=("yastik", "battaniye"), preset="preview", fps=24, home=None, set_name="bedroom"):
-    """home: optional per-episode blocking overrides {name: dict(loc=..., rot=...)}."""
+def build(cast=("yastik", "battaniye"), preset="preview", fps=24, home=None, set_name="bedroom",
+          set_opts=None, light_opts=None):
+    """home: optional per-episode blocking overrides {name: dict(loc=..., rot=...)};
+    set_opts / light_opts: keyword options for the set's build() / lighting() (e.g. door=True, night=True)."""
     reset_scene()
     render.setup(preset, fps)
     room = SETS[set_name]
-    room.build(exclude={"mug"} if "kupa" in cast else ())   # the mug is a character now
-    room.lighting()
+    room.build(exclude={"mug"} if "kupa" in cast else (), **(set_opts or {}))   # the mug is a character now
+    room.lighting(**(light_opts or {}))
     chars = {}
     for name in cast:
         col = collection(name.capitalize())

@@ -1,0 +1,79 @@
+[
+ {
+  "word": "Ne",
+  "start": 0.0,
+  "end": 0.16,
+  "p": 0.849,
+  "asr": "Ne"
+ },
+ {
+  "word": "yapsaydım?",
+  "start": 0.16,
+  "end": 0.74,
+  "p": 0.976,
+  "asr": "yapsaydım,"
+ },
+ {
+  "word": "O",
+  "start": 0.9,
+  "end": 0.98,
+  "p": 0.991,
+  "asr": "o"
+ },
+ {
+  "word": "adamın",
+  "start": 0.98,
+  "end": 1.32,
+  "p": 0.994,
+  "asr": "adamın"
+ },
+ {
+  "word": "toksik",
+  "start": 1.32,
+  "end": 1.7,
+  "p": 0.745,
+  "asr": "toksik"
+ },
+ {
+  "word": "ilişkisini",
+  "start": 1.7,
+  "end": 2.12,
+  "p": 0.854,
+  "asr": "ilişkisini"
+ },
+ {
+  "word": "yüz",
+  "start": 2.12,
+  "end": 2.3,
+  "p": 0.58,
+  "asr": "100"
+ },
+ {
+  "word": "yaşıma",
+  "start": 2.3,
+  "end": 2.6,
+  "p": 0.983,
+  "asr": "yaşıma"
+ },
+ {
+  "word": "kadar",
+  "start": 2.6,
+  "end": 2.76,
+  "p": 0.976,
+  "asr": "kadar"
+ },
+ {
+  "word": "mı",
+  "start": 2.76,
+  "end": 2.96,
+  "p": 0.995,
+  "asr": "mı"
+ },
+ {
+  "word": "dinleseydim?",
+  "start": 2.96,
+  "end": 3.46,
+  "p": 0.96,
+  "asr": "dinleseydim?"
+ }
+]

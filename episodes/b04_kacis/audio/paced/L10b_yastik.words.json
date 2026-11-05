@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Ama",
+  "start": 0.0,
+  "end": 0.24,
+  "p": 0.795,
+  "asr": "Ama"
+ },
+ {
+  "word": "hızlı",
+  "start": 0.24,
+  "end": 0.68,
+  "p": 0.932,
+  "asr": "hızlı"
+ },
+ {
+  "word": "olun,",
+  "start": 0.68,
+  "end": 0.86,
+  "p": 0.996,
+  "asr": "olun,"
+ },
+ {
+  "word": "şu",
+  "start": 1.14,
+  "end": 1.38,
+  "p": 0.972,
+  "asr": "şu"
+ },
+ {
+  "word": "gölge",
+  "start": 1.38,
+  "end": 1.62,
+  "p": 0.978,
+  "asr": "gölge"
+ },
+ {
+  "word": "bana",
+  "start": 1.62,
+  "end": 1.82,
+  "p": 0.996,
+  "asr": "bana"
+ },
+ {
+  "word": "doğru",
+  "start": 1.82,
+  "end": 2.02,
+  "p": 0.996,
+  "asr": "doğru"
+ },
+ {
+  "word": "geliyor!",
+  "start": 2.02,
+  "end": 2.28,
+  "p": 0.97,
+  "asr": "geliyor."
+ }
+]

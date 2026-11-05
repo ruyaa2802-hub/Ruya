@@ -1,0 +1,37 @@
+[
+ {
+  "word": "Bak,",
+  "start": 0.0,
+  "end": 0.26,
+  "p": 0.904,
+  "asr": "Bak,"
+ },
+ {
+  "word": "rüyasında",
+  "start": 0.58,
+  "end": 1.08,
+  "p": 0.901,
+  "asr": "rüyasında"
+ },
+ {
+  "word": "bile",
+  "start": 1.08,
+  "end": 1.32,
+  "p": 0.998,
+  "asr": "bile"
+ },
+ {
+  "word": "aynı",
+  "start": 1.32,
+  "end": 1.64,
+  "p": 0.996,
+  "asr": "aynı"
+ },
+ {
+  "word": "senaryo!",
+  "start": 1.64,
+  "end": 2.18,
+  "p": 0.895,
+  "asr": "senaryo."
+ }
+]

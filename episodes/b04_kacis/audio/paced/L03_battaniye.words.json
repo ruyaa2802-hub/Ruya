@@ -1,0 +1,23 @@
+[
+ {
+  "word": "Telefonu",
+  "start": 0.0,
+  "end": 0.58,
+  "p": 0.896,
+  "asr": "Telefonu"
+ },
+ {
+  "word": "açma",
+  "start": 0.58,
+  "end": 0.94,
+  "p": 0.972,
+  "asr": "açma"
+ },
+ {
+  "word": "aşkım…",
+  "start": 0.94,
+  "end": 1.28,
+  "p": 0.987,
+  "asr": "aşkım."
+ }
+]

@@ -1,0 +1,44 @@
+[
+ {
+  "word": "Ben",
+  "start": 0.0,
+  "end": 0.18,
+  "p": 0.864,
+  "asr": "Ben"
+ },
+ {
+  "word": "bu",
+  "start": 0.18,
+  "end": 0.32,
+  "p": 0.99,
+  "asr": "bu"
+ },
+ {
+  "word": "evde",
+  "start": 0.32,
+  "end": 0.58,
+  "p": 0.997,
+  "asr": "evde"
+ },
+ {
+  "word": "daha",
+  "start": 0.58,
+  "end": 0.72,
+  "p": 0.989,
+  "asr": "daha"
+ },
+ {
+  "word": "fazla",
+  "start": 0.72,
+  "end": 0.96,
+  "p": 0.999,
+  "asr": "fazla"
+ },
+ {
+  "word": "kalamam.",
+  "start": 0.96,
+  "end": 1.28,
+  "p": 0.983,
+  "asr": "kalamam."
+ }
+]

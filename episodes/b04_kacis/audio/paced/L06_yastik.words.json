@@ -1,0 +1,37 @@
+[
+ {
+  "word": "Acaba",
+  "start": 0.0,
+  "end": 0.38,
+  "p": 0.915,
+  "asr": "Acaba"
+ },
+ {
+  "word": "isyan",
+  "start": 0.38,
+  "end": 0.72,
+  "p": 0.981,
+  "asr": "isyan"
+ },
+ {
+  "word": "edip",
+  "start": 0.72,
+  "end": 0.92,
+  "p": 0.997,
+  "asr": "edip"
+ },
+ {
+  "word": "kaçmasaydım",
+  "start": 0.92,
+  "end": 1.52,
+  "p": 0.937,
+  "asr": "kaçmasaydın"
+ },
+ {
+  "word": "mı?",
+  "start": 1.52,
+  "end": 1.64,
+  "p": 0.976,
+  "asr": "mı?"
+ }
+]

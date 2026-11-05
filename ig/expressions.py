@@ -22,4 +22,9 @@ EXPR = {
     "happy": {"brow_up": 0.4, "squint": 0.4, "m_smile": 1.0, "m_open": 0.2},
     "fond": {"lid_u": 0.2, "brow_up": 0.3, "brow_ang": -0.3, "m_smile": 0.6, "m_sneer": 0.15, "tilt": 0.08},
     "wistful": {"brow_up": 0.5, "brow_ang": -0.5, "lid_u": 0.2, "m_smile": 0.35, "gaze_y": 0.15},
+    "scared": {"brow_up": 0.9, "brow_ang": -0.8, "lid_u": -0.3, "m_open": 0.3, "m_wide": 0.35, "m_frown": 0.45,
+               "squash": -0.04},
+    "brave": {"brow_ang": 0.5, "brow_up": -0.1, "lid_u": 0.1, "m_press": 0.45, "m_frown": 0.15, "squash": 0.03},
+    "eyeroll": {"lid_u": 0.35, "brow_up_L": 0.35, "m_press": 0.35, "m_sneer": 0.2, "gaze_y": 0.42},
+    "sneaky": {"lid_u": 0.3, "brow_ang": 0.35, "m_smile": 0.35, "m_press": 0.25},
 }

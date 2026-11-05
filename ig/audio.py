@@ -106,13 +106,16 @@ if not os.path.exists(FONT):
     FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 
-def finish(src_mp4, dst_mp4, ass=None, title=None, title_start=None):
-    """Final pass: burn the captions (ASS) and fade in the series title at the end."""
+def finish(src_mp4, dst_mp4, ass=None, title=None, title_start=None, title_end=None):
+    """Final pass: burn the captions (ASS) and fade in the series title (at the end, or
+    between title_start and title_end with a fade out)."""
     vf = []
     if ass:
         vf.append(f"subtitles={ass}:fontsdir={FONTS_DIR}")
     if title and title_start is not None:
         fade = f"if(lt(t,{title_start}),0,min(1,(t-{title_start})/0.4))"
+        if title_end is not None:
+            fade = f"min({fade},max(0,min(1,({title_end}-t)/0.4)))"
         lines = title.split("\n")                     # long titles: one drawtext per line, sized to fit
         size = f"min(h/18\\,w*0.9/{0.68 * max(len(x) for x in lines):.2f})"
         for i, line in enumerate(lines):

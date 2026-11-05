@@ -1,0 +1,37 @@
+[
+ {
+  "word": "Tamam…",
+  "start": 0.0,
+  "end": 0.28,
+  "p": 0.899,
+  "asr": "Tamam,"
+ },
+ {
+  "word": "şimdi",
+  "start": 0.54,
+  "end": 0.66,
+  "p": 0.957,
+  "asr": "şimdi"
+ },
+ {
+  "word": "ne",
+  "start": 0.66,
+  "end": 0.86,
+  "p": 0.97,
+  "asr": "ne"
+ },
+ {
+  "word": "yapacağım",
+  "start": 0.86,
+  "end": 1.18,
+  "p": 0.991,
+  "asr": "yapacağım"
+ },
+ {
+  "word": "ben?",
+  "start": 1.18,
+  "end": 1.4,
+  "p": 0.995,
+  "asr": "ben?"
+ }
+]

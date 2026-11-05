@@ -50,7 +50,8 @@ os.makedirs(os.path.join(out, "frames"), exist_ok=True)
 
 t_start = time.time()
 chars = stage.build(cast=ep.CAST, preset=args.preset, fps=args.fps, home=getattr(ep, "HOME", None),
-                    set_name=getattr(ep, "SET", "bedroom"))
+                    set_name=getattr(ep, "SET", "bedroom"), set_opts=getattr(ep, "SET_OPTS", None),
+                    light_opts=getattr(ep, "LIGHT_OPTS", None))
 tl = anim.Timeline(chars, fps=args.fps)
 ep.build(tl, ep_dir)
 end = args.end if args.end is not None else tl.duration
@@ -96,9 +97,16 @@ ass = None
 if texts:
     audio.srt(tl, os.path.splitext(mp4)[0] + ".srt", texts, f0 / args.fps)
     ass = subtitles.build_ass(tl.lines, texts, os.path.splitext(mp4)[0] + ".ass", f0 / args.fps)
+    if hasattr(ep, "post_ass"):                     # episode overlays (e.g. on-screen choices) as extra ASS events
+        ep.post_ass(ass, f0 / args.fps)
 title = getattr(ep, "TITLE", None)
 ends_episode = f1 + 1 >= int(tl.duration * args.fps) - 1
 final = os.path.splitext(mp4)[0] + "_final.mp4"
-audio.finish(mp4, final, ass, title if ends_episode else None, tl.duration - f0 / args.fps - 1.3)
+title_at = getattr(ep, "TITLE_AT", None)          # (start, end) to show the title over the opening instead
+if title_at:
+    audio.finish(mp4, final, ass, title if f0 / args.fps < title_at[1] else None, title_at[0] - f0 / args.fps,
+                 title_at[1] - f0 / args.fps)
+else:
+    audio.finish(mp4, final, ass, title if ends_episode else None, tl.duration - f0 / args.fps - 1.3)
 mp4 = final
 print(f"[build] wrote {mp4} (total {time.time() - t_start:.0f}s)", flush=True)
