@@ -1,0 +1,68 @@
+{
+  "seri": "İnsan Atlası",
+  "bolum": 3,
+  "baslik": "Bizi görmezden gelen birini neden unutamayız?",
+  "fps": 30,
+  "giris": 0.45,
+  "kapanis": 2.6,
+  "acilis": 0,
+  "altyaziY": 1420,
+  "ses": {
+    "sting": false,
+    "whoosh": 0.7,
+    "pad": 0.9,
+    "piyano": 0.85,
+    "akorlar": {
+      "kanca": [61.74, 92.5, 146.83, 185.0],
+      "zihin": [73.42, 110.0, 146.83, 220.0],
+      "koridor": [65.41, 98.0, 155.56, 196.0],
+      "fark": [87.31, 130.81, 174.61, 220.0],
+      "son": [98.0, 146.83, 196.0, 293.66]
+    },
+    "ortam": [
+      { "tip": "oda", "bas": "kanca", "son": "kanca", "seviye": 1 }
+    ],
+    "isaretler": [
+      { "tip": "titresim", "bolum": "kanca", "cumle": 0, "oran": -0.3, "seviye": 1 },
+      { "tip": "parilti", "bolum": "zihin", "cumle": 1, "oran": 0.05, "seviye": 0.8 },
+      { "tip": "parilti", "bolum": "fark", "cumle": 0, "oran": 0.25, "seviye": 0.9 },
+      { "tip": "nefes", "bolum": "fark", "cumle": 0, "oran": 0.75, "seviye": 0.8 },
+      { "tip": "parilti", "bolum": "son", "cumle": 0, "oran": 1.1, "seviye": 1 }
+    ]
+  },
+  "bolumler": [
+    {
+      "id": "kanca",
+      "sahne": "kanca",
+      "gecis": "dalis",
+      "gecisSure": 0.9,
+      "metin": "Ya onu değil… onda yarım kalan kendini özlüyorsan?"
+    },
+    {
+      "id": "zihin",
+      "sahne": "zihin",
+      "gecis": "capraz",
+      "gecisSure": 1.0,
+      "metin": "Bazen biri hayatından çıkar ama zihninden çıkmaz. Çünkü beynin, yarım kalan hikâyelere cevap aramaya devam eder."
+    },
+    {
+      "id": "koridor",
+      "sahne": "koridor",
+      "gecis": "capraz",
+      "gecisSure": 0.6,
+      "metin": "Bir mesajı, bir bakışı, son konuşmayı tekrar tekrar düşünürsün. Belirsizlik, zihnini aynı soruların içinde tutabilir."
+    },
+    {
+      "id": "fark",
+      "sahne": "fark",
+      "gecis": "capraz",
+      "gecisSure": 0.9,
+      "metin": "Ama birini unutamaman, onun senin için doğru kişi olduğu anlamına gelmez."
+    },
+    {
+      "id": "son",
+      "sahne": "son",
+      "metin": "Bazen özlediğin kişi değil, gerçekleşmeyen ihtimaldir."
+    }
+  ]
+}

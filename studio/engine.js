@@ -297,7 +297,8 @@
     altyaziCiz(actx, TL, t);
 
     // Açılış/kapanış kararması
-    const fade = Math.min(clamp(t / 0.6), clamp((TL.toplam - t) / 0.8));
+    const ac = TL.acilis ?? 0.6;
+    const fade = Math.min(ac > 0 ? clamp(t / ac) : 1, clamp((TL.toplam - t) / 0.8));
     if (fade < 1) { actx.fillStyle = `rgba(0,0,0,${1 - fade})`; actx.fillRect(0, 0, W, H); }
   }
 

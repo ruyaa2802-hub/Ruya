@@ -136,6 +136,7 @@ export function zamanlamaOlustur(senaryo, sesYolu = null) {
     giris, toplam, konusmaBas: V(konusmaBas), konusmaSon: V(konusmaSon),
     altyaziY: senaryo.altyaziY || 1390,
     ses: senaryo.ses || {},
+    acilis: senaryo.acilis ?? 0.6,
     bolumler: [], altyazi: [],
   };
   bolumler.forEach((b, i) => {

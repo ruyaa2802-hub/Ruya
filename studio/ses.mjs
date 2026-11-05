@@ -146,6 +146,19 @@ export function sesYatagiUret(TL, dosya) {
         const v = [1046, 1318, 1568, 2093].reduce((s, fr, k) => s + Math.sin(2 * Math.PI * fr * t + k) * Math.exp(-Math.max(0, t - k * 0.09) * 3) * (t > k * 0.09 ? 1 : 0), 0) * 0.03 * sev;
         ekle(n0 + j, v, v, 1);
       }
+    } else if (is.tip === 'titresim') {
+      for (const ofs of [0, 0.32]) for (let j = 0; j < SR * 0.22; j++) {
+        const t = j / SR, env = Math.sin(Math.PI * t / 0.22);
+        const v = (Math.sin(2 * Math.PI * 155 * t) * 0.7 + Math.sin(2 * Math.PI * 310 * t) * 0.3) * (0.6 + 0.4 * Math.sign(Math.sin(2 * Math.PI * 28 * t))) * env * 0.22 * sev;
+        ekle(n0 + Math.floor(ofs * SR) + j, v, v, 0.15);
+      }
+    } else if (is.tip === 'nefes') {
+      const f = svf();
+      for (let j = 0; j < SR * 1.8; j++) {
+        const t = j / SR, env = Math.sin(Math.PI * t / 1.8) ** 2;
+        const v = f(r() * 2 - 1, 700, 0.8).bp * env * 0.12 * sev;
+        ekle(n0 + j, v, v, 0.3);
+      }
     } else if (is.tip === 'zap') {
       for (let j = 0; j < SR * 1.0; j++) {
         const t = j / SR;
