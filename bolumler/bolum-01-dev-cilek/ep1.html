@@ -1,0 +1,370 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000;overflow:hidden}</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.169.0/examples/jsm/"}}</script>
+</head><body><script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { buildPiko, buildMoko, buildStrawberry, PUREE } from './chars.js';
+
+const Q = new URLSearchParams(location.search);
+const W = +(Q.get('w') || 1080), H_ = +(Q.get('h') || 1920);
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setSize(W, H_); r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.0; r.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xcfe9ff, 45, 150);
+const pm = new THREE.PMREMGenerator(r); scene.environment = pm.fromScene(new RoomEnvironment(), 0.04).texture; scene.environmentIntensity = 0.45;
+const cam = new THREE.PerspectiveCamera(46, W / H_, 0.1, 400);
+
+// ---------- yardımcılar
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const sm = x => { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+const seg = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+const kf = (t, keys) => { if (t <= keys[0][0]) return keys[0][1]; for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) { const [t0, v0] = keys[i - 1], [t1, v1] = keys[i]; return lerp(v0, v1, sm((t - t0) / (t1 - t0))); } return keys[keys.length - 1][1]; };
+const kfl = (t, keys) => { if (t <= keys[0][0]) return keys[0][1]; for (let i = 1; i < keys.length; i++) if (t <= keys[i][0]) { const [t0, v0] = keys[i - 1], [t1, v1] = keys[i]; return lerp(v0, v1, (t - t0) / (t1 - t0)); } return keys[keys.length - 1][1]; };
+const wob = (t, t0, f, d) => t < t0 ? 0 : Math.exp(-d * (t - t0)) * Math.sin(2 * Math.PI * f * (t - t0));
+const arc = (t, t0, t1, h) => (t < t0 || t > t1) ? 0 : 4 * h * seg(t, t0, t1) * (1 - seg(t, t0, t1));
+let seed = 12345; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+
+// ---------- arazi
+const bump = (x, c, w) => Math.exp(-(((x - c) / w) ** 2));
+function Hx(x) {
+  let h = x < 0 ? 3 : x < 11 ? 3 * (1 - sm(x / 11)) : 0;
+  h += 0.28 * bump(x, 3.5, 0.7) + 0.32 * bump(x, 6.5, 0.75) + 0.26 * bump(x, 9.0, 0.7);
+  h -= 5 * sm((x - 16.3) / 0.7);
+  return h;
+}
+const Hg = (x, z) => Hx(x) + 0.18 * Math.sin(z * 0.35 + x * 0.21) * sm(Math.abs(z) / 4) + (z < -6 ? (-(z + 6)) * 0.25 : 0);
+{
+  const geo = new THREE.PlaneGeometry(110, 110, 500, 180); geo.rotateX(-Math.PI / 2);
+  const p = geo.attributes.position; const col = []; const c = new THREE.Color();
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i) + 4, z = p.getZ(i) - 8; p.setX(i, x); p.setZ(i, z);
+    const y = Hg(x, z); p.setY(i, y);
+    const steep = clamp((Hx(x - 0.1) - Hx(x + 0.1)) / 0.2 / 3, 0, 1);
+    const n = Math.sin(x * 1.7) * Math.cos(z * 1.3) * 0.5 + Math.sin(x * 0.37 + z * 0.61) * 0.5;
+    c.setHSL(0.27 + n * 0.025, 0.62, 0.42 + n * 0.06); c.lerp(new THREE.Color(0x9a6a3e), steep); if (y < -1.5) c.lerp(new THREE.Color(0x6cae4f), 0.3);
+    col.push(c.r, c.g, c.b);
+  }
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3)); geo.computeVertexNormals();
+  scene.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.95 })));
+  const pond = new THREE.Mesh(new THREE.PlaneGeometry(40, 60), new THREE.MeshPhysicalMaterial({ color: 0x4cc3e8, roughness: 0.1, clearcoat: 1, transparent: true, opacity: 0.92 }));
+  pond.rotation.x = -Math.PI / 2; pond.position.set(36, -1.6, 0); scene.add(pond);
+}
+// gökyüzü kubbesi
+{
+  const g = new THREE.SphereGeometry(300, 32, 16); const p = g.attributes.position; const col = []; const top = new THREE.Color(0x3d9df0), hor = new THREE.Color(0xd8f0ff);
+  for (let i = 0; i < p.count; i++) { const k = clamp(p.getY(i) / 300, 0, 1); const c = hor.clone().lerp(top, Math.pow(k, 0.6)); col.push(c.r, c.g, c.b); }
+  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  scene.add(new THREE.Mesh(g, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide, fog: false, toneMapped: false })));
+  const sun = new THREE.Mesh(new THREE.SphereGeometry(9, 32, 16), new THREE.MeshBasicMaterial({ color: 0xfff3a8, fog: false, toneMapped: false })); sun.position.set(70, 95, -200); scene.add(sun);
+  const cv = document.createElement('canvas'); cv.width = cv.height = 256; const cx = cv.getContext('2d'); const rg = cx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  rg.addColorStop(0, 'rgba(255,245,190,0.9)'); rg.addColorStop(0.3, 'rgba(255,240,180,0.35)'); rg.addColorStop(1, 'rgba(255,240,180,0)'); cx.fillStyle = rg; cx.fillRect(0, 0, 256, 256);
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(cv), fog: false, depthWrite: false, toneMapped: false })); halo.scale.set(70, 70, 1); halo.position.copy(sun.position); scene.add(halo);
+  const cloudM = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, emissive: 0xdde9ff, emissiveIntensity: 0.35, fog: false });
+  for (let i = 0; i < 9; i++) {
+    const cg = new THREE.Group(); const n = 5 + (rnd() * 3 | 0);
+    for (let j = 0; j < n; j++) { const s = 3 + rnd() * 3.5; const m = new THREE.Mesh(new THREE.SphereGeometry(s, 20, 14), cloudM); m.position.set((j - n / 2) * 3.4 + rnd() * 1.5, rnd() * 2, rnd() * 2); m.scale.y = 0.75; cg.add(m); }
+    cg.position.set(-60 + i * 22 + rnd() * 8, 30 + rnd() * 25, -110 - rnd() * 60); scene.add(cg);
+  }
+  const hillM = new THREE.MeshStandardMaterial({ color: 0x7cc96a, roughness: 1 });
+  for (let i = 0; i < 12; i++) { const s = 14 + rnd() * 18; const m = new THREE.Mesh(new THREE.SphereGeometry(s, 32, 20), hillM.clone()); m.material.color.offsetHSL((rnd() - 0.5) * 0.04, 0, (rnd() - 0.5) * 0.1); m.position.set(-50 + i * 11, -s * 0.62, -45 - rnd() * 40); m.scale.y = 0.7; scene.add(m); }
+}
+// ağaçlar
+{
+  const trunk = new THREE.MeshStandardMaterial({ color: 0x8a5a36, roughness: 0.9 });
+  const leafCols = [0x4fb84a, 0x63c95a, 0x3fa646, 0x7ad16a];
+  const spots = [[-14, -9], [-7, -12], [-1, -9.5], [5, -13], [10, -10], [17, -12], [-19, -7], [23, -9], [2, -18], [-10, -20], [13, -19]];
+  for (const [x, z] of spots) {
+    const g = new THREE.Group(); const h = 2.2 + rnd() * 1.4; g.position.set(x, Hg(x, z) - 0.1, z);
+    const t = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.4, h, 12), trunk); t.position.y = h / 2; g.add(t);
+    const lm = new THREE.MeshPhysicalMaterial({ color: leafCols[(rnd() * 4) | 0], roughness: 0.7, clearcoat: 0.1 });
+    for (let j = 0; j < 4; j++) { const s = 1.2 + rnd() * 0.7; const m = new THREE.Mesh(new THREE.SphereGeometry(s, 24, 16), lm); m.position.set((rnd() - 0.5) * 1.6, h + 0.4 + rnd() * 1.1, (rnd() - 0.5) * 1.4); g.add(m); }
+    scene.add(g);
+  }
+}
+// çimen + çiçekler
+{
+  const N = 22000; const blade = new THREE.ConeGeometry(0.045, 0.34, 3); blade.translate(0, 0.17, 0);
+  const im = new THREE.InstancedMesh(blade, new THREE.MeshStandardMaterial({ roughness: 0.9 }), N);
+  const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), c = new THREE.Color();
+  for (let i = 0; i < N; i++) {
+    const x = -20 + rnd() * 40, z = -9 + rnd() * 19; if (x > 16.1 && x < 17.5) { i--; continue; }
+    e.set((rnd() - 0.5) * 0.5, rnd() * 6.3, (rnd() - 0.5) * 0.5); q.setFromEuler(e); const s = 0.6 + rnd() * 0.9;
+    m4.compose(V(x, Hg(x, z) - 0.02, z), q, V(s, s, s)); im.setMatrixAt(i, m4); c.setHSL(0.26 + rnd() * 0.06, 0.6, 0.38 + rnd() * 0.18); im.setColorAt(i, c);
+  }
+  scene.add(im);
+  const petals = []; for (let k = 0; k < 5; k++) { const a = k / 5 * Math.PI * 2; const s = new THREE.SphereGeometry(0.075, 10, 8); s.scale(1, 0.35, 0.6); s.translate(0.085, 0, 0); s.rotateY(a); petals.push(s); }
+  const head = mergeGeometries(petals); const F = 760;
+  const ph = new THREE.InstancedMesh(head, new THREE.MeshPhysicalMaterial({ roughness: 0.5, clearcoat: 0.3 }), F);
+  const ctr = new THREE.InstancedMesh(new THREE.SphereGeometry(0.05, 10, 8), new THREE.MeshStandardMaterial({ color: 0xffd23a, roughness: 0.5 }), F);
+  const stem = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.015, 0.02, 1, 5).translate(0, 0.5, 0), new THREE.MeshStandardMaterial({ color: 0x3f9a3a }), F);
+  const pal = [0xff5c8a, 0xffd23a, 0xffffff, 0xb36bff, 0xff8a3d, 0x4fc3ff, 0xff4d6d];
+  for (let i = 0; i < F; i++) {
+    let x = -20 + rnd() * 40, z = -9 + rnd() * 19; if (Math.abs(z) < 2.2 || (x > 15.6 && x < 18)) { i--; continue; }
+    const y = Hg(x, z); const hgt = 0.3 + rnd() * 0.35; const s = 0.9 + rnd() * 0.8;
+    m4.compose(V(x, y, z), q.identity(), V(1, hgt, 1)); stem.setMatrixAt(i, m4);
+    e.set((rnd() - 0.5) * 0.6, rnd() * 6, (rnd() - 0.5) * 0.6); q.setFromEuler(e);
+    m4.compose(V(x, y + hgt, z), q, V(s, s, s)); ph.setMatrixAt(i, m4); ctr.setMatrixAt(i, m4); ph.setColorAt(i, c.set(pal[(rnd() * pal.length) | 0]));
+  }
+  scene.add(ph, ctr, stem);
+}
+// ışıklar
+const sunL = new THREE.DirectionalLight(0xfff1dc, 2.1); sunL.position.set(6, 12, 9); scene.add(sunL);
+scene.add(new THREE.HemisphereLight(0xcfe8ff, 0x7bbf63, 0.85));
+const fillL = new THREE.DirectionalLight(0xdfe8ff, 0.45); fillL.position.set(-6, 3, 5); scene.add(fillL);
+
+// yumuşak gölgeler (blob)
+const shTex = (() => { const cv = document.createElement('canvas'); cv.width = cv.height = 128; const c = cv.getContext('2d'); const g = c.createRadialGradient(64, 64, 0, 64, 64, 64); g.addColorStop(0, 'rgba(20,40,10,0.45)'); g.addColorStop(0.55, 'rgba(20,40,10,0.22)'); g.addColorStop(1, 'rgba(20,40,10,0)'); c.fillStyle = g; c.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(cv); })();
+function blob(w, d) { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, d), new THREE.MeshBasicMaterial({ map: shTex, transparent: true, depthWrite: false })); m.rotation.x = -Math.PI / 2; scene.add(m); return m; }
+function placeShadow(m, x, z, h, k = 1) { const y = Hg(x, z); m.position.set(x, y + 0.03, z); const s = clamp(1 - h * 0.15, 0.35, 1) * k; m.scale.set(s, s, 1); m.material.opacity = clamp(1 - h * 0.2, 0.2, 1); const sl = (Hx(x + 0.3) - Hx(x - 0.3)) / 0.6; m.rotation.set(-Math.PI / 2, 0, 0); m.rotateOnWorldAxis(V(0, 0, 1), Math.atan(sl)); }
+
+// ---------- karakterler
+const piko = buildPiko(), moko = buildMoko();
+scene.add(piko.root, moko.root);
+const shP = blob(2.4, 2.0), shM = blob(2.6, 2.2), shS = blob(3.0, 2.6), shS2 = blob(0.9, 0.8);
+const berry = buildStrawberry(1.25); scene.add(berry.grp);
+const mini = buildStrawberry(0.28); scene.add(mini.grp);
+// fırlayan taç (patlamadan sonra ayrı obje)
+const flyCrown = berry.crown.clone(); flyCrown.scale.setScalar(1.25); scene.add(flyCrown);
+
+// ---------- püre parçacıkları
+const pureeMat = new THREE.MeshPhysicalMaterial({ color: PUREE, roughness: 0.22, clearcoat: 1, clearcoatRoughness: 0.1 });
+const PN = 170; const parts = new THREE.InstancedMesh(new THREE.SphereGeometry(1, 14, 10), pureeMat, PN); parts.frustumCulled = false; scene.add(parts);
+const BOOM = 21.75, BX = 15.0;
+const pdata = [];
+{
+  const g = -22;
+  for (let i = 0; i < PN; i++) {
+    const a = rnd() * Math.PI * 2, el = 0.15 + rnd() * 1.2, sp = 3 + rnd() * 7.5;
+    const v = V(Math.cos(a) * Math.cos(el) * sp * 1.15 - 1.6, Math.sin(el) * sp + 2, Math.sin(a) * Math.cos(el) * sp * 0.8);
+    const p0 = V(BX + (rnd() - 0.5) * 1.2, Hx(BX) + 1.0 + rnd() * 1.0, (rnd() - 0.5) * 1.0);
+    let tt = 0, p = p0.clone(); const dt = 1 / 240;
+    for (; tt < 3; tt += dt) { const nx = p0.x + v.x * tt, ny = p0.y + v.y * tt + 0.5 * g * tt * tt, nz = p0.z + v.z * tt; if (ny < Hg(nx, nz) + 0.03 && tt > 0.05) break; p.set(nx, ny, nz); }
+    pdata.push({ p0, v, g, tl: tt, land: p.clone(), s: 0.09 + rnd() * 0.17 });
+  }
+  // yer lekeleri
+}
+const splatGeo = new THREE.CircleGeometry(1, 28);
+const groundSplats = [];
+{
+  const add = (x, z, s) => { const m = new THREE.Mesh(splatGeo, new THREE.MeshPhysicalMaterial({ color: PUREE, roughness: 0.25, clearcoat: 1, clearcoatRoughness: 0.1, polygonOffset: true, polygonOffsetFactor: -2 })); m.rotation.x = -Math.PI / 2; m.position.set(x, Hg(x, z) + 0.035, z); m.userData.s = s; m.scale.setScalar(0.001); scene.add(m); groundSplats.push(m); };
+  add(15.0, 0, 2.3); add(11.9, 0.9, 0.85); add(12.6, -0.4, 0.6); add(13.8, 1.3, 0.7); add(16.0, -1.2, 0.6);
+  for (let i = 0; i < 26; i++) { const a = rnd() * 6.28, d = 1.5 + rnd() * 4.5; const x = BX + Math.cos(a) * d - 0.8, z = Math.sin(a) * d * 0.7; if (x > 16.1) continue; add(x, z, 0.15 + rnd() * 0.4); }
+}
+const puffM = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 24), new THREE.MeshPhysicalMaterial({ color: 0xff4a62, transparent: true, opacity: 0.6, roughness: 0.4, depthWrite: false })); scene.add(puffM);
+
+// ---------- zaman çizelgesi
+const SX = -3.5;
+const rollX = t => { const u = seg(t, 9.3, 17.8); return -3.4 + 18.4 * (1 - Math.cos(Math.PI * Math.pow(u, 1.12))) / 2; };
+const hopFor = x => { let h = 0; for (const [c, L, A] of [[3.4, 2.4, 0.9], [6.4, 2.6, 1.15], [8.9, 2.2, 0.8]]) { if (x > c && x < c + L) { const u = (x - c) / L; h += 4 * A * u * (1 - u); } } return h; };
+
+function pikoPath(t) {
+  if (t < 1.8) return [lerp(-11, -7.6, t / 1.8), 0];
+  if (t < 2.4) return [-7.6, 0];
+  if (t < 2.9) { const u = sm(seg(t, 2.4, 2.9)); return [lerp(-7.6, SX - 1.9, u), 0]; }
+  if (t < 4.9) { const u = sm(seg(t, 2.9, 4.9)); const a = Math.PI - u * 2 * Math.PI; return [SX + 1.9 * Math.cos(a), 1.9 * Math.sin(a)]; }
+  if (t < 9.7) return [SX - 1.9, 0];
+  if (t < 21.0) { const raw = rollX(t - 0.85) - 2.4; return [Math.max(SX - 1.9, Math.min(raw, 12.6)), 0]; }
+  return [null, 0];
+}
+function mokoPath(t) {
+  if (t < 3.0) return [-12.5, -3.2];
+  if (t < 4.3) { const u = sm(seg(t, 3.0, 4.3)) * 0.4 + seg(t, 3.0, 4.3) * 0.6; return [lerp(-12.5, -8.0, u), lerp(-3.2, -0.6, u)]; }
+  if (t < 10.2) return [-8.0, -0.6];
+  const raw = rollX(t - 1.55) - 4.6; return [Math.max(-8.0, Math.min(raw, 10.9)), lerp(-0.6, 0.3, seg(t, 10.2, 13))];
+}
+// mesafe tabloları (yürüme fazı için)
+function distTable(fn, T0, T1) { const dt = 1 / 120; const tab = []; let d = 0, prev = fn(T0); for (let t = T0; t <= T1 + 1e-6; t += dt) { const c = fn(t); if (c[0] !== null && prev[0] !== null) d += Math.hypot(c[0] - prev[0], c[1] - prev[1]); tab.push(d); prev = c; } return t => tab[clamp(Math.round((t - T0) * 120), 0, tab.length - 1)]; }
+const pDist = distTable(pikoPath, 0, 21), mDist = distTable(mokoPath, 0, 30);
+const speed = (dist, t) => (dist(t + 0.05) - dist(t - 0.05)) / 0.1;
+
+function update(t) {
+  // ================= ÇİLEK
+  let bx = SX, bz = 0, by = Hx(SX) + berry.bottom, bspin = 0, bsq = 1, byaw = 0.3;
+  const pk = pikoPath(Math.min(t, 20.9));
+  if (t < 5.0) { /* duruyor */ }
+  else if (t < 6.8) { by += Math.max(0, Math.sin((t - 5.0) * 9)) * 0.12 * seg(t, 5.3, 6.6); bspin = Math.sin(t * 14) * 0.03 * seg(t, 5.3, 6.6); }
+  else if (t < 8.3) { const u = sm(seg(t, 6.8, 7.25)); const px = pk[0]; bx = lerp(SX, px + 0.15, u); by = lerp(Hx(SX) + berry.bottom, Hx(px) + 2.05 + berry.bottom, u) + Math.sin(t * 7) * 0.04 * seg(t, 7.3, 8.3); bspin = -0.15 * u + Math.sin(t * 6) * 0.05 * seg(t, 7.3, 8.2); }
+  else if (t < 8.9) { const u = seg(t, 8.3, 8.9); const px = SX - 1.9; bx = lerp(px + 0.15, -3.4, u); by = lerp(Hx(px) + 2.05 + berry.bottom, Hx(-3.4) + berry.bottom, u * u) + 0.6 * Math.sin(Math.PI * u); bspin = -0.15 - u * 2.2; }
+  else if (t < 9.3) { bx = -3.4; by = Hx(-3.4) + berry.bottom + arc(t, 9.0, 9.28, 0.35); bspin = -2.35; bsq = 1 - 0.25 * Math.exp(-(t - 8.9) * 18) * (t < 9.0 ? 1 : 0.4); }
+  else if (t < BOOM) { bx = rollX(t); by = Hx(bx) + berry.bottom + hopFor(bx); bspin = -2.35 - (bx + 3.4) / 1.15; if (t > 17.6) bspin += wob(t, 17.8, 1.6, 1.6) * 0.18; }
+  if (t >= BOOM) { bx = BX; by = Hx(BX) + berry.bottom; }
+  // Piko üstüne zıplayınca ezilme
+  if (t >= 21.15 && t < BOOM) { const u = seg(t, 21.15, BOOM); bsq = 1 - 0.42 * sm(u) + Math.sin(u * 40) * 0.03 * u; }
+  berry.grp.visible = t < BOOM; berry.grp.position.set(bx, by, bz); berry.spin.rotation.set(0, byaw, bspin);
+  berry.squash.scale.set(1 / Math.sqrt(bsq), bsq, 1 / Math.sqrt(bsq)); berry.squash.position.y = -(1 - bsq) * 1.0;
+  shS.visible = t < BOOM; placeShadow(shS, bx, bz, by - Hx(bx) - berry.bottom, 1.1);
+
+  // ================= PİKO
+  let [px, pz] = pk; let py = 0, yaw = 1.0, sq = 1, lean = 0, armL = 0.15, armR = 0.15, armF = 0, eyeS = 1, blink = 0, happy = false, mouth = 'smile', mouthS = 1, look = [0, 0], walkAmp = 0, ant = 0;
+  const pspd = speed(pDist, Math.min(t, 20.9));
+  const phase = pDist(Math.min(t, 20.9)) * 2.6;
+  if (t < 1.8) { walkAmp = 1; py = Math.abs(Math.sin(phase)) * 0.08; sq = 1 + Math.sin(phase * 2) * 0.03; yaw = 0.9; armL = armR = 0.25 + Math.sin(phase) * 0.15; }
+  else if (t < 2.4) { // görür, donar
+    yaw = 0.9; sq = 1 - 0.18 * Math.exp(-(t - 1.8) * 9) + wob(t, 1.85, 4, 6) * 0.06; eyeS = 1 + 0.4 * sm(seg(t, 1.8, 1.95)) + wob(t, 1.95, 5, 6) * 0.08; mouth = 'o'; mouthS = 1.3; armL = armR = 0.9 * sm(seg(t, 1.8, 1.95)); ant = wob(t, 1.8, 3, 3) * 0.5; look = [0.04, 0];
+  } else if (t < 4.9) { // yaklaşır ve etrafında dolaşır
+    walkAmp = clamp(pspd / 1.5, 0, 1); py = Math.abs(Math.sin(phase)) * 0.07 * walkAmp;
+    const [x2, z2] = pikoPath(t + 0.05); let vx = x2 - px, vz = z2 - pz; const vl = Math.hypot(vx, vz) || 1; vx /= vl; vz /= vl;
+    const tx = SX - px, tz = -pz, tl = Math.hypot(tx, tz) || 1; const bx2 = vx * 0.55 + tx / tl * 0.45, bz2 = vz * 0.55 + tz / tl * 0.45; yaw = Math.atan2(bx2, bz2);
+    eyeS = 1.2; mouth = 'o'; mouthS = 0.9; armL = armR = 0.3 + Math.sin(phase) * 0.12; look = [0.05, 0.02]; ant = Math.sin(t * 5) * 0.12;
+  } else if (t < 6.8) { // kaldırmaya çalışır
+    const u = seg(t, 4.9, 5.2); yaw = lerp(Math.atan2(1, 0) + 0.0, 1.15, u);
+    const strain = seg(t, 5.2, 5.6); sq = 1 - 0.14 * strain + Math.sin(t * 22) * 0.02 * strain; armL = armR = lerp(0.3, 1.9, sm(seg(t, 4.95, 5.3))); armF = 0.5;
+    px += Math.sin(t * 47) * 0.025 * strain; eyeS = 0.85; blink = 0.45 * strain; mouth = 'o'; mouthS = 0.7; walkAmp = 0.25 * strain; ant = Math.sin(t * 30) * 0.15 * strain;
+  } else if (t < 8.3) { // kaldırır, gururla Moko'ya döner
+    const u = sm(seg(t, 6.8, 7.25)); sq = lerp(0.86, 1.12, u) - 0.1 * wob(t, 7.25, 3, 5); armL = armR = 2.3; armF = 0.1;
+    yaw = lerp(1.15, -0.55, sm(seg(t, 7.35, 7.9))); happy = t > 7.3; mouth = 'smile'; mouthS = 1.35; ant = wob(t, 7.25, 3, 3) * 0.3;
+  } else if (t < 9.7) { // çilek kayar
+    yaw = lerp(-0.55, 0.9, sm(seg(t, 8.35, 8.75))); const k = seg(t, 8.3, 8.45); eyeS = 1 + 0.45 * k + wob(t, 8.45, 5, 5) * 0.08; mouth = 'o'; mouthS = 1.4; armL = armR = lerp(2.3, 1.4, k); sq = 1 + wob(t, 8.3, 4, 5) * 0.08; ant = wob(t, 8.3, 4, 3) * 0.5; look = [0.05, -0.02];
+    if (t > 9.3) { lean = 0.15 * seg(t, 9.3, 9.7); }
+  } else if (t < 18.75) { // kovalamaca
+    walkAmp = clamp(pspd / 2.2, 0, 1.3); py = Math.abs(Math.sin(phase * 1.15)) * 0.22 * clamp(walkAmp, 0, 1); sq = 1 + Math.sin(phase * 2.3) * 0.07 * clamp(walkAmp, 0, 1);
+    yaw = 1.2; lean = 0.3 * clamp(walkAmp, 0, 1) - 0.25 * Math.max(0, -Math.sin(phase * 1.15)) * 0; armL = 1.4 + Math.sin(phase * 1.15) * 0.4; armR = 1.4 - Math.sin(phase * 1.15) * 0.4;
+    eyeS = 1.15; mouth = 'o'; mouthS = 1.1; ant = -0.4 * clamp(walkAmp, 0, 1) + Math.sin(phase) * 0.15;
+    const ph2 = pDist(Math.min(t, 20.9)) * 3.4; phaseOverride = ph2;
+  } else if (t < 20.45) { // sevinç
+    yaw = lerp(1.2, 0.25, sm(seg(t, 18.6, 18.9))); py = arc(t, 18.8, 19.3, 0.7) + arc(t, 19.35, 19.85, 0.75);
+    const land = (t > 19.3 && t < 19.4) || t > 19.85; sq = 1 + (py > 0.05 ? 0.12 : 0) - (land ? 0.15 * Math.exp(-((t > 19.85 ? t - 19.85 : t - 19.3)) * 10) : 0);
+    armL = armR = 2.4 + Math.sin(t * 16) * 0.2; happy = true; mouth = 'smile'; mouthS = 1.45; ant = Math.sin(t * 12) * 0.35;
+    if (t > 19.95) { yaw = lerp(0.25, 1.35, sm(seg(t, 19.95, 20.25))); sq = 1 - 0.22 * sm(seg(t, 20.15, 20.42)); happy = false; eyeS = 1.15; armL = armR = lerp(2.4, 0.4, seg(t, 20.15, 20.4)); }
+  } else if (t < BOOM) { // çileğin üstüne zıplar
+    const u = seg(t, 20.45, 21.15); const topY = Hx(BX) + berry.bottom * 2 - 0.15;
+    if (t < 21.15) { px = lerp(12.6, BX - 0.05, sm(u) * 0.3 + u * 0.7); py = lerp(Hx(12.6), topY, u) - Hx(px) + 1.6 * Math.sin(Math.PI * u); sq = 1.15; armL = armR = 2.5; }
+    else { px = BX - 0.05; py = topY - (berry.bottom * 2 - 0.15) * (1 - berry.squash.scale.y) * 0.95 - Hx(px); sq = 0.85 + Math.sin(t * 40) * 0.04; armL = armR = 2.2; }
+    yaw = 1.0; happy = true; mouth = 'smile'; mouthS = 1.5; ant = 0.4;
+  } else { // patlama sonrası
+    const u = seg(t, BOOM, 22.35);
+    if (t < 22.35) { px = lerp(BX - 0.05, 13.7, u); py = lerp(Hx(BX) + 1.2, Hx(13.7), u) - Hx(px) + 1.5 * Math.sin(Math.PI * u); sq = 1.1; armL = armR = 2.6; eyeS = 1.4; mouth = 'o'; mouthS = 1.3; yaw = 1.0 + u * 2; }
+    else {
+      px = 13.7; sq = 1 - 0.3 * Math.exp(-(t - 22.35) * 7) + wob(t, 22.35, 3.5, 4) * 0.08; yaw = 0.3;
+      eyeS = 1.3; mouth = 'o'; mouthS = 0.8; armL = armR = 0.3; ant = wob(t, 22.35, 2.5, 2) * 0.6;
+      if (t > 22.9) { yaw = lerp(0.3, -0.75, sm(seg(t, 22.9, 23.3))); look = [-0.05, 0]; }
+      if (t > 25) { yaw = lerp(-0.75, 0.25, sm(seg(t, 25, 25.4))); eyeS = 1.15; mouth = 'smile'; mouthS = 0.55; look = [0, 0]; }
+      blink = Math.max(arc(t, 23.55, 23.75, 1), arc(t, 24.55, 24.75, 1), arc(t, 26.1, 26.3, 1));
+      if (t > 27.75) { // PAT!
+        sq = 1 - 0.35 * Math.exp(-(t - 27.75) * 8) + wob(t, 27.75, 4, 4) * 0.1; eyeS = 1 + 0.6 * sm(seg(t, 27.75, 27.85)) - 0.15 * seg(t, 28.6, 29.6); mouth = 'o'; mouthS = 1.3;
+        ant = wob(t, 27.75, 3, 1.8) * 0.9; armL = armR = 0.3 + 1.6 * Math.exp(-(t - 27.8) * 3); blink = 0;
+        yaw = lerp(0.25, 0.9, sm(seg(t, 28.7, 29.6)));
+      }
+    }
+  }
+  if (px === null) px = 13.7;
+  const pyG = Hx(px);
+  piko.root.position.set(px, pyG + py, pz); piko.root.rotation.y = yaw;
+  piko.setSquash(sq); piko.lean.rotation.x = lean; piko.setArms(armL, armR, armF);
+  piko.setEyes(eyeS, blink, happy, look); piko.setMouth(mouth, mouthS); piko.ant.rotation.z = ant;
+  piko.walk(typeof phaseOverride !== 'undefined' && t >= 9.7 && t < 18.75 ? phaseOverride : phase, t >= 9.7 && t < 18.75 ? clamp(walkAmp, 0, 1.2) : walkAmp);
+  piko.setMess(sm(seg(t, BOOM, BOOM + 0.15)));
+  placeShadow(shP, px, pz, py, 1);
+
+  // ================= MOKO
+  let [mx, mz] = mokoPath(t); let my = 0, myaw = 1.1, msq = 1, mlean = 0, meye = 1, mblink = 0, mhappy = false, worry = 1, braise = 0, tongue = 0, twag = 0, mlook = [0, 0], mwalk = 0, puff = 1;
+  const mspd = speed(mDist, t), mph = mDist(t) * 3.8;
+  if (t < 3.0) { }
+  else if (t < 4.3) { mwalk = 1; my = Math.abs(Math.sin(mph)) * 0.06; myaw = 1.1; }
+  else if (t < 10.2) { // korkuyla izler
+    myaw = lerp(1.1, 0.7, seg(t, 4.3, 4.6)); mx += Math.sin(t * 55) * 0.018; msq = 1 + Math.sin(t * 40) * 0.015; meye = 1.15; mlook = [0.06, 0.02]; worry = 1;
+    if (t > 7.3 && t < 8.3) { meye = 1.05; braise = 0.05; }
+    if (t > 8.3) { meye = 1.3 + wob(t, 8.3, 5, 5) * 0.08; braise = 0.12; msq = 1 + wob(t, 8.35, 4, 4) * 0.1; myaw = lerp(0.7, 1.2, seg(t, 9.3, 9.8)); }
+    mblink = arc(t, 5.6, 5.75, 1) + arc(t, 6.9, 7.05, 1);
+  } else if (t < 19.4) { // koşu
+    mwalk = clamp(mspd / 2.0, 0, 1.4); my = Math.abs(Math.sin(mph * 1.3)) * 0.12 * clamp(mwalk, 0, 1); msq = 1 + Math.sin(mph * 2.6) * 0.05 * clamp(mwalk, 0, 1);
+    myaw = 1.25; mlean = 0.18 * clamp(mwalk, 0, 1); meye = 1.2; braise = 0.1; worry = 1; tongue = 0.6 * clamp(mwalk, 0, 1) * seg(t, 14, 16);
+  } else if (t < BOOM) { // nefes nefese
+    myaw = lerp(1.25, 0.6, seg(t, 19.4, 19.8)); msq = 1 + Math.sin(t * 18) * 0.04 * (1 - seg(t, 20.4, 20.8)); tongue = 0.8 * (1 - seg(t, 20.3, 20.6)); meye = 1.05; worry = 1;
+    if (t > 20.45) { meye = 1.3; braise = 0.12; mx += Math.sin(t * 60) * 0.02; mlook = [0.07, 0.05]; }
+  } else { // patlama ve sonrası
+    const k = seg(t, BOOM, BOOM + 0.2); mx -= 0.35 * sm(k); msq = 1 - 0.25 * Math.exp(-(t - BOOM) * 8) * k; meye = 1.35; braise = 0.15; worry = 0.6; mblink = 0;
+    if (t > 22.9) { myaw = lerp(0.6, 0.9, sm(seg(t, 22.9, 23.3))); mlook = [0.06, 0]; }
+    mblink = arc(t, 23.85, 24.05, 1) + arc(t, 24.75, 24.95, 1);
+    if (t > 25.0 && t < 28.0) { // püreyi yalar
+      const u = sm(seg(t, 25.0, 25.4)) * (1 - sm(seg(t, 27.8, 28.05))); mlean = 0.42 * u; myaw = lerp(0.9, 0.35, u); mhappy = u > 0.5; worry = lerp(0.6, -0.3, u); braise = 0.08;
+      tongue = u * (0.9 + 0.25 * Math.sin((t - 25.4) * 13)); twag = u * (0.6 + 0.3 * Math.sin((t - 25.4) * 13)); msq = 1 + Math.sin((t - 25.4) * 13) * 0.03 * u;
+    }
+    if (t >= 28.0) { // komik bakış
+      const u = sm(seg(t, 28.0, 28.3)); myaw = lerp(0.35, 1.0, u); meye = 1.35 + 0.1 * u; braise = 0.22 * u; worry = lerp(0.6, 1.2, u); tongue = 0.55 * u; twag = 0.25; puff = 1 + 0.07 * u; mlook = [0.08, 0.05];
+      msq = 1 + wob(t, 28.0, 3, 4) * 0.06;
+    }
+  }
+  moko.root.position.set(mx, Hx(mx) + my, mz); moko.root.rotation.y = myaw;
+  moko.setSquash(msq, puff); moko.lean.rotation.x = mlean; moko.setEyes(meye, mblink, mhappy, mlook); moko.setBrows(worry, braise); moko.setTongue(tongue, twag);
+  moko.walk(mph * (t > 10 ? 1.3 : 1), t < 3 ? 0 : clamp(mwalk, 0, 1.2)); moko.setMess(sm(seg(t, BOOM + 0.05, BOOM + 0.2)));
+  placeShadow(shM, mx, mz, my, 1);
+
+  // ================= PATLAMA
+  const te = t - BOOM;
+  const m4 = new THREE.Matrix4(), qq = new THREE.Quaternion(), pp = V(0, 0, 0), ss = V(0, 0, 0);
+  for (let i = 0; i < PN; i++) {
+    const d = pdata[i];
+    if (te < 0) { ss.setScalar(0.0001); pp.set(0, -50, 0); }
+    else if (te < d.tl) { pp.set(d.p0.x + d.v.x * te, d.p0.y + d.v.y * te + 0.5 * d.g * te * te, d.p0.z + d.v.z * te); const st = 1 + Math.min(te * 3, 0.6); ss.set(d.s / Math.sqrt(st), d.s * st, d.s / Math.sqrt(st)); }
+    else { pp.copy(d.land); const k = sm((te - d.tl) / 0.12); ss.set(d.s * (1 + 0.8 * k), d.s * (1 - 0.7 * k), d.s * (1 + 0.8 * k)); }
+    m4.compose(pp, qq, ss); parts.setMatrixAt(i, m4);
+  }
+  parts.instanceMatrix.needsUpdate = true;
+  groundSplats.forEach((m, i) => { const k = sm(seg(te, 0.05 + (i % 5) * 0.04, 0.3 + (i % 5) * 0.06)); m.scale.set(m.userData.s * Math.max(k, 0.001), m.userData.s * 0.8 * Math.max(k, 0.001), 1); m.visible = te > 0; });
+  puffM.visible = te > 0 && te < 0.35; if (puffM.visible) { const k = te / 0.35; puffM.position.set(BX, Hx(BX) + 1.3, 0); puffM.scale.setScalar(1.2 + k * 2.8); puffM.material.opacity = 0.65 * (1 - k); }
+  // taç uçar ve Moko'nun kafasına konar
+  flyCrown.visible = te > 0;
+  if (te > 0) {
+    const u = seg(t, BOOM, 23.0); const tx = moko.root.position.x, ty = Hx(tx) + 2.35 * msq + my;
+    const cx = lerp(BX, tx, u), cy = lerp(Hx(BX) + 2.6, ty, u) + 3.8 * Math.sin(Math.PI * u); flyCrown.position.set(cx, cy, lerp(0, mz, u)); flyCrown.rotation.set(0.3 * Math.sin(t * 9) * (1 - u), t * 9 * (1 - u) + 0.4, 0.4 * (1 - u));
+    if (t > 23.0) { flyCrown.position.set(moko.root.position.x, ty + 0.02, mz); flyCrown.rotation.set(-mlean * 0.5, myaw, 0.15 + wob(t, 23.0, 3, 3) * 0.3); flyCrown.position.y += -Math.sin(mlean) * 0.0; }
+    if (t > 25.0) { // yalarken eğilince taç da eğilsin: Moko'nun lean pivotunu takip et
+      const top = V(0, 2.35, 0); moko.B.localToWorld(top); flyCrown.position.copy(top); flyCrown.rotation.set(mlean * Math.cos(myaw), myaw, -mlean * Math.sin(myaw) + 0.15);
+    }
+  }
+  // ================= MİNİ ÇİLEK (PAT!)
+  {
+    let vx = 0, vy = -50, vis = false, spinz = 0; const headY = Hx(13.7) + 2.15;
+    if (t > 27.0 && t < 27.75) { vis = true; vx = 13.7; vy = headY + 0.5 * 23.8 * (27.75 - t) ** 2; spinz = t * 6; }
+    else if (t >= 27.75 && t < 28.35) { vis = true; const u = seg(t, 27.75, 28.35); vx = lerp(13.7, 15.0, u); vy = lerp(headY, Hx(15.0) + mini.bottom, u) + 1.4 * Math.sin(Math.PI * u); spinz = -u * 7; }
+    else if (t >= 28.35) { vis = true; vx = 15.0 + 0.15 * seg(t, 28.35, 28.7); vy = Hx(15.0) + mini.bottom + arc(t, 28.35, 28.6, 0.25); spinz = -7 - 0.4 * seg(t, 28.35, 28.7) - 0.1; }
+    mini.grp.visible = vis; mini.grp.position.set(vx, vy, 0.25); mini.spin.rotation.set(0, 0.4, spinz % (Math.PI * 2) + (t >= 28.35 ? 0 : 0));
+    if (t >= 28.6) mini.spin.rotation.set(0, 0.4, -0.25);
+    shS2.visible = vis && vy < Hx(vx) + 4; placeShadow(shS2, vx, 0.25, vy - Hx(vx) - mini.bottom, 1);
+  }
+
+  // ================= KAMERA (otomatik kadraj)
+  const P = piko.root.position, M = moko.root.position, Bp = berry.grp.position;
+  const pS = [V(P.x, Hx(P.x) + 1.15 + py * 0.5, P.z), 1.35], mS = [V(M.x, Hx(M.x) + 1.25, M.z), 1.45], bS = [V(Bp.x, Bp.y, Bp.z), 1.55];
+  function fit(dir, subj, margin = 1.15, lookUp = 0, minD = 5) {
+    const d = V(...dir).normalize(); const c = V(0, 0, 0); subj.forEach(s => c.add(s[0])); c.multiplyScalar(1 / subj.length);
+    const right = V(0, 1, 0).cross(d).normalize(), up = d.clone().cross(right).normalize();
+    const tv = Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)), th = tv * cam.aspect; let dist = minD;
+    for (const [p, rr] of subj) { const o = p.clone().sub(c); const dep = o.dot(d); dist = Math.max(dist, ((Math.abs(o.dot(right)) + rr) * margin) / th + dep, ((Math.abs(o.dot(up)) + rr) * margin) / tv + dep); }
+    c.y += lookUp; return { pos: c.clone().add(d.multiplyScalar(dist)), look: c };
+  }
+  const OPEN = [-0.28, 0.2, 1];
+  function shot(tt) {
+    if (tt < 1.85) return fit(OPEN, [pS], 1.25, 0.15);
+    if (tt < 5.0) return fit([-0.2, 0.28, 1], tt > 3.6 ? [pS, bS, mS] : [pS, bS], 1.08, 0.2);
+    if (tt < 8.3) return fit([-0.25, 0.22, 1], [pS, bS, mS], 1.05, 0.1);
+    if (tt < 10.0) return fit([-0.1, 0.25, 1], [pS, bS, mS], 1.05, 0);
+    if (tt < 12.6) return fit([-1, 0.95, 0.75], [mS, pS, bS], 1.0, 0, 9);
+    if (tt < 15.2) return fit([1, 0.12, 0.38], [bS, pS], 1.05, 0.3, 6);
+    if (tt < 18.4) return fit([-0.35, 0.42, 1], [bS, pS], 1.15, 0, 6);
+    if (tt < 22.3) return fit([-0.25, 0.3, 1], [pS, bS, mS], 1.05, 0.1, 6);
+    if (tt < 25.0) return fit([0, 0.18, 1], [pS, mS], 1.08, 0.05);
+    if (tt < 27.0) return fit([0.15, 0.15, 1], [mS, pS], 1.0, -0.1);
+    if (tt < 28.7) return fit([0, 0.12, 1], [pS, [V(P.x, Hx(P.x) + 3.6, 0), 0.6], mS], 1.05, 0.2);
+    return fit(OPEN, [pS], 1.25, 0.15);
+  }
+  const cuts = [1.85, 5.0, 8.3, 10.0, 12.6, 15.2, 18.4, 22.3, 25.0, 27.0, 28.7];
+  const blendT = { 1.85: 0.6, 5.0: 0.5, 8.3: 0.7, 10.0: 0.0, 12.6: 0.0, 15.2: 0.0, 18.4: 0.8, 22.3: 0.0, 25.0: 0.8, 27.0: 0.5, 28.7: 1.0 };
+  let c = shot(t);
+  for (const ct of cuts) { const bt = blendT[ct]; if (bt > 0 && t >= ct && t < ct + bt) { const prev = shot(ct - 0.001); const k = sm((t - ct) / bt); c = { pos: prev.pos.lerp(c.pos, k), look: prev.look.lerp(c.look, k) }; } }
+  // sarsıntı
+  const shake = (t > BOOM && t < BOOM + 0.6 ? 0.18 * (1 - seg(t, BOOM, BOOM + 0.6)) : 0) + (t > 27.75 && t < 28.1 ? 0.06 * (1 - seg(t, 27.75, 28.1)) : 0);
+  c.pos.x += Math.sin(t * 91) * shake; c.pos.y += Math.cos(t * 77) * shake;
+  cam.position.copy(c.pos); cam.lookAt(c.look);
+}
+let phaseOverride;
+window.renderFrame = (t) => { phaseOverride = undefined; update(t); r.render(scene, cam); return true; };
+window.grab = (q) => r.domElement.toDataURL('image/jpeg', q || 0.93);
+window.dbg=(t)=>{update(t);const P=piko.root.position;return [cam.position.x-P.x,cam.position.y-P.y,cam.position.z-P.z,P.x,P.y,P.z].map(v=>+v.toFixed(2));};
+window.ready = true;
+</script></body></html>
