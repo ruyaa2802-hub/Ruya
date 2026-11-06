@@ -2,6 +2,7 @@
 
 - **Video:** `piko-moko-bolum-01-dev-cilek.mp4` (30 sn, 1080×1920 dikey 9:16, 30 fps, H.264 + AAC)
 - **Diyalog/altyazı/anlatıcı yok.** Müzik ve tüm efektler kodla sentezlendi (telifsiz).
+- **v2:** Aksiyonla senkron neşeli çizgi film skoru (pizzicato, marimba, tuba, klarnet, trombon), kameraman gibi yumuşak kamera takibi, otomatik göz kırpma/nefes, daha canlı renkler.
 - Tamamen ücretsiz araçlarla üretildi: Three.js (3D), Chromium (render), Python/numpy (ses), ffmpeg (birleştirme).
 
 ## Sahne akışı
