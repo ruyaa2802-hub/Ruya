@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#fff}</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.169.0/examples/jsm/"}}</script>
+</head><body><script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const W=1080,H=1080;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setSize(W,H); r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=0.95;
+r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap; r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const scene=new THREE.Scene();
+// arka plan: beyazdan hafif lavantaya
+const bg=document.createElement('canvas');bg.width=4;bg.height=256;const g=bg.getContext('2d');
+const gr=g.createLinearGradient(0,0,0,256);gr.addColorStop(0,'#ffffff');gr.addColorStop(0.75,'#f3f3ff');gr.addColorStop(1,'#e8e6fa');
+g.fillStyle=gr;g.fillRect(0,0,4,256);const bt=new THREE.CanvasTexture(bg);bt.colorSpace=THREE.SRGBColorSpace;scene.background=bt;
+const pm=new THREE.PMREMGenerator(r);scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;scene.environmentIntensity=0.7;
+const cam=new THREE.PerspectiveCamera(28,W/H,0.1,100);cam.position.set(0,1.55,6.9);cam.lookAt(0,1.22,0);
+const key=new THREE.DirectionalLight(0xffffff,1.6);key.position.set(2.5,5,4);
+key.shadow.mapSize.set(2048,2048);key.shadow.radius=12;key.shadow.camera.left=-3;key.shadow.camera.right=3;key.shadow.camera.top=3;key.shadow.camera.bottom=-3;key.shadow.bias=-0.0005;
+scene.add(key);scene.add(new THREE.HemisphereLight(0xffffff,0xd8d4ff,0.6));
+const fill=new THREE.DirectionalLight(0xdfe8ff,0.5);fill.position.set(-4,2,3);scene.add(fill);
+const sc=document.createElement('canvas');sc.width=sc.height=256;const sx2=sc.getContext('2d');const sg=sx2.createRadialGradient(128,128,0,128,128,128);
+sg.addColorStop(0,'rgba(70,60,140,0.35)');sg.addColorStop(0.5,'rgba(70,60,140,0.15)');sg.addColorStop(1,'rgba(70,60,140,0)');sx2.fillStyle=sg;sx2.fillRect(0,0,256,256);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(2.8,1.6),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));
+ground.rotation.x=-Math.PI/2;ground.position.set(0.05,0.005,0.05);ground.scale.set(1.05,1.1,1);scene.add(ground);
+
+
+const orange=new THREE.MeshPhysicalMaterial({color:0xf27d16,roughness:0.5,clearcoat:0.2,clearcoatRoughness:0.6});
+const orangeL=new THREE.MeshPhysicalMaterial({color:0xfbb04a,roughness:0.5,clearcoat:0.2,clearcoatRoughness:0.6});
+const cream=new THREE.MeshPhysicalMaterial({color:0xfff1dc,roughness:0.35,clearcoat:0.5});
+const black=new THREE.MeshPhysicalMaterial({color:0x17120f,roughness:0.12,clearcoat:1,clearcoatRoughness:0.05});
+const brown=new THREE.MeshPhysicalMaterial({color:0x7a4a2a,roughness:0.7});
+const tooth=new THREE.MeshPhysicalMaterial({color:0xfff6ea,roughness:0.3,clearcoat:0.6});
+const shine=new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false});
+const moko=new THREE.Group();scene.add(moko);
+function mk(geo,mat,pos,scale,rot,parent){const m=new THREE.Mesh(geo,mat);m.position.copy(pos);if(scale)m.scale.set(...scale);if(rot)m.rotation.set(...rot);(parent||moko).add(m);return m;}
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+// bacaklar (4 tombul bacak)
+for(const x of [-0.5,0.5]) for(const z of [-0.3,0.32]){
+  mk(new THREE.CapsuleGeometry(0.19,0.2,8,32),orange,V(x,0.29,z));
+  mk(new THREE.SphereGeometry(1,40,30),orange,V(x*1.02,0.1,z+0.05),[0.22,0.11,0.26]);
+}
+// gövde: yumuşak köşeli kare
+const B=mk(new RoundedBoxGeometry(1.75,1.95,1.35,10,0.45),orange,V(0,1.38,0));
+// alt yüz / karın: biraz daha açık ton, öne hafif taşan yastık
+
+// gözler: kalın kenarlı kocaman toplar
+for(const sx of [-1,1]){
+  const g=new THREE.Group();g.position.set(sx*0.43,1.78,0.6);moko.add(g);
+  mk(new THREE.TorusGeometry(0.385,0.085,24,64),orange,V(0,0,0.05),null,null,g);
+  const w=mk(new THREE.SphereGeometry(0.39,64,48),cream,V(0,0,0.0),[1,1,0.55],null,g);
+  mk(new THREE.SphereGeometry(0.29,64,48),black,V(sx*-0.015,-0.03,0.14),[1,1,0.42],null,g);
+  mk(new THREE.SphereGeometry(0.07,24,16),shine,V(-0.08,0.1,0.27),[1,1,0.3],null,g);
+  mk(new THREE.SphereGeometry(0.032,16,12),shine,V(0.1,-0.1,0.27),[1,1,0.3],null,g);
+  // kaş: endişeli (iç uç yukarı)
+  mk(new THREE.CapsuleGeometry(0.075,0.42,8,24),brown,V(sx*0.04,0.45,0.1),[1,1,0.75],[0,0,Math.PI/2-sx*0.2],g);
+}
+// dişlek ağız: iki büyük ön diş + küçük ağız çizgisi
+const mouthC=new THREE.MeshStandardMaterial({color:0x5a2412,roughness:0.6});
+const mc=new THREE.CatmullRomCurve3([V(-0.17,1.235,0.672),V(-0.08,1.218,0.684),V(0.08,1.218,0.684),V(0.17,1.235,0.672)]);mk(new THREE.TubeGeometry(mc,40,0.016,12,false),mouthC,V(0,0,0));
+for(const sx of [-1,1]) mk(new RoundedBoxGeometry(0.15,0.21,0.07,6,0.04),tooth,V(sx*0.081,1.13,0.69),null,[0,0,-sx*0.04]);
+// yanaklar
+for(const sx of [-1,1]){
+  const cv=document.createElement('canvas');cv.width=cv.height=128;const c=cv.getContext('2d');const rg=c.createRadialGradient(64,64,0,64,64,64);
+  rg.addColorStop(0,'rgba(255,120,110,0.6)');rg.addColorStop(1,'rgba(255,120,110,0)');c.fillStyle=rg;c.fillRect(0,0,128,128);
+  const t=new THREE.CanvasTexture(cv);t.colorSpace=THREE.SRGBColorSpace;
+  mk(new THREE.CircleGeometry(0.16,40),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false,toneMapped:false}),V(sx*0.6,1.28,0.682));
+}
+moko.rotation.y=-0.12;
+r.render(scene,cam);window.done=true;
+</script></body></html>
