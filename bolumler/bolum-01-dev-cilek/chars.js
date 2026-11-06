@@ -124,13 +124,14 @@ export function buildPiko() {
   };
 }
 
-// ---------------------------------------------------------------- MOKO
+// ---------------------------------------------------------------- MOKO (ifadeli rig)
 export function buildMoko() {
   const oBase = new THREE.Color(0xf27d16);
   const orange = new THREE.MeshPhysicalMaterial({ color: oBase.clone(), roughness: 0.5, clearcoat: 0.2, clearcoatRoughness: 0.6 });
   const cream = new THREE.MeshPhysicalMaterial({ color: 0xfff1dc, roughness: 0.35, clearcoat: 0.5 });
   const brown = new THREE.MeshPhysicalMaterial({ color: 0x7a4a2a, roughness: 0.7 });
   const tooth = new THREE.MeshPhysicalMaterial({ color: 0xfff6ea, roughness: 0.3, clearcoat: 0.6 });
+  const water = new THREE.MeshPhysicalMaterial({ color: 0x9fe0ff, roughness: 0.05, clearcoat: 1, transmission: 0.2, transparent: true, opacity: 0.9 });
   const root = new THREE.Group();
   const legs = [];
   for (const x of [-0.5, 0.5]) for (const z of [-0.3, 0.32]) {
@@ -143,32 +144,50 @@ export function buildMoko() {
   const lean = new THREE.Group(); lean.position.y = 0.5; squash.add(lean);
   const B = new THREE.Group(); B.position.y = -0.5; lean.add(B);
   add(B, new RoundedBoxGeometry(1.75, 1.95, 1.35, 8, 0.45), orange, V(0, 1.38, 0));
-  const eyes = [], pupils = [], brows = [], happy = [], eyeGroups = [];
+  const eyes = [], pupils = [], brows = [], happy = [], sparkles = [];
   for (const sx of [-1, 1]) {
-    const g = new THREE.Group(); g.position.set(sx * 0.43, 1.78, 0.6); B.add(g); eyeGroups.push(g);
+    const g = new THREE.Group(); g.position.set(sx * 0.43, 1.78, 0.6); B.add(g);
     add(g, new THREE.TorusGeometry(0.385, 0.085, 20, 56), orange, V(0, 0, 0.05));
     const ei = new THREE.Group(); g.add(ei);
     add(ei, new THREE.SphereGeometry(0.39, 48, 36), cream, null, [1, 1, 0.55]);
-    const pg = new THREE.Group(); ei.add(pg);
-    add(pg, new THREE.SphereGeometry(0.29, 48, 36), black, V(sx * -0.015, -0.03, 0.14), [1, 1, 0.42]);
-    add(pg, new THREE.SphereGeometry(0.07, 20, 14), shine, V(-0.08, 0.1, 0.27), [1, 1, 0.3]);
-    add(pg, new THREE.SphereGeometry(0.032, 14, 10), shine, V(0.1, -0.1, 0.27), [1, 1, 0.3]);
-    const hp = add(g, happyArc(0.2, 0.13, 0.04), darkLine, V(0, -0.05, 0.12)); hp.visible = false;
-    const lid = add(g, new THREE.SphereGeometry(0.4, 40, 30), orange, V(0, 0, 0.02), [1, 1, 0.57]); lid.visible = false; lid.userData.lid = true;
+    const pl = new THREE.Group(); ei.add(pl);           // bakış yönü
+    const pg = new THREE.Group(); pg.position.set(sx * -0.015, -0.03, 0); pl.add(pg);   // göz bebeği boyu
+    add(pg, new THREE.SphereGeometry(0.29, 48, 36), black, V(0, 0, 0.14), [1, 1, 0.42]);
+    add(pg, new THREE.SphereGeometry(0.07, 20, 14), shine, V(-0.065, 0.13, 0.27), [1, 1, 0.3]);
+    add(pg, new THREE.SphereGeometry(0.032, 14, 10), shine, V(0.115, -0.07, 0.27), [1, 1, 0.3]);
+    // iştah parıltıları (ekstra yıldızlar)
+    const sp = new THREE.Group(); pg.add(sp);
+    for (const [x, y, r] of [[0.09, 0.1, 0.035], [-0.11, -0.08, 0.028], [0.0, -0.15, 0.02]]) add(sp, new THREE.SphereGeometry(r, 12, 8), shine, V(x, y, 0.27), [1, 1, 0.3]);
+    sp.visible = false; sparkles.push(sp);
+    const hp = add(g, happyArc(0.2, 0.13, 0.045), darkLine, V(0, -0.05, 0.27)); hp.visible = false;
+    const lid = add(g, new THREE.SphereGeometry(0.4, 40, 30), orange, V(0, 0, 0.02), [1, 1, 0.57]); lid.visible = false;
+    // sıkıca kapalı göz ( > < )
+    const sq = new THREE.Group(); sq.position.set(0, 0, 0.27); g.add(sq); sq.visible = false;
+    const cg = new THREE.CapsuleGeometry(0.035, 0.2, 6, 10);
+    add(sq, cg, darkLine, V(0, 0.06, 0), null, [0, 0, Math.PI / 2 + sx * 0.45]); add(sq, cg, darkLine, V(0, -0.06, 0), null, [0, 0, Math.PI / 2 - sx * 0.45]);
     const bw = new THREE.Group(); bw.position.set(sx * 0.04, 0.45, 0.1); g.add(bw);
     add(bw, new THREE.CapsuleGeometry(0.075, 0.42, 8, 20), brown, null, [1, 1, 0.75], [0, 0, Math.PI / 2]);
     bw.userData.sx = sx;
-    eyes.push(ei); pupils.push(pg); brows.push(bw); happy.push([hp, lid]);
+    eyes.push(ei); pupils.push([pl, pg]); brows.push(bw); happy.push([hp, lid, sq]);
   }
+  // ağız: çizgi (gülümseme/somurtma) + açık ağız + dişler
   const mouthC = new THREE.MeshStandardMaterial({ color: 0x5a2412, roughness: 0.6 });
-  add(B, new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(-0.17, 1.235, 0.672), V(-0.08, 1.218, 0.684), V(0.08, 1.218, 0.684), V(0.17, 1.235, 0.672)]), 30, 0.016, 10, false), mouthC);
+  const lineG = new THREE.Group(); lineG.position.set(0, 1.226, 0); B.add(lineG);
+  add(lineG, new THREE.TubeGeometry(new THREE.CatmullRomCurve3([V(-0.17, 0.009, 0.672), V(-0.08, -0.008, 0.684), V(0.08, -0.008, 0.684), V(0.17, 0.009, 0.672)]), 30, 0.016, 10, false), mouthC);
+  const openG = new THREE.Group(); openG.position.set(0, 1.07, 0.679); B.add(openG);
+  add(openG, new THREE.CircleGeometry(0.27, 44), new THREE.MeshStandardMaterial({ color: 0x3a120c, roughness: 0.7 }), null, [1, 0.8, 1]);
+  add(openG, new THREE.CircleGeometry(0.15, 30), new THREE.MeshStandardMaterial({ color: 0xff7f95, roughness: 0.5 }), V(0, -0.11, 0.002), [1.15, 0.55, 1]);
+  openG.scale.set(1, 0.001, 1);
   const teeth = new THREE.Group(); B.add(teeth);
   for (const sx of [-1, 1]) add(teeth, new RoundedBoxGeometry(0.15, 0.21, 0.07, 5, 0.04), tooth, V(sx * 0.081, 1.13, 0.69), null, [0, 0, -sx * 0.04]);
-  // dil (yalama)
-  const tongue = new THREE.Group(); tongue.position.set(0, 1.08, 0.66); B.add(tongue);
-  add(tongue, new THREE.CapsuleGeometry(0.11, 0.25, 8, 20), new THREE.MeshPhysicalMaterial({ color: 0xff7f95, roughness: 0.35, clearcoat: 0.5 }), V(0, -0.2, 0.03), [1, 1, 0.45]);
+  const tongue = new THREE.Group(); tongue.position.set(0, 1.02, 0.7); B.add(tongue);
+  add(tongue, new THREE.CapsuleGeometry(0.13, 0.3, 8, 20), new THREE.MeshPhysicalMaterial({ color: 0xff7f95, roughness: 0.35, clearcoat: 0.5 }), V(0, -0.22, 0.04), [1, 1, 0.45]);
   tongue.scale.set(1, 0.001, 1); tongue.rotation.x = 0.35;
-  for (const sx of [-1, 1]) add(B, new THREE.CircleGeometry(0.16, 36), new THREE.MeshBasicMaterial({ map: blushTex('255,120,110', 0.6, 0.35), transparent: true, depthWrite: false, toneMapped: false }), V(sx * 0.6, 1.28, 0.682));
+  const blushMat = []; for (const sx of [-1, 1]) { const m = new THREE.MeshBasicMaterial({ map: blushTex('255,110,110', 0.75, 0.45), transparent: true, depthWrite: false, toneMapped: false, opacity: 0.6 }); blushMat.push(m); add(B, new THREE.CircleGeometry(0.17, 36), m, V(sx * 0.6, 1.28, 0.682)); }
+  // ter damlası ve salya
+  const dropGeo = (() => { const g = new THREE.SphereGeometry(0.1, 24, 16); const p = g.attributes.position; for (let i = 0; i < p.count; i++) { const y = p.getY(i); if (y > 0) { const k = 1 - y / 0.1; p.setX(i, p.getX(i) * k); p.setZ(i, p.getZ(i) * k); p.setY(i, y * 2.2); } } g.computeVertexNormals(); return g; })();
+  const sweat = add(B, dropGeo, water, V(0.92, 2.05, 0.35)); sweat.scale.setScalar(0.001);
+  const drool = add(B, dropGeo, water, V(0.1, 0.98, 0.7), null, [Math.PI, 0, 0]); drool.scale.setScalar(0.001);
   const splats = []; let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
   const spots = [[0.5, 2.33, 0.2, 'top'], [-0.45, 2.33, -0.1, 'top'], [0.0, 2.33, 0.35, 'top'], [-0.7, 0.95, 0.676, 'f'], [0.65, 0.75, 0.676, 'f'], [0.05, 0.6, 0.676, 'f'], [0.876, 1.6, 0.1, 'r'], [-0.876, 1.3, 0.2, 'l'], [0.0, 2.28, 0.4, 'top']];
   for (const [x, y, z, f] of spots) {
@@ -180,14 +199,26 @@ export function buildMoko() {
   return {
     root, squash, lean, B, legs, eyes, pupils, brows, teeth, tongue, orange,
     setMess(k) { orange.color.copy(oBase).lerp(red, 0.68 * k); splats.forEach(m => { const s = m.userData.s, kk = Math.max(0.001, k); m.scale.set(s[0] * kk, s[1] * kk, s[2] * kk); }); },
-    setEyes(sc, blink = 0, happyOn = false, look = [0, 0]) {
-      eyes.forEach((e, i) => { e.visible = !happyOn; e.scale.set(sc, sc * Math.max(0.06, 1 - blink), sc); pupils[i].position.set(look[0], look[1], 0); happy[i][0].visible = happyOn; happy[i][1].visible = happyOn; });
+    // mode: 'open' | 'happy' (^^) | 'squeeze' (><) ; pupil: göz bebeği boyu ; spark: iştah parıltısı
+    setEyes(sc, blink = 0, mode = 'open', look = [0, 0], pupil = 1, spark = false) {
+      if (mode === true) mode = 'happy'; if (mode === false) mode = 'open';
+      eyes.forEach((e, i) => {
+        e.visible = mode === 'open'; e.scale.set(sc, sc * Math.max(0.06, 1 - blink), sc);
+        pupils[i][0].position.set(look[0], look[1], 0); pupils[i][1].scale.set(pupil, pupil, 1); sparkles[i].visible = spark;
+        happy[i][0].visible = mode === 'happy'; happy[i][1].visible = mode !== 'open'; happy[i][2].visible = mode === 'squeeze';
+      });
     },
-    // worry: 0 düz, 1 endişeli; raise: kaş yukarı
-    setBrows(worry, raise = 0) { brows.forEach(b => { const sx = b.userData.sx; b.rotation.z = -sx * 0.2 * worry; b.position.y = 0.45 + raise; }); },
-    setTongue(k, wag = 0) { tongue.scale.set(1, Math.max(0.001, k), 1); tongue.rotation.x = 0.35 + wag; },
+    setBrows(worry, raise = 0, asym = 0) { brows.forEach(b => { const sx = b.userData.sx; b.rotation.z = -sx * 0.2 * worry; b.position.y = 0.45 + raise + (sx > 0 ? asym : -asym * 0.3); }); },
+    setTongue(k, wag = 0, side = 0) { tongue.scale.set(1, Math.max(0.001, k), 1); tongue.rotation.set(0.35 + wag, 0, side); tongue.position.x = Math.sin(side) * 0.12; },
+    // open: ağız açıklığı (0..1), smile: +1 gülümseme / -1 somurtma, wide: genişlik
+    setMouth(open = 0, smile = 1, wide = 1) { openG.scale.set(wide * (0.6 + 0.5 * open), Math.max(0.001, open), 1); lineG.scale.set(wide, smile, 1); lineG.visible = open < 0.15; },
+    setChatter(t, k) { teeth.position.y = k * Math.max(0, Math.sin(t * 70)) * 0.025; },
+    setSweat(k, slide = 0) { const kk = Math.max(0.001, k) * 1.6; sweat.scale.set(kk * 0.9, kk, kk * 0.9); sweat.position.set(0.92, 2.05 - slide * 0.5, 0.35); },
+    setDrool(k) { const kk = Math.max(0.001, k); drool.scale.set(kk * 0.55, kk * (0.7 + k * 0.6), kk * 0.55); drool.position.y = 0.98 - k * 0.07; },
+    setBlush(k) { blushMat.forEach(m => m.opacity = k); },
     setSquash(sy, puff = 1) { const sxz = 1 / Math.sqrt(sy); squash.scale.set(sxz * puff, sy, sxz); },
     walk(phase, amp) { legs.forEach(lg => { const ph = phase + (lg.userData.front ? 0 : Math.PI) + (lg.userData.side > 0 ? Math.PI : 0); lg.rotation.x = Math.sin(ph) * 0.7 * amp; lg.position.y = 0.5 + Math.max(0, Math.cos(ph)) * 0.1 * amp; }); },
+    tap(k, t) { legs.forEach(lg => { if (lg.userData.front) { const on = lg.userData.side > 0 ? 1 : 0; lg.rotation.x = -k * Math.max(0, Math.sin(t * 14 + on * Math.PI)) * 0.9; lg.position.y = 0.5 + k * Math.max(0, Math.sin(t * 14 + on * Math.PI)) * 0.12; } }); },
   };
 }
 
