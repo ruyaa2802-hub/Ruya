@@ -49,6 +49,8 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 ## Ücretsiz seslendirme (isteğe bağlı)
 `python3 studio/seslendir.py <video> [--ses fahrettin|dfki|fettah]` — açık kaynak Piper TTS ile Türkçe seslendirme üretir, kredi harcamaz (erkek sesleri; ElevenLabs kadar doğal değildir). İlk çalıştırmada model Hugging Face'ten indirilir.
 
+**Daha doğal ses (önerilen ücretsiz seçenek):** `/root/cbx-venv/bin/python studio/seslendir_dogal.py <video>` — Chatterbox Multilingual (MIT lisanslı) ile üretir, her cümleyi Whisper ile kontrol edip en iyi denemeyi seçer. 30 sn metin ≈ 8–10 dk.
+
 ## Kredi koruma
 - `.claude/settings.json`: ücretli üretim araçları (görüntü/video/ses üretimi) **engelli**; diğer harici araçlar ve ağ istekleri her seferinde **onay ister**.
 - `CLAUDE.md`: Claude'un uyduğu kurallar (izin almadan hiçbir harici API çağrısı yok).
