@@ -2,6 +2,9 @@
 """Doğal, ücretsiz Türkçe seslendirme — Chatterbox Multilingual (MIT lisanslı) + Whisper kalite kontrolü.
 
   /root/cbx-venv/bin/python studio/seslendir_dogal.py <video-klasoru> [--deneme 3]
+      [--duygu 0.5] [--cfg 0.5] [--tempo 1.0] [--cumle-ara 0.3] [--bolum-ara 0.55]
+
+  Duygusal/yavaş ton için örnek: --duygu 0.8 --cfg 0.3 --tempo 0.92 --cumle-ara 0.5 --bolum-ara 0.9
 
 Her cümleyi birkaç farklı ayarla üretir, her denemeyi Whisper ile yazıya döker ve metne en
 yakın olanı seçer; modelin sona eklediği anlamsız sesleri konuşmanın bittiği yerden keser.
@@ -37,11 +40,18 @@ def oku16k(yol):
     return np.frombuffer(a, dtype=np.int16).astype(np.float32) / 32768
 
 
+def secenek(ad, v):
+    return float(sys.argv[sys.argv.index(ad) + 1]) if ad in sys.argv else v
+
+
 def main():
-    video = next((a for a in sys.argv[1:] if not a.startswith('--') and not a.isdigit()), None)
+    degerler = {sys.argv[i + 1] for i, a in enumerate(sys.argv[:-1]) if a.startswith('--')}
+    video = next((a for a in sys.argv[1:] if not a.startswith('--') and a not in degerler), None)
     if not video:
         sys.exit(__doc__)
-    deneme = int(sys.argv[sys.argv.index('--deneme') + 1]) if '--deneme' in sys.argv else 3
+    deneme = int(secenek('--deneme', 3))
+    duygu, cfg0, tempo = secenek('--duygu', None), secenek('--cfg', None), secenek('--tempo', 1.0)
+    cumle_ara, bolum_ara = secenek('--cumle-ara', 0.3), secenek('--bolum-ara', 0.55)
     vdir = KOK / 'videolar' / video
     senaryo = json.loads((vdir / 'senaryo.json').read_text(encoding='utf-8'))
     torch.set_num_threads(os.cpu_count() or 4)
@@ -54,6 +64,8 @@ def main():
             for ci, c in enumerate(cumleler(b['metin'])):
                 en = None
                 for k, (seed, ex, cfg) in enumerate(AYARLAR[:deneme]):
+                    if duygu is not None: ex = duygu + (k % 2) * 0.05
+                    if cfg0 is not None: cfg = cfg0 + (k % 3) * 0.05
                     torch.manual_seed(seed)
                     wav = tts.generate(c, language_id='tr', exaggeration=ex, cfg_weight=cfg)
                     yol = td / f'{bi}_{ci}_{k}.wav'
@@ -68,9 +80,9 @@ def main():
                     if skor > 0.985:
                         break
                 kes = td / f'k{bi}_{ci}.wav'
-                subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(en[1]), '-t', f'{en[2]:.2f}', '-af', f'afade=t=out:st={max(0, en[2] - 0.12):.2f}:d=0.12', '-ar', '44100', '-ac', '1', str(kes)], check=True)
+                subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(en[1]), '-t', f'{en[2]:.2f}', '-af', f'afade=t=out:st={max(0, en[2] - 0.12):.2f}:d=0.12' + (f',atempo={tempo}' if tempo != 1.0 else ''), '-ar', '44100', '-ac', '1', str(kes)], check=True)
                 if girdiler:
-                    girdiler.append(('s', 0.3 if ci else 0.55))
+                    girdiler.append(('s', cumle_ara if ci else bolum_ara))
                 girdiler.append(('d', kes))
                 print(f'✔ {bi}.{ci} seçildi ({en[0]:.3f})', flush=True)
         args, n = [], 0
