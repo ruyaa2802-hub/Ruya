@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#fff}</style>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.169.0/examples/jsm/"}}</script>
+</head><body><script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const W=1080,H=1080;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setSize(W,H); r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=0.95;
+r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap; r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const scene=new THREE.Scene();
+// arka plan: beyazdan hafif lavantaya
+const bg=document.createElement('canvas');bg.width=4;bg.height=256;const g=bg.getContext('2d');
+const gr=g.createLinearGradient(0,0,0,256);gr.addColorStop(0,'#ffffff');gr.addColorStop(0.75,'#f3f3ff');gr.addColorStop(1,'#e8e6fa');
+g.fillStyle=gr;g.fillRect(0,0,4,256);const bt=new THREE.CanvasTexture(bg);bt.colorSpace=THREE.SRGBColorSpace;scene.background=bt;
+const pm=new THREE.PMREMGenerator(r);scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;scene.environmentIntensity=0.7;
+const cam=new THREE.PerspectiveCamera(28,W/H,0.1,100);cam.position.set(0,1.35,6.4);cam.lookAt(0,1.08,0);
+const key=new THREE.DirectionalLight(0xffffff,1.6);key.position.set(2.5,5,4);
+key.shadow.mapSize.set(2048,2048);key.shadow.radius=12;key.shadow.camera.left=-3;key.shadow.camera.right=3;key.shadow.camera.top=3;key.shadow.camera.bottom=-3;key.shadow.bias=-0.0005;
+scene.add(key);scene.add(new THREE.HemisphereLight(0xffffff,0xd8d4ff,0.6));
+const fill=new THREE.DirectionalLight(0xdfe8ff,0.5);fill.position.set(-4,2,3);scene.add(fill);
+const sc=document.createElement('canvas');sc.width=sc.height=256;const sx2=sc.getContext('2d');const sg=sx2.createRadialGradient(128,128,0,128,128,128);
+sg.addColorStop(0,'rgba(70,60,140,0.35)');sg.addColorStop(0.5,'rgba(70,60,140,0.15)');sg.addColorStop(1,'rgba(70,60,140,0)');sx2.fillStyle=sg;sx2.fillRect(0,0,256,256);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(2.8,1.6),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(sc),transparent:true,depthWrite:false}));
+ground.rotation.x=-Math.PI/2;ground.position.set(0.1,0.005,0.05);scene.add(ground);
+
+const blue=new THREE.MeshPhysicalMaterial({color:0x4fa6ec,roughness:0.55,clearcoat:0.15,clearcoatRoughness:0.7});
+const C=new THREE.Vector3(0,1.17,0),R=1;
+const piko=new THREE.Group();scene.add(piko);
+// gövde + yumuşak göbek şişkinliği
+const bg2=new THREE.SphereGeometry(R,160,120);const p=bg2.attributes.position;const bd=new THREE.Vector3(0,-0.4,0.92).normalize();const v=new THREE.Vector3();
+for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i);const n=v.clone().normalize();const d2=n.distanceToSquared(bd);v.multiplyScalar(1+0.09*Math.exp(-d2/0.3));v.y*=0.97;p.setXYZ(i,v.x,v.y,v.z);}
+bg2.computeVertexNormals();const body=new THREE.Mesh(bg2,blue);body.position.copy(C);body.castShadow=true;piko.add(body);
+function mk(geo,mat,pos,scale,rot){const m=new THREE.Mesh(geo,mat);m.position.copy(pos);if(scale)m.scale.set(...scale);if(rot)m.rotation.set(...rot);m.castShadow=true;piko.add(m);return m;}
+// kollar
+mk(new THREE.SphereGeometry(1,64,48),blue,new THREE.Vector3(-0.95,0.88,0.05),[0.24,0.44,0.28],[0,0,-0.25]);
+mk(new THREE.SphereGeometry(1,64,48),blue,new THREE.Vector3(0.95,0.88,0.05),[0.24,0.44,0.28],[0,0,0.25]);
+// bacaklar
+mk(new THREE.CapsuleGeometry(0.16,0.18,8,32),blue,new THREE.Vector3(-0.33,0.3,0),null);
+mk(new THREE.CapsuleGeometry(0.16,0.18,8,32),blue,new THREE.Vector3(0.33,0.3,0),null);
+// şeftali ayaklar
+const peach=new THREE.MeshPhysicalMaterial({color:0xf0a77e,roughness:0.55,clearcoat:0.2});
+mk(new THREE.SphereGeometry(1,48,32),peach,new THREE.Vector3(-0.36,0.11,0.1),[0.25,0.13,0.33]);
+mk(new THREE.SphereGeometry(1,48,32),peach,new THREE.Vector3(0.36,0.11,0.1),[0.25,0.13,0.33]);
+// kıvrık anten (Piko'nun imzası)
+const pts=[];for(let t=0;t<=1;t+=0.02){const a=t*Math.PI*2.1;const rad=0.22*(1-t*0.75);pts.push(new THREE.Vector3(0.0+ (t<0.25?0:Math.sin(a)*rad*0.0),0,0));}
+const cp=[new THREE.Vector3(0,2.05,0),new THREE.Vector3(0,2.2,0)];
+for(let i=0;i<=60;i++){const t=i/60;const ang=Math.PI-t*2.3*Math.PI;const rr=0.15*(1-0.62*t);cp.push(new THREE.Vector3(0.15+Math.cos(ang)*rr,2.36+Math.sin(ang)*rr,0));}
+const curve=new THREE.CatmullRomCurve3(cp);
+mk(new THREE.TubeGeometry(curve,200,0.042,16,false),blue,new THREE.Vector3(0,0,0));
+const endp=cp[cp.length-1];mk(new THREE.SphereGeometry(0.043,16,16),blue,endp.clone());
+// yüz elemanlarını yüzeye yerleştirme
+body.updateMatrixWorld();const rc=new THREE.Raycaster();
+function onSurf(dir,off){const d=new THREE.Vector3(...dir).normalize();rc.set(C.clone().add(d.clone().multiplyScalar(3)),d.clone().negate());const h=rc.intersectObject(body)[0];
+const n=h.face.normal.clone().transformDirection(body.matrixWorld).normalize();const q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1),n);return {pos:h.point.clone().add(n.clone().multiplyScalar(off)),q,n};}
+const white=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:0.35,clearcoat:0.5});
+const black=new THREE.MeshPhysicalMaterial({color:0x14121e,roughness:0.15,clearcoat:1,clearcoatRoughness:0.05});
+const shine=new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false});
+for(const sx of [-1,1]){
+  const s=onSurf([sx*0.36,0.18,0.93],-0.03);
+  const eyeG=new THREE.Group();eyeG.position.copy(s.pos);eyeG.quaternion.copy(s.q);piko.add(eyeG);
+  const w=new THREE.Mesh(new THREE.SphereGeometry(0.255,64,48),white);w.scale.set(1,1.02,0.32);eyeG.add(w);
+  const b=new THREE.Mesh(new THREE.SphereGeometry(0.19,64,48),black);b.scale.set(1,1.04,0.3);b.position.set(0.0,-0.01,0.035);eyeG.add(b);
+  const h1=new THREE.Mesh(new THREE.SphereGeometry(0.055,24,16),shine);h1.scale.set(1,1,0.3);h1.position.set(-0.065,0.075,0.1);eyeG.add(h1);
+  const h2=new THREE.Mesh(new THREE.SphereGeometry(0.022,16,12),shine);h2.scale.set(1,1,0.3);h2.position.set(0.08,-0.07,0.1);eyeG.add(h2);
+  // yanak
+  const cv=document.createElement('canvas');cv.width=cv.height=128;const c=cv.getContext('2d');const rg=c.createRadialGradient(64,64,0,64,64,64);
+  rg.addColorStop(0,'rgba(255,150,160,0.85)');rg.addColorStop(0.6,'rgba(255,150,160,0.6)');rg.addColorStop(1,'rgba(255,150,160,0)');c.fillStyle=rg;c.fillRect(0,0,128,128);
+  const tx=new THREE.CanvasTexture(cv);tx.colorSpace=THREE.SRGBColorSpace;
+  const bl=onSurf([sx*0.58,-0.08,0.82],0.012);const bm=new THREE.Mesh(new THREE.CircleGeometry(0.17,48),new THREE.MeshBasicMaterial({map:tx,transparent:true,depthWrite:false,toneMapped:false}));
+  bm.position.copy(bl.pos);bm.quaternion.copy(bl.q);piko.add(bm);
+}
+// ağız: açık gülümseme + dil
+const ms=onSurf([0,-0.05,1],0.008);const mg=new THREE.Group();mg.position.copy(ms.pos);mg.quaternion.copy(ms.q);piko.add(mg);
+const sh=new THREE.Shape();sh.moveTo(-0.12,0.03);sh.quadraticCurveTo(0,0.06,0.12,0.03);sh.bezierCurveTo(0.11,-0.1,-0.11,-0.1,-0.12,0.03);
+mg.add(new THREE.Mesh(new THREE.ShapeGeometry(sh,40),new THREE.MeshStandardMaterial({color:0x3a1420,roughness:0.6})));
+const tg=new THREE.Shape();tg.moveTo(-0.07,-0.04);tg.quadraticCurveTo(0,0.0,0.07,-0.04);tg.bezierCurveTo(0.06,-0.085,-0.06,-0.085,-0.07,-0.04);
+const tm=new THREE.Mesh(new THREE.ShapeGeometry(tg,40),new THREE.MeshStandardMaterial({color:0xf27f8c,roughness:0.5}));tm.position.z=0.002;mg.add(tm);
+r.render(scene,cam);window.done=true;
+</script></body></html>
