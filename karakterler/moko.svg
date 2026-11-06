@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <linearGradient id="mBody" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#ffc06a"/><stop offset="0.55" stop-color="#ff9a3c"/><stop offset="1" stop-color="#ea6d18"/></linearGradient>
+    <linearGradient id="mFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff3df"/><stop offset="1" stop-color="#ffdcb0"/></linearGradient>
+    <linearGradient id="mLimb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a3c"/><stop offset="1" stop-color="#d9600f"/></linearGradient>
+    <radialGradient id="cookie" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#f3c27a"/><stop offset="1" stop-color="#c98a3c"/></radialGradient>
+    <radialGradient id="iris_m" cx="50%" cy="65%" r="65%">
+      <stop offset="0" stop-color="#b7793f"/><stop offset="1" stop-color="#4a250c"/></radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="#fffaf2"/>
+  <ellipse cx="400" cy="925" rx="210" ry="24" fill="#6b2f0c" opacity="0.13"/>
+
+  <!-- bacaklar -->
+  <rect x="285" y="735" width="56" height="140" rx="26" fill="url(#mLimb)" stroke="#6b2f0c" stroke-width="8"/>
+  <rect x="459" y="735" width="56" height="140" rx="26" fill="url(#mLimb)" stroke="#6b2f0c" stroke-width="8"/>
+  <!-- ayaklar -->
+  <ellipse cx="300" cy="885" rx="70" ry="34" fill="url(#mLimb)" stroke="#6b2f0c" stroke-width="8"/>
+  <ellipse cx="500" cy="885" rx="70" ry="34" fill="url(#mLimb)" stroke="#6b2f0c" stroke-width="8"/>
+
+  <!-- tepe tüyleri -->
+  <path d="M 370 255 q -10 -50 -40 -60" fill="none" stroke="#6b2f0c" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 400 250 q 4 -62 30 -78" fill="none" stroke="#6b2f0c" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 428 258 q 24 -36 56 -38" fill="none" stroke="#6b2f0c" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- gövde: yumuşak köşeli kare -->
+  <rect x="150" y="250" width="500" height="500" rx="110" fill="url(#mBody)" stroke="#6b2f0c" stroke-width="9"/>
+  <!-- yüz/karın açık alanı -->
+  <rect x="215" y="520" width="370" height="205" rx="85" fill="url(#mFace)" opacity="0.9"/>
+  <!-- parlama -->
+  <rect x="190" y="285" width="120" height="34" rx="17" transform="rotate(-12 250 302)" fill="#ffffff" opacity="0.4"/>
+  <circle cx="335" cy="292" r="10" fill="#ffffff" opacity="0.5"/>
+
+  <!-- kaşlar: endişeli (iç uçlar yukarı) -->
+  <path d="M 230 345 q 50 -6 105 -42" fill="none" stroke="#6b2f0c" stroke-width="12" stroke-linecap="round"/>
+  <path d="M 465 303 q 55 36 105 42" fill="none" stroke="#6b2f0c" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- gözler -->
+  
+  <g>
+    <ellipse cx="305" cy="450" rx="84" ry="98" fill="#ffffff" stroke="#6b2f0c" stroke-width="7"/>
+    <ellipse cx="299" cy="460" rx="65.5" ry="78.4" fill="url(#iris_m)"/>
+    <ellipse cx="299" cy="463.9" rx="36.0" ry="45.5" fill="#2a1206"/>
+    <ellipse cx="299" cy="503.1" rx="39.3" ry="17.2" fill="#ffffff" opacity="0.28"/>
+    <circle cx="274.1" cy="427.1" r="23.6" fill="#ffffff"/>
+    <circle cx="325.2" cy="483.5" r="9.8" fill="#ffffff"/>
+    <path d="M 318.7 411.4 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill="#ffffff"/>
+  </g>
+  
+  <g>
+    <ellipse cx="495" cy="450" rx="84" ry="98" fill="#ffffff" stroke="#6b2f0c" stroke-width="7"/>
+    <ellipse cx="489" cy="460" rx="65.5" ry="78.4" fill="url(#iris_m)"/>
+    <ellipse cx="489" cy="463.9" rx="36.0" ry="45.5" fill="#2a1206"/>
+    <ellipse cx="489" cy="503.1" rx="39.3" ry="17.2" fill="#ffffff" opacity="0.28"/>
+    <circle cx="464.1" cy="427.1" r="23.6" fill="#ffffff"/>
+    <circle cx="515.2" cy="483.5" r="9.8" fill="#ffffff"/>
+    <path d="M 508.7 411.4 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill="#ffffff"/>
+  </g>
+
+  <!-- ter damlası: biraz korkak -->
+  <path d="M 612 330 q 22 34 0 50 q -22 -16 0 -50 z" fill="#8fd8ff" stroke="#2373cf" stroke-width="5"/>
+  <circle cx="606" cy="362" r="4" fill="#ffffff"/>
+
+  <!-- yanaklar -->
+  <ellipse cx="225" cy="570" rx="40" ry="22" fill="#ff6f7d" opacity="0.5"/>
+  <ellipse cx="575" cy="570" rx="40" ry="22" fill="#ff6f7d" opacity="0.5"/>
+
+  <!-- ağız + dişler (dişlek) -->
+  <path d="M 325 585 Q 400 715 475 585 Q 400 602 325 585 Z" fill="#7a1a2e" stroke="#6b2f0c" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M 368 628 Q 400 662 432 628 Q 400 642 368 628 Z" fill="#ff8aa0"/>
+  <path d="M 364 593 L 364 632 Q 364 643 375 643 L 387 643 Q 398 643 398 632 L 398 598 Z" fill="#ffffff" stroke="#6b2f0c" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M 402 598 L 402 632 Q 402 643 413 643 L 425 643 Q 436 643 436 632 L 436 593 Z" fill="#ffffff" stroke="#6b2f0c" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M 325 585 Q 400 602 475 585" fill="none" stroke="#6b2f0c" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- sol kol: göbeğini tutuyor -->
+  <ellipse cx="160" cy="620" rx="40" ry="66" transform="rotate(-20 160 620)" fill="url(#mLimb)" stroke="#6b2f0c" stroke-width="8"/>
+  <!-- sağ kol + ısırılmış kurabiye: çok iştahlı -->
+  <g transform="rotate(-8 660 560)">
+    <path d="M 700 520 m -62 0 a 62 62 0 1 0 98 -50 a 18 18 0 0 1 -14 -14 a 18 18 0 0 1 -22 -4 a 62 62 0 0 0 -62 68 z"
+          fill="url(#cookie)" stroke="#6b2f0c" stroke-width="7" stroke-linejoin="round"/>
+    <circle cx="672" cy="530" r="8" fill="#5b2a10"/><circle cx="705" cy="555" r="7" fill="#5b2a10"/>
+    <circle cx="690" cy="500" r="6" fill="#5b2a10"/><circle cx="722" cy="520" r="6" fill="#5b2a10"/>
+    <circle cx="660" cy="560" r="5" fill="#5b2a10"/>
+  </g>
+  <ellipse cx="640" cy="590" rx="42" ry="56" transform="rotate(30 640 590)" fill="url(#mLimb)" stroke="#6b2f0c" stroke-width="8"/>
+  <!-- kırıntılar -->
+  <circle cx="610" cy="700" r="5" fill="#c98a3c"/><circle cx="628" cy="728" r="4" fill="#c98a3c"/><circle cx="596" cy="745" r="3.5" fill="#c98a3c"/>
+</svg>

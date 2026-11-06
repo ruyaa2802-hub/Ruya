@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+  <defs>
+    <radialGradient id="pBody" cx="38%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#8fd8ff"/><stop offset="0.55" stop-color="#3fa4f0"/><stop offset="1" stop-color="#2373cf"/></radialGradient>
+    <radialGradient id="pBelly" cx="45%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#f2fbff"/><stop offset="1" stop-color="#bfe5ff"/></radialGradient>
+    <linearGradient id="pLimb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a9bec"/><stop offset="1" stop-color="#1f66bd"/></linearGradient>
+    <radialGradient id="iris_p" cx="50%" cy="65%" r="65%">
+      <stop offset="0" stop-color="#5ad1ff"/><stop offset="1" stop-color="#0d4fa8"/></radialGradient>
+  </defs>
+  <rect width="800" height="1000" fill="#fffaf2"/>
+  <ellipse cx="400" cy="915" rx="230" ry="26" fill="#173a66" opacity="0.13"/>
+
+  <!-- ayaklar -->
+  <ellipse cx="315" cy="880" rx="72" ry="42" fill="url(#pLimb)" stroke="#173a66" stroke-width="8"/>
+  <ellipse cx="485" cy="880" rx="72" ry="42" fill="url(#pLimb)" stroke="#173a66" stroke-width="8"/>
+
+  <!-- sol kol (belde, kendinden emin) -->
+  <ellipse cx="128" cy="640" rx="48" ry="72" transform="rotate(25 128 640)" fill="url(#pLimb)" stroke="#173a66" stroke-width="8"/>
+  <!-- sağ kol (havada, "bakın ne buldum!") -->
+  <ellipse cx="672" cy="455" rx="46" ry="78" transform="rotate(32 672 455)" fill="url(#pLimb)" stroke="#173a66" stroke-width="8"/>
+
+  <!-- anten / kıvrık perçem: merak işareti -->
+  <path d="M 400 300 C 395 230, 440 200, 470 215 C 500 232, 480 270, 452 258 C 435 250, 440 232, 455 234"
+        fill="none" stroke="#173a66" stroke-width="16" stroke-linecap="round"/>
+  <path d="M 400 300 C 395 230, 440 200, 470 215 C 500 232, 480 270, 452 258 C 435 250, 440 232, 455 234"
+        fill="none" stroke="#3fa4f0" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- gövde: yuvarlak top -->
+  <ellipse cx="400" cy="590" rx="285" ry="295" fill="url(#pBody)" stroke="#173a66" stroke-width="9"/>
+  <!-- kocaman göbek -->
+  <ellipse cx="400" cy="715" rx="200" ry="160" fill="url(#pBelly)"/>
+  <path d="M 388 760 q 12 14 24 0" fill="none" stroke="#7fb3dd" stroke-width="6" stroke-linecap="round"/>
+  <!-- parlama -->
+  <ellipse cx="250" cy="390" rx="70" ry="38" transform="rotate(-35 250 390)" fill="#ffffff" opacity="0.35"/>
+  <circle cx="200" cy="455" r="12" fill="#ffffff" opacity="0.45"/>
+
+  <!-- kaşlar: biri havada = özgüven -->
+  <path d="M 228 332 q 60 -42 120 -8" fill="none" stroke="#173a66" stroke-width="13" stroke-linecap="round"/>
+  <path d="M 458 338 q 58 -22 112 6" fill="none" stroke="#173a66" stroke-width="13" stroke-linecap="round"/>
+
+  <!-- gözler -->
+  
+  <g>
+    <ellipse cx="300" cy="445" rx="88" ry="104" fill="#ffffff" stroke="#173a66" stroke-width="7"/>
+    <ellipse cx="308" cy="453" rx="68.6" ry="83.2" fill="url(#iris_p)"/>
+    <ellipse cx="308" cy="457.2" rx="37.8" ry="48.3" fill="#08234d"/>
+    <ellipse cx="308" cy="498.8" rx="41.2" ry="18.3" fill="#ffffff" opacity="0.28"/>
+    <circle cx="281.9" cy="418.1" r="24.7" fill="#ffffff"/>
+    <circle cx="335.5" cy="478.0" r="10.3" fill="#ffffff"/>
+    <path d="M 328.6 401.4 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill="#ffffff"/>
+  </g>
+  
+  <g>
+    <ellipse cx="500" cy="445" rx="88" ry="104" fill="#ffffff" stroke="#173a66" stroke-width="7"/>
+    <ellipse cx="508" cy="453" rx="68.6" ry="83.2" fill="url(#iris_p)"/>
+    <ellipse cx="508" cy="457.2" rx="37.8" ry="48.3" fill="#08234d"/>
+    <ellipse cx="508" cy="498.8" rx="41.2" ry="18.3" fill="#ffffff" opacity="0.28"/>
+    <circle cx="481.9" cy="418.1" r="24.7" fill="#ffffff"/>
+    <circle cx="535.5" cy="478.0" r="10.3" fill="#ffffff"/>
+    <path d="M 528.6 401.4 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill="#ffffff"/>
+  </g>
+
+  <!-- yanaklar -->
+  <ellipse cx="200" cy="575" rx="44" ry="24" fill="#ffa3c4" opacity="0.8"/>
+  <ellipse cx="600" cy="575" rx="44" ry="24" fill="#ffa3c4" opacity="0.8"/>
+
+  <!-- ağız: kendinden emin kocaman sırıtış -->
+  <path d="M 325 590 Q 400 690 480 582 Q 410 622 325 590 Z" fill="#7a1a2e" stroke="#173a66" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M 362 628 Q 405 650 448 620 Q 420 662 362 628 Z" fill="#ff8aa0"/>
+</svg>
