@@ -1,0 +1,51 @@
+{
+  "seri": "İnsan Atlası",
+  "bolum": 4,
+  "baslik": "Bazen neden geçmişteki kendimizi özleriz?",
+  "fps": 30,
+  "giris": 0.8,
+  "kapanis": 2.6,
+  "acilis": 0.3,
+  "altyaziY": 1430,
+  "ses": {
+    "sting": false,
+    "whoosh": 0.6,
+    "pad": 1.1,
+    "piyano": 1.2,
+    "akorlar": {
+      "ayna": [55.0, 82.41, 130.81, 164.81],
+      "gecmis": [65.41, 98.0, 164.81, 196.0],
+      "bugun": [61.74, 92.5, 146.83, 185.0],
+      "zihin": [73.42, 110.0, 146.83, 220.0],
+      "birlesme": [65.41, 98.0, 196.0, 261.63]
+    },
+    "yayli": { "seviye": 1.0, "bolumler": { "ayna": 0.5, "gecmis": 1.1, "bugun": 0.8, "zihin": 1.2, "birlesme": 1.9 } },
+    "ortam": [
+      { "tip": "oda", "bas": "ayna", "son": "ayna", "seviye": 0.8 },
+      { "tip": "ruzgar", "bas": "gecmis", "son": "gecmis", "seviye": 0.6 },
+      { "tip": "sehir", "bas": "gecmis", "son": "bugun", "sonOfs": -1.5, "seviye": 0.8 }
+    ],
+    "isaretler": [
+      { "tip": "kalp", "bolum": "ayna", "cumle": 0, "oran": -0.45, "adet": 5, "aralik": 0.9, "seviye": 0.8 },
+      { "tip": "parilti", "bolum": "zihin", "cumle": 0, "oran": 0.1, "seviye": 0.6 },
+      { "tip": "zap", "bolum": "zihin", "cumle": 0, "oran": 0.55, "seviye": 0.5 },
+      { "tip": "nefes", "bolum": "birlesme", "cumle": 0, "oran": 0.6, "seviye": 0.6 },
+      { "tip": "parilti", "bolum": "birlesme", "cumle": 1, "oran": 0.4, "seviye": 0.9 }
+    ],
+    "anlatim": "highpass=f=70,equalizer=f=200:t=q:w=1.2:g=2,aecho=0.85:0.6:45|95:0.12|0.07",
+    "ducking": 4,
+    "release": 700
+  },
+  "bolumler": [
+    { "id": "ayna", "sahne": "ayna", "gecis": "dalis", "gecisSure": 1.1,
+      "metin": "Hiç eski hâline dönmek istedin mi… ama artık o insan olmadığını fark ettin mi?" },
+    { "id": "gecmis", "sahne": "gecmis", "gecis": "capraz", "gecisSure": 1.0,
+      "metin": "Bazen geçmişi değil… o günlerdeki kendimizi özleriz." },
+    { "id": "bugun", "sahne": "bugun", "gecis": "dalis", "gecisSure": 1.0,
+      "metin": "Daha umutlu olduğumuz, daha az yorulduğumuz o hâlimizi…" },
+    { "id": "zihin", "sahne": "zihin", "gecis": "capraz", "gecisSure": 1.0,
+      "metin": "Çünkü beynimiz anıları yalnızca saklamaz; onları bugünkü duygularımızla yeniden anlamlandırır." },
+    { "id": "birlesme", "sahne": "birlesme",
+      "metin": "Belki de özlediğin eski sen… bugün içinde yeniden yaşamak isteyen bir parçandır." }
+  ]
+}

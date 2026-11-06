@@ -159,6 +159,11 @@ export function sesYatagiUret(TL, dosya) {
         const v = f(r() * 2 - 1, 700, 0.8).bp * env * 0.12 * sev;
         ekle(n0 + j, v, v, 0.3);
       }
+    } else if (is.tip === 'kalp') {
+      for (let k = 0; k < (is.adet || 4); k++) for (const [ofs, a] of [[0, 1], [0.17, 0.7]]) {
+        const nk = n0 + Math.floor((k * (is.aralik || 0.85) + ofs) * SR);
+        for (let j = 0; j < SR * 0.25; j++) { const t = j / SR, v = Math.sin(2 * Math.PI * (48 + 30 * Math.exp(-t * 30)) * t) * Math.exp(-t * 18) * 0.38 * a * sev * (1 - k * 0.12); ekle(nk + j, v, v, 0.2); }
+      }
     } else if (is.tip === 'zap') {
       for (let j = 0; j < SR * 1.0; j++) {
         const t = j / SR;
@@ -208,6 +213,23 @@ export function sesYatagiUret(TL, dosya) {
           const t = j / SR, v = f1(rr() * 2 - 1, fr, 3).bp * Math.exp(-t * 300) * 0.09 * sev * zarf(t0);
           ekle(n0 + j, v * (1 - pan), v * pan, 0.2);
         }
+      }
+    } else if (o.tip === 'ruzgar') {
+      const f1 = svf(), f2 = svf();
+      for (let i = Math.floor(a * SR); i < Math.min(N, z * SR); i++) {
+        const t = i / SR, w = zarf(t), fc = 450 + 300 * Math.sin(2 * Math.PI * 0.17 * t) + 150 * Math.sin(2 * Math.PI * 0.53 * t);
+        ekle(i, f1(rr() * 2 - 1, fc, 2).bp * 0.10 * w * sev, f2(rr() * 2 - 1, fc * 1.1, 2).bp * 0.10 * w * sev, 0.2);
+      }
+    } else if (o.tip === 'sehir') {
+      const f1 = svf(), f2 = svf();
+      for (let i = Math.floor(a * SR); i < Math.min(N, z * SR); i++) {
+        const t = i / SR, w = zarf(t);
+        const ugul = f1(rr() * 2 - 1, 140 + 40 * Math.sin(t * 0.3), 0.7).lo * 0.12, uzak = f2(rr() * 2 - 1, 900, 1.2).bp * 0.025;
+        ekle(i, (ugul + uzak) * w * sev, (ugul * 0.9 + uzak * 1.1) * w * sev, 0.4);
+      }
+      for (let t0 = a + 1.2; t0 < z - 1; t0 += 1.8 + rr() * 2.5) {           // uzak sesler (zil, kuş)
+        const n0 = Math.floor(t0 * SR), f0 = 1800 + rr() * 1600, pan = rr();
+        for (let j = 0; j < SR * 0.25; j++) { const t = j / SR, v = Math.sin(2 * Math.PI * f0 * t) * Math.exp(-t * 14) * 0.012 * sev * zarf(t0); ekle(n0 + j, v * (1 - pan), v * pan, 1); }
       }
     } else if (o.tip === 'kus') {
       for (let t0 = a + 0.8; t0 < z - 0.5; t0 += 0.9 + rr() * 1.6) {

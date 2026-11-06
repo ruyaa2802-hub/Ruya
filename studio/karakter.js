@@ -57,6 +57,18 @@
       ag.addColorStop(0, `rgba(${on},${0.45 * p.altIsik})`); ag.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.save(); ctx.clip(BAS); ctx.fillStyle = ag; ctx.fillRect(-50, -70, 120, 140); ctx.restore();
     }
+    // gençlik (dolgun saç) ve gülümseme
+    if (p.genc) { ctx.save(); ctx.translate(-2, -1.5); ctx.scale(1.06, 1.08); ctx.fillStyle = '#04060a'; ctx.fill(SAC); ctx.restore(); }
+    if (p.gulumse) {
+      const gu = p.gulumse;
+      ctx.save(); ctx.clip(BAS);
+      ctx.strokeStyle = `rgba(${kenar},${0.35 * gu})`; ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(41.5, 25.6); ctx.quadraticCurveTo(39.5, 25.2 - 2.2 * gu, 37.6, 23.4 - 2.6 * gu); ctx.stroke();          // ağız köşesi
+      ctx.beginPath(); ctx.moveTo(36, 7 - gu); ctx.quadraticCurveTo(34, 14 - gu, 37.5, 19.5 - 1.5 * gu); ctx.stroke();                     // yanak çizgisi
+      const yg = ctx.createRadialGradient(33, 10 - gu, 0.5, 33, 10 - gu, 9);
+      yg.addColorStop(0, `rgba(${on},${0.25 * gu})`); yg.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = yg; ctx.fillRect(20, -5, 30, 30);
+      ctx.restore();
+    }
     const [ex, ey] = GOZ;
     if (!p.kapali) {
       ctx.save();
@@ -116,5 +128,50 @@
     return { bas: [x + bas[0] * s, y + bas[1] * s], el: [x + (el[0] + 20) * s, y + (el[1] - 18) * s] };
   }
 
-  STUDIO.KR = { BAS, SAC, GOZ, damla, yakinYuz, oturan, yolNokta };
+  /* Ayakta / yürüyen yan görünüş (sağa bakar). h: boy (px). p: { faz, yuru, egim (öne eğilme), kol: [ux,uy] uzanan sağ elin hedefi (omuza göre, u birimi), genc } */
+  function yanKisi(ctx, x, ayakY, h, p, renk) {
+    const u = h / 100, faz = p.faz || 0, yur = p.yuru ?? 0, eg = p.egim || 0;
+    const bob = -Math.abs(Math.cos(faz)) * 1.2 * u * yur;
+    const kalca = [x, ayakY - 49 * u + bob], omuz = [x + eg * 8 * u, ayakY - 82 * u + bob];
+    ctx.save(); ctx.fillStyle = renk; ctx.strokeStyle = renk; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    const bacak = (fz, arka) => {
+      const uy = Math.sin(fz) * 0.42 * yur, diz = Math.max(0, -Math.cos(fz)) * 0.7 * yur;
+      const kx = kalca[0] + Math.sin(uy) * 25 * u, ky = kalca[1] + Math.cos(uy) * 25 * u;
+      const ax = kx + Math.sin(uy - diz) * 24 * u, ay = Math.min(ayakY - 1.5 * u, ky + Math.cos(uy - diz) * 24 * u);
+      ctx.globalAlpha *= arka ? 0.92 : 1;
+      ctx.lineWidth = 8.5 * u; ctx.beginPath(); ctx.moveTo(kalca[0], kalca[1]); ctx.lineTo(kx, ky); ctx.stroke();
+      ctx.lineWidth = 6.8 * u; ctx.beginPath(); ctx.moveTo(kx, ky); ctx.lineTo(ax, ay); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(ax + 3 * u, ay + 0.6 * u, 5.4 * u, 2 * u, 0, 0, TAU); ctx.fill();
+      if (arka) ctx.globalAlpha /= 0.92;
+    };
+    const kolCiz = (fz, hedef) => {
+      let dx, dy, ex, ey;
+      if (hedef) { ex = omuz[0] + hedef[0] * u; ey = omuz[1] + hedef[1] * u; dx = (omuz[0] + ex) / 2 - 2 * u; dy = (omuz[1] + ey) / 2 + 5 * u; }
+      else { const a = -Math.sin(fz) * 0.45 * yur; dx = omuz[0] + Math.sin(a) * 16 * u; dy = omuz[1] + 3 * u + Math.cos(a) * 16 * u; const b = a + 0.25 + 0.2 * yur; ex = dx + Math.sin(b) * 15 * u; ey = dy + Math.cos(b) * 15 * u; }
+      ctx.lineWidth = 5.6 * u; ctx.beginPath(); ctx.moveTo(omuz[0], omuz[1] + 3 * u); ctx.lineTo(dx, dy); ctx.lineTo(ex, ey); ctx.stroke();
+      ctx.beginPath(); ctx.arc(ex, ey, 2.8 * u, 0, TAU); ctx.fill();
+      return [ex, ey];
+    };
+    kolCiz(faz + Math.PI, null);           // arka kol
+    bacak(faz + Math.PI, true);            // arka bacak
+    // gövde
+    ctx.beginPath();
+    ctx.moveTo(kalca[0] - 8 * u, kalca[1] + 2 * u); ctx.lineTo(kalca[0] + 8 * u, kalca[1] + 2 * u);
+    ctx.quadraticCurveTo(omuz[0] + 11 * u, omuz[1] + 18 * u, omuz[0] + 7 * u, omuz[1] + 1 * u);
+    ctx.quadraticCurveTo(omuz[0], omuz[1] - 3 * u, omuz[0] - 7 * u, omuz[1] + 1 * u);
+    ctx.quadraticCurveTo(omuz[0] - 12 * u, omuz[1] + 20 * u, kalca[0] - 8 * u, kalca[1] + 2 * u); ctx.closePath(); ctx.fill();
+    bacak(faz, false);
+    // boyun + baş
+    const bas = [omuz[0] + 2 * u + eg * 3 * u, omuz[1] - 10.5 * u];
+    ctx.lineWidth = 5 * u; ctx.beginPath(); ctx.moveTo(omuz[0], omuz[1]); ctx.lineTo(bas[0] - 1 * u, bas[1] + 4 * u); ctx.stroke();
+    ctx.save(); ctx.translate(bas[0], bas[1]); ctx.rotate(eg * 0.3); ctx.scale(0.125 * u, 0.125 * u);
+    ctx.fill(BAS); ctx.fill(SAC);
+    if (p.genc) { ctx.translate(-2, -1.5); ctx.scale(1.06, 1.08); ctx.fill(SAC); }
+    ctx.restore();
+    const el = kolCiz(faz, p.kol || null);  // ön kol
+    ctx.restore();
+    return { bas, omuz, el, u };
+  }
+
+  STUDIO.KR = { BAS, SAC, GOZ, damla, yakinYuz, oturan, yanKisi, yolNokta };
 })();
