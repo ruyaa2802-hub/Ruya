@@ -5,7 +5,18 @@
 - Stil: yumuşak mat kil/oyuncak dokusu, stüdyo ışığı, açık lavanta zemin
 - Gövde gök mavisi `#4FA6EC`, ayaklar şeftali `#F0A77E`, yanaklar pembe
 - Beyaz çerçeveli kocaman parlak siyah gözler, açık gülümseme, kıvrık anten
-- Bundan sonraki tüm sahneler bu modele göre üretilecek. Eski 2D çizim (`piko.svg/png`) yalnızca ilk taslaktır.
+- Bundan sonraki tüm sahneler bu modele göre üretilecek.
+
+## ✅ ONAYLI TASARIM: Moko (3D oyuncak stili)
+- Resmî görsel: `moko-3d.png` · Model kaynağı: `moko-3d.html` (Three.js)
+- Gövde turuncu `#F27D16`, köşeleri yumuşatılmış kare, 4 kısa tombul bacak
+- Kalın turuncu çerçeveli kocaman parlak siyah gözler, krem göz akı `#FFF1DC`
+- Kahverengi endişeli kaşlar `#7A4A2A` (iç uçlar yukarı), iki büyük ön diş, hafif pembe yanaklar
+
+## Çizim tekniği (tüm bölümler için sabit)
+- Three.js ile 3D model → yumuşak mat kil/oyuncak materyali, stüdyo ışığı, ACES ton eşleme
+- Açık lavanta zemin, yumuşak zemin gölgesi
+- Eski 2D çizimler (`piko.svg/png`, `moko.svg/png`, `piko-moko-sayfa.png`) yalnızca ilk taslaktır.
 
 ---
 
