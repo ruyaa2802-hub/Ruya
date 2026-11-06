@@ -1,4 +1,13 @@
-# Piko & Moko: Karakter Rehberi (v1)
+# Piko & Moko: Karakter Rehberi
+
+## ✅ ONAYLI TASARIM: Piko (3D oyuncak stili)
+- Resmî görsel: `piko-3d.png` · Model kaynağı: `piko-3d.html` (Three.js; tarayıcıda açınca aynı görseli üretir)
+- Stil: yumuşak mat kil/oyuncak dokusu, stüdyo ışığı, açık lavanta zemin
+- Gövde gök mavisi `#4FA6EC`, ayaklar şeftali `#F0A77E`, yanaklar pembe
+- Beyaz çerçeveli kocaman parlak siyah gözler, açık gülümseme, kıvrık anten
+- Bundan sonraki tüm sahneler bu modele göre üretilecek. Eski 2D çizim (`piko.svg/png`) yalnızca ilk taslaktır.
+
+---
 
 Dosyalar: `piko.svg/png`, `moko.svg/png`, `piko-moko-sayfa.png` (karakter sayfası).
 SVG'ler ücretsiz programlarda (Inkscape, Figma ücretsiz plan, tarayıcı) açılıp düzenlenebilir.
