@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Tabanca Karidesi</title>
+<style>
+  html, body { margin: 0; background: #000; overflow: hidden; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: 'Inter', 'Noto Color Emoji', sans-serif; }
+  #c { position: absolute; inset: 0; width: 1080px; height: 1920px; display: block; }
+  #ov { position: absolute; inset: 0; pointer-events: none; }
+  .o { position: absolute; opacity: 0; will-change: opacity, transform; }
+  .title { left: 50%; top: 260px; text-align: center; white-space: nowrap; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 900; color: #fff;
+    line-height: 1.0; text-shadow: 0 0 22px rgba(80, 200, 255, 0.55), 0 4px 18px rgba(0, 0, 0, 0.75); }
+  .title span { display: block; font-size: 104px; }
+  .title small { display: block; font-family: 'Inter', sans-serif; font-size: 38px; font-weight: 600; letter-spacing: 0.02em; color: #9fe6ff; margin-top: 14px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+  #tName span { font-size: 92px; }
+  #tCav span { font-size: 112px; background: linear-gradient(180deg, #ffffff 0%, #bff1ff 55%, #5fd4ff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  #tEnd { top: 330px; }
+  #tEnd span { font-size: 78px; line-height: 1.08; }
+  #series { left: 50%; top: 610px; font-family: 'Inter Display', 'Inter', sans-serif; font-weight: 800; font-size: 34px; letter-spacing: 0.32em; color: #ffffff; white-space: nowrap;
+    padding: 12px 26px 12px 34px; border: 2px solid rgba(160, 230, 255, 0.55); border-radius: 999px; background: rgba(2, 20, 34, 0.45); }
+  #series i { font-style: normal; font-weight: 500; letter-spacing: 0.04em; color: #9fe6ff; margin-left: 10px; font-size: 28px; }
+  .tag { top: 120px; left: 60px; font-weight: 800; font-size: 30px; letter-spacing: 0.14em; color: #fff; background: rgba(0, 0, 0, 0.42); padding: 10px 20px; border-radius: 12px; white-space: nowrap; }
+  .tag b { display: inline-block; width: 16px; height: 16px; border-radius: 50%; background: #ff3b3b; margin-right: 12px; box-shadow: 0 0 12px #ff3b3b; }
+  .chip { left: 50%; top: 250px; background: rgba(3, 22, 38, 0.72); border: 2px solid rgba(120, 220, 255, 0.5); border-radius: 26px; padding: 16px 32px; color: #fff;
+    font-weight: 800; font-size: 44px; white-space: nowrap; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 26px rgba(80, 200, 255, 0.25); }
+  .chip small { display: block; font-size: 30px; font-weight: 600; color: #9fe6ff; margin-top: 6px; }
+  .chip em { font-style: normal; color: #ffd166; }
+  #cIsi { top: 460px; }
+  .label { font-weight: 800; font-size: 36px; color: #fff; background: rgba(3, 22, 38, 0.7); border: 2px solid rgba(255, 255, 255, 0.6); padding: 8px 22px; border-radius: 999px; white-space: nowrap; }
+  #sub { text-wrap: balance; left: 50%; bottom: 430px; max-width: 920px; width: max-content; text-align: center; font-weight: 600; font-size: 44px; line-height: 1.22;
+    color: #fff; background: rgba(2, 14, 24, 0.62); padding: 9px 26px 12px; border-radius: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.6); transform-origin: 50% 100%; }
+  #sub b { color: #7fe3ff; font-weight: 700; }
+</style>
+<script type="importmap">
+{ "imports": { "three": "../node_modules/three/build/three.module.js", "three/addons/": "../node_modules/three/examples/jsm/" } }
+</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c" width="1080" height="1920"></canvas>
+  <div id="ov">
+    <div id="tName" class="o title"><span>TABANCA KARİDESİ</span><small>Alpheidae · kıskacıyla “ateş eden” karides</small></div>
+    <div id="tCav" class="o title"><span>KAVİTASYON</span><small>Basınç düşer → buhar kabarcığı oluşur</small></div>
+    <div id="tEnd" class="o title"><span>Doğanın başka hangi</span><span>sırrını keşfedelim?</span></div>
+    <div id="series" class="o">HAYVANİKA<i>· Doğanın Görünmeyen Hikâyeleri</i></div>
+    <div id="slow" class="o tag"><b></b>AĞIR ÇEKİM</div>
+    <div id="replay" class="o tag"><b></b>TEKRAR · ÇOK DAHA YAVAŞ</div>
+    <div id="cJet" class="o chip">Su jeti: <em>~100 km/sa</em><small>kıskaç 1 milisaniyeden kısa sürede kapanır</small></div>
+    <div id="cSes" class="o chip">🔊 Ses<small>“çat!” sesi kıskaçtan değil, kabarcığın çöküşünden</small></div>
+    <div id="cIsi" class="o chip">🔥 Isı<small>kabarcığın içinde bir anlığına binlerce °C</small></div>
+    <div id="cIsik" class="o chip">✨ Işık parlaması<small>nanosaniyeler sürer · çıplak gözle görülmez</small></div>
+    <div id="cSize" class="o chip">Boyu yalnızca <em>3–5 cm</em></div>
+    <div id="lClaw" class="o label">Dev kıskaç</div>
+    <div id="lBub" class="o label">Kavitasyon kabarcığı</div>
+    <div id="sub" class="o"></div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>
