@@ -1,0 +1,866 @@
+{
+"hk_0": {
+"cer": 0.094,
+"dur": 2.26,
+"spread": 8.6,
+"jumps": 0.01,
+"ls": 0.92,
+"ns": 0.7,
+"asr": "1 dakika, şu an kiminle konuşuyorsun."
+},
+"hk_1": {
+"cer": 0.094,
+"dur": 2.28,
+"spread": 8.64,
+"jumps": 0.015,
+"ls": 0.97,
+"ns": 0.7,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"hk_2": {
+"cer": 0.094,
+"dur": 2.43,
+"spread": 8.29,
+"jumps": 0.011,
+"ls": 1.02,
+"ns": 0.7,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"hk_3": {
+"cer": 0.094,
+"dur": 2.53,
+"spread": 9.57,
+"jumps": 0.007,
+"ls": 1.07,
+"ns": 0.7,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"hk_4": {
+"cer": 0.094,
+"dur": 2.29,
+"spread": 8.63,
+"jumps": 0.013,
+"ls": 0.92,
+"ns": 0.8,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"hk_5": {
+"cer": 0.094,
+"dur": 2.4,
+"spread": 8.38,
+"jumps": 0.025,
+"ls": 0.97,
+"ns": 0.8,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"hk_6": {
+"cer": 0.094,
+"dur": 2.39,
+"spread": 8.44,
+"jumps": 0.013,
+"ls": 1.02,
+"ns": 0.8,
+"asr": "1 dakika, şu an kiminle konuşuyorsun."
+},
+"hk_7": {
+"cer": 0.094,
+"dur": 2.51,
+"spread": 7.54,
+"jumps": 0.014,
+"ls": 1.07,
+"ns": 0.8,
+"asr": "1 dakika şu an kiminle konuşuyorsun."
+},
+"hk_8": {
+"cer": 0.094,
+"dur": 2.35,
+"spread": 8.78,
+"jumps": 0.017,
+"ls": 0.92,
+"ns": 0.9,
+"asr": "1 dakika, şu an kiminle konuşuyorsun."
+},
+"hk_9": {
+"cer": 0.094,
+"dur": 2.43,
+"spread": 8.49,
+"jumps": 0.018,
+"ls": 0.97,
+"ns": 0.9,
+"asr": "1 dakika şu an kiminle konuşuyorsun."
+},
+"hk_10": {
+"cer": 0.094,
+"dur": 2.48,
+"spread": 8.66,
+"jumps": 0.014,
+"ls": 1.02,
+"ns": 0.9,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"hk_11": {
+"cer": 0.094,
+"dur": 2.45,
+"spread": 8.94,
+"jumps": 0.023,
+"ls": 1.07,
+"ns": 0.9,
+"asr": "1 dakika şu an kiminle konuşuyorsun."
+},
+"hk_12": {
+"cer": 0.094,
+"dur": 2.26,
+"spread": 8.35,
+"jumps": 0.013,
+"ls": 0.92,
+"ns": 1.0,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"hk_13": {
+"cer": 0.125,
+"dur": 2.31,
+"spread": 9.24,
+"jumps": 0.011,
+"ls": 0.97,
+"ns": 1.0,
+"asr": "1 dakika, şu an kim ile konuşuyorsun?"
+},
+"hk_14": {
+"cer": 0.094,
+"dur": 2.47,
+"spread": 9.32,
+"jumps": 0.012,
+"ls": 1.02,
+"ns": 1.0,
+"asr": "1 dakika, şu an kiminle konuşuyorsun."
+},
+"hk_15": {
+"cer": 0.094,
+"dur": 2.48,
+"spread": 8.77,
+"jumps": 0.007,
+"ls": 1.07,
+"ns": 1.0,
+"asr": "1 dakika, şu an kiminle konuşuyorsun?"
+},
+"s1_0": {
+"cer": 0.1,
+"dur": 4.3,
+"spread": 7.91,
+"jumps": 0.004,
+"ls": 0.92,
+"ns": 0.7,
+"asr": "Aslında bu, beni'nin düşüncelerini kelimelere dönüştüren iç konuşma mekan"
+},
+"s1_1": {
+"cer": 0.043,
+"dur": 4.35,
+"spread": 8.67,
+"jumps": 0.016,
+"ls": 0.97,
+"ns": 0.7,
+"asr": "Aslında bu, benimin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"s1_2": {
+"cer": 0.014,
+"dur": 4.66,
+"spread": 9.13,
+"jumps": 0.011,
+"ls": 1.02,
+"ns": 0.7,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"s1_3": {
+"cer": 0.0,
+"dur": 4.77,
+"spread": 9.12,
+"jumps": 0.006,
+"ls": 1.07,
+"ns": 0.7,
+"asr": "Aslında bu, Beyninin düşüncelerini kelimelere dönüştüren iç konuşma mekanizması."
+},
+"s1_4": {
+"cer": 0.1,
+"dur": 4.33,
+"spread": 8.32,
+"jumps": 0.008,
+"ls": 0.92,
+"ns": 0.8,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekan"
+},
+"s1_5": {
+"cer": 0.057,
+"dur": 4.41,
+"spread": 9.98,
+"jumps": 0.02,
+"ls": 0.97,
+"ns": 0.8,
+"asr": "Aslında bu, Beyninin düşüncelerini kelimelere dönüştüren iç konuşma mekaniz"
+},
+"s1_6": {
+"cer": 0.086,
+"dur": 4.63,
+"spread": 7.14,
+"jumps": 0.012,
+"ls": 1.02,
+"ns": 0.8,
+"asr": "Aslında bu, beyninin düşüncelerine, kilimelere dönüştüren iç konuşma mekaniz"
+},
+"s1_7": {
+"cer": 0.014,
+"dur": 4.59,
+"spread": 8.77,
+"jumps": 0.006,
+"ls": 1.07,
+"ns": 0.8,
+"asr": "Aslında bu, Beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"s1_8": {
+"cer": 0.071,
+"dur": 4.37,
+"spread": 7.81,
+"jumps": 0.009,
+"ls": 0.92,
+"ns": 0.9,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekaniz"
+},
+"s1_9": {
+"cer": 0.014,
+"dur": 4.39,
+"spread": 8.64,
+"jumps": 0.014,
+"ls": 0.97,
+"ns": 0.9,
+"asr": "Aslında bu, Beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"s1_10": {
+"cer": 0.014,
+"dur": 4.71,
+"spread": 8.04,
+"jumps": 0.009,
+"ls": 1.02,
+"ns": 0.9,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması."
+},
+"s1_11": {
+"cer": 0.014,
+"dur": 4.66,
+"spread": 8.84,
+"jumps": 0.018,
+"ls": 1.07,
+"ns": 0.9,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"s1_12": {
+"cer": 0.071,
+"dur": 4.39,
+"spread": 9.33,
+"jumps": 0.005,
+"ls": 0.92,
+"ns": 1.0,
+"asr": "Aslında bu, Beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekaniz"
+},
+"s1_13": {
+"cer": 0.071,
+"dur": 4.44,
+"spread": 8.68,
+"jumps": 0.008,
+"ls": 0.97,
+"ns": 1.0,
+"asr": "Aslında bu, Beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekaniz"
+},
+"s1_14": {
+"cer": 0.014,
+"dur": 4.67,
+"spread": 9.07,
+"jumps": 0.009,
+"ls": 1.02,
+"ns": 1.0,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması."
+},
+"s1_15": {
+"cer": 0.014,
+"dur": 4.56,
+"spread": 9.51,
+"jumps": 0.011,
+"ls": 1.07,
+"ns": 1.0,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"s2_0": {
+"cer": 0.0,
+"dur": 2.88,
+"spread": 5.33,
+"jumps": 0.008,
+"ls": 0.92,
+"ns": 0.7,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_1": {
+"cer": 0.0,
+"dur": 3.01,
+"spread": 5.92,
+"jumps": 0.01,
+"ls": 0.97,
+"ns": 0.7,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_2": {
+"cer": 0.0,
+"dur": 2.93,
+"spread": 5.56,
+"jumps": 0.006,
+"ls": 1.02,
+"ns": 0.7,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_3": {
+"cer": 0.0,
+"dur": 3.08,
+"spread": 6.74,
+"jumps": 0.009,
+"ls": 1.07,
+"ns": 0.7,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_4": {
+"cer": 0.078,
+"dur": 2.83,
+"spread": 5.33,
+"jumps": 0.006,
+"ls": 0.92,
+"ns": 0.8,
+"asr": "Kirmeleri sesti söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_5": {
+"cer": 0.02,
+"dur": 2.9,
+"spread": 5.97,
+"jumps": 0.01,
+"ls": 0.97,
+"ns": 0.8,
+"asr": "Kelimeleri sesti söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_6": {
+"cer": 0.0,
+"dur": 2.96,
+"spread": 6.41,
+"jumps": 0.008,
+"ls": 1.02,
+"ns": 0.8,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_7": {
+"cer": 0.0,
+"dur": 2.98,
+"spread": 6.72,
+"jumps": 0.006,
+"ls": 1.07,
+"ns": 0.8,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_8": {
+"cer": 0.0,
+"dur": 2.83,
+"spread": 5.49,
+"jumps": 0.008,
+"ls": 0.92,
+"ns": 0.9,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_9": {
+"cer": 0.039,
+"dur": 2.86,
+"spread": 6.55,
+"jumps": 0.006,
+"ls": 0.97,
+"ns": 0.9,
+"asr": "Kerimeleri sesti söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_10": {
+"cer": 0.0,
+"dur": 2.98,
+"spread": 5.68,
+"jumps": 0.006,
+"ls": 1.02,
+"ns": 0.9,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_11": {
+"cer": 0.0,
+"dur": 3.0,
+"spread": 5.41,
+"jumps": 0.011,
+"ls": 1.07,
+"ns": 0.9,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_12": {
+"cer": 0.0,
+"dur": 2.8,
+"spread": 5.38,
+"jumps": 0.006,
+"ls": 0.92,
+"ns": 1.0,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_13": {
+"cer": 0.02,
+"dur": 2.76,
+"spread": 5.97,
+"jumps": 0.01,
+"ls": 0.97,
+"ns": 1.0,
+"asr": "Kelimeleri sesti söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_14": {
+"cer": 0.0,
+"dur": 3.02,
+"spread": 6.21,
+"jumps": 0.013,
+"ls": 1.02,
+"ns": 1.0,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"s2_15": {
+"cer": 0.02,
+"dur": 3.08,
+"spread": 6.64,
+"jumps": 0.018,
+"ls": 1.07,
+"ns": 1.0,
+"asr": "Kelimeleri sesti söylemeden de zihninde konuşabiliyorsun."
+},
+"f1_0": {
+"cer": 0.0,
+"dur": 3.12,
+"spread": 9.52,
+"jumps": 0.023,
+"ls": 0.92,
+"ns": 0.7,
+"asr": "Üstelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_1": {
+"cer": 0.0,
+"dur": 3.39,
+"spread": 8.31,
+"jumps": 0.01,
+"ls": 0.97,
+"ns": 0.7,
+"asr": "Üstelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_2": {
+"cer": 0.0,
+"dur": 3.24,
+"spread": 8.99,
+"jumps": 0.016,
+"ls": 1.02,
+"ns": 0.7,
+"asr": "Üstelik, herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_3": {
+"cer": 0.0,
+"dur": 3.32,
+"spread": 8.33,
+"jumps": 0.01,
+"ls": 1.07,
+"ns": 0.7,
+"asr": "Üstelik, herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_4": {
+"cer": 0.05,
+"dur": 3.15,
+"spread": 8.56,
+"jumps": 0.01,
+"ls": 0.92,
+"ns": 0.8,
+"asr": "Üstelik herkesin ilk sesi aynı şekilde çalışmaz."
+},
+"f1_5": {
+"cer": 0.0,
+"dur": 3.47,
+"spread": 7.49,
+"jumps": 0.012,
+"ls": 0.97,
+"ns": 0.8,
+"asr": "Üstelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_6": {
+"cer": 0.075,
+"dur": 3.47,
+"spread": 7.65,
+"jumps": 0.015,
+"ls": 1.02,
+"ns": 0.8,
+"asr": "Östelik herkesin iç sesle aynı şekilde çalışmaz."
+},
+"f1_7": {
+"cer": 0.0,
+"dur": 3.51,
+"spread": 7.27,
+"jumps": 0.013,
+"ls": 1.07,
+"ns": 0.8,
+"asr": "Üstelik, herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_8": {
+"cer": 0.0,
+"dur": 3.05,
+"spread": 7.95,
+"jumps": 0.018,
+"ls": 0.92,
+"ns": 0.9,
+"asr": "Üstelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_9": {
+"cer": 0.025,
+"dur": 3.34,
+"spread": 8.4,
+"jumps": 0.024,
+"ls": 0.97,
+"ns": 0.9,
+"asr": "Östelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_10": {
+"cer": 0.0,
+"dur": 3.19,
+"spread": 9.45,
+"jumps": 0.012,
+"ls": 1.02,
+"ns": 0.9,
+"asr": "Üstelik, herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_11": {
+"cer": 0.0,
+"dur": 3.33,
+"spread": 8.71,
+"jumps": 0.017,
+"ls": 1.07,
+"ns": 0.9,
+"asr": "Üstelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_12": {
+"cer": 0.0,
+"dur": 3.18,
+"spread": 8.74,
+"jumps": 0.018,
+"ls": 0.92,
+"ns": 1.0,
+"asr": "Üstelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_13": {
+"cer": 0.0,
+"dur": 3.32,
+"spread": 7.78,
+"jumps": 0.016,
+"ls": 0.97,
+"ns": 1.0,
+"asr": "Üstelik, herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_14": {
+"cer": 0.05,
+"dur": 3.33,
+"spread": 8.68,
+"jumps": 0.02,
+"ls": 1.02,
+"ns": 1.0,
+"asr": "Österik, herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_15": {
+"cer": 0.0,
+"dur": 3.42,
+"spread": 8.48,
+"jumps": 0.014,
+"ls": 1.07,
+"ns": 1.0,
+"asr": "Üstelik, herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f2_0": {
+"cer": 0.022,
+"dur": 2.9,
+"spread": 7.75,
+"jumps": 0.007,
+"ls": 0.92,
+"ns": 0.7,
+"asr": "bazıları kelimelerle düşünüp bazıları görüntülerle"
+},
+"f2_1": {
+"cer": 0.043,
+"dur": 2.98,
+"spread": 6.73,
+"jumps": 0.002,
+"ls": 0.97,
+"ns": 0.7,
+"asr": "Bazıları kelimelerle düşünür, bazıları görüntüler"
+},
+"f2_2": {
+"cer": 0.0,
+"dur": 3.25,
+"spread": 7.74,
+"jumps": 0.011,
+"ls": 1.02,
+"ns": 0.7,
+"asr": "Bazıları kelimelerle düşünür, bazıları görüntülerle."
+},
+"f2_3": {
+"cer": 0.022,
+"dur": 3.07,
+"spread": 7.23,
+"jumps": 0.004,
+"ls": 1.07,
+"ns": 0.7,
+"asr": "bazıları kelimelerle düşünüp bazıları görüntülerle."
+},
+"f2_4": {
+"cer": 0.043,
+"dur": 2.9,
+"spread": 7.23,
+"jumps": 0.008,
+"ls": 0.92,
+"ns": 0.8,
+"asr": "Bazıları kelimelerle düşünür, bazıları görüntüler"
+},
+"f2_5": {
+"cer": 0.022,
+"dur": 3.1,
+"spread": 7.13,
+"jumps": 0.004,
+"ls": 0.97,
+"ns": 0.8,
+"asr": "Bazıları kelimelerle düşünüp bazıları görüntülerle."
+},
+"f2_6": {
+"cer": 0.109,
+"dur": 3.11,
+"spread": 6.55,
+"jumps": 0.004,
+"ls": 1.02,
+"ns": 0.8,
+"asr": "Bazıları kelimelerle düşünür, bazıları gönlütüler"
+},
+"f2_7": {
+"cer": 0.022,
+"dur": 3.12,
+"spread": 8.0,
+"jumps": 0.012,
+"ls": 1.07,
+"ns": 0.8,
+"asr": "bazıları kelimelerle düşünüp bazıları görüntülerle."
+},
+"f2_8": {
+"cer": 0.043,
+"dur": 2.89,
+"spread": 6.95,
+"jumps": 0.009,
+"ls": 0.92,
+"ns": 0.9,
+"asr": "Bazıları kelimelerle düşünür, bazıları görüntüler"
+},
+"f2_9": {
+"cer": 0.022,
+"dur": 2.87,
+"spread": 7.1,
+"jumps": 0.004,
+"ls": 0.97,
+"ns": 0.9,
+"asr": "Bazıları kelimelerle düşünüp bazıları görüntülerle"
+},
+"f2_10": {
+"cer": 0.043,
+"dur": 2.98,
+"spread": 7.26,
+"jumps": 0.009,
+"ls": 1.02,
+"ns": 0.9,
+"asr": "bazıları kelimelerle düşünür, bazıları görüntüler"
+},
+"f2_11": {
+"cer": 0.022,
+"dur": 3.03,
+"spread": 6.99,
+"jumps": 0.004,
+"ls": 1.07,
+"ns": 0.9,
+"asr": "bazıları kelimelerle düşünü bazıları görüntülerle."
+},
+"f2_12": {
+"cer": 0.022,
+"dur": 2.87,
+"spread": 7.07,
+"jumps": 0.006,
+"ls": 0.92,
+"ns": 1.0,
+"asr": "bazıları kelimelerle düşünüp bazıları görüntülerle"
+},
+"f2_13": {
+"cer": 0.022,
+"dur": 3.0,
+"spread": 7.61,
+"jumps": 0.011,
+"ls": 0.97,
+"ns": 1.0,
+"asr": "Bazıları kelimelerle düşünüp bazıları görüntülerle."
+},
+"f2_14": {
+"cer": 0.087,
+"dur": 2.87,
+"spread": 6.61,
+"jumps": 0.004,
+"ls": 1.02,
+"ns": 1.0,
+"asr": "bazıları kelimelerle düşünüp bazıları gönlülerle"
+},
+"f2_15": {
+"cer": 0.0,
+"dur": 3.18,
+"spread": 6.85,
+"jumps": 0.012,
+"ls": 1.07,
+"ns": 1.0,
+"asr": "Bazıları kelimelerle düşünür, bazıları görüntülerle."
+},
+"f3_0": {
+"cer": 0.0,
+"dur": 2.16,
+"spread": 7.68,
+"jumps": 0.022,
+"ls": 0.92,
+"ns": 0.7,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f3_1": {
+"cer": 0.059,
+"dur": 2.25,
+"spread": 9.23,
+"jumps": 0.022,
+"ls": 0.97,
+"ns": 0.7,
+"asr": "Peki senin zenindeki ses hiç susuyor mu?"
+},
+"f3_2": {
+"cer": 0.0,
+"dur": 2.23,
+"spread": 7.79,
+"jumps": 0.013,
+"ls": 1.02,
+"ns": 0.7,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f3_3": {
+"cer": 0.0,
+"dur": 2.37,
+"spread": 8.31,
+"jumps": 0.005,
+"ls": 1.07,
+"ns": 0.7,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f3_4": {
+"cer": 0.059,
+"dur": 2.19,
+"spread": 8.3,
+"jumps": 0.011,
+"ls": 0.92,
+"ns": 0.8,
+"asr": "Peki senin zenindeki ses hiç susuyor mu?"
+},
+"f3_5": {
+"cer": 0.059,
+"dur": 2.22,
+"spread": 7.4,
+"jumps": 0.011,
+"ls": 0.97,
+"ns": 0.8,
+"asr": "Peki senin zenindeki ses hiç susuyor mu?"
+},
+"f3_6": {
+"cer": 0.059,
+"dur": 2.29,
+"spread": 8.55,
+"jumps": 0.019,
+"ls": 1.02,
+"ns": 0.8,
+"asr": "Peki senin zilindeki ses hiç susuyor mu?"
+},
+"f3_7": {
+"cer": 0.0,
+"dur": 2.26,
+"spread": 8.18,
+"jumps": 0.02,
+"ls": 1.07,
+"ns": 0.8,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f3_8": {
+"cer": 0.059,
+"dur": 2.19,
+"spread": 7.99,
+"jumps": 0.015,
+"ls": 0.92,
+"ns": 0.9,
+"asr": "Peki senin zenindeki ses hiç susuyor mu?"
+},
+"f3_9": {
+"cer": 0.118,
+"dur": 2.23,
+"spread": 8.09,
+"jumps": 0.016,
+"ls": 0.97,
+"ns": 0.9,
+"asr": "Peki, senin zenindeki ses hiç susuyorum."
+},
+"f3_10": {
+"cer": 0.0,
+"dur": 2.37,
+"spread": 9.02,
+"jumps": 0.014,
+"ls": 1.02,
+"ns": 0.9,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f3_11": {
+"cer": 0.059,
+"dur": 2.24,
+"spread": 8.24,
+"jumps": 0.011,
+"ls": 1.07,
+"ns": 0.9,
+"asr": "Peki senin zenindeki ses hiç susuyor mu?"
+},
+"f3_12": {
+"cer": 0.059,
+"dur": 2.12,
+"spread": 8.28,
+"jumps": 0.006,
+"ls": 0.92,
+"ns": 1.0,
+"asr": "Peki senin zihnindeki ses hiç susuyorum."
+},
+"f3_13": {
+"cer": 0.0,
+"dur": 2.19,
+"spread": 8.35,
+"jumps": 0.016,
+"ls": 0.97,
+"ns": 1.0,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f3_14": {
+"cer": 0.0,
+"dur": 2.31,
+"spread": 7.29,
+"jumps": 0.005,
+"ls": 1.02,
+"ns": 1.0,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f3_15": {
+"cer": 0.0,
+"dur": 2.25,
+"spread": 7.48,
+"jumps": 0.008,
+"ls": 1.07,
+"ns": 1.0,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+}
+}

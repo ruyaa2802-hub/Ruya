@@ -158,7 +158,7 @@ warm = pad([53, 60, 64, 69], det=0.004, cut=1400)
 mus += np.stack([warm, np.roll(warm, 600)]) * env([(0, 0), (T_ROOM, 0), (T_ROOM + 1.5, 0.35), (29.4, 0.4), (30, 0.3)]) * 0.5
 
 # ---------------------------------------------------------------- anlatim
-VO = {'hook': 0.25, 'sci': 10.35, 'fin': 20.35}
+VO = json.load(open(HERE + 'web/env.json')).get('vo_start', {'hook': 0.25, 'sci': 10.35, 'fin': 20.35})
 dlg = st()
 for k_, t0 in VO.items():
     x, sr = sf.read(HERE + f'tts/{k_}.wav'); assert sr == SR

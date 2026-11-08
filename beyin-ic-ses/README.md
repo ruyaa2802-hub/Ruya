@@ -33,7 +33,7 @@ Hiçbir ücretli servis, API veya kredi kullanılmadı.
 |---|---|---|
 | 3D, ışık, gölge, sis, bloom, kamera | three.js r160 + başsız Chromium (yazılımsal WebGL) | MIT |
 | Beyin dokusu, nöronlar, göz, oda, dokular | Tamamen kodla prosedürel (`brain.js`, `eye.js`, `room.js`, `textures.js`) | — |
-| Anlatım | Piper TTS, Türkçe erkek sesi `tr_TR-fahrettin-medium`; her parçadan 8–12 çekim; vokodersiz doğal zincir (`voice_build.py`) | CC0 / MIT |
+| Anlatım | Piper TTS, Türkçe erkek sesi `tr_TR-fahrettin-medium`. Her cümle tek parça üretildi (akıcı tonlama); cümle başına 16 çekimden doğru anlaşılanlar arasında tonlaması en hareketlisi seçildi (`voice_takes3.py`, `voice_build2.py`). Virgül duraklamaları ses dalgasından bulunup altyazı ve balonlara bağlandı | CC0 / MIT |
 | Anlaşılırlık kontrolü | Yerel Whisper-small (sherpa-onnx): her parça ve bitmiş miks tek tek doğrulandı | MIT / Apache-2.0 |
 | Müzik ve tüm efektler | numpy/scipy ile özgün sentez (`audio.py`); nöron tıkırtıları sahnedeki ateşlenme zamanlarına (`events.json`) birebir bağlı | Özgün, telifsiz |
 | Yazı tipleri | Nunito, Oswald (Fontsource) | SIL OFL 1.1 |
@@ -50,7 +50,7 @@ Hiçbir ücretli servis, API veya kredi kullanılmadı.
 cd kaynak
 pip install numpy scipy soundfile piper-tts sherpa-onnx
 npm pack three@0.160.0 && mkdir -p web/lib && tar xzf three-0.160.0.tgz && cp package/build/three.module.js web/lib/
-python3 voice_build.py                              # takes/ -> tts/hook.wav, sci.wav, fin.wav
+python3 voice_build2.py                             # takes3/ -> tts/hook.wav, sci.wav, fin.wav + web/env.json zamanlamaları
 (cd web && python3 -m http.server 8205 --bind 127.0.0.1 &)
 node events.js                                      # nöron ateşlenme zamanları -> events.json
 python3 audio.py                                    # mix.wav + mix_seslendirmesiz.wav
