@@ -1,0 +1,618 @@
+{
+"h1_0": {
+"cer": 0.333,
+"dur": 0.74,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Biedeki K"
+},
+"h1_1": {
+"cer": 0.111,
+"dur": 0.74,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Bir dakikay"
+},
+"h1_2": {
+"cer": 0.333,
+"dur": 0.78,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Biedeki K"
+},
+"h1_3": {
+"cer": 0.0,
+"dur": 0.82,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Bir dakika."
+},
+"h1_4": {
+"cer": 0.222,
+"dur": 0.77,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Bir de ki ki"
+},
+"h1_5": {
+"cer": 0.333,
+"dur": 0.77,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "1 dakika."
+},
+"h1_6": {
+"cer": 0.111,
+"dur": 0.77,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Bir dakikay"
+},
+"h1_7": {
+"cer": 0.111,
+"dur": 0.79,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Bir dakikat"
+},
+"h2_0": {
+"cer": 0.0,
+"dur": 1.6,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Şuan kiminle konuşuyorsun?"
+},
+"h2_1": {
+"cer": 0.0,
+"dur": 1.66,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Şu an kiminle konuşuyorsun?"
+},
+"h2_2": {
+"cer": 0.087,
+"dur": 1.61,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Şu an kemiyle konuşuyorsun."
+},
+"h2_3": {
+"cer": 0.0,
+"dur": 1.67,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Şuan kiminle konuşuyorsun?"
+},
+"h2_4": {
+"cer": 0.0,
+"dur": 1.64,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Şuan kiminle konuşuyorsun?"
+},
+"h2_5": {
+"cer": 0.087,
+"dur": 1.67,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Şu an kimini konuşuyorsun?"
+},
+"h2_6": {
+"cer": 0.0,
+"dur": 1.67,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Şu an kiminle konuşuyorsun?"
+},
+"h2_7": {
+"cer": 0.0,
+"dur": 1.67,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Şuan kiminle konuşuyorsun?"
+},
+"a1_0": {
+"cer": 0.057,
+"dur": 4.45,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Aslında bu, Beyninin düşüncelerini kelimelere dönüştüren iç konuşma mekaniz"
+},
+"a1_1": {
+"cer": 0.0,
+"dur": 4.56,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Aslında bu, Beyninin düşüncelerini kelimelere dönüştüren iç konuşma mekanizması"
+},
+"a1_2": {
+"cer": 0.071,
+"dur": 4.48,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Aslında bu, Beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekaniz"
+},
+"a1_3": {
+"cer": 0.0,
+"dur": 4.61,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Aslında bu, beyninin düşüncelerini kelimelere dönüştüren iç konuşma mekanizması"
+},
+"a1_4": {
+"cer": 0.014,
+"dur": 4.5,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Aslında bu, Beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"a1_5": {
+"cer": 0.014,
+"dur": 4.64,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Aslında bu, beyninin düşüncelerine kelimelere dönüştüren iç konuşma mekanizması"
+},
+"a1_6": {
+"cer": 0.086,
+"dur": 4.42,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Aslında bu, beni'nin düşüncelerine kelimelere dönüştüren iç konuşma mekaniz"
+},
+"a1_7": {
+"cer": 0.057,
+"dur": 4.44,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Aslında bu, Beyninin düşüncelerini kelimelere dönüştüren iç konuşma mekaniz"
+},
+"a2_0": {
+"cer": 0.0,
+"dur": 2.82,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"a2_1": {
+"cer": 0.02,
+"dur": 2.96,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Kelimeleri sesi söylemeden de zihninde konuşabiliyorsun."
+},
+"a2_2": {
+"cer": 0.02,
+"dur": 2.93,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Kerimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"a2_3": {
+"cer": 0.0,
+"dur": 2.91,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"a2_4": {
+"cer": 0.0,
+"dur": 2.95,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"a2_5": {
+"cer": 0.02,
+"dur": 2.82,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Kelimeleri sesi söylemeden de zihninde konuşabiliyorsun."
+},
+"a2_6": {
+"cer": 0.0,
+"dur": 2.84,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun."
+},
+"a2_7": {
+"cer": 0.02,
+"dur": 2.96,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Kelimeleri sesti söylemeden de zihninde konuşabiliyorsun."
+},
+"f1_0": {
+"cer": 0.05,
+"dur": 2.94,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Üstelik herkesin iç sesini aynı şekilde çalışmaz."
+},
+"f1_1": {
+"cer": 0.075,
+"dur": 2.97,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Ürselik erkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_2": {
+"cer": 0.025,
+"dur": 2.95,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Östelik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_3": {
+"cer": 0.1,
+"dur": 3.07,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Östeli kerkesin iç sesle aynı şekilde çalışmaz."
+},
+"f1_4": {
+"cer": 0.125,
+"dur": 2.93,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Österik kerkesin iç sesle aynı şekilde çalışmaz."
+},
+"f1_5": {
+"cer": 0.05,
+"dur": 3.07,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Österik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1_6": {
+"cer": 0.075,
+"dur": 3.11,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Östelik herkesin ilk sesi aynı şekilde çalışmaz."
+},
+"f1_7": {
+"cer": 0.025,
+"dur": 3.07,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Üsterik herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f2_0": {
+"cer": 0.0,
+"dur": 1.75,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Bazıları kelimelerle düşünür."
+},
+"f2_1": {
+"cer": 0.0,
+"dur": 1.86,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Bazıları kelimelerle düşünür."
+},
+"f2_2": {
+"cer": 0.0,
+"dur": 1.72,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Bazıları kelimelerle düşünür."
+},
+"f2_3": {
+"cer": 0.0,
+"dur": 1.82,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Bazıları kelimelerle düşünür."
+},
+"f2_4": {
+"cer": 0.0,
+"dur": 1.78,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "bazıları kelimelerle düşünür."
+},
+"f2_5": {
+"cer": 0.0,
+"dur": 1.82,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Bazıları kelimelerle düşünür."
+},
+"f2_6": {
+"cer": 0.0,
+"dur": 1.8,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Bazıları kelimelerle düşünür."
+},
+"f2_7": {
+"cer": 0.0,
+"dur": 1.89,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Bazıları kelimelerle düşünür."
+},
+"f3_0": {
+"cer": 0.0,
+"dur": 1.37,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "bazıları görüntülerle"
+},
+"f3_1": {
+"cer": 0.0,
+"dur": 1.44,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "bazıları görüntülerle"
+},
+"f3_2": {
+"cer": 0.0,
+"dur": 1.36,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Bazıları görüntülerle"
+},
+"f3_3": {
+"cer": 0.0,
+"dur": 1.44,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "bazıları görüntülerle"
+},
+"f3_4": {
+"cer": 0.1,
+"dur": 1.28,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Bazıları görüntüler"
+},
+"f3_5": {
+"cer": 0.0,
+"dur": 1.35,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "bazıları görüntülerle"
+},
+"f3_6": {
+"cer": 0.0,
+"dur": 1.35,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "bazıları görüntülerle"
+},
+"f3_7": {
+"cer": 0.0,
+"dur": 1.4,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Bazıları görüntülerle"
+},
+"f4_0": {
+"cer": 0.0,
+"dur": 2.09,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f4_1": {
+"cer": 0.118,
+"dur": 2.21,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Peki senin zimdeki ses hiç susuyor mu?"
+},
+"f4_2": {
+"cer": 0.059,
+"dur": 2.08,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Peki senin zihnindeki ses hiç susuyorum."
+},
+"f4_3": {
+"cer": 0.0,
+"dur": 2.17,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f4_4": {
+"cer": 0.059,
+"dur": 2.19,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Peki senin zimdindeki ses hiç susuyor mu?"
+},
+"f4_5": {
+"cer": 0.0,
+"dur": 2.12,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f4_6": {
+"cer": 0.0,
+"dur": 2.1,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Peki senin zihnindeki ses hiç susuyor mu?"
+},
+"f4_7": {
+"cer": 0.059,
+"dur": 2.1,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Peki senin zenindeki ses hiç susuyor mu?"
+},
+"f1a_0": {
+"cer": 0.0,
+"dur": 0.71,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Üstelik"
+},
+"f1a_1": {
+"cer": 0.0,
+"dur": 0.7,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Üstelik"
+},
+"f1a_2": {
+"cer": 0.0,
+"dur": 0.81,
+"ls": 1.18,
+"ns": 0.667,
+"asr": "Üstelik"
+},
+"f1a_3": {
+"cer": 0.0,
+"dur": 0.67,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "Üstelik"
+},
+"f1a_4": {
+"cer": 0.0,
+"dur": 0.81,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Üstelik"
+},
+"f1a_5": {
+"cer": 0.0,
+"dur": 0.86,
+"ls": 1.18,
+"ns": 0.75,
+"asr": "Üstelik"
+},
+"f1a_6": {
+"cer": 0.0,
+"dur": 0.71,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "Üstelik"
+},
+"f1a_7": {
+"cer": 0.0,
+"dur": 0.67,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Üstelik"
+},
+"f1a_8": {
+"cer": 0.143,
+"dur": 0.88,
+"ls": 1.18,
+"ns": 0.85,
+"asr": "Üsterik"
+},
+"f1a_9": {
+"cer": 0.0,
+"dur": 0.7,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Üstelik"
+},
+"f1a_10": {
+"cer": 0.286,
+"dur": 0.8,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Öztelik"
+},
+"f1a_11": {
+"cer": 0.0,
+"dur": 0.86,
+"ls": 1.18,
+"ns": 0.95,
+"asr": "Üstelik"
+},
+"f1b_0": {
+"cer": 0.0,
+"dur": 2.67,
+"ls": 1.0,
+"ns": 0.667,
+"asr": "Herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_1": {
+"cer": 0.0,
+"dur": 2.86,
+"ls": 1.08,
+"ns": 0.667,
+"asr": "Herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_2": {
+"cer": 0.061,
+"dur": 2.81,
+"ls": 1.18,
+"ns": 0.667,
+"asr": "Herkesin iç sesle aynı şekilde çalışmaz."
+},
+"f1b_3": {
+"cer": 0.0,
+"dur": 2.61,
+"ls": 1.0,
+"ns": 0.75,
+"asr": "herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_4": {
+"cer": 0.0,
+"dur": 2.65,
+"ls": 1.08,
+"ns": 0.75,
+"asr": "Herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_5": {
+"cer": 0.0,
+"dur": 2.94,
+"ls": 1.18,
+"ns": 0.75,
+"asr": "Herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_6": {
+"cer": 0.0,
+"dur": 2.59,
+"ls": 1.0,
+"ns": 0.85,
+"asr": "herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_7": {
+"cer": 0.0,
+"dur": 2.58,
+"ls": 1.08,
+"ns": 0.85,
+"asr": "Herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_8": {
+"cer": 0.0,
+"dur": 2.83,
+"ls": 1.18,
+"ns": 0.85,
+"asr": "herkesin iç sesi aynı şekilde çalışmaz."
+},
+"f1b_9": {
+"cer": 0.061,
+"dur": 2.67,
+"ls": 1.0,
+"ns": 0.95,
+"asr": "Herkesin iç sesle aynı şekilde çalışmaz."
+},
+"f1b_10": {
+"cer": 0.061,
+"dur": 2.68,
+"ls": 1.08,
+"ns": 0.95,
+"asr": "Her kesin iç sesle aynı şekilde çalışmaz."
+},
+"f1b_11": {
+"cer": 0.0,
+"dur": 2.83,
+"ls": 1.18,
+"ns": 0.95,
+"asr": "Herkesin iç sesi aynı şekilde çalışmaz."
+}
+}

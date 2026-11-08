@@ -1,0 +1,10 @@
+web/lib/
+modeller/
+test/
+visual.mp4
+*.tgz
+package/
+node_modules
+*.wav
+!tts/*.wav
+!takes/*.wav
