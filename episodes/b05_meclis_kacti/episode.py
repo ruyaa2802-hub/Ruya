@@ -236,7 +236,8 @@ def build(tl, ep):
     det_local = pts[-1]
     det_world = tl.face_matrix(Y, T_DETACH) @ det_local
     det_world.y = min(det_world.y, PO.y + park.SEAT_FRONT - 0.02)            # clear of the seat's edge
-    fall = _drop("tear_fall", water, 0.013)
+    clear = M.glass("drop_clear", (0.9, 0.96, 1.0), 0.0)               # the macro drop: pure, clear water
+    fall = _drop("tear_fall", clear, 0.013)
     fall.location = det_world
     floor_z = PO.z + 0.03
     T_FALL = T_CUT - T_DETACH
@@ -271,13 +272,14 @@ def build(tl, ep):
     # moonlight reaching the wardrobe corner, and a faint warm bounce from the hallway side
     area("CornerMoon", 28, 1.2, (2.2, -1.2, 2.3), (2.8, 1.0, 0.45), (0.5, 0.62, 1.0))
     area("CornerWarm", 6, 1.0, (0.8, -0.6, 0.6), (2.8, 1.0, 0.45), (1.0, 0.7, 0.45))
+    area("CornerFill", 10, 1.0, (3.6, -0.6, 1.1), (2.8, 1.0, 0.45), (0.55, 0.65, 1.0))
     # a small catchlight so the tear glints in the park close-ups
     sparkle = bpy.data.lights.new("tear_glint", "POINT")
     sparkle.energy, sparkle.shadow_soft_size, sparkle.color = 0.0, 0.02, (0.8, 0.9, 1.0)
     so = bpy.data.objects.new("tear_glint", sparkle)
     bpy.context.scene.collection.objects.link(so)
     so.location = tl.face_matrix(Y, T_TEAR) @ Vector((0.0, -0.35, 0.15))
-    for t, v in ((0.0, 0.0), (T_MEM_END, 0.0), (T_TEAR - 0.3, 2.5), (T_CUT, 2.5), (T_CUT + 0.05, 0.0)):
+    for t, v in ((0.0, 0.0), (T_MEM_END, 0.0), (T_TEAR - 0.3, 2.5), (T_DETACH - 0.05, 0.9), (T_CUT + 0.05, 0.0)):
         sparkle.energy = v
         sparkle.keyframe_insert("energy", frame=int(round(t * fps)))
     hide, bed = Vector(B_HIDE), Vector(B_BED)
@@ -349,7 +351,7 @@ def build(tl, ep):
     cam_start = Vector((1.55, 0.05, 0.62))
     look_hide = hide + Vector((0, 0, 0.42))
     dir_in = (look_hide - cam_start).normalized()
-    inside = _drop("drop_lens", water, 0.07, stretch=1.0)
+    inside = _drop("drop_lens", clear, 0.07, stretch=1.0)
     inside.location = cam_start
     tl.prop(inside, lambda t: {"scale": (0, 0, 0)} if t < T_CUT + 1.2 else {"scale": (-1, -1, -1)})
 
@@ -417,8 +419,9 @@ def build(tl, ep):
     tl.shot(T_HIDE - 0.03, "cam_cry", (1.8, 0.3, 0.66), (2.82, 1.0, 0.55), lens=32, fstop=2.8,
             to_loc=(1.95, 0.4, 0.64), dur=T_REACH - T_HIDE, focus=B)
     # over the shoulder toward the far door: the reach and the retreat
-    tl.shot(T_REACH - 0.1, "cam_reach", (3.45, 1.2, 0.64), (-1.6, -1.45, 0.62), lens=24, fstop=4.0,
-            to_loc=(3.42, 1.18, 0.63), dur=T_SCARED - T_REACH + 0.8)
+    # from the door's side, low: the arm stretching out toward us (the door), then snatched back
+    tl.shot(T_REACH - 0.1, "cam_reach", (1.25, 0.0, 0.38), (2.75, 0.95, 0.5), lens=26, fstop=3.2,
+            to_loc=(1.3, 0.04, 0.39), dur=T_SCARED - T_REACH + 0.8, focus=B)
     tl.shot(T_SCARED + 0.75, "cam_last", (2.05, 0.05, 0.64), (2.8, 1.0, 0.5), lens=32, fstop=2.8,
             to_loc=(2.12, 0.15, 0.62), dur=T_FREEZE - T_SCARED - 0.75, focus=B)
     tl.duration = LENGTH
@@ -438,7 +441,7 @@ def _tear_material():
     p.inputs["IOR"].default_value = 1.33
     p.inputs["Transmission Weight"].default_value = 1.0
     p.inputs["Emission Color"].default_value = (0.75, 0.88, 1.0, 1)
-    p.inputs["Emission Strength"].default_value = 0.25
+    p.inputs["Emission Strength"].default_value = 0.035
     mat["glass"] = True
     return mat
 
