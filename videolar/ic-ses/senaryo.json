@@ -1,0 +1,47 @@
+{
+  "baslik": "Beynin neden kendi kendine konuşur?",
+  "fps": 30,
+  "giris": 0.45,
+  "kapanis": 1.6,
+  "acilis": 0,
+  "altyaziY": 1440,
+  "ses": {
+    "sting": true,
+    "whoosh": 1.1,
+    "pad": 1.0,
+    "piyano": 0.6,
+    "akorlar": {
+      "kanca": [55.0, 82.41, 123.47, 164.81],
+      "icses": [61.74, 92.5, 138.59, 185.0],
+      "bilim": [73.42, 110.0, 164.81, 220.0],
+      "final": [65.41, 98.0, 164.81, 246.94]
+    },
+    "yayli": { "seviye": 0.9, "bolumler": { "kanca": 0.3, "icses": 0.6, "bilim": 0.8, "final": 1.7 } },
+    "ortam": [
+      { "tip": "kipirti", "bas": "icses", "son": "bilim", "seviye": 0.35 }
+    ],
+    "isaretler": [
+      { "tip": "zap", "bolum": "bilim", "cumle": 0, "oran": 0.1, "seviye": 0.7 },
+      { "tip": "zap", "bolum": "bilim", "cumle": 0, "oran": 0.55, "seviye": 0.6 },
+      { "tip": "zap", "bolum": "bilim", "cumle": 1, "oran": 0.3, "seviye": 0.6 },
+      { "tip": "pop", "bolum": "icses", "cumle": 0, "oran": 0.0, "adet": 1, "seviye": 0.7 },
+      { "tip": "pop", "bolum": "icses", "cumle": 1, "oran": 0.0, "adet": 1, "seviye": 0.7 },
+      { "tip": "pop", "bolum": "icses", "cumle": 2, "oran": 0.0, "adet": 1, "seviye": 0.7 },
+      { "tip": "parilti", "bolum": "final", "cumle": 2, "oran": 0.6, "seviye": 0.9 }
+    ],
+    "anlatim": "highpass=f=70,equalizer=f=210:t=q:w=1.2:g=2,aecho=0.85:0.6:40|85:0.10|0.06",
+    "ducking": 4,
+    "release": 600
+  },
+  "bolumler": [
+    { "id": "kanca", "sahne": "kanca", "gecis": "dalis", "gecisSure": 0.9,
+      "metin": "Bir dakika… Şu an kiminle konuşuyorsun?" },
+    { "id": "icses", "sahne": "icses", "gecis": "capraz", "gecisSure": 0.8, "altyazi": false, "duygu": 0.6,
+      "sesFiltre": "highpass=f=180,lowpass=f=6000,aecho=0.8:0.75:55|110:0.32|0.2,volume=0.9",
+      "metin": "Acaba bugün ne olacak? Dün neden öyle söyledim? Ya yarın işler ters giderse?" },
+    { "id": "bilim", "sahne": "bilim", "gecis": "dalis", "gecisSure": 0.8,
+      "metin": "Aslında bu, beyninin düşüncelerini kelimelere dönüştüren iç konuşma mekanizması. Kelimeleri sesli söylemeden de zihninde konuşabiliyorsun." },
+    { "id": "final", "sahne": "final",
+      "metin": "Üstelik herkesin iç sesi aynı şekilde çalışmaz. Bazıları kelimelerle düşünür, bazıları görüntülerle… Peki senin zihnindeki ses hiç susuyor mu?" }
+  ]
+}

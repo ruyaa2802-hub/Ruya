@@ -65,6 +65,7 @@ def main():
                 en = None
                 for k, (seed, ex, cfg) in enumerate(AYARLAR[:deneme]):
                     if duygu is not None: ex = duygu + (k % 2) * 0.05
+                    if b.get('duygu') is not None: ex = b['duygu'] + (k % 2) * 0.05
                     if cfg0 is not None: cfg = cfg0 + (k % 3) * 0.05
                     torch.manual_seed(seed)
                     wav = tts.generate(c, language_id='tr', exaggeration=ex, cfg_weight=cfg)
@@ -80,7 +81,7 @@ def main():
                     if skor > 0.985:
                         break
                 kes = td / f'k{bi}_{ci}.wav'
-                subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(en[1]), '-t', f'{en[2]:.2f}', '-af', f'afade=t=out:st={max(0, en[2] - 0.12):.2f}:d=0.12' + (f',atempo={tempo}' if tempo != 1.0 else ''), '-ar', '44100', '-ac', '1', str(kes)], check=True)
+                subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', str(en[1]), '-t', f'{en[2]:.2f}', '-af', f'afade=t=out:st={max(0, en[2] - 0.12):.2f}:d=0.12' + (f',atempo={tempo}' if tempo != 1.0 else '') + (',' + b['sesFiltre'] if b.get('sesFiltre') else ''), '-ar', '44100', '-ac', '1', str(kes)], check=True)
                 if girdiler:
                     girdiler.append(('s', cumle_ara if ci else bolum_ara))
                 girdiler.append(('d', kes))

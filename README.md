@@ -62,5 +62,6 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 | [neden-gidiklaniriz](videolar/neden-gidiklaniriz) — Bölüm 2: Neden gıdıklanırız? | Sessiz önizleme hazır · seslendirme ElevenLabs'te üretildi, yüklenmeyi bekliyor |
 | [insan-atlasi-01-aglama](videolar/insan-atlasi-01-aglama) — İnsan Atlası #01: Neden bazen sebepsiz yere ağlamak isteriz? | Final hazır (ses: Evren) |
 | [insan-atlasi-03-unutamamak](videolar/insan-atlasi-03-unutamamak) — İnsan Atlası #03: Bizi görmezden gelen birini neden unutamayız? | Final hazır (ses: Evren) |
+| [ic-ses](videolar/ic-ses) — Beynin neden kendi kendine konuşur? | Final hazır (ses: Chatterbox, ücretsiz) |
 
 Yazı tipi: Inter (SIL OFL, `studio/fonts/`).

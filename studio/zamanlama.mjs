@@ -149,7 +149,7 @@ export function zamanlamaOlustur(senaryo, sesYolu = null) {
       id: b.id, sahne: b.sahne || b.id, gecis: b.gecis || 'karart', gecisSure: b.gecisSure || 1.0,
       start, end, konusma: { start: V(kb), end: V(ks) }, cumleler: cumleListe,
     });
-    for (const c of cumleListe) {
+    if (b.altyazi !== false) for (const c of cumleListe) {
       const ks2 = kelimeleriDagit(c.metin, c.start, c.end);
       for (const p of altyaziParcala(ks2)) out.altyazi.push({ start: p[0].start, end: p[p.length - 1].end, kelimeler: p });
     }
