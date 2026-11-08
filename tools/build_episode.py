@@ -55,6 +55,11 @@ chars = stage.build(cast=ep.CAST, preset=args.preset, fps=args.fps, home=getattr
 tl = anim.Timeline(chars, fps=args.fps)
 ep.build(tl, ep_dir)
 end = args.end if args.end is not None else tl.duration
+render_end = getattr(ep, "RENDER_END", None)     # frames stop here; the last one is held to the end
+hold = 0.0
+if render_end and end > render_end:
+    hold = end - render_end
+    end = render_end
 f0, f1 = int(round(args.start * args.fps)), int(round(end * args.fps)) - 1
 tl.bake(f0, f1)
 print(f"[build] baked frames {f0}-{f1} in {time.time() - t_start:.1f}s", flush=True)
@@ -88,10 +93,12 @@ n = f1 - f0 + 1
 print(f"[build] rendered {n} frames in {time.time() - t_render:.0f}s "
       f"({(time.time() - t_render) / n:.1f}s/frame)", flush=True)
 
-wav = audio.mix(tl, os.path.join(out, "mix.wav"), f0 / args.fps, (f1 + 1) / args.fps)
+wav = audio.mix(tl, os.path.join(out, "mix.wav"), f0 / args.fps, (f1 + 1) / args.fps + hold)
 size = tuple(int(x) for x in args.size.split("x")) if args.size else None
 mp4 = audio.encode(os.path.join(out, "frames", "f_%04d.png"), args.fps, wav,
-                   os.path.join(out, os.path.basename(out) + ".mp4"), size, start_number=f0)
+                   os.path.join(out, os.path.basename(out) + ".mp4"), size, start_number=f0, hold=hold)
+if hasattr(ep, "post_video"):                    # episode compositing (overlays, transitions) before captions
+    mp4 = ep.post_video(mp4, f0 / args.fps)
 texts = getattr(ep, "LINES", {})
 ass = None
 if texts:

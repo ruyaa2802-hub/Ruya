@@ -5,6 +5,7 @@
 sneaky(): a tiptoeing pizzicato cue in D minor – the 2 a.m. fridge raid.
 Plucks are Karplus-Strong strings; a soft woodblock keeps time.
 """
+import math
 import os
 import sys
 
@@ -222,6 +223,46 @@ def tension(dur=18.0, seed=51):
     mix = _norm(drone, -6) + _norm(pulse, -9) * 0.9 + _norm(glass[:n], -10) * 0.7 + _norm(trem, -12) * 0.8
     mix *= np.minimum(1, t / 1.5)
     return _norm(_room(_band(mix, 35, 9000), 1.2, 0.45, seed)[:n], -6)
+
+
+def piano_note(f, dur, vel=0.6, sr=SR, seed=0):
+    """An acoustic-ish piano note: two slightly detuned strings per partial with stretched
+    (inharmonic) overtones, a fast-then-slow decay, a felt hammer thump and a damper release."""
+    rng = np.random.default_rng(seed)
+    ring = dur + 1.8
+    n = int(ring * sr)
+    t = np.arange(n) / sr
+    B = 0.00025 * (f / 261.6) ** 0.5
+    base = 9.0 * (110.0 / f) ** 0.55 + 1.2                    # low notes ring longer
+    x = np.zeros(n)
+    for k in range(1, 16):
+        fk = f * k * math.sqrt(1 + B * k * k)
+        if fk > 9000:
+            break
+        amp = (1.0 / k ** 1.05) * math.exp(-(k - 1) * (0.42 - 0.3 * vel))
+        tau = base / (1 + 0.22 * k)
+        env = 0.65 * np.exp(-t / (tau * 0.18)) + 0.35 * np.exp(-t / tau)
+        for det in (-0.6, 0.6):                                # two strings, a few cents apart
+            fd = fk * 2 ** (det / 1200)
+            x += 0.5 * amp * env * np.sin(2 * np.pi * fd * t + rng.random() * 6.28)
+    att = np.minimum(1, t / 0.004)
+    hammer = _band(rng.standard_normal(n), 200, 2500) * np.exp(-t * 90) * 0.04 * vel
+    damp = np.ones(n)
+    off = int(dur * sr)
+    if off < n:
+        damp[off:] = np.exp(-(t[off:] - dur) / 0.18)
+    return (x * att * vel + hammer) * damp
+
+
+def piano(events, total, seed=61, room=0.55):
+    """events: (time, note name, duration, velocity). Returns a mono mix with a warm hall reverb."""
+    n = int(total * SR)
+    out = np.zeros(n + 4 * SR)
+    for i, (t0, name, dur, vel) in enumerate(events):
+        _add(out, int(t0 * SR), piano_note(freq(name), dur, vel, seed=seed + i))
+    out = _band(out[: n + 2 * SR], 40, 9000)
+    wet = _room(out, 2.2, room, seed)
+    return wet[:n]
 
 
 def write_all(folder):

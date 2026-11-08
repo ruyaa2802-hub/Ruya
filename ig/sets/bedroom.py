@@ -136,7 +136,10 @@ DOOR_Y = (-2.0, -1.1)          # door opening in the left wall (y range), 2.05 m
 DOOR_H = 2.05
 
 
-def build(exclude=(), door=False):
+WARDROBE = (2.05, 1.22)        # centre x, y of the wardrobe (back wall, right of the nightstand)
+
+
+def build(exclude=(), door=False, wardrobe=False):
     """exclude: names of props to leave out (e.g. "mug" when the mug is a character).
     door: cut a door into the left wall (hinged empty "door_hinge", swings out into a dim hallway)."""
     col = collection("Set")
@@ -272,6 +275,20 @@ def build(exclude=(), door=False):
     wire.materials.append(M.plastic("wire_green", (0.05, 0.12, 0.05), 0.5))
     bulbs = [((c[0], c[1] - 0.006, c[2] - 0.012), (0.011, 0.011, 0.014)) for c in pts[1:-1:2]]
     _blobs("fairy_bulbs", bulbs, M.emission("bulb_warm", (1.0, 0.72, 0.38), 18.0), col)
+
+    if wardrobe:
+        wd = M.wood("wardrobe_wood", light=(0.6, 0.42, 0.26), dark=(0.36, 0.22, 0.12), roughness=0.4)
+        wx_, wy_ = WARDROBE
+        box("wardrobe", (1.0, 0.6, 1.95), (wx_, wy_, 0.06 + 1.95 / 2), wd, col, bevel=0.02)
+        box("wardrobe_top", (1.06, 0.66, 0.05), (wx_, wy_, 2.03), wd, col, bevel=0.015)
+        for k, dx in enumerate((-0.245, 0.245)):
+            box("wardrobe_door", (0.47, 0.02, 1.8), (wx_ + dx, wy_ - 0.305, 1.02), wd, col, bevel=0.01)
+            box("wardrobe_inset", (0.36, 0.01, 0.7), (wx_ + dx, wy_ - 0.318, 1.42), wd, col, bevel=0.006)
+            box("wardrobe_inset", (0.36, 0.01, 0.62), (wx_ + dx, wy_ - 0.318, 0.6), wd, col, bevel=0.006)
+            cylinder("wardrobe_knob", 0.016, 0.03, (wx_ + dx * 0.15, wy_ - 0.33, 1.05),
+                     M.metal("knob_brass", (0.85, 0.65, 0.3), 0.25), col).rotation_euler = (math.pi / 2, 0, 0)
+        for x in (wx_ - 0.44, wx_ + 0.44):
+            box("wardrobe_foot", (0.06, 0.06, 0.06), (x, wy_ - 0.24, 0.03), wd, col)
 
     # ---------------------------------------------------------------- floor dressing
     box("kilim", (1.7, 1.15, 0.012), (1.25, -0.4, 0.006), M.kilim(), col, bevel=0.003)

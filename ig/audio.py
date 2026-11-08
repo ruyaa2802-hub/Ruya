@@ -72,10 +72,12 @@ def tighten(src, dst, max_pause=0.35, tempo=1.0, sr=48000):
     return dst
 
 
-def encode(frames_pattern, fps, audio_wav, out_mp4, size=None, start_number=0):
+def encode(frames_pattern, fps, audio_wav, out_mp4, size=None, start_number=0, hold=0.0):
     vf = ["format=yuv420p"]
     if size:
         vf.insert(0, f"scale={size[0]}:{size[1]}:flags=lanczos")
+    if hold:
+        vf.insert(0, f"tpad=stop_mode=clone:stop_duration={hold:.3f}")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-framerate", str(fps), "-start_number", str(start_number),
                     "-i", frames_pattern, "-i", audio_wav, "-vf", ",".join(vf), "-c:v", "libx264",
                     "-preset", "slow", "-crf", "17", "-profile:v", "high", "-c:a", "aac", "-b:a", "192k",

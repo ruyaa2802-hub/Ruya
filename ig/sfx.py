@@ -427,13 +427,82 @@ def scuttle(seed=37, dur=0.7):
     return _norm(_room(out, 0.4, 0.3, seed), -6)
 
 
+def sob(seed=40, dur=2.4):
+    """Quiet crying: shaky, catching breaths in and soft whimpering out (no words)."""
+    rng = np.random.default_rng(seed)
+    out = np.zeros(int(SR * dur))
+    k = 0.05
+    while k < dur - 0.4:
+        n_in = rng.integers(2, 4)                               # stuttered inhale: hh-hh-hh
+        for j in range(n_in):
+            tt = _t(0.09)
+            seg = _band(rng.standard_normal(len(tt)), 700, 4000) * np.sin(np.pi * tt / 0.09) * 0.5
+            i = int((k + j * 0.11) * SR)
+            out[i:i + len(tt)] += seg[: len(out) - i]
+        k += n_in * 0.11 + 0.05
+        tt = _t(0.5)                                            # a breathy, wavering whimper out
+        f0 = 380 + 40 * np.sin(2 * np.pi * 7 * tt)
+        voice = np.sin(2 * np.pi * np.cumsum(f0) / SR) * 0.15 + _band(rng.standard_normal(len(tt)), 500, 2500)
+        seg = voice * np.sin(np.pi * tt / 0.5) ** 1.5 * 0.4
+        i = int(k * SR)
+        out[i:i + len(tt)] += seg[: len(out) - i]
+        k += 0.5 + rng.uniform(0.15, 0.35)
+    return _norm(_room(_band(out, 250, 6000), 0.3, 0.25, seed), -10)
+
+
+def drip(seed=41):
+    """A single tear landing: a soft high 'plip' with a long, dreamy tail."""
+    tt = _t(1.8)
+    f = 1500 + 1800 * np.exp(-tt * 40)
+    x = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 18)
+    return _norm(_room(x, 1.6, 0.6, seed), -4)
+
+
+def underwater(seed=42, dur=1.6):
+    """Diving into the drop: a muffled whoosh with a low swell and bubbles."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    swell = _band(rng.standard_normal(len(t)), 60, 500) * np.sin(np.pi * t / dur) ** 2
+    low = np.sin(2 * np.pi * (70 - 25 * t / dur) * t) * np.sin(np.pi * t / dur) * 0.6
+    bub = np.zeros(len(t))
+    for k in np.cumsum(rng.uniform(0.05, 0.16, 14)):
+        if k < dur - 0.1:
+            i = int(k * SR)
+            tt = _t(0.06)
+            b = np.sin(2 * np.pi * np.cumsum(500 + 1500 * tt / 0.06) / SR) * np.exp(-tt * 60)
+            bub[i:i + len(tt)] += b[: len(bub) - i] * 0.3
+    return _norm(_room(swell + low + bub, 1.0, 0.5, seed), -3)
+
+
+def park_amb(dur=30.0, seed=43):
+    """A park at night: sparse crickets, a soft breeze in the leaves, a far-off city hum."""
+    rng = np.random.default_rng(seed)
+    t = _t(dur)
+    chirp = np.zeros(len(t))
+    k = 0.2
+    while k < dur - 0.3:
+        i = int(k * SR)
+        tt = _t(0.12)
+        c = np.sin(2 * np.pi * 4600 * tt) * (np.sin(2 * np.pi * 34 * tt) > 0) * np.sin(np.pi * tt / 0.12)
+        chirp[i:i + len(tt)] += c[: len(chirp) - i] * rng.uniform(0.3, 0.9)
+        k += rng.uniform(0.35, 1.1)
+    breeze = _band(rng.standard_normal(len(t)), 300, 3000) * (0.4 + 0.6 * np.sin(2 * np.pi * t / 7.5) ** 2) * 0.35
+    hum = _band(np.cumsum(rng.standard_normal(len(t))), 30, 150) * 0.0015
+    return _norm(_band(chirp, 3500, 6500) * 0.2 + breeze + hum, -14)
+
+
+def rustle_soft(seed=44, dur=0.9):
+    return _norm(rustle(seed, dur, 0.6), -12)
+
+
 EFFECTS = {"door_slam": door_slam, "keys": keys, "rustle": rustle, "rustle_long": lambda: rustle(8, 1.4),
            "poof": poof, "whoosh": whoosh, "sniff": sniff, "chatter": chatter, "clink": clink, "ding": ding,
            "jitter": jitter, "fridge_open": fridge_open, "fridge_close": fridge_close,
            "fridge_hum": fridge_hum, "footsteps": footsteps, "rattle": rattle, "siren": siren, "bloop": bloop,
            "thunk": thunk, "hangup": hangup, "ringtone": ringtone, "buzz": buzz, "rimshot": rimshot,
            "snore": snore, "creak": creak, "sigh": sigh, "heartbeat": heartbeat, "sting": sting,
-           "night_amb": night_amb, "street_amb": street_amb, "scuttle": scuttle}
+           "night_amb": night_amb, "street_amb": street_amb, "scuttle": scuttle,
+           "sob": sob, "drip": drip, "underwater": underwater, "park_amb": park_amb, "rustle_soft": rustle_soft}
 
 
 def write_all(folder):

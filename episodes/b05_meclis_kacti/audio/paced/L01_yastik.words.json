@@ -1,0 +1,74 @@
+[
+ {
+  "word": "oy",
+  "start": 0.0,
+  "end": 0.22,
+  "p": 0.205
+ },
+ {
+  "word": "çokluğuyla",
+  "start": 0.22,
+  "end": 0.72,
+  "p": 0.796
+ },
+ {
+  "word": "kaçmama",
+  "start": 0.72,
+  "end": 1.14,
+  "p": 0.953
+ },
+ {
+  "word": "karar",
+  "start": 1.14,
+  "end": 1.44,
+  "p": 0.996
+ },
+ {
+  "word": "verildi.",
+  "start": 1.44,
+  "end": 2.06,
+  "p": 0.929
+ },
+ {
+  "word": "O",
+  "start": 2.14,
+  "end": 2.34,
+  "p": 0.884
+ },
+ {
+  "word": "zaman",
+  "start": 2.34,
+  "end": 2.56,
+  "p": 0.999
+ },
+ {
+  "word": "bu",
+  "start": 2.56,
+  "end": 2.72,
+  "p": 0.853
+ },
+ {
+  "word": "geceyi",
+  "start": 2.72,
+  "end": 3.02,
+  "p": 0.757
+ },
+ {
+  "word": "bankta",
+  "start": 3.02,
+  "end": 3.38,
+  "p": 0.891
+ },
+ {
+  "word": "geçirelim",
+  "start": 3.38,
+  "end": 3.74,
+  "p": 0.998
+ },
+ {
+  "word": "bakalım.",
+  "start": 3.74,
+  "end": 3.9,
+  "p": 0.976
+ }
+]

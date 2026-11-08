@@ -107,13 +107,13 @@ class Timeline:
         for t0, t1, fn in self.layers[who]:
             if t0 <= t <= t1:
                 for k, v in fn(t).items():
-                    if k in ("pos_x", "pos_y", "pos_z", "turn"):
+                    if k in ("pos_x", "pos_y", "pos_z", "turn", "pitch", "roll"):
                         extra[k] = extra.get(k, 0.0) + v
         tv = lambda ch: self.track(who, ch).value(t) + extra.get(ch, 0.0)
-        rest = Matrix.Translation(c.base_loc) @ Matrix.Rotation(c.base_rot.z, 4, "Z") @ \
-            Matrix.Rotation(c.base_rot.x, 4, "X")
+        rot = lambda x, y, z: Matrix.Rotation(z, 4, "Z") @ Matrix.Rotation(y, 4, "Y") @ Matrix.Rotation(x, 4, "X")
+        rest = Matrix.Translation(c.base_loc) @ rot(c.base_rot.x, c.base_rot.y, c.base_rot.z)
         now = Matrix.Translation(c.base_loc + Vector((tv("pos_x"), tv("pos_y"), tv("pos_z")))) @ \
-            Matrix.Rotation(c.base_rot.z + tv("turn"), 4, "Z") @ Matrix.Rotation(c.base_rot.x, 4, "X")
+            rot(c.base_rot.x + tv("pitch"), c.base_rot.y + tv("roll"), c.base_rot.z + tv("turn"))
         return now @ rest.inverted() @ self.rest_face[who]
 
     def face_pos(self, who, t=0.0):
@@ -233,14 +233,15 @@ class Timeline:
 
     # ------------------------------------------------------------ cameras
     def shot(self, t, name, loc, target, lens=40, fstop=2.8, to_loc=None, to_target=None, dur=None,
-             kind="inout", focus=None, shake=0.0):
-        """Cut to a new camera at `t`; optionally move it from loc/target to to_loc/to_target."""
+             kind="inout", focus=None, shake=0.0, track=None):
+        """Cut to a new camera at `t`; optionally move it from loc/target to to_loc/to_target.
+        track: fn(t) -> (loc, target[, focus_point]) drives the camera freely (e.g. following a falling drop)."""
         cam = bpy.data.objects.get(name) or render.camera(name, loc, target, lens, fstop)
         cam.data.lens = lens
         cam.data.dof.aperture_fstop = fstop
         self.shots.append(dict(t=t, cam=cam, loc=Vector(loc), target=Vector(target),
                                to_loc=Vector(to_loc or loc), to_target=Vector(to_target or target),
-                               dur=dur, kind=kind, focus=focus, shake=shake))
+                               dur=dur, kind=kind, focus=focus, shake=shake, track=track))
         self.shots.sort(key=lambda s: s["t"])
 
     def face_shot(self, t, name, who, dist=0.9, yaw=0.0, height=0.04, lens=50, fstop=2.8,
@@ -389,6 +390,10 @@ class Timeline:
                     s["_aim"] = face.copy() if prev is None else prev.lerp(face, k_follow)
                     tgt = tgt.lerp(s["_aim"], 0.85)
                 focus = self.chars[s["focus"]].face.anchor.matrix_world.translation if s["focus"] else tgt
+                if s.get("track"):
+                    tr = s["track"](t)
+                    loc, tgt = Vector(tr[0]), Vector(tr[1])
+                    focus = Vector(tr[2]) if len(tr) > 2 else tgt
                 render.aim(cam, loc, tgt, focus)
                 cam.keyframe_insert("location", frame=f)
                 cam.keyframe_insert("rotation_euler", frame=f)
