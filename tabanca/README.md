@@ -1,4 +1,4 @@
-# HAYVANİKA – Bölüm 1: Denizin Küçük Silahı – Tabanca Karidesi 🦐💥
+# Pirilumo · HAYVANİKA Bölüm 1: Denizin Küçük Silahı – Tabanca Karidesi 🦐💥
 
 Bu video 33,5 saniyelik dikey bir 3D animasyondur (9:16, 1080×1920, 30 fps). Karakter, ortam, kamera ve efektler Three.js ile tamamen kodla kuruldu. Her kare tarayıcıda (headless Chromium) kare kare render edildi; ses de kodla sentezlenip ffmpeg ile birleştirildi.
 
@@ -59,7 +59,7 @@ Renkleri *Alpheus randalli*'den esinlendi: yarı saydam krem gövde, parlak kır
 | 5,3–12,45 sn | Dev kıskacın etrafında dönen yakın plan; "TABANCA KARİDESİ" başlığı ve "Dev kıskaç" etiketi. Küçük bir balık gelip önünde durur. Kamera kıskacın omzunun üstüne geçer. Kıskaç yavaşça açılıp kilitlenir, **8,45 sn'de ateş**. Ağır çekimde jet balığa doğru uzanır ve içinde kavitasyon kabarcığı büyür: "Su jeti ~100 km/sa" ve **KAVİTASYON** yazıları. |
 | 12,45–18 sn | Kabarcığa yakın plan. Kabarcık en büyük boyuna ulaşır, titreşir, sonra giderek hızlanarak çöker (**15,55 sn**, "çökerken"). Parlama, ekranı büken şok dalgası ve kabarcık bulutu görünür. Şok dalgası balığı sersemletir; balık yan yatar ve yavaşça dibe çöker. Ekranda: "Ses: kabarcığın çöküşünden" ve "Isı: binlerce °C". |
 | 18–21,2 sn | **Tekrar, çok daha yavaş:** çöküşün son anı başka bir açıdan. "ışık" kelimesinde parlama görünür. Ekranda: "Işık parlaması · nanosaniyeler sürer · çıplak gözle görülmez". |
-| 21,2–33,5 sn | Karides sersemlemiş avına yürür, küçük kıskacıyla onu alır ve yuvasına döner. Ekranda "Boyu yalnızca 3–5 cm" yazısı çıkar. Kamera yavaşça yükselip uzaklaşır; karanlık ve büyük resif, ay ışığı huzmeleri, plankton ışıltıları görünür. Kapanış: **"Doğanın başka hangi sırrını keşfedelim?"** · HAYVANİKA. |
+| 21,2–33,5 sn | Karides sersemlemiş avına yürür, küçük kıskacıyla onu alır ve yuvasına döner. Ekranda "Boyu yalnızca 3–5 cm" yazısı çıkar. Kamera yavaşça yükselip uzaklaşır; karanlık ve büyük resif, ay ışığı huzmeleri, plankton ışıltıları görünür. Kapanış: **"Doğanın başka hangi sırrını keşfedelim?"** ve Pirilumo logosu. |
 
 ## Ses tasarımı
 
