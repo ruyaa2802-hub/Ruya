@@ -1,0 +1,27 @@
+1
+00:00:00,300 --> 00:00:04,600
+Ya ölümden sonra başka bir yerde uyanıyorsak?
+
+2
+00:00:11,000 --> 00:00:12,500
+DENİZ: Ben neredeyim?
+
+3
+00:00:15,900 --> 00:00:18,000
+GÖREVLİ: Buraya gelen herkes ilk önce bunu soruyor.
+
+4
+00:00:18,400 --> 00:00:19,900
+DENİZ: Yani öldüm mü?
+
+5
+00:00:20,600 --> 00:00:22,800
+GÖREVLİ: Henüz doğru soruyu sormadın.
+
+6
+00:00:35,300 --> 00:00:37,200
+GÖREVLİ: Bir dakika… Sen buraya ilk kez gelmiyorsun.
+
+7
+00:00:38,200 --> 00:00:40,000
+Ya ölüm gerçekten bir son değilse?

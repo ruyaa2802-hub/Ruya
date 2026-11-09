@@ -37,3 +37,19 @@ ffmpeg -i output/video_sessiz.mp4 -i output/ses.wav -map 0:v -map 1:a -c:v libx2
 ffmpeg -i output/film_temiz.mp4 -vf "ass=output/altyazi.ass:fontsdir=fonts" -c:a copy output/film_altyazili.mp4
 ```
 Test karesi: `PAGE=film node render.mjs --still 8,21.8 /tmp/kareler 0.5`
+
+---
+
+# Ya Ölümden Sonra Başka Bir Gerçeklikte Uyanıyorsak? — 40 sn
+
+`output/esik/` · 1080x1920 · 30 FPS · tek akış, tam ekran, ardışık sahneler
+
+| Dosya | İçerik |
+|---|---|
+| `esik_temiz.mp4` | Görüntüde yazı yok (yalnızca hikâyenin parçası olan "DENİZ" kapı plakası); müzik + efekt, seslendirme yok |
+| `esik_yazili.mp4` | Açılış/kapanış yazıları ve diyalog altyazıları montajda basılmış sürüm |
+| `diyalog_zamanlama.txt` | Seslendirme için zaman kodlu diyaloglar, oyunculuk notları, karakter ve mekân kimliği |
+| `altyazi_tr.srt` / `altyazi.ass` | Ayrı altyazı dosyaları |
+
+Kaynak: `src/esik.js` (sahneler), `src/human.js` (Deniz), `audio_esik.py` (müzik/efekt; diyalog anlarında müzik kısılır).
+Render: `PAGE=esik node render.mjs 0 1200 output/esik/video_sessiz.mp4`

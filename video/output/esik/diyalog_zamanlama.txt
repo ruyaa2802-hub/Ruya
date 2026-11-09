@@ -1,0 +1,41 @@
+YA ÖLÜMDEN SONRA BAŞKA BİR GERÇEKLİKTE UYANIYORSAK? — DİYALOG VE EKRAN YAZILARI
+Süre: 40 sn · 30 FPS · zaman kodları dakika:saniye
+Müzik, diyalog anlarında otomatik olarak kısıldı; seslendirmeyi bu aralıklara yerleştirebilirsin.
+
+[00:00.30 – 00:04.60]  YAZI
+    "Ya ölümden sonra başka bir yerde uyanıyorsak?"
+    Not: Ekran yazısı — hastane karanlığında, düz çizgi sesi altında
+
+[00:11.00 – 00:12.50]  DİYALOG · DENİZ
+    "Ben neredeyim?"
+    Not: Fısıltıya yakın, nefes nefese, şaşkın
+
+[00:15.90 – 00:18.00]  DİYALOG · GÖREVLİ
+    "Buraya gelen herkes ilk önce bunu soruyor."
+    Not: Sakin, hafif yankılı, neredeyse eğlenen bir ton
+
+[00:18.40 – 00:19.90]  DİYALOG · DENİZ
+    "Yani öldüm mü?"
+    Not: Kısık sesle, cevaptan korkarak
+
+[00:20.60 – 00:22.80]  DİYALOG · GÖREVLİ
+    "Henüz doğru soruyu sormadın."
+    Not: Gülümseyerek, yavaş
+
+[00:35.30 – 00:37.20]  DİYALOG · GÖREVLİ
+    "Bir dakika… Sen buraya ilk kez gelmiyorsun."
+    Not: Arkadan, uzaktan; "Bir dakika"dan sonra kısa es
+
+[00:38.20 – 00:40.00]  YAZI
+    "Ya ölüm gerçekten bir son değilse?"
+    Not: Ekran yazısı — siyah ekran; 39.25 sn'de tek bir monitör bip'i duyulur
+
+KARAKTERLER
+  DENİZ — 34 yaşında hasta. Açık mavi-yeşil hastane önlüğü, koyu kısa saç, gri çorap.
+  GÖREVLİ — Eşik'in görevlisi. Cam bir kürenin içinde dönen galaksi kafası, 2,7 m boyunda koyu kadife cüppe,
+            pirinç yaka halkası, uzun ince kollar ve ışıktan parmaklar. Konuşurken galaksisi nabız gibi parlar.
+
+MEKÂN — 'EŞİK'
+  Sonsuz koyu cam zemin; ters dönen gezegenler ve baş aşağı yüzen şehir adaları; içinde galaksi dönen
+  dev pirinç saatler; gökyüzüne uzanan mermer merdivenler; milyonlarca küçük ışığı yanıp sönen 250 m'lik kapı;
+  şeffaf, geometrik ve ışık halkası biçimli varlıklar; binlerce yüzen kapı, her birinin ardında başka bir evren.

@@ -253,6 +253,10 @@ export function makeHuman(o) {
   // gövde (kıyafet) — yerel y: bel = 0
   const torso = m(lathe([[0.0, -0.17], [0.15, -0.15], [0.172, -0.09], [0.165, -0.02], [0.152, 0.04], [0.165, 0.14], [0.186, 0.26], [0.195, 0.35], [0.19, 0.4], [0.155, 0.45], [0.075, 0.495], [0.0, 0.505]]), topM);
   torso.scale.z = 0.64; spine.add(torso);
+  if (o.gown) {
+    const hem = m(lathe([[0.25, -0.62], [0.22, -0.4], [0.19, -0.2], [0.17, -0.05]], 48), topM, 0, 0, 0); hem.material = topM.clone(); hem.material.side = THREE.DoubleSide; hem.scale.z = 0.75; spine.add(hem);
+    const tie = m(new THREE.TorusGeometry(0.03, 0.006, 6, 16), topM, 0, 0.44, 0.1); spine.add(tie);
+  }
   if (o.coat) {
     const hem = m(lathe([[0.2, -0.45], [0.19, -0.3], [0.178, -0.15], [0.17, -0.05]], 48), topM, 0, 0, 0); hem.material = topM.clone(); hem.material.side = THREE.DoubleSide; hem.scale.z = 0.72; spine.add(hem);
     const zip = m(new THREE.BoxGeometry(0.008, 0.8, 0.006), new THREE.MeshStandardMaterial({ color: 0x3a2f12, roughness: 0.5, metalness: 0.5 }), 0, 0.0, 0.122); spine.add(zip);
@@ -348,7 +352,7 @@ export function pose(h, p) {
   }
   // ağız: konuşma
   const talk = p.talk ? Math.max(0, Math.sin(t * 17) * 0.6 + Math.sin(t * 9.3) * 0.5) * p.talk : 0;
-  const open = 0.001 + talk * 0.0075 + sur * 0.004;
+  const open = 0.001 + talk * 0.0075 + sur * 0.0018;
   h.mouth.scale.set(0.017 - 0.003 * sur, open, 1);
   h.teeth.scale.set(0.026, open > 0.003 ? open * 0.5 : 0.0005, 1);
   if (h.skull.morphTargetInfluences) h.skull.morphTargetInfluences[0] = p.child || 0;
