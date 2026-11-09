@@ -1,0 +1,15 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Ya Her Kararımız Başka Bir Evren Yaratıyorsa?</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+const q = new URLSearchParams(location.search);
+const sceneId = q.get('scene') || '1';
+try {
+  const mod = await import(`./sahne${sceneId}.js`);
+  const { boot } = await import('./engine.js');
+  await boot(mod, +(q.get('w') || 1080), +(q.get('h') || 1920));
+  window.READY = true;
+} catch (e) { console.error(e.stack || e); window.FAILED = String(e); }
+</script></body></html>
