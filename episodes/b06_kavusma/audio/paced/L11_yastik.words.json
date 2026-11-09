@@ -1,0 +1,30 @@
+[
+ {
+  "word": "Peki",
+  "start": 0.0,
+  "end": 0.18,
+  "p": 0.924,
+  "asr": "Peki"
+ },
+ {
+  "word": "biz",
+  "start": 0.18,
+  "end": 0.36,
+  "p": 0.657,
+  "asr": "biz"
+ },
+ {
+  "word": "ne",
+  "start": 0.36,
+  "end": 0.46,
+  "p": 0.992,
+  "asr": "ne"
+ },
+ {
+  "word": "yapıyoruz?",
+  "start": 0.46,
+  "end": 0.78,
+  "p": 0.995,
+  "asr": "yapıyoruz?"
+ }
+]

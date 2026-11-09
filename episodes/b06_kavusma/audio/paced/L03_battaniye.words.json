@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Yok",
+  "start": 0.0,
+  "end": 0.28,
+  "p": 0.903,
+  "asr": "Yok"
+ },
+ {
+  "word": "canım.",
+  "start": 0.28,
+  "end": 0.58,
+  "p": 0.976,
+  "asr": "canım,"
+ },
+ {
+  "word": "Sadece",
+  "start": 0.78,
+  "end": 1.08,
+  "p": 0.979,
+  "asr": "sadece"
+ },
+ {
+  "word": "üç",
+  "start": 1.08,
+  "end": 1.38,
+  "p": 0.481,
+  "asr": "üç"
+ },
+ {
+  "word": "gündür",
+  "start": 1.38,
+  "end": 1.64,
+  "p": 0.989,
+  "asr": "gündür"
+ },
+ {
+  "word": "yüzüm",
+  "start": 1.64,
+  "end": 1.9,
+  "p": 0.879,
+  "asr": "yüzüm"
+ },
+ {
+  "word": "asık",
+  "start": 1.9,
+  "end": 2.16,
+  "p": 0.868,
+  "asr": "asık"
+ },
+ {
+  "word": "geziyordum.",
+  "start": 2.16,
+  "end": 2.58,
+  "p": 0.821,
+  "asr": "geziyordum."
+ }
+]

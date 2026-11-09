@@ -1,0 +1,121 @@
+[
+ {
+  "word": "Demek",
+  "start": 0.0,
+  "end": 0.4,
+  "p": 0.889,
+  "asr": "Demek"
+ },
+ {
+  "word": "ki",
+  "start": 0.4,
+  "end": 0.5,
+  "p": 0.933,
+  "asr": "ki"
+ },
+ {
+  "word": "insanlık",
+  "start": 0.5,
+  "end": 0.86,
+  "p": 0.699,
+  "asr": "insanlı"
+ },
+ {
+  "word": "tarihinin",
+  "start": 0.86,
+  "end": 1.22,
+  "p": 0.94,
+  "asr": "tarihinin"
+ },
+ {
+  "word": "en",
+  "start": 1.22,
+  "end": 1.38,
+  "p": 0.993,
+  "asr": "en"
+ },
+ {
+  "word": "büyük",
+  "start": 1.38,
+  "end": 1.52,
+  "p": 0.932,
+  "asr": "büyük"
+ },
+ {
+  "word": "problemi,",
+  "start": 1.52,
+  "end": 2.06,
+  "p": 0.983,
+  "asr": "problemi"
+ },
+ {
+  "word": "uyumak",
+  "start": 2.06,
+  "end": 2.44,
+  "p": 0.933,
+  "asr": "uyumak"
+ },
+ {
+  "word": "için",
+  "start": 2.44,
+  "end": 2.58,
+  "p": 0.991,
+  "asr": "için"
+ },
+ {
+  "word": "yeterince",
+  "start": 2.58,
+  "end": 2.94,
+  "p": 0.893,
+  "asr": "yeterince"
+ },
+ {
+  "word": "zaman",
+  "start": 2.94,
+  "end": 3.14,
+  "p": 0.985,
+  "asr": "zaman"
+ },
+ {
+  "word": "bulamamak",
+  "start": 3.14,
+  "end": 3.66,
+  "p": 0.971,
+  "asr": "bulamamak"
+ },
+ {
+  "word": "değil…",
+  "start": 3.66,
+  "end": 3.78,
+  "p": 0.993,
+  "asr": "değil."
+ },
+ {
+  "word": "Uyanıkken",
+  "start": 3.96,
+  "end": 4.48,
+  "p": 0.972,
+  "asr": "Uyanıkken"
+ },
+ {
+  "word": "ne",
+  "start": 4.48,
+  "end": 4.62,
+  "p": 0.988,
+  "asr": "ne"
+ },
+ {
+  "word": "yapacağını",
+  "start": 4.62,
+  "end": 5.02,
+  "p": 0.995,
+  "asr": "yapacağını"
+ },
+ {
+  "word": "bilememek.",
+  "start": 5.02,
+  "end": 5.44,
+  "p": 0.967,
+  "asr": "bilememek."
+ }
+]

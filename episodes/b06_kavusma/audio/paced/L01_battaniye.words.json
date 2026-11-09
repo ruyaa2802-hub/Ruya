@@ -1,0 +1,37 @@
+[
+ {
+  "word": "Vay",
+  "start": 0.0,
+  "end": 0.26,
+  "p": 0.912,
+  "asr": "Vay"
+ },
+ {
+  "word": "vay",
+  "start": 0.26,
+  "end": 0.54,
+  "p": 0.907,
+  "asr": "vay"
+ },
+ {
+  "word": "vay…",
+  "start": 0.54,
+  "end": 0.68,
+  "p": 0.97,
+  "asr": "vay"
+ },
+ {
+  "word": "Kimler",
+  "start": 0.68,
+  "end": 0.92,
+  "p": 0.885,
+  "asr": "kimler"
+ },
+ {
+  "word": "gelmiş!",
+  "start": 0.92,
+  "end": 1.14,
+  "p": 0.991,
+  "asr": "gelmiş?"
+ }
+]

@@ -1,0 +1,62 @@
+[
+ {
+  "word": "Geri",
+  "start": 0.0,
+  "end": 0.28,
+  "p": 0.566
+ },
+ {
+  "word": "kalan",
+  "start": 0.28,
+  "end": 0.52,
+  "p": 0.986
+ },
+ {
+  "word": "üç",
+  "start": 0.52,
+  "end": 0.64,
+  "p": 0.822
+ },
+ {
+  "word": "de",
+  "start": 0.64,
+  "end": 0.76,
+  "p": 0.47
+ },
+ {
+  "word": "ikisinde",
+  "start": 0.76,
+  "end": 1.1,
+  "p": 0.907
+ },
+ {
+  "word": "de",
+  "start": 1.1,
+  "end": 1.2,
+  "p": 0.969
+ },
+ {
+  "word": "uykularının",
+  "start": 1.2,
+  "end": 1.62,
+  "p": 0.897
+ },
+ {
+  "word": "gelmesinden",
+  "start": 1.62,
+  "end": 2.06,
+  "p": 0.836
+ },
+ {
+  "word": "şikayet",
+  "start": 2.06,
+  "end": 2.46,
+  "p": 0.935
+ },
+ {
+  "word": "ediyorlarmış.",
+  "start": 2.46,
+  "end": 2.92,
+  "p": 0.962
+ }
+]

@@ -1,0 +1,23 @@
+[
+ {
+  "word": "Yine",
+  "start": 0.0,
+  "end": 0.34,
+  "p": 0.958,
+  "asr": "Yine"
+ },
+ {
+  "word": "ne",
+  "start": 0.34,
+  "end": 0.5,
+  "p": 0.949,
+  "asr": "ne"
+ },
+ {
+  "word": "öğrendin?",
+  "start": 0.5,
+  "end": 1.0,
+  "p": 0.988,
+  "asr": "öğrendin?"
+ }
+]

@@ -1,0 +1,51 @@
+[
+ {
+  "word": "İnsanlar",
+  "start": 0.0,
+  "end": 0.5,
+  "p": 0.882,
+  "asr": "İnsanlar"
+ },
+ {
+  "word": "hayatlarının",
+  "start": 0.5,
+  "end": 1.04,
+  "p": 0.871,
+  "asr": "hayatlarının"
+ },
+ {
+  "word": "yaklaşık",
+  "start": 1.04,
+  "end": 1.42,
+  "p": 0.994,
+  "asr": "yaklaşık"
+ },
+ {
+  "word": "üçte",
+  "start": 1.42,
+  "end": 1.64,
+  "p": 0.685,
+  "asr": "üçte"
+ },
+ {
+  "word": "birini",
+  "start": 1.64,
+  "end": 1.88,
+  "p": 0.996,
+  "asr": "birini"
+ },
+ {
+  "word": "uyuyarak",
+  "start": 1.88,
+  "end": 2.24,
+  "p": 0.975,
+  "asr": "uyuyarak"
+ },
+ {
+  "word": "geçiriyormuş!",
+  "start": 2.24,
+  "end": 2.74,
+  "p": 0.872,
+  "asr": "getiriyormuş."
+ }
+]

@@ -1,0 +1,23 @@
+[
+ {
+  "word": "Beni",
+  "start": 0.0,
+  "end": 0.22,
+  "p": 0.909,
+  "asr": "Beni"
+ },
+ {
+  "word": "özlemedin",
+  "start": 0.22,
+  "end": 0.74,
+  "p": 0.896,
+  "asr": "özlemedin"
+ },
+ {
+  "word": "mi?",
+  "start": 0.74,
+  "end": 0.84,
+  "p": 0.991,
+  "asr": "mi?"
+ }
+]

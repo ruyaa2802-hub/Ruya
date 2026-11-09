@@ -1,0 +1,65 @@
+[
+ {
+  "word": "Bu",
+  "start": 0.0,
+  "end": 0.22,
+  "p": 0.958,
+  "asr": "Bu"
+ },
+ {
+  "word": "arada,",
+  "start": 0.22,
+  "end": 0.42,
+  "p": 0.993,
+  "asr": "arada"
+ },
+ {
+  "word": "insanlarla",
+  "start": 0.42,
+  "end": 1.08,
+  "p": 0.896,
+  "asr": "insanlarla"
+ },
+ {
+  "word": "ilgili",
+  "start": 1.08,
+  "end": 1.22,
+  "p": 0.999,
+  "asr": "ilgili"
+ },
+ {
+  "word": "çok",
+  "start": 1.22,
+  "end": 1.4,
+  "p": 0.991,
+  "asr": "çok"
+ },
+ {
+  "word": "ilginç",
+  "start": 1.4,
+  "end": 1.76,
+  "p": 0.998,
+  "asr": "ilginç"
+ },
+ {
+  "word": "bir",
+  "start": 1.76,
+  "end": 1.8,
+  "p": 0.99,
+  "asr": "bir"
+ },
+ {
+  "word": "şey",
+  "start": 1.8,
+  "end": 1.94,
+  "p": 0.809,
+  "asr": "şey"
+ },
+ {
+  "word": "öğrendim.",
+  "start": 1.94,
+  "end": 2.34,
+  "p": 0.991,
+  "asr": "öğrendim."
+ }
+]
