@@ -11,7 +11,7 @@ const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.jpg': 'image/jpeg', '.png': 'image/png', '.woff2': 'font/woff2', '.json': 'application/json' };
 const server = http.createServer((req, res) => {
   const u = decodeURIComponent(new URL(req.url, 'http://x').pathname);
-  const f = path.join(ROOT, u === '/' ? 'src/index.html' : u);
+  const f = path.join(ROOT, u === '/' ? 'src/' + (process.env.PAGE || 'index') + '.html' : u);
   if (!f.startsWith(ROOT) || !fs.existsSync(f)) { res.writeHead(404); return res.end(); }
   res.writeHead(200, { 'Content-Type': TYPES[path.extname(f)] || 'application/octet-stream' });
   fs.createReadStream(f).pipe(res);
@@ -25,10 +25,11 @@ const scale = parseFloat((still ? args[3] : args[3]) || '1');
 const browser = await chromium.launch({ args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
 page.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') console.error('[page]', m.text()); });
-page.on('pageerror', e => console.error('[pageerror]', e.message));
-await page.goto(`http://localhost:${port}/?scale=${scale}`);
+page.on('pageerror', e => { console.error('[pageerror]', e.stack); process.exit(1); });
+await page.goto(`http://localhost:${port}/?scale=${scale}`, { timeout: 600000 });
 await page.waitForFunction('window.READY === true', null, { timeout: 300000 });
 
+if (process.env.NOCROWD) await page.evaluate(() => { window.DEBUG_NOCROWD = true; });
 const grab = async (t) => Buffer.from((await page.evaluate(t => window.renderFrame(t), t)).split(',')[1], 'base64');
 
 if (still) {

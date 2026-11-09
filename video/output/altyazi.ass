@@ -1,0 +1,28 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Main,Montserrat ExtraBold,66,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,6,3,2,110,110,560,1
+Style: Age,Montserrat ExtraBold,96,&H003AD2FF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,2,0,1,6,3,8,60,60,300,1
+Style: End,Montserrat ExtraBold,86,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,7,4,5,80,80,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.40,0:00:04.50,Main,,0,0,0,,{\fad(180,180)}Ya insanlar {\c&H3AD2FF&}100 yaşına{\c&HFFFFFF&} kadar hiç {\c&H3AD2FF&}yaşlanmasaydı?{\c&HFFFFFF&}
+Dialogue: 0,0:00:05.40,0:00:06.50,Age,,0,0,0,,{\fad(180,180)}5 yaş
+Dialogue: 0,0:00:07.60,0:00:08.70,Age,,0,0,0,,{\fad(180,180)}15 yaş
+Dialogue: 0,0:00:09.70,0:00:10.90,Age,,0,0,0,,{\fad(180,180)}25 yaş
+Dialogue: 0,0:00:10.90,0:00:11.90,Main,,0,0,0,,{\fad(180,180)}…ve öyle kaldı.
+Dialogue: 0,0:00:12.30,0:00:14.50,Main,,0,0,0,,{\fad(180,180)}İnsanlar artık {\c&H3AD2FF&}yaşlanmıyordu…{\c&HFFFFFF&}
+Dialogue: 0,0:00:14.60,0:00:16.90,Main,,0,0,0,,{\fad(180,180)}…ama her gün {\c&H3AD2FF&}yeni insanlar{\c&HFFFFFF&} doğuyordu.
+Dialogue: 0,0:00:17.20,0:00:19.50,Main,,0,0,0,,{\fad(180,180)}{\c&H3AD2FF&}90 yaşındaki{\c&HFFFFFF&} insanlar hâlâ çalışıyor…
+Dialogue: 0,0:00:19.60,0:00:22.40,Main,,0,0,0,,{\fad(180,180)}Baba {\c&H3AD2FF&}90{\c&HFFFFFF&}, oğul {\c&H3AD2FF&}25{\c&HFFFFFF&} yaşında. Aynı iş için buradalar.
+Dialogue: 0,0:00:22.60,0:00:27.80,Main,,0,0,0,,{\fad(180,180)}{\c&H3AD2FF&}25 yaşındaki{\c&HFFFFFF&} çocuklar, anne babalarıyla {\c&H3AD2FF&}aynı işler{\c&HFFFFFF&} için yarışıyordu.
+Dialogue: 0,0:00:28.30,0:00:30.80,Main,,0,0,0,,{\fad(180,180)}İnsanlık {\c&H3AD2FF&}daha uzun{\c&HFFFFFF&} yaşamayı başarmıştı…
+Dialogue: 0,0:00:30.90,0:00:32.50,Main,,0,0,0,,{\fad(180,180)}…ama {\c&H3AD2FF&}daha iyi{\c&HFFFFFF&} yaşamayı değil.
+Dialogue: 0,0:00:32.80,0:00:34.90,End,,0,0,0,,{\fad(300,0)}Bu dünya sence\N{\fs120\c&H3AD2FF&}CENNET{\fs86\c&HFFFFFF&} mi olurdu,\N{\fs120\c&H4B3BFF&}CEHENNEM{\fs86\c&HFFFFFF&} mi?
