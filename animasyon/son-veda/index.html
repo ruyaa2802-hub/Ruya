@@ -1,0 +1,990 @@
+<title>Son Veda Eskizi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a graphite desk; the sketch paper sits on it, controls below like a film strip. Single dark look by choice. */
+:root {
+  --desk: #19191b;
+  --panel: #232326;
+  --line: #36363b;
+  --ink: #ecebe5;
+  --muted: #a4a29b;
+  --lamp: #d6a64a;
+  --display: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  --body: 'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--desk); color: var(--ink); }
+body { font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 56px;
+  display: grid; gap: 18px;
+}
+header { display: grid; gap: 4px; }
+.eyebrow { margin: 0; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(40px, 7vw, 64px); line-height: 1; text-wrap: balance; }
+.lede { margin: 4px 0 0; max-width: 62ch; color: var(--muted); }
+
+.stage-wrap { position: relative; margin: 0; border-radius: 3px; overflow: hidden; box-shadow: 0 18px 50px rgba(0,0,0,.45), 0 0 0 1px var(--line); background: #ebeae4; }
+.stage-wrap:fullscreen { display: grid; place-items: center; background: #000; }
+canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; max-width: 100%; }
+.big-play {
+  position: absolute; inset: 0; margin: auto; width: 92px; height: 92px; border-radius: 50%;
+  border: 2px solid #262523; background: rgba(235,234,228,.88); color: #262523; cursor: pointer;
+  display: grid; place-items: center; font-family: var(--display); font-size: 22px; font-weight: 700;
+}
+.big-play:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--lamp); outline-offset: 2px; }
+
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.btn {
+  font: 500 14px var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 8px 14px; cursor: pointer;
+}
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--lamp); color: #1b1a17; border-color: var(--lamp); font-weight: 700; min-width: 96px; }
+.scrub { flex: 1 1 260px; min-width: 0; display: grid; gap: 4px; }
+.scrub input { width: 100%; accent-color: var(--lamp); }
+.ticks { position: relative; height: 10px; }
+.ticks span { position: absolute; top: 0; width: 1px; height: 8px; background: var(--muted); opacity: .6; }
+.time { font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.scenes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+.scenes button {
+  width: 100%; height: 100%; text-align: left; cursor: pointer; display: grid; gap: 2px; align-content: start;
+  background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px;
+  font: 400 13px/1.4 var(--body);
+}
+.scenes button b { font-family: var(--mono); font-weight: 500; font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+.scenes button[aria-current="true"] { border-color: var(--lamp); background: rgba(214,166,74,.08); }
+.scenes button[aria-current="true"] b { color: var(--lamp); }
+
+.audio { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 10px; }
+.audio h2 { margin: 0; font-size: 15px; font-weight: 700; }
+.audio p { margin: 0; color: var(--muted); max-width: 70ch; }
+.audio-row { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.audio label { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.audio input[type="number"] { width: 84px; font: 14px var(--mono); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.audio input[type="file"] { max-width: 100%; color: var(--muted); font-size: 13px; }
+#audStatus { font-family: var(--mono); font-size: 12px; color: var(--lamp); }
+@media (max-width: 520px) { .btn { padding: 8px 11px; } }
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Sagopa Kajmer · 24 · deneme eskizi</p>
+    <h1>Son Veda Eskizi</h1>
+    <p class="lede">Kurşun kalemle çizilmiş gibi duran, sessiz bir animasyon. Altı sahne var, toplam 49 saniye sürüyor. Şarkıyı eklemek istersen aşağıdan kendi ses dosyanı seçebilirsin; animasyon onunla birlikte oynar.</p>
+  </header>
+
+  <figure class="stage-wrap" id="stageWrap">
+    <canvas id="stage" width="1280" height="720" aria-label="Eskiz animasyonu"></canvas>
+    <button class="big-play" id="bigPlay" type="button" aria-label="Oynat">Oynat</button>
+  </figure>
+
+  <div class="controls">
+    <button class="btn primary" id="play" type="button">Oynat</button>
+    <button class="btn" id="restart" type="button">Baştan</button>
+    <div class="scrub">
+      <input id="scrub" type="range" min="0" max="49" step="0.01" value="0" aria-label="Zaman çizelgesi">
+      <div class="ticks" id="ticks"></div>
+    </div>
+    <span class="time" id="time">00.0 / 49.0</span>
+    <button class="btn" id="fs" type="button">Tam ekran</button>
+  </div>
+
+  <ol class="scenes" id="scenes"></ol>
+
+  <section class="audio">
+    <h2>Şarkıyı ekle (isteğe bağlı)</h2>
+    <p>Ses dosyası yalnızca senin tarayıcında çalınır, hiçbir yere yüklenmez. Kesit şarkının ortasından başlıyorsa, başlangıç saniyesini yaz.</p>
+    <div class="audio-row">
+      <label for="aud">Ses dosyası <input id="aud" type="file" accept="audio/*"></label>
+      <label for="ofs">Şarkıda başlangıç (sn) <input id="ofs" type="number" min="0" step="0.1" value="0"></label>
+      <span id="audStatus"></span>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+'use strict';
+const W = 1280, H = 720;
+const PEN = '#262523', PAPER = '#ebeae4';
+const DARK = 'rgba(34,33,32,0.86)', LIGHT = 'rgba(235,234,228,0.94)';
+const cv = document.getElementById('stage');
+const ctx = cv.getContext('2d');
+const DPR = Math.min(2, window.devicePixelRatio || 1);
+cv.width = W * DPR; cv.height = H * DPR;
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- small math ---------- */
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+const ease = k => { k = clamp(k); return k * k * (3 - 2 * k); };
+const seg = (t, a, b) => ease((t - a) / (b - a));
+const lin = (t, a, b) => clamp((t - a) / (b - a));
+const lp = (p, q, k) => [lerp(p[0], q[0], k), lerp(p[1], q[1], k)];
+const backOut = k => { k = clamp(k); const c = 1.9; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
+
+let _s = 1;
+const srand = n => { _s = (Math.abs(n) % 2147483646) + 1; };
+const r = () => { _s = (_s * 16807) % 2147483647; return (_s - 1) / 2147483646; };
+const rj = a => (r() * 2 - 1) * a;
+
+/* ---------- pencil primitives ---------- */
+let J = 1, INK = 1;
+
+function curve(pts, o = {}) {
+  const k = o.ink ?? INK;
+  if (k <= 0 || pts.length < 2) return;
+  const n = Math.max(2, Math.ceil(pts.length * k));
+  const ps = pts.slice(0, n);
+  const j = (o.j ?? 1.2) * J, passes = o.p ?? 2;
+  ctx.lineWidth = o.w ?? 1.7; ctx.strokeStyle = o.c ?? PEN;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  for (let i = 0; i < passes; i++) {
+    ctx.globalAlpha = (o.a ?? 0.88) * (i ? 0.5 : 1);
+    const q = ps.map(p => [p[0] + rj(j), p[1] + rj(j)]);
+    ctx.beginPath(); ctx.moveTo(q[0][0], q[0][1]);
+    for (let m = 1; m < q.length - 1; m++) {
+      ctx.quadraticCurveTo(q[m][0], q[m][1], (q[m][0] + q[m + 1][0]) / 2, (q[m][1] + q[m + 1][1]) / 2);
+    }
+    const last = q[q.length - 1]; ctx.lineTo(last[0], last[1]); ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function L(x1, y1, x2, y2, o = {}) {
+  const k = o.ink ?? INK;
+  if (k <= 0) return;
+  let ex = lerp(x1, x2, k), ey = lerp(y1, y2, k);
+  const len = Math.hypot(ex - x1, ey - y1) || 1;
+  const ux = (ex - x1) / len, uy = (ey - y1) / len;
+  const ov = (o.ov ?? 2.5) * J;
+  const sx = x1 - ux * r() * ov, sy = y1 - uy * r() * ov;
+  ex += ux * r() * ov; ey += uy * r() * ov;
+  const b = rj(Math.min(3, len * 0.015));
+  curve([[sx, sy], [(sx + ex) / 2 - uy * b, (sy + ey) / 2 + ux * b], [ex, ey]], { ...o, ink: 1 });
+}
+
+function fillPts(pts, col, alpha = 1) {
+  if (!col) return;
+  ctx.globalAlpha = alpha * Math.min(1, INK * 1.4);
+  ctx.fillStyle = col;
+  ctx.beginPath();
+  pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+  ctx.closePath(); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+
+function poly(pts, closed, o = {}) {
+  if (o.fill) fillPts(pts, o.fill, o.fa ?? 1);
+  const k = o.ink ?? INK;
+  const e = closed ? pts.length : pts.length - 1;
+  for (let i = 0; i < e; i++) {
+    const kk = clamp(k * e - i);
+    if (kk <= 0) break;
+    const a = pts[i], b = pts[(i + 1) % pts.length];
+    L(a[0], a[1], b[0], b[1], { ...o, ink: kk });
+  }
+}
+const rect = (x, y, w, h, o = {}) => poly([[x, y], [x + w, y], [x + w, y + h], [x, y + h]], true, o);
+
+function ell(cx, cy, rx, ry, o = {}) {
+  const n = o.n ?? 22, a0 = o.a0 ?? r() * 6.283, sw = Math.PI * 2 * (o.sweep ?? 1.08);
+  const pts = [];
+  for (let i = 0; i <= n; i++) {
+    const a = a0 + sw * i / n;
+    pts.push([cx + Math.cos(a) * rx, cy + Math.sin(a) * ry]);
+  }
+  if (o.fill) fillPts(pts, o.fill, o.fa ?? 1);
+  curve(pts, o);
+}
+
+function hatch(pts, o = {}) {
+  const k = o.ink ?? INK;
+  if (k <= 0) return;
+  ctx.save();
+  ctx.beginPath();
+  pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+  ctx.closePath(); ctx.clip();
+  let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+  pts.forEach(p => { x0 = Math.min(x0, p[0]); y0 = Math.min(y0, p[1]); x1 = Math.max(x1, p[0]); y1 = Math.max(y1, p[1]); });
+  const sp = o.sp ?? 9, ang = o.ang ?? -0.9;
+  const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, R = Math.hypot(x1 - x0, y1 - y0) / 2 + 8;
+  const dx = Math.cos(ang), dy = Math.sin(ang), nx = -dy, ny = dx;
+  const N = Math.floor(2 * R / sp), lim = Math.floor(N * k);
+  for (let i = 0; i <= lim; i++) {
+    const off = -R + i * sp, px = cx + nx * off, py = cy + ny * off;
+    L(px - dx * R, py - dy * R, px + dx * R, py + dy * R, { w: o.w ?? 1, a: o.a ?? 0.4, p: 1, j: o.j ?? 1.4, ov: 0, ink: 1 });
+  }
+  ctx.restore();
+}
+
+function tube(a, b, w1, w2, o = {}) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1;
+  const nx = -dy / l, ny = dx / l;
+  const q = [[a[0] + nx * w1, a[1] + ny * w1], [b[0] + nx * w2, b[1] + ny * w2], [b[0] - nx * w2, b[1] - ny * w2], [a[0] - nx * w1, a[1] - ny * w1]];
+  if (o.fill) fillPts(q, o.fill);
+  L(q[0][0], q[0][1], q[1][0], q[1][1], o);
+  L(q[3][0], q[3][1], q[2][0], q[2][1], o);
+}
+
+function ik(a, t, l1, l2, sgn) {
+  const dx = t[0] - a[0], dy = t[1] - a[1];
+  const d = clamp(Math.hypot(dx, dy), Math.abs(l1 - l2) + 1, l1 + l2 - 0.5);
+  const base = Math.atan2(dy, dx);
+  const al = Math.acos(clamp((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d), -1, 1));
+  return [[a[0] + Math.cos(base + sgn * al) * l1, a[1] + Math.sin(base + sgn * al) * l1],
+          [a[0] + Math.cos(base) * d, a[1] + Math.sin(base) * d]];
+}
+
+function txt(s, x, y, o = {}) {
+  ctx.save();
+  ctx.translate(x, y); ctx.rotate(o.rot ?? 0);
+  ctx.globalAlpha = (o.a ?? 0.9) * clamp(INK);
+  ctx.fillStyle = o.c ?? PEN;
+  ctx.font = o.font ?? '700 40px Caveat, cursive';
+  ctx.textAlign = o.align ?? 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(s, 0, 0);
+  ctx.restore();
+}
+
+function cam(fx, fy, z) {
+  ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-fx, -fy);
+}
+
+/* ---------- side-view figure ---------- */
+function fig(f) {
+  const s = f.s ?? 1, face = f.face ?? 1, lean = (f.lean ?? 0) * face, lw = f.lw ?? 1;
+  const hip = [f.x, f.y];
+  const up = (p, a, l) => [p[0] + Math.sin(a) * l, p[1] - Math.cos(a) * l];
+  const sh = up(hip, lean, 58 * s), neck = up(hip, lean, 66 * s);
+  const ha = lean + (f.tilt ?? 0) * face;
+  const head = up(neck, ha, 16 * s);
+  const g = { hip, sh, neck, head, face, s };
+  const T = v => typeof v === 'function' ? v(g) : v;
+  const legs = [T(f.f1), T(f.f2)].map(p => ik(hip, p, 43 * s, 42 * s, -face));
+  const arms = [T(f.h1), T(f.h2)].map(p => ik(sh, p, 31 * s, 29 * s, face));
+  const D = f.dark ? DARK : LIGHT;
+  const o = { w: 1.7 * lw };
+  const limb = (root, [e, h], w) => {
+    tube(root, e, w * s, w * 0.8 * s, { ...o, fill: D });
+    tube(e, h, w * 0.8 * s, w * 0.62 * s, { ...o, fill: D });
+    ell(e[0], e[1], w * 0.8 * s, w * 0.8 * s, { fill: D, p: 0 });
+  };
+  const foot = p => L(p[0] - face * 3 * s, p[1], p[0] + face * 12 * s, p[1] + 1, { w: 2.4 * lw });
+  const hand = p => ell(p[0], p[1], 4.6 * s, 4.6 * s, { fill: D, w: 1.4 * lw, n: 12 });
+
+  limb(hip, legs[0], 5.6); foot(legs[0][1]);
+  limb(sh, arms[0], 4.6); hand(arms[0][1]);
+
+  const u = [Math.sin(lean), -Math.cos(lean)], n = [Math.cos(lean), Math.sin(lean)];
+  const hem = f.old ? 18 : 10;
+  const hb = [hip[0] - u[0] * hem * s, hip[1] - u[1] * hem * s];
+  const tp = [
+    [sh[0] - n[0] * 12 * s, sh[1] - n[1] * 12 * s], [sh[0] + n[0] * 12 * s, sh[1] + n[1] * 12 * s],
+    [hb[0] + n[0] * 15 * s, hb[1] + n[1] * 15 * s], [hb[0] - n[0] * 15 * s, hb[1] - n[1] * 15 * s]
+  ];
+  poly(tp, true, { ...o, fill: D });
+  if (f.old) {
+    for (let i = 1; i <= 3; i++) {
+      const k = i / 4, px = lerp(tp[1][0], tp[2][0], k) - n[0] * face * 5 * s, py = lerp(tp[1][1], tp[2][1], k);
+      ell(face > 0 ? px : lerp(tp[0][0], tp[3][0], k) + n[0] * 5 * s, face > 0 ? py : lerp(tp[0][1], tp[3][1], k), 1.4 * s, 1.4 * s, { w: 1, p: 1, n: 8 });
+    }
+  }
+  limb(hip, legs[1], 5.6); foot(legs[1][1]);
+  L(neck[0], neck[1], sh[0], sh[1], { w: 1.6 * lw });
+
+  ell(head[0], head[1], 14 * s, 16 * s, { fill: D, w: 1.8 * lw });
+  const hp = a => [head[0] + Math.sin(a * face) * 15 * s, head[1] - Math.cos(a) * 17 * s];
+  if (f.old) {
+    for (let i = 0; i < 5; i++) {
+      const b = hp(-1.2 - i * 0.28);
+      curve([b, [b[0] - face * 4 * s, b[1] - 2 * s], [b[0] - face * 6 * s, b[1] + 2 * s]], { w: 1.1 * lw, p: 1 });
+    }
+    curve([hp(0.25), [head[0] + face * 8 * s, head[1] - 12 * s], hp(0.7)], { w: 0.9 * lw, p: 1, a: 0.5 });
+  } else if (!f.dark) {
+    const cap = [];
+    for (let i = 0; i <= 10; i++) cap.push(hp(lerp(-2.0, 0.8, i / 10)));
+    cap.push([head[0] - face * 4 * s, head[1] - 6 * s]);
+    poly(cap, true, { w: 1.2 * lw, fill: DARK, fa: 0.75, p: 1 });
+  }
+  if (!f.dark) {
+    const e = [head[0] + face * 6.5 * s, head[1] - 2 * s];
+    if (f.eyes === 'closed') L(e[0] - 2.5 * s, e[1] + 0.5 * s, e[0] + 2.5 * s, e[1] + 1.5 * s, { w: 1.4 * lw, p: 1 });
+    else ell(e[0], e[1], 1.5 * s, 1.5 * s, { fill: PEN, w: 1, p: 1, n: 8 });
+    L(e[0] - 3 * s, e[1] - 5 * s, e[0] + 3 * s, e[1] - 4 * s - (f.sad ? 1.6 * s : 0) * face, { w: 1.3 * lw, p: 1 });
+    poly([[head[0] + face * 12 * s, head[1] - 1 * s], [head[0] + face * 16.5 * s, head[1] + 4 * s], [head[0] + face * 12 * s, head[1] + 5.5 * s]], false, { w: 1.3 * lw, p: 1 });
+    curve([[head[0] + face * 7 * s, head[1] + 10 * s], [head[0] + face * 10 * s, head[1] + 9 * s], [head[0] + face * 12 * s, head[1] + 10.5 * s]], { w: 1.2 * lw, p: 1 });
+    ell(head[0] - face * 2 * s, head[1] + 1 * s, 2.6 * s, 3.6 * s, { w: 1.1 * lw, p: 1, n: 10 });
+  }
+  limb(sh, arms[1], 4.6); hand(arms[1][1]);
+  g.hands = [arms[0][1], arms[1][1]];
+  return g;
+}
+
+function walk(x, ph, face, stride = 20, base = 519) {
+  return {
+    x, y: base - Math.abs(Math.cos(ph)) * 2.5, face,
+    f1: [x + face * Math.sin(ph) * stride, 600 - Math.max(0, Math.cos(ph)) * 7],
+    f2: [x - face * Math.sin(ph) * stride, 600 - Math.max(0, -Math.cos(ph)) * 7],
+    h1: g => [g.sh[0] - g.face * Math.sin(ph) * 14, g.sh[1] + 55],
+    h2: g => [g.sh[0] + g.face * Math.sin(ph) * 14, g.sh[1] + 55]
+  };
+}
+
+/* ---------- front-view face (window person) ---------- */
+function front(o) {
+  const s = o.s, cx = o.cx, cy = o.cy, lw = o.lw ?? 1;
+  const body = [
+    [cx - 12 * s, cy + 24 * s], [cx - 14 * s, cy + 37 * s], [cx - 44 * s, cy + 50 * s], [cx - 54 * s, cy + 78 * s],
+    [cx - 58 * s, cy + 170 * s], [cx + 58 * s, cy + 170 * s], [cx + 54 * s, cy + 78 * s], [cx + 44 * s, cy + 50 * s],
+    [cx + 14 * s, cy + 37 * s], [cx + 12 * s, cy + 24 * s]
+  ];
+  poly(body, false, { w: 1.9 * lw, fill: DARK });
+  ell(cx, cy, 24 * s, 29 * s, { fill: 'rgba(34,33,32,0.22)', w: 2 * lw, n: 26 });
+  ell(cx, cy, 24 * s, 29 * s, { fill: LIGHT, fa: 0.55, p: 0 });
+  // hair
+  const cap = [];
+  for (let i = 0; i <= 12; i++) { const a = lerp(Math.PI * 1.08, Math.PI * 1.92, i / 12); cap.push([cx + Math.cos(a) * 25.5 * s, cy + Math.sin(a) * 30 * s]); }
+  cap.push([cx + 18 * s, cy - 16 * s], [cx + 2 * s, cy - 20 * s], [cx - 14 * s, cy - 17 * s]);
+  poly(cap, true, { w: 1.4 * lw, fill: DARK, p: 1 });
+  // ears
+  ell(cx - 25 * s, cy + 2 * s, 3 * s, 6 * s, { w: 1.3 * lw, p: 1, n: 10 });
+  ell(cx + 25 * s, cy + 2 * s, 3 * s, 6 * s, { w: 1.3 * lw, p: 1, n: 10 });
+  // eyes
+  for (const e of [-1, 1]) {
+    const ex = cx + e * 9.5 * s, ey = cy - 1 * s;
+    ell(ex, ey, 4.4 * s, 2.6 * s, { w: 1.3 * lw, p: 1, fill: PAPER, fa: 0.9, n: 14 });
+    ell(ex, ey + 0.3 * s, 1.7 * s, 1.7 * s, { fill: PEN, p: 0 });
+    L(ex + e * 1 * s, ey - 5.5 * s, ex - e * 5 * s, ey - 7.5 * s, { w: 1.6 * lw, p: 1 });
+    if ((o.tear ?? 0) > 0) {
+      curve([[ex - 4 * s, ey + 2.6 * s], [ex - 1.5 * s, ey + 3.6 * s], [ex + 1.5 * s, ey + 3.2 * s], [ex + 4 * s, ey + 2.6 * s]], { w: 1.2 * lw, p: 1, ink: clamp(o.tear * 2) });
+      ell(ex + 1.2 * s, ey - 0.6 * s, 0.6 * s, 0.6 * s, { fill: PAPER, p: 0 });
+      const k = (o.tear * 1.6 + (e > 0 ? 0.35 : 0)) % 1;
+      const ty = ey + 4 * s + k * 18 * s, tx = ex + e * 0.6 * s;
+      const d = [[tx, ty - 2.4 * s], [tx + 1.3 * s, ty], [tx, ty + 1.3 * s], [tx - 1.3 * s, ty]];
+      poly(d, true, { w: 1 * lw, p: 1, fill: PAPER, ink: clamp(o.tear * 3) });
+    }
+  }
+  curve([[cx - 1 * s, cy + 1 * s], [cx - 3.5 * s, cy + 9 * s], [cx + 2 * s, cy + 10 * s]], { w: 1.4 * lw, p: 1 });
+  const my = cy + 17 * s, m0 = cx - 10 * s, m1 = cx + 10 * s;
+  if (o.zip === undefined) {
+    curve([[m0, my + 1 * s], [cx, my - 1.2 * s], [m1, my + 1 * s]], { w: 1.6 * lw, p: 2 });
+  } else {
+    const zx = lerp(m0, m1, o.zip);
+    curve([[m0, my + 1 * s], [cx, my - 1.2 * s], [m1, my + 1 * s]], { w: 1.2 * lw, p: 1, a: 0.5 });
+    if (o.zip > 0.01) {
+      L(m0 - 2 * s, my, zx, my, { w: 1.8 * lw, p: 2 });
+      const N = 18;
+      for (let i = 0; i <= N; i++) {
+        const x = lerp(m0, m1, i / N); if (x > zx) break;
+        const off = i % 2 ? 1 : -1;
+        L(x, my, x + 0.6 * s, my + off * 2.2 * s, { w: 1.3 * lw, p: 1, ov: 0 });
+      }
+      for (let i = 0; i <= 6; i++) {
+        const x = lerp(m0, m1, i / 6); if (x > zx) break;
+        L(x - 1 * s, my - 4 * s, x + 1 * s, my - 4.6 * s, { w: 0.9 * lw, p: 1, a: 0.5 });
+        L(x - 1 * s, my + 4.6 * s, x + 1 * s, my + 4 * s, { w: 0.9 * lw, p: 1, a: 0.5 });
+      }
+      rect(zx - 1.4 * s, my - 1.6 * s, 2.8 * s, 3.2 * s, { w: 1.3 * lw, p: 1, fill: PAPER });
+      rect(zx - 1.8 * s, my + 1.6 * s, 3.6 * s, 6 * s, { w: 1.4 * lw, p: 1, fill: PAPER });
+      ell(zx, my + 5.6 * s, 0.8 * s, 1.2 * s, { w: 1 * lw, p: 1, n: 8 });
+    }
+  }
+  const shL = [cx - 44 * s, cy + 52 * s], shR = [cx + 44 * s, cy + 52 * s];
+  const arm = (shp, t, sgn) => {
+    if (!t) return;
+    const [e, h] = ik(shp, t, 40 * s, 36 * s, sgn);
+    tube(shp, e, 7 * s, 6 * s, { w: 1.7 * lw, fill: DARK });
+    tube(e, h, 6 * s, 5 * s, { w: 1.7 * lw, fill: DARK });
+    ell(e[0], e[1], 6 * s, 6 * s, { fill: DARK, p: 0 });
+    ell(h[0], h[1], 6.5 * s, 7.5 * s, { fill: 'rgba(34,33,32,0.7)', w: 1.5 * lw, n: 14 });
+    for (let i = -1; i <= 1; i++) L(h[0] + i * 2.6 * s, h[1] - 5 * s, h[0] + i * 3 * s, h[1] - 10 * s, { w: 1.5 * lw, p: 1 });
+  };
+  arm(shL, o.hl, 1);
+  arm(shR, o.hr, -1);
+}
+
+/* ---------- props ---------- */
+function folded(x, y, o = {}) {
+  rect(x - 20, y - 6, 40, 12, { w: 1.3, p: 1, fill: LIGHT, ...o });
+  L(x - 18, y - 1, x + 18, y - 1, { w: 0.8, a: 0.5, p: 1, ...o });
+  L(x - 4, y - 6, x - 6, y + 6, { w: 0.8, a: 0.4, p: 1, ...o });
+}
+function mini(x, y) {
+  ell(x, y - 30, 4, 4.5, { w: 1, p: 1, n: 10 });
+  L(x, y - 25, x, y - 12, { w: 1, p: 1 });
+  L(x, y - 12, x - 5, y, { w: 1, p: 1 }); L(x, y - 12, x + 5, y, { w: 1, p: 1 });
+  L(x - 7, y - 20, x + 7, y - 20, { w: 1, p: 1 });
+}
+
+function suitcase(lid, n) {
+  const x = 560, y = 535, w = 220, h = 65;
+  if (lid > 0.05) {
+    const q = [[x, y], [x + w, y], [x + w + 10, y - 90 * lid], [x + 10, y - 90 * lid]];
+    poly(q, true, { w: 1.7, fill: LIGHT });
+    hatch(q, { sp: 12, a: 0.22, ang: 1.1 });
+    for (let i = 0; i < n; i++) folded(668 + (i % 2 ? 16 : -14), y - 7 - i * 11);
+  }
+  const b = [[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+  poly(b, true, { w: 2, fill: LIGHT });
+  hatch([[x + w - 30, y], [x + w, y], [x + w, y + h], [x + w - 30, y + h]], { sp: 6, a: 0.35, ang: -0.9 });
+  L(x + 55, y, x + 55, y + h, { w: 1.4 });
+  L(x + 165, y, x + 165, y + h, { w: 1.4 });
+  rect(x + w / 2 - 9, y + 5, 18, 12, { w: 1.3, p: 1 });
+  if (lid <= 0.05) curve([[x + 90, y], [x + 95, y - 12], [x + 125, y - 12], [x + 130, y]], { w: 1.8 });
+}
+
+function room(st) {
+  L(30, 600, 1080, 600, { w: 2 });
+  L(1080, 60, 1080, 600, { w: 2 });
+  L(1080, 600, 1250, 700, { w: 2 });
+  L(30, 584, 1080, 584, { w: 1, a: 0.4, p: 1 });
+  L(1080, 584, 1250, 683, { w: 1, a: 0.4, p: 1 });
+  hatch([[1080, 60], [1250, 0], [1250, 683], [1080, 584]], { sp: 14, a: 0.18, ang: 1.25 });
+  // picture of two people on the wall
+  poly([[800, 180], [930, 186], [926, 276], [797, 270]], true, { w: 1.6 });
+  poly([[810, 191], [920, 196], [917, 266], [807, 261]], true, { w: 1, a: 0.5, p: 1 });
+  mini(848, 254); mini(880, 256);
+  ell(900, 210, 7, 7, { w: 1, p: 1, n: 12 });
+  L(864, 160, 800, 180, { w: 1, a: 0.6, p: 1 }); L(864, 160, 930, 186, { w: 1, a: 0.6, p: 1 });
+  // wardrobe
+  hatch([[272, 252], [438, 252], [438, 598], [272, 598]], { sp: 10, a: 0.16 });
+  rect(270, 250, 170, 350, { w: 2 });
+  poly([[270, 250], [222, 272], [222, 582], [270, 600]], true, { w: 1.8, fill: LIGHT });
+  ell(238, 430, 3, 3, { w: 1.4, p: 1, n: 8 });
+  L(278, 292, 432, 292, { w: 1.4 });
+  for (const x of [300, 338, 376]) poly([[x, 292], [x - 14, 312], [x + 14, 312]], true, { w: 1, p: 1 });
+  poly([[410, 292], [396, 312], [392, 420], [428, 420], [424, 312]], true, { w: 1.3, fill: LIGHT, p: 1 });
+  L(272, 470, 438, 470, { w: 1.6 });
+  for (let i = 0; i < st.ward; i++) folded(352 + (i % 2 ? 6 : -4), 463 - i * 13);
+  suitcase(st.lid, st.packed);
+}
+
+function bricks(hole) {
+  ctx.save();
+  ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.rect(hole[0], hole[1], hole[2], hole[3]);
+  ctx.clip('evenodd');
+  let row = 0;
+  for (let y = 22; y < H; y += 36, row++) {
+    L(0, y, W, y, { w: 1, a: 0.32, p: 1, j: 1.6 });
+    for (let x = row % 2 ? 45 : 0, i = 0; x < W; x += 90, i++) {
+      if ((i * 7 + row * 3) % 5 === 0) continue;
+      L(x, y, x, y + 36, { w: 1, a: 0.28, p: 1, ov: 0 });
+    }
+  }
+  ctx.restore();
+}
+
+function windowScene(st) {
+  const X = 420, Y = 100, WW = 440, HH = 470, ix = 436, iy = 116, iw = 408, ih = 438;
+  bricks([X, Y, WW, HH]);
+  ctx.save();
+  ctx.beginPath(); ctx.rect(ix, iy, iw, ih); ctx.clip();
+  hatch([[ix, iy], [ix + iw, iy], [ix + iw, iy + ih], [ix, iy + ih]], { sp: 8, a: 0.36, ang: -0.8 });
+  hatch([[ix, iy], [ix + iw, iy], [ix + iw, iy + ih], [ix, iy + ih]], { sp: 14, a: 0.18, ang: 0.7 });
+  const cx = 640, cy = 300, s = 2.2;
+  front({ cx, cy, s, tear: st.tear, zip: st.zip, hl: st.hl, hr: st.hr });
+  const cw = 204 - 168 * st.open;
+  for (const side of [0, 1]) {
+    const x0 = side ? ix + iw - cw : ix, x1 = x0 + cw;
+    const c = [[x0, 124], [x1, 124], [x1 + (side ? 0 : 6), 548], [x0 - (side ? 6 : 0), 548]];
+    poly(c, true, { w: 1.5, fill: 'rgba(236,235,229,0.97)' });
+    for (let i = 1; i < 5; i++) {
+      const fx = lerp(x0, x1, i / 5), pts = [];
+      for (let y = 124; y <= 548; y += 53) pts.push([fx + Math.sin(y * 0.02 + i) * 3, y]);
+      curve(pts, { w: 1, a: 0.55, p: 1 });
+    }
+    hatch([[x1 - (side ? cw : 12), 124], [x1 - (side ? cw - 12 : 0), 124], [x1 - (side ? cw - 12 : 0), 548], [x1 - (side ? cw : 12), 548]], { sp: 5, a: 0.3, ang: 1.4 });
+  }
+  if (st.pull) ell(ix + iw - cw - 4, 352, 9, 11, { fill: 'rgba(34,33,32,0.75)', w: 1.5, n: 12 });
+  L(ix + 20, iy + 40, ix + 90, iy + 6, { w: 3, c: PAPER, a: 0.75, p: 1 });
+  L(ix + 34, iy + 58, ix + 118, iy + 16, { w: 2, c: PAPER, a: 0.6, p: 1 });
+  ctx.restore();
+  L(430, 122, 850, 122, { w: 2.6 });
+  for (let x = 450; x < 850; x += 40) ell(x, 122, 4, 4, { w: 1, p: 1, n: 8 });
+  rect(X, Y, WW, HH, { w: 2.4 });
+  rect(ix, iy, iw, ih, { w: 1.6 });
+  poly([[396, 570], [884, 570], [894, 594], [386, 594]], true, { w: 2, fill: LIGHT });
+  hatch([[386, 584], [894, 584], [894, 594], [386, 594]], { sp: 4, a: 0.35, ang: 0 });
+  poly([[780, 570], [776, 536], [820, 536], [816, 570]], true, { w: 1.6, fill: LIGHT });
+  curve([[798, 536], [796, 506], [790, 484]], { w: 1.2, p: 1 });
+  curve([[798, 530], [806, 500], [816, 488]], { w: 1.2, p: 1 });
+  ell(790, 480, 7, 5, { w: 1.1, p: 1, n: 12 }); ell(818, 485, 6, 5, { w: 1.1, p: 1, n: 12 });
+}
+
+function clock(cx, cy, R, A) {
+  ell(cx, cy, R, R, { w: 2, fill: LIGHT, n: 30 });
+  ell(cx, cy, R - 7, R - 7, { w: 1, a: 0.5, p: 1, n: 30 });
+  for (let i = 0; i < 24; i++) {
+    const a = i / 24 * Math.PI * 2 - Math.PI / 2, big = i % 6 === 0;
+    const r1 = R - (big ? 15 : 11), r2 = R - 7;
+    L(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1, cx + Math.cos(a) * r2, cy + Math.sin(a) * r2, { w: big ? 1.8 : 1, p: 1, ov: 0 });
+  }
+  txt('24', cx, cy - R + 26, { font: '700 18px Caveat, cursive' });
+  txt('6', cx + R - 24, cy + 1, { font: '700 16px Caveat, cursive' });
+  txt('12', cx, cy + R - 24, { font: '700 16px Caveat, cursive' });
+  txt('18', cx - R + 25, cy + 1, { font: '700 16px Caveat, cursive' });
+  const h = A - Math.PI / 2, m = A * 24 - Math.PI / 2;
+  L(cx, cy, cx + Math.cos(h) * (R * 0.45), cy + Math.sin(h) * (R * 0.45), { w: 3, ov: 0 });
+  L(cx, cy, cx + Math.cos(m) * (R * 0.7), cy + Math.sin(m) * (R * 0.7), { w: 1.6, ov: 0 });
+  ell(cx, cy, 3, 3, { fill: PEN, p: 0 });
+}
+
+function bottle(x, y, kind, k) {
+  if (k <= 0) return;
+  ctx.save();
+  if (kind === 0) ctx.translate(x, y);
+  else { ctx.translate(x, y - 8); ctx.rotate(kind * Math.PI / 2); }
+  ctx.scale(k, k);
+  const b = [[-8, 0], [-8, -40], [-6, -48], [-3, -52], [-3, -66], [3, -66], [3, -52], [6, -48], [8, -40], [8, 0]];
+  poly(b, true, { w: 1.4, fill: 'rgba(235,234,228,0.9)' });
+  hatch([[2, 0], [8, 0], [8, -40], [2, -40]], { sp: 3.4, a: 0.45, ang: -1.2 });
+  rect(-8, -30, 16, 12, { w: 1, p: 1 });
+  L(-4, -38, -4, -8, { w: 1.6, c: '#fffef8', a: 0.9, p: 1, ov: 0 });
+  rect(-3.6, -70, 7.2, 4, { w: 1, p: 1 });
+  ctx.restore();
+}
+const BOT = [[470, 0], [503, 0], [536, 1], [585, 0], [612, 0], [652, -1], [700, 0], [731, 0], [766, 1], [812, 0], [842, 0], [870, 0]];
+
+function lamp(sw, ink) {
+  const px = 600, len = 175;
+  const c = [px + Math.sin(sw) * len, Math.cos(sw) * len];
+  L(px, 0, c[0], c[1], { w: 1.2 });
+  ctx.save(); ctx.translate(c[0], c[1]); ctx.rotate(-sw);
+  poly([[-12, 0], [12, 0], [40, 42], [-40, 42]], true, { w: 1.8, fill: LIGHT });
+  hatch([[-12, 0], [12, 0], [40, 42], [-40, 42]], { sp: 6, a: 0.3, ang: 1.0 });
+  ell(0, 48, 8, 6, { w: 1.2, p: 1, n: 10 });
+  for (let i = -2; i <= 2; i++) L(i * 22, 62, i * 48, 100 + Math.abs(i) * 4, { w: 1, a: 0.28, p: 1 });
+  ctx.restore();
+}
+
+function door(open, shake) {
+  const dx = shake;
+  rect(984 + dx, 294, 162, 306, { w: 2.2 });
+  rect(990 + dx, 300, 150, 300, { w: 1, a: 0.5, p: 1 });
+  const lx = lerp(996, 1118, open) + dx;
+  if (open > 0.01) {
+    const hole = [[996 + dx, 306], [lx, 306 - 16 * open], [lx, 600], [996 + dx, 600]];
+    fillPts(hole, '#fbfaf3');
+    fillPts([[996, 600], [lx, 600], [lx - 70, 700], [920, 700]], '#f6f4ea', 0.85);
+    L(996, 600, 920, 700, { w: 1, a: 0.4, p: 1 }); L(lx, 600, lx - 70, 700, { w: 1, a: 0.4, p: 1 });
+    ctx.save(); ctx.beginPath(); hole.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.clip();
+    poly([[1012, 572], [1062, 572], [1072, 562], [1022, 562]], true, { w: 1.4, fill: LIGHT });
+    rect(1012, 572, 50, 28, { w: 1.6, fill: LIGHT });
+    poly([[1062, 572], [1072, 562], [1072, 590], [1062, 600]], true, { w: 1.2, fill: LIGHT });
+    ctx.restore();
+    for (let i = 0; i < 4; i++) L(lx - 6 - i * 26, 330 + i * 60, lx - 60 - i * 40, 360 + i * 70, { w: 1, a: 0.25, p: 1 });
+  }
+  const pl = [[lx, 306 - 18 * open], [1134 + dx, 306], [1134 + dx, 600], [lx, 600 + 4 * open]];
+  poly(pl, true, { w: 2, fill: LIGHT });
+  const pw = 1134 + dx - lx;
+  if (pw > 30) {
+    rect(lx + pw * 0.18, 330, pw * 0.64, 110, { w: 1, a: 0.6, p: 1 });
+    rect(lx + pw * 0.18, 470, pw * 0.64, 105, { w: 1, a: 0.6, p: 1 });
+  }
+  ell(lx + 14, 455, 4.5, 4.5, { w: 1.4, fill: LIGHT, n: 10 });
+}
+
+function interior(st) {
+  L(20, 600, 1260, 600, { w: 2 });
+  L(20, 586, 1260, 586, { w: 1, a: 0.4, p: 1 });
+  clock(870, 170, 62, st.clockA);
+  lamp(st.swing);
+  door(st.door ?? 0, st.shake ?? 0);
+  // chair
+  L(305, 555, 293, 392, { w: 2 }); L(318, 555, 306, 392, { w: 1.4 });
+  L(300, 430, 312, 430, { w: 1.2, p: 1 }); L(298, 470, 314, 470, { w: 1.2, p: 1 });
+  rect(305, 552, 100, 9, { w: 1.8, fill: LIGHT });
+  L(312, 561, 312, 600, { w: 1.8 }); L(398, 561, 398, 600, { w: 1.8 });
+  // table
+  L(445, 520, 445, 600, { w: 1.2, a: 0.5 }); L(870, 520, 870, 596, { w: 1.2, a: 0.5 });
+  rect(420, 506, 480, 13, { w: 2, fill: LIGHT });
+  hatch([[420, 519], [900, 519], [900, 527], [420, 527]], { sp: 4, a: 0.35, ang: 0.2 });
+  L(432, 519, 432, 600, { w: 2 }); L(888, 519, 888, 600, { w: 2 });
+}
+function bottles(lt, all) {
+  BOT.forEach(([x, kind], i) => {
+    const t0 = 0.5 + i * 0.26;
+    const k = all ? 1 : backOut(lin(lt, t0, t0 + 0.3));
+    bottle(x, 506, kind, k);
+  });
+}
+
+/* ---------- scenes ---------- */
+const S = { lastHand: [600, 505] };
+
+function s1(lt) {
+  INK = seg(lt, 0, 1.2);
+  const P = 1.9, cyc = Math.max(0, (lt - 1.0) / P);
+  let k = Math.floor(cyc), p = cyc - k;
+  if (k >= 3) { k = 3; p = 0; }
+  const ward = lt < 1 ? 3 : 3 - k - (p > 0.3 ? 1 : 0);
+  const packed = lt < 1 ? 0 : Math.min(3, k + (p > 0.88 ? 1 : 0));
+  const lid = 1 - seg(lt, 6.9, 7.8);
+  ctx.save();
+  cam(560, 430, 1.3);
+  room({ lid, ward: Math.max(0, ward), packed });
+
+  let face = 1, lean = 0.3, hand, carry = false;
+  const rest = g => [g.sh[0] + g.face * 6, g.sh[1] + 56];
+  const grab = [440, 456], drop = [600, 512];
+  if (lt < 1 || k >= 3) { hand = rest; }
+  else if (p < 0.42) {
+    face = -1;
+    hand = g => lp(rest(g), grab, seg(p, 0, 0.3));
+    carry = p > 0.3;
+  } else if (p < 0.8) {
+    const q = seg(p, 0.42, 0.8);
+    lean = lerp(0.3, 0.62, q);
+    hand = g => lp([g.sh[0] + 20, g.sh[1] + 30], drop, q);
+    carry = true;
+  } else {
+    lean = lerp(0.62, 0.3, seg(p, 0.8, 1));
+    hand = g => lp(drop, rest(g), seg(p, 0.85, 1));
+  }
+  const breath = Math.sin(lt * 2.2) * 1.2;
+  const g = fig({
+    x: 500, y: 519 + breath * 0.3, face, lean, tilt: 0.15, old: true, sad: true,
+    f1: [488, 600], f2: [514, 600],
+    h1: gg => [gg.hip[0] - gg.face * 16, gg.hip[1] - 6],
+    h2: hand
+  });
+  if (carry) { folded(g.hands[1][0], g.hands[1][1] + 4); S.lastHand = g.hands[1]; }
+  if (k < 3 && p >= 0.8 && p < 0.88) {
+    const q = lin(p, 0.8, 0.88);
+    const to = [668 + (k % 2 ? 16 : -14), 535 - 7 - k * 11];
+    const pt = lp(S.lastHand, to, q * q);
+    folded(pt[0], pt[1]);
+  }
+  ctx.restore();
+}
+
+function s2(lt) {
+  INK = 1;
+  ctx.save();
+  cam(lerp(560, 990, seg(lt, 1.0, 4.4)), lerp(430, 505, seg(lt, 1.0, 5.0)), lerp(1.3, 2.0, seg(lt, 3.4, 5.4)));
+  room({ lid: 0, ward: 0, packed: 3 });
+  let f;
+  if (lt < 0.9) {
+    f = { x: 500, y: 519, face: 1, lean: 0.3, tilt: lerp(0.15, 0.4, seg(lt, 0, 0.9)), f1: [488, 600], f2: [514, 600],
+      h1: g => [g.hip[0] - 16, g.hip[1] - 6], h2: g => [g.sh[0] + 6, g.sh[1] + 56] };
+  } else if (lt < 3.4) {
+    const x = lerp(500, 1030, lin(lt, 0.9, 3.4));
+    f = { ...walk(x, (lt - 0.9) * 6.5, 1, 17), lean: 0.32, tilt: 0.35 };
+  } else {
+    const q = seg(lt, 3.4, 4.4);
+    const cry = seg(lt, 4.5, 5.2);
+    const shake = lt > 5 ? Math.sin(lt * 31) * 1.3 : 0;
+    const hip = lp([1030, 519], [1046, 584], q);
+    const restH = [1004, 560];
+    f = {
+      x: hip[0] + shake, y: hip[1], face: -1, lean: lerp(0.3, 0.2, q), tilt: lerp(0.35, 0.6, cry) + Math.sin(lt * 9) * 0.04 * cry,
+      f1: lp([1022, 600], [992, 600], q), f2: lp([1040, 600], [978, 598], q),
+      h1: g => lp(lp([g.sh[0] - 4, g.sh[1] + 56], restH, q), [g.head[0] - 10, g.head[1] + 7], cry),
+      h2: g => lp(lp([g.sh[0] - 4, g.sh[1] + 56], [restH[0] - 10, restH[1] + 4], q), [g.head[0] - 15, g.head[1] + 2], cry),
+      eyes: cry > 0.5 ? 'closed' : 'open'
+    };
+  }
+  const g = fig({ ...f, old: true, sad: true });
+  if (lt > 5.0) {
+    for (let i = 0; i < 6; i++) {
+      const k = ((lt - 5) * 0.9 + i / 6) % 1;
+      const x = g.head[0] - 12 + (i % 2 ? -4 : 3), y = lerp(g.head[1] + 14, 598, k * k);
+      poly([[x, y - 5], [x + 2.4, y], [x, y + 2.4], [x - 2.4, y]], true, { w: 1, p: 1, fill: PAPER });
+    }
+    for (const sgn of [-1, 1]) {
+      const bx = g.sh[0] + sgn * 26, by = g.sh[1] - 6;
+      if (Math.floor(lt * 8) % 2) curve([[bx, by - 6], [bx + sgn * 5, by], [bx, by + 6]], { w: 1.2, p: 1 });
+    }
+  }
+  ctx.restore();
+}
+
+function s3(lt) {
+  INK = seg(lt, 0, 1.1);
+  const open = seg(lt, 1.0, 3.0);
+  const pulling = lt > 0.9 && lt < 3.3;
+  const tear = seg(lt, 3.4, 5.0) + Math.max(0, lt - 5) * 0.5;
+  const toFace = seg(lt, 4.6, 5.6);
+  const cx = 640, cy = 300, s = 2.2;
+  const down = [cx + 30 * s, cy + 140 * s], downL = [cx - 30 * s, cy + 140 * s];
+  windowScene({
+    open, tear: lt > 3.4 ? tear : 0, pull: pulling,
+    hl: lp(downL, [cx - 20 * s, cy + 12 * s], toFace),
+    hr: pulling ? null : lp(down, [cx + 20 * s, cy + 12 * s], toFace)
+  });
+}
+
+function s4(lt) {
+  const cx = 640;
+  if (lt < 3.6) {
+    INK = seg(lt, 0, 0.8);
+    const s = 4.6, cy = 290;
+    rect(120, 30, 1040, 720, { w: 3, a: 0.6 });
+    hatch([[120, 30], [1160, 30], [1160, 720], [120, 720]], { sp: 16, a: 0.12, ang: -0.8 });
+    front({
+      cx, cy, s, lw: 1.7, tear: 0.6 + lt * 0.35, zip: seg(lt, 0.9, 3.0),
+      hl: [cx - 21 * s, cy + 13 * s], hr: [cx + 21 * s, cy + 13 * s]
+    });
+    if (lt > 3.25) { ctx.globalAlpha = seg(lt, 3.25, 3.6); ctx.drawImage(grain, 0, 0); ctx.globalAlpha = 1; }
+  } else {
+    INK = seg(lt, 3.6, 4.3);
+    const s = 2.2, cy = 300;
+    const wv = seg(lt, 4.3, 4.9);
+    const wave = [cx + 64 * s + Math.sin((lt - 4.3) * 6.5) * 14 * wv, cy - 4 * s];
+    windowScene({
+      open: 1, tear: 0.9, zip: 1,
+      hl: [cx - 30 * s, cy + 140 * s],
+      hr: lp([cx + 30 * s, cy + 140 * s], wave, wv)
+    });
+  }
+}
+
+function s5(lt, carry) {
+  INK = carry ? 1 : seg(lt, 0, 1.1);
+  const zk = carry ? 0 : seg(lt, 3.5, 7);
+  ctx.save();
+  if (!carry) cam(lerp(640, 600, zk), lerp(360, 380, zk), lerp(1, 1.06, zk));
+  const A = carry ? 3.55 + lt * 0.02 : 0.4 + 3.15 * ease(lt / 4.2);
+  interior({ clockA: A, swing: Math.sin(lt * 1.5) * 0.05, door: 0, shake: 0 });
+  bottles(lt, carry);
+  if (!carry) {
+    const breath = Math.sin(lt * 1.8);
+    fig({
+      x: 362, y: 546, face: 1, lean: 0.5 + breath * 0.02, tilt: 0.42 + breath * 0.03, eyes: 'closed', sad: true,
+      f1: [404, 600], f2: [420, 598],
+      h1: [522, 500],
+      h2: g => [g.head[0] + 5, g.head[1] + 20]
+    });
+  }
+  ctx.restore();
+}
+
+function s6(lt) {
+  if (lt < 7.2) {
+    INK = 1;
+    const knocks = [0.5, 0.8, 1.5, 1.8];
+    let shake = 0;
+    knocks.forEach(k => { if (lt > k) shake += Math.exp(-(lt - k) * 14) * 4 * Math.sin((lt - k) * 60); });
+    const dOpen = seg(lt, 5.4, 6.4);
+    interior({ clockA: 3.55 + lt * 0.02, swing: Math.sin((lt + 7) * 1.5) * 0.05, door: dOpen, shake });
+    bottles(0, true);
+    knocks.forEach((k, i) => {
+      const v = lin(lt, k, k + 0.12) * (1 - lin(lt, k + 0.5, k + 0.8));
+      if (v > 0) {
+        const [x, y] = [[1176, 338], [1214, 384], [1176, 446], [1214, 492]][i];
+        ctx.save(); ctx.globalAlpha = v;
+        txt('tok', x, y, { rot: i % 2 ? 0.18 : -0.12, font: '700 44px Caveat, cursive' });
+        for (let a = 0; a < 5; a++) {
+          const an = -1.2 + a * 0.6;
+          L(x - 40 + Math.cos(an) * 30, y + Math.sin(an) * 30, x - 40 + Math.cos(an) * 44, y + Math.sin(an) * 44, { w: 1.2, p: 1 });
+        }
+        ctx.restore();
+      }
+    });
+    let f;
+    if (lt < 2.3) {
+      const up = seg(lt, 0.6, 1.2);
+      f = { x: 362, y: 546, face: 1, lean: lerp(0.5, 0.25, up), tilt: lerp(0.42, -0.08, up),
+        f1: [404, 600], f2: [420, 598], h1: [522, 500],
+        h2: g => lp([g.head[0] + 5, g.head[1] + 20], [470, 502], up), eyes: up > 0.4 ? 'open' : 'closed' };
+    } else if (lt < 2.9) {
+      const q = seg(lt, 2.3, 2.9);
+      const hip = lp([362, 546], [392, 519], q);
+      f = { x: hip[0], y: hip[1], face: 1, lean: 0.25, tilt: -0.05,
+        f1: lp([404, 600], [384, 600], q), f2: lp([420, 598], [402, 600], q),
+        h1: lp([522, 500], [390, 560], q), h2: lp([470, 502], [404, 560], q) };
+    } else if (lt < 5.0) {
+      const x = lerp(392, 958, lin(lt, 2.9, 5.0));
+      f = { ...walk(x, (lt - 2.9) * 8, 1, 20), lean: 0.22, tilt: 0 };
+    } else {
+      const reach = seg(lt, 5.0, 5.4), rel = seg(lt, 6.1, 6.6), look = seg(lt, 6.4, 7.0);
+      const knob = [lerp(996, 1118, dOpen) + 14, 455];
+      f = { x: 958, y: 519, face: 1, lean: lerp(0.22, 0.38, look), tilt: lerp(0, 0.55, look),
+        f1: [950, 600], f2: [972, 600],
+        h1: g => [g.sh[0] - 6, g.sh[1] + 56],
+        h2: g => lp(lp([g.sh[0] + 6, g.sh[1] + 56], knob, reach), [g.sh[0] + 10, g.sh[1] + 55], rel) };
+    }
+    fig({ ...f, sad: true });
+  } else {
+    const l = lt - 7.2;
+    INK = seg(l, 0, 0.8);
+    const flaps = seg(l, 0.8, 1.8), rise = seg(l, 1.8, 3.0), zk = seg(l, 2.8, 3.8), wr = lin(l, 3.4, 5.0);
+    ctx.save();
+    cam(lerp(640, 665, zk), lerp(360, 250, zk), lerp(1, 1.45, zk));
+    L(100, 600, 1180, 600, { w: 1.6, a: 0.6 });
+    hatch([[470, 600], [860, 600], [960, 640], [560, 640]], { sp: 7, a: 0.2, ang: 0.1 });
+    const top = [[470, 400], [810, 400], [860, 340], [520, 340]];
+    poly(top, true, { w: 1.6, fill: LIGHT });
+    const vf = (k, v0, v1) => k < 0.5 ? lp(v0, [2, -62], ease(k * 2)) : lp([2, -62], v1, ease((k - 0.5) * 2));
+    const vb = vf(flaps, [-25, 30], [22, -56]);
+    poly([[520, 340], [860, 340], [860 + vb[0], 340 + vb[1]], [520 + vb[0], 340 + vb[1]]], true, { w: 1.6, fill: LIGHT });
+    if (flaps > 0.25) hatch(top, { sp: 6, a: 0.5, ang: -0.6, ink: Math.min(INK, (flaps - 0.25) * 2) });
+    const cyy = lerp(500, 222, rise);
+    ctx.save();
+    ctx.translate(665, cyy); ctx.rotate(-0.05);
+    poly([[-150, -85], [150, -85], [150, 85], [-150, 85]], true, { w: 1.8, fill: '#f8f7f1' });
+    L(120, -85, 150, -55, { w: 1, a: 0.6, p: 1 });
+    ell(-128, -64, 5, 5, { w: 1.1, p: 1, n: 10 });
+    if (wr > 0) {
+      ctx.save();
+      ctx.beginPath(); ctx.rect(-140, -80, 280 * wr, 160); ctx.clip();
+      ctx.globalAlpha = 0.92; ctx.fillStyle = PEN; ctx.font = '700 44px Caveat, cursive';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText('son veda zamanı', 0, -4);
+      ctx.restore();
+      if (wr > 0.95) curve([[-110, 36], [-30, 42], [60, 36], [116, 40]], { w: 1.6, p: 1, ink: lin(l, 5.0, 5.5) });
+    }
+    ctx.restore();
+    const fr = [[470, 400], [810, 400], [810, 600], [470, 600]];
+    poly(fr, true, { w: 2, fill: LIGHT });
+    poly([[810, 400], [860, 340], [860, 540], [810, 600]], true, { w: 1.8, fill: LIGHT });
+    hatch([[810, 400], [860, 340], [860, 540], [810, 600]], { sp: 6, a: 0.35, ang: -1.2 });
+    rect(520, 450, 120, 70, { w: 1.2, p: 1 });
+    for (let i = 0; i < 3; i++) L(532, 468 + i * 16, 620 - i * 18, 468 + i * 16, { w: 1, a: 0.5, p: 1 });
+    poly([[700, 560], [770, 560]], false, { w: 1, a: 0.5, p: 1 });
+    const vfr = vf(flaps, [25, -30], [-4, 58]);
+    poly([[470, 400], [810, 400], [810 + vfr[0], 400 + vfr[1]], [470 + vfr[0], 400 + vfr[1]]], true, { w: 1.7, fill: LIGHT });
+    if (flaps < 0.05) L(640, 400, 690, 340, { w: 4, a: 0.25, p: 1 });
+    ctx.restore();
+  }
+}
+
+const SCENES = [
+  { a: 0, b: 8, draw: s1, fade: false, label: 'Bavul', note: 'Yaşlı adam eşyalarını bavula atıyor' },
+  { a: 8, b: 15, draw: s2, fade: true, label: 'Köşe', note: 'Duvarın köşesine çekilip ağlıyor' },
+  { a: 15, b: 22, draw: s3, fade: false, label: 'Perde', note: 'Perdeyi aralıyor, gözleri doluyor, eller yüzde' },
+  { a: 22, b: 29, draw: s4, fade: true, label: 'Fermuar', note: 'Dudaklara fermuar çekiliyor, camdan el sallıyor' },
+  { a: 29, b: 36, draw: lt => s5(lt, false), fade: false, label: 'Masa', note: 'Masada boş şişeler, 24 saatlik saat dönüyor' },
+  { a: 36, b: 49, draw: s6, fade: false, label: 'Kapı', note: 'Kapı çalıyor, eşikte kutu, içinde kart' }
+];
+const TOTAL = 49;
+
+/* ---------- paper ---------- */
+const grain = document.createElement('canvas');
+grain.width = W; grain.height = H;
+(() => {
+  const g = grain.getContext('2d');
+  g.fillStyle = PAPER; g.fillRect(0, 0, W, H);
+  const img = g.getImageData(0, 0, W, H), d = img.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * 12; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  g.putImageData(img, 0, 0);
+  g.strokeStyle = '#6a665e'; g.globalAlpha = 0.05; g.lineWidth = 1;
+  for (let i = 0; i < 260; i++) {
+    const x = Math.random() * W, y = Math.random() * H, a = Math.random() * 6.28, l = 6 + Math.random() * 18;
+    g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + Math.cos(a) * l / 2 + 3, y + Math.sin(a) * l / 2, x + Math.cos(a) * l, y + Math.sin(a) * l); g.stroke();
+  }
+  g.globalAlpha = 1;
+  const rg = g.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, H * 0.95);
+  rg.addColorStop(0, 'rgba(0,0,0,0)'); rg.addColorStop(1, 'rgba(70,64,56,0.22)');
+  g.fillStyle = rg; g.fillRect(0, 0, W, H);
+})();
+
+function sceneIndex(t) {
+  for (let i = SCENES.length - 1; i >= 0; i--) if (t >= SCENES[i].a) return i;
+  return 0;
+}
+
+function render(t) {
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.globalAlpha = 1;
+  ctx.drawImage(grain, 0, 0);
+  const fps = reduce ? 4 : 8;
+  srand(Math.floor(t * fps) * 7919 + 17);
+  const i = sceneIndex(t), sc = SCENES[i], lt = Math.min(t, TOTAL - 0.001) - sc.a;
+  J = reduce ? 0.5 : 1;
+  ctx.save();
+  ctx.translate(rj(0.5), rj(0.5));
+  sc.draw(lt);
+  ctx.restore();
+  if (sc.fade) {
+    const a = seg(lt, sc.b - sc.a - 0.45, sc.b - sc.a);
+    if (a > 0) { ctx.globalAlpha = a; ctx.drawImage(grain, 0, 0); ctx.globalAlpha = 1; }
+  }
+  return i;
+}
+
+/* ---------- UI ---------- */
+const $ = id => document.getElementById(id);
+const playBtn = $('play'), bigPlay = $('bigPlay'), scrub = $('scrub'), timeEl = $('time');
+const list = $('scenes'), ticks = $('ticks');
+scrub.max = TOTAL;
+SCENES.forEach((sc, i) => {
+  const li = document.createElement('li');
+  const b = document.createElement('button');
+  b.type = 'button'; b.id = 'scene-' + i;
+  b.innerHTML = `<b>${String(sc.a).padStart(2, '0')}–${sc.b} sn · ${sc.label}</b><span>${sc.note}</span>`;
+  b.addEventListener('click', () => seek(sc.a + 0.01));
+  li.appendChild(b); list.appendChild(li);
+  if (i) { const tk = document.createElement('span'); tk.style.left = (sc.a / TOTAL * 100) + '%'; ticks.appendChild(tk); }
+});
+
+let t = 4.2, playing = false, last = performance.now(), audio = null, curScene = -1;
+const ofs = () => Math.max(0, parseFloat($('ofs').value) || 0);
+
+function setPlaying(p) {
+  playing = p;
+  playBtn.textContent = p ? 'Duraklat' : 'Oynat';
+  bigPlay.hidden = p;
+  if (audio) {
+    if (p) { audio.currentTime = ofs() + t; audio.play().catch(() => {}); }
+    else audio.pause();
+  }
+}
+function seek(v) {
+  t = clamp(v, 0, TOTAL);
+  if (audio) audio.currentTime = ofs() + t;
+}
+playBtn.addEventListener('click', () => { if (!playing && t >= TOTAL - 0.01) t = 0; setPlaying(!playing); });
+bigPlay.addEventListener('click', () => { if (t >= TOTAL - 0.01 || t === 4.2) t = 0; setPlaying(true); });
+$('restart').addEventListener('click', () => { seek(0); setPlaying(true); });
+scrub.addEventListener('input', () => seek(parseFloat(scrub.value)));
+$('fs').addEventListener('click', () => {
+  const el = $('stageWrap');
+  if (document.fullscreenElement) document.exitFullscreen?.();
+  else el.requestFullscreen?.().catch(() => {});
+});
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && !/INPUT|BUTTON/.test(document.activeElement?.tagName || '')) { e.preventDefault(); playBtn.click(); }
+});
+$('aud').addEventListener('change', e => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  if (audio) { audio.pause(); URL.revokeObjectURL(audio.src); }
+  audio = new Audio(URL.createObjectURL(file));
+  audio.preload = 'auto';
+  $('audStatus').textContent = 'Eklendi: ' + file.name;
+  if (playing) { audio.currentTime = ofs() + t; audio.play().catch(() => {}); }
+});
+$('ofs').addEventListener('change', () => { if (audio) audio.currentTime = ofs() + t; });
+
+function frame(now) {
+  const dt = Math.min(0.1, (now - last) / 1000); last = now;
+  if (playing) {
+    if (audio && !audio.paused && audio.readyState >= 2) t = audio.currentTime - ofs();
+    else t += dt;
+    if (t >= TOTAL) { t = TOTAL; setPlaying(false); }
+  }
+  const i = render(t);
+  scrub.value = t.toFixed(2);
+  timeEl.textContent = t.toFixed(1).padStart(4, '0') + ' / ' + TOTAL.toFixed(1);
+  if (i !== curScene) {
+    if (curScene >= 0) $('scene-' + curScene).removeAttribute('aria-current');
+    $('scene-' + i).setAttribute('aria-current', 'true');
+    curScene = i;
+  }
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+if (document.fonts && document.fonts.load) document.fonts.load('700 56px Caveat').catch(() => {});
+})();
+</script>
