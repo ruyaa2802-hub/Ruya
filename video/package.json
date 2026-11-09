@@ -1,0 +1,11 @@
+{
+  "name": "yuz-yas-shorts",
+  "private": true,
+  "description": "Herkes 100 yaşına kadar genç kalsaydı? — YouTube Shorts üretim hattı",
+  "type": "module",
+  "dependencies": {
+    "@fontsource/montserrat": "5.0.17",
+    "@fontsource/oswald": "5.0.17",
+    "three": "0.160.0"
+  }
+}
