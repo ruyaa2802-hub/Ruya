@@ -2,11 +2,11 @@
 
 Stems: narration, music, ambience, sfx  +  final mix (48 kHz stereo).
 Inputs:
-  audio/narration.wav   — free Microsoft Edge neural TTS (tr-TR-AhmetNeural), one take, cut at the pauses and
-                          placed on the film timeline (audio/prep_narration.py)
-  out/parts/part*.cues.json — events from the renderer
-The music (mysterious underwater atmosphere → tension in the slow motion → wide finale) and every sound effect
-are synthesised here with numpy — no samples, no paid services.
+  audio/narration.wav   — the user's narration file (one take), placed at 0.3 s (audio/prep_narration.py)
+  out/parts/part*.cues.json — events from the renderer, in FILM time; mapped to video time through
+                          scene/timewarp.json (the same monotone warp the renderer uses)
+The music is a synthesised piano (gentle, mysterious → tense in the slow motion → warm finale); every sound
+effect is synthesised too — no samples, no paid services.
 Run:   python3 audio/make_audio.py            (full mix)
        python3 audio/make_audio.py --test 12  (first 12 s only → out/audio_test.wav)
 """
@@ -21,7 +21,7 @@ import numpy as np
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SR = 48000
-DUR = 33.5
+DUR = 41.6
 N_OFF = 0.0           # narration.wav is already on the film timeline
 TEST = float(sys.argv[sys.argv.index('--test') + 1]) if '--test' in sys.argv else None
 if TEST:
@@ -29,6 +29,37 @@ if TEST:
 N = int(SR * DUR)
 t_axis = np.arange(N) / SR
 rng = np.random.default_rng(21)
+
+
+WARP = json.load(open(os.path.join(ROOT, 'scene/timewarp.json')))
+
+
+def _monotone(xs, ys):
+    xs, ys = np.asarray(xs, float), np.asarray(ys, float)
+    n = len(xs)
+    d = np.diff(ys) / np.diff(xs)
+    m = np.zeros(n)
+    m[0], m[-1] = d[0], d[-1]
+    for i in range(1, n - 1):
+        m[i] = 0 if d[i - 1] * d[i] <= 0 else 3 * (d[i - 1] + d[i]) / ((2 * d[i] + d[i - 1]) / d[i - 1] + (d[i] + 2 * d[i - 1]) / d[i])
+
+    def f(x):
+        x = np.asarray(x, float)
+        i = np.clip(np.searchsorted(xs, x) - 1, 0, n - 2)
+        h = xs[i + 1] - xs[i]
+        u = (x - xs[i]) / h
+        u2, u3 = u * u, u * u * u
+        return (2 * u3 - 3 * u2 + 1) * ys[i] + (u3 - 2 * u2 + u) * h * m[i] + (-2 * u3 + 3 * u2) * ys[i + 1] + (u3 - u2) * h * m[i + 1]
+    return f
+
+
+_T = np.arange(0, WARP['duration'] + 1e-9, 0.0005)
+_t = _monotone([a[1] for a in WARP['anchors']], [a[0] for a in WARP['anchors']])(_T)   # video → film (as the renderer)
+
+
+def W(t_film):
+    """film time → video time"""
+    return float(np.interp(t_film, _t, _T))
 
 
 def ss(a, b, x):
@@ -146,6 +177,7 @@ duck = np.interp(np.arange(N), np.arange(len(d_s)) * ds, d_s)
 # ---------------------------------------------------------------- events
 cues = sorted(glob.glob(os.path.join(ROOT, 'out/parts/part*.cues.json')))
 events = json.load(open(cues[-1]))['events'] if cues else json.load(open(os.path.join(ROOT, 'audio/events.json')))
+events = [dict(e, t=W(e['t']), d=(W(e['t'] + e['d']) - W(e['t'])) if 'd' in e else None) for e in events]
 events = [e for e in events if e['t'] < DUR]
 
 sfx = np.zeros((2, N))
@@ -383,120 +415,113 @@ while tt0 < DUR:
 amb += np.stack([fft_filter(crk[0], lo=1500, hi=6000), fft_filter(crk[1], lo=1500, hi=6000)]) * db(-34)
 far = bubbles(DUR, 2)
 amb += np.stack([fft_filter(far[0], hi=2000), fft_filter(far[1], hi=2000)]) * db(-38)
-slowmo = np.clip(ss(2.95, 3.1, t_axis) * (1 - ss(5.1, 5.3, t_axis)) + ss(8.45, 8.6, t_axis) * (1 - ss(20.9, 21.2, t_axis)), 0, 1)
+slowmo = np.clip(ss(W(2.95), W(2.95) + 0.15, t_axis) * (1 - ss(W(5.1), W(5.3), t_axis)) + ss(W(8.45), W(8.45) + 0.15, t_axis) * (1 - ss(W(20.9), W(21.2), t_axis)), 0, 1)
 amb *= (1 - 0.65 * slowmo)       # the world goes muffled during the slow motion
 amb *= ss(0, 0.8, t_axis) * (1 - ss(DUR - 0.8, DUR, t_axis))
 
-# ---------------------------------------------------------------- music
-music = np.zeros((2, N))
-
-
+# ---------------------------------------------------------------- music: synthesised piano
 def mtof(m):
     return 440.0 * 2 ** ((m - 69) / 12)
 
 
-def pad(freq, dur, att=1.8, rel=2.0):
-    n = int(dur * SR)
+def piano(m, dur, vel=0.7):
+    """A felt-ish piano note: inharmonic partials, two detuned strings, two-stage decay, hammer knock."""
+    f = mtof(m)
+    n = int((dur + 0.6) * SR)
     tt = np.arange(n) / SR
-    y = sum(np.sin(2 * np.pi * freq * (1 + d) * tt + 0.3 * np.sin(2 * np.pi * (0.13 + i * 0.05) * tt)) for i, d in enumerate((-0.006, 0, 0.004, 0.008))) / 4
-    y += 0.22 * np.sin(2 * np.pi * freq * 2.0 * tt) * (0.5 + 0.5 * np.sin(2 * np.pi * 0.09 * tt))
-    return y * env(n, att, rel)
+    B = 0.00012 * (f / 261.6) ** 1.2
+    tau = 2.4 * (261.6 / f) ** 0.55
+    y = np.zeros(n)
+    bright = 0.35 + 0.65 * vel
+    for k in range(1, 13):
+        fk = f * k * np.sqrt(1 + B * k * k)
+        if fk > 9000:
+            break
+        ak = (1 / k ** 1.3) * bright ** (k - 1) * (1 + 0.6 * (k == 2))
+        tk = tau / (1 + 0.55 * (k - 1))
+        dec = 0.65 * np.exp(-tt / (tk * 0.18)) + 0.35 * np.exp(-tt / tk)
+        y += ak * dec * (np.sin(2 * np.pi * fk * tt) + 0.8 * np.sin(2 * np.pi * fk * (1 + 0.00035) * tt + 0.7))
+    knock = fft_filter(rng.standard_normal(n), lo=200, hi=2500) * np.exp(-tt / 0.012) * 0.25
+    y = (y + knock) * np.minimum(1, tt / 0.003)
+    # damper at the end of the note (pedal lets it ring 0.6 s)
+    rel = np.ones(n)
+    k0 = int(dur * SR)
+    rel[k0:] = np.exp(-(tt[k0:] - dur) / 0.18)
+    return y * rel * vel
 
 
-def strings(freq, dur, att=0.8, rel=0.6, trem=0.0):
-    """Bowed-string-like tone (band-limited saw) with optional tremolo — for the tension."""
-    n = int(dur * SR)
-    tt = np.arange(n) / SR
-    vib = 1 + 0.004 * np.sin(2 * np.pi * 5.2 * tt)
-    ph = 2 * np.pi * np.cumsum(freq * vib) / SR
-    y = sum(np.sin(k * ph) / k for k in range(1, 9))
-    if trem:
-        y *= 1 - trem * (0.5 + 0.5 * np.sin(2 * np.pi * 9 * tt))
-    return y * env(n, att, rel)
+pianoL = np.zeros((2, N))
 
 
-def glass(freq, dur=2.6, vel=1.0):
-    n = int(dur * SR)
-    tt = np.arange(n) / SR
-    y = np.sin(2 * np.pi * freq * tt) * np.exp(-tt * 1.6) + 0.35 * np.sin(2 * np.pi * freq * 3.0 * tt) * np.exp(-tt * 4) + 0.15 * np.sin(2 * np.pi * freq * 4.2 * tt) * np.exp(-tt * 7)
-    return y * np.minimum(1, tt / 0.004) * vel
+def play(m, t0, dur, vel):
+    sig = piano(m, dur, vel)
+    pan = np.clip((m - 60) / 30, -0.6, 0.6)
+    place(pianoL, sig, t0, 1.0, pan)
 
 
-def addmono(buf, sig, t0, gain=1.0, spread=0):
-    i0 = int(t0 * SR)
-    if i0 >= N:
-        return
-    s = sig[: N - i0] * gain
-    buf[0, i0:i0 + len(s)] += s
-    j = i0 + spread
-    s2 = sig[: max(0, N - j)] * gain
-    buf[1, j:j + len(s2)] += s2
-
-
-# harmony: dark D minor drone → tension cluster in the slow motion → airy after the collapse → wide finale
-CH = [(0.0, [38, 45, 50, 57, 64]), (5.3, [38, 45, 50, 53, 57]), (7.35, [34, 46, 50, 53, 58]),
-      (15.6, [43, 50, 55, 58, 65]), (18.0, [38, 45, 50, 52, 57]), (21.2, [34, 46, 53, 57, 62]),
-      (25.6, [38, 50, 57, 62, 65]), (27.6, [34, 46, 53, 58, 62]), (29.6, [41, 48, 57, 60, 65]), (31.0, [36, 48, 55, 60, 64]), (32.2, [38, 50, 57, 62, 64])]
-padL = np.zeros((2, N))
-for i, (t0, notes) in enumerate(CH):
-    t1 = CH[i + 1][0] if i + 1 < len(CH) else DUR + 1
-    for m in notes:
-        sig = pad(mtof(m), t1 - t0 + 2.0, 1.2 if t0 > 0 else 3.0, 2.0) * (1.25 if m < 46 else 0.75)
-        addmono(padL, sig, t0, 1.0, 700)
-padL = np.stack([fft_filter(padL[0], lo=35, hi=1700), fft_filter(padL[1], lo=35, hi=1700)])
-finale = ss(25.6, 28.0, t_axis)
-music += padL * (0.75 + 0.6 * finale)
-# tension strings (tremolo), rising, under the cocking and the slow motion; cut dead at each collapse
-ten = np.zeros((2, N))
-for (a, b, notes, trem) in ((1.9, 4.1, [62, 63, 69], 0.5), (7.35, 15.55, [62, 63, 69, 74], 0.6), (18.0, 19.75, [63, 69, 74, 75], 0.7)):
-    for m in notes:
-        sig = strings(mtof(m), b - a, 0.9 if b - a > 3 else 0.4, 0.004, trem)
-        n = len(sig)
-        sig *= np.linspace(0.35, 1.0, n) ** 1.5                 # crescendo
-        addmono(ten, sig, a, 0.5, 500)
-ten = np.stack([fft_filter(ten[0], lo=150, hi=4500), fft_filter(ten[1], lo=150, hi=4500)])
-music += ten * 0.55
-# slow heartbeat under the slow motion
-hb = np.zeros((2, N))
-tt0 = 8.6
-while tt0 < 15.5:
-    n = int(0.4 * SR)
-    x = np.arange(n) / SR
-    s1 = np.sin(2 * np.pi * (48 + 30 * np.exp(-x / 0.04)) * x) * np.exp(-x / 0.12)
-    place(hb, s1, tt0, 0.9, 0)
-    place(hb, s1 * 0.55, tt0 + 0.3, 0.9, 0)
-    tt0 += 60 / 64
-music += hb * 0.5
-# glass arpeggio: sparse in the opening, flowing in the finale
-arp = np.zeros((2, N))
-for i, (t0, notes) in enumerate(CH):
-    t1 = CH[i + 1][0] if i + 1 < len(CH) else DUR
-    if 8.0 < t0 < 21.0:
-        continue
-    step = 0.3 if t0 >= 25.6 else 0.75
-    k = 0
-    tt0 = t0 + 0.2
-    while tt0 < t1 - 0.1:
-        m = notes[[2, 3, 4, 3][k % 4]] + 12 + (12 if (k % 6 == 4 and t0 >= 25.6) else 0)
-        place(arp, glass(mtof(m), 2.2, 0.6 - 0.1 * (k % 2)), tt0, 1.0, 0.7 * np.sin(k * 1.3 + t0))
+def arp(t0, t1, notes, step, vel, pattern=None, rising=0.0):
+    pattern = pattern or list(range(len(notes))) + list(range(len(notes) - 2, 0, -1))
+    k, tt0 = 0, t0
+    while tt0 < t1 - 0.05:
+        m = notes[pattern[k % len(pattern)]]
+        v = vel * (1 + rising * (tt0 - t0) / max(0.1, t1 - t0)) * (1.0 if k % len(pattern) == 0 else 0.82)
+        play(m, tt0, max(0.4, min(2.2, t1 - tt0 + 0.3)), min(1.0, v))
         tt0 += step
         k += 1
-music += arp * 0.3 * (0.5 + 0.9 * finale)
-# low sub swell for the final reveal
-n = int((DUR - 25.6) * SR)
-x = np.arange(n) / SR
-addmono(music, np.sin(2 * np.pi * mtof(26) * x) * ss(0, 3, x) * (1 - ss(n / SR - 1.5, n / SR, x)), 25.6, 0.5)
+
+
+SNAP_A, COL_A, SNAP_B, COL_B, COL_D = W(2.95), W(4.1), W(8.45), W(15.55), W(19.75)
+CUT_B, CUT_E = W(5.3), W(21.2)
+# A — mysterious, sparse: D minor (add9), then B♭maj7 after the first snap
+play(38, 0.2, 4.0, 0.5); arp(0.4, SNAP_A - 0.1, [50, 57, 64, 65, 69], 0.46, 0.38)
+play(34, COL_A + 0.25, 3.0, 0.45); arp(COL_A + 0.35, CUT_B + 0.3, [46, 53, 57, 62, 65], 0.43, 0.36)
+# B — the claw: Gm9 → A sus, the arpeggio speeds up and climbs while the claw is cocked
+play(31, CUT_B + 0.35, 2.6, 0.5); arp(CUT_B + 0.4, W(7.35), [43, 50, 57, 58, 62], 0.38, 0.38)
+play(33, W(7.35), 2.0, 0.5); arp(W(7.35), SNAP_B - 0.12, [45, 52, 57, 62, 64, 69], 0.2, 0.36, rising=0.8)
+# C — slow motion: low D pulse like a heartbeat, high dissonant bell tones, Neapolitan E♭ colour, hush before the collapse
+tt0 = SNAP_B + 0.35
+while tt0 < COL_B - 0.5:
+    play(26, tt0, 0.8, 0.55); play(38, tt0 + 0.02, 0.8, 0.35)
+    tt0 += 0.86
+for k, (m, dt) in enumerate([(74, 0.9), (75, 2.4), (74, 3.6), (81, 4.6), (75, 5.6), (82, 6.4), (86, 7.1)]):
+    if SNAP_B + dt < COL_B - 0.4:
+        play(m, SNAP_B + dt, 1.4, 0.32 + 0.04 * k)
+play(51, W(11.95), 3.0, 0.35); play(55, W(11.95) + 0.05, 3.0, 0.3); play(58, W(11.95) + 0.1, 3.0, 0.3)
+# D — after the collapse: delicate high G minor add9
+arp(COL_B + 0.6, W(18.0) - 0.05, [67, 74, 69, 79, 70, 81], 0.24, 0.3)
+# replay: repeated high D accelerating into the flash, then a bright B♭ add9 bloom on "ışık"
+tt0, gapd = W(18.0) + 0.1, 0.36
+while tt0 < COL_D - 0.18:
+    play(86, tt0, 0.3, 0.32)
+    tt0 += gapd
+    gapd = max(0.11, gapd * 0.86)
+for j, m in enumerate([58, 65, 72, 74, 77, 84]):
+    play(m, COL_D + 0.03 + 0.04 * j, 2.6, 0.5)
+# F — warm finale: B♭ – F – C – Dm – B♭ – F, flowing arpeggio + a simple melody, ending on F (add9)
+FIN = [(CUT_E, 34, [46, 53, 57, 62, 65]), (W(22.7), 29, [41, 48, 53, 57, 60]), (W(24.53), 36, [48, 52, 55, 60, 64]), (W(26.56), 38, [45, 50, 53, 57, 62]),
+       (W(27.55), 34, [46, 50, 53, 58, 62]), (W(29.58), 29, [41, 48, 53, 55, 57, 60])]
+for i, (t0, bass, notes) in enumerate(FIN):
+    t1 = FIN[i + 1][0] if i + 1 < len(FIN) else DUR - 0.6
+    play(bass, t0, t1 - t0 + 0.5, 0.55); play(bass + 12, t0 + 0.01, t1 - t0 + 0.5, 0.4)
+    arp(t0 + 0.05, t1, notes, 0.29, 0.36 + 0.05 * (i >= 4))
+MEL = [(0.0, 74), (1.2, 72), (1.75, 70), (2.3, 69), (3.5, 67), (4.1, 69), (5.3, 72), (6.0, 74), (6.6, 77), (8.0, 76), (8.6, 74), (9.4, 72), (10.4, 74), (11.4, 72), (12.4, 69)]
+for dt, m in MEL:
+    if CUT_E + 0.4 + dt < DUR - 0.8:
+        play(m, CUT_E + 0.4 + dt, 1.6, 0.52)
+play(77, W(29.58) + 0.4, 3.5, 0.45); play(81, W(29.58) + 0.45, 3.5, 0.4); play(84, W(29.58) + 0.5, 3.5, 0.35)
+music = reverb(pianoL) * db(-5) + pianoL
+music = np.stack([fft_filter(music[0], lo=45), fft_filter(music[1], lo=45)])
 music = norm(music)
-# the music holds its breath at the collapses (and just before them), then returns
+# the music holds its breath before each collapse, then returns
 gap = np.ones(N)
-for c in (4.1, 15.55, 19.75):
-    gap *= 1 - 0.85 * ss(c - 0.25, c - 0.02, t_axis) * (1 - ss(c + 0.5, c + 1.6, t_axis))
+for c in (COL_A, COL_B, COL_D):
+    gap *= 1 - 0.8 * ss(c - 0.3, c - 0.03, t_axis) * (1 - ss(c + 0.4, c + 1.2, t_axis))
 music *= gap
-music *= ss(0, 2.0, t_axis) * (1 - ss(DUR - 1.2, DUR, t_axis) * 0.97)
+music *= ss(0, 1.0, t_axis) * (1 - ss(DUR - 1.5, DUR, t_axis) * 0.97)
 
 # ---------------------------------------------------------------- mix: music −10 dB under the narration
 wet = reverb(send) * db(-5)
-music_st = music * db(-6) * (1 - duck * (1 - db(-10)))
+music_st = music * db(-2) * (1 - duck * (1 - db(-10)))
 amb_st = amb * db(7) * (1 - duck * (1 - db(-4)))
 sfx_st = (sfx + wet) * (1 - duck * (1 - db(-3))) * (1 - ss(DUR - 0.3, DUR, t_axis))
 mix = narr + music_st + amb_st + sfx_st

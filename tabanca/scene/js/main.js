@@ -288,20 +288,21 @@ function shotE(t) {
 // ===========================================================================
 //  OVERLAY
 // ===========================================================================
+// subtitles in VIDEO time (the user's narration, audio/words.json)
 const SUBS = [
-  [0.35, 2.75, 'Denizin dibinde, <b>küçücük</b> bir canlı var…'],
-  [3.25, 5.2, 'Ve bu canlının silahı <b>mermi değil!</b>'],
-  [5.55, 8.3, '<b>Tabanca karidesi</b>, özel kıskacını kapattığında'],
-  [8.4, 10.45, '<b>inanılmaz hızlı</b> bir su jeti oluşturuyor.'],
-  [10.95, 12.72, 'Bu hareket, <b>kavitasyon</b>'],
-  [12.78, 14.2, 'adı verilen bir olaya yol açıyor.'],
-  [14.85, 17.55, '<b>Kabarcık çökerken</b> ses ve ısı ortaya çıkıyor.'],
-  [18.35, 19.72, 'Hatta çok kısa süreli'],
-  [19.74, 21.55, '<b>ışık parlamaları</b> bile oluşabiliyor!'],
-  [22.7, 24.5, 'Üstelik bütün bunları yalnızca'],
-  [24.53, 26.65, '<b>birkaç santimetrelik</b> bir vücutla yapıyor.'],
-  [27.55, 29.56, 'Doğa bazen en <b>büyük sürprizleri</b>'],
-  [29.58, 31.15, 'en <b>küçük canlılara</b> saklıyor.'],
+  [0.3, 4.0, 'Denizin dibinde, <b>küçücük</b> bir canlı var…'],
+  [4.54, 7.6, 'Ve bu canlının silahı <b>mermi değil!</b>'],
+  [8.43, 11.9, '<b>Tabanca karidesi</b>, özel kıskacını kapattığında'],
+  [11.98, 14.9, '<b>inanılmaz hızlı</b> bir su jeti oluşturuyor.'],
+  [15.53, 17.45, 'Bu hareket, <b>kavitasyon</b>'],
+  [17.5, 19.5, 'adı verilen bir olaya yol açıyor.'],
+  [20.19, 23.45, '<b>Kabarcık çökerken</b> ses ve ısı ortaya çıkıyor.'],
+  [23.93, 25.6, 'Hatta çok kısa süreli'],
+  [25.66, 27.7, '<b>ışık parlamaları</b> bile oluşabiliyor!'],
+  [28.29, 30.7, 'Üstelik bütün bunları yalnızca'],
+  [30.74, 33.4, '<b>birkaç santimetrelik</b> bir vücutla yapıyor.'],
+  [33.95, 36.98, 'Doğa bazen en <b>büyük sürprizleri</b>'],
+  [37.08, 39.15, 'en <b>küçük canlılara</b> saklıyor.'],
 ];
 const $ = (id) => document.getElementById(id);
 const op = (el, v, tr) => { el.style.opacity = clamp(v).toFixed(3); if (tr !== undefined) el.style.transform = tr; };
@@ -319,7 +320,7 @@ function title(el, t, a, b) {
   op(el, v, `translateX(-50%) scale(${sc.toFixed(3)})`);
   el.style.letterSpacing = `${(0.02 + 0.06 * (1 - ss(a, a + 0.6, t))).toFixed(3)}em`;
 }
-function updateOverlay(t, sh) {
+function updateOverlay(t, sh, T = t) {
   title($('tName'), t, 5.6, 7.9);
   title($('tCav'), t, 11.95, 14.4);
   title($('tEnd'), t, 31.0, DURATION + 1);
@@ -336,9 +337,9 @@ function updateOverlay(t, sh) {
   if (sh.bc && t > 11.9 && t < 14.5) anchor($('lBub'), sh.bc, window01(t, 12.0, 14.4, 0.2), 0, -260); else op($('lBub'), 0);
   let on = 0;
   for (const [a, b, html] of SUBS) {
-    if (t >= a - 0.06 && t < b + 0.08) {
+    if (T >= a - 0.06 && T < b + 0.08) {
       if ($('sub').dataset.k !== html) { $('sub').innerHTML = html; $('sub').dataset.k = html; }
-      on = window01(t, a - 0.06, b + 0.08, 0.06);
+      on = window01(T, a - 0.06, b + 0.08, 0.06);
       break;
     }
   }
@@ -346,7 +347,7 @@ function updateOverlay(t, sh) {
 }
 
 // ===========================================================================
-function frame(t) {
+function frame(t, T = t) {
   ensureHover();
   let sh;
   if (t < CUTS[0]) sh = shotA(t);
@@ -397,7 +398,7 @@ function frame(t) {
     fade: (1 - ss(0, 0.35, t)) + ss(DURATION - 0.6, DURATION, t),
     frame: Math.round(t * FPS),
   });
-  updateOverlay(t, sh);
+  updateOverlay(t, sh, T);
   return { t: +t.toFixed(4) };
 }
 
@@ -409,10 +410,27 @@ export const EVENTS = [
   { t: 16.05, type: 'ping' }, { t: 16.45, type: 'ping' }, { t: 18.0, type: 'pre', d: COL_D - 18.0 }, { t: COL_D, type: 'collapse', k: 1.1, light: 1 }, { t: 19.8, type: 'ping' },
   { t: 21.3, type: 'walk', d: 2.5 }, { t: 24.05, type: 'grab' }, { t: 24.5, type: 'ping' }, { t: 25.0, type: 'walk', d: 5.0 }, { t: 25.6, type: 'swell' }, { t: 31.0, type: 'title' },
 ];
-window.DURATION = DURATION;
+const WARP = await fetch('./timewarp.json').then((r) => r.json());
+function monotone(xs, ys) {
+  const n = xs.length, d = [], m = new Array(n).fill(0);
+  for (let i = 0; i < n - 1; i++) d.push((ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]));
+  m[0] = d[0]; m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (3 * (d[i - 1] + d[i])) / ((2 * d[i] + d[i - 1]) / d[i - 1] + (d[i] + 2 * d[i - 1]) / d[i]);
+  return (x) => {
+    if (x <= xs[0]) return ys[0] + (x - xs[0]) * m[0];
+    if (x >= xs[n - 1]) return ys[n - 1] + (x - xs[n - 1]) * m[n - 1];
+    let i = 0;
+    while (x > xs[i + 1]) i++;
+    const h = xs[i + 1] - xs[i], u = (x - xs[i]) / h, u2 = u * u, u3 = u2 * u;
+    return (2 * u3 - 3 * u2 + 1) * ys[i] + (u3 - 2 * u2 + u) * h * m[i] + (-2 * u3 + 3 * u2) * ys[i + 1] + (u3 - u2) * h * m[i + 1];
+  };
+}
+const toFilm = monotone(WARP.anchors.map((a) => a[1]), WARP.anchors.map((a) => a[0]));
+const VIDEO_DURATION = WARP.duration;
+window.DURATION = VIDEO_DURATION;
 window.FPS = FPS;
 window.EVENTS = EVENTS;
-window.renderAt = (t) => frame(t);
+window.renderAt = (T) => frame(toFilm(T), T);
 if (!new URLSearchParams(location.search).has('render')) {
   const stage = document.getElementById('stage');
   const fit = () => {
@@ -426,8 +444,8 @@ if (!new URLSearchParams(location.search).has('render')) {
   const loop = (now) => {
     if (start === null) start = now;
     let tt = (now - start) / 1000;
-    if (tt > DURATION) { start = now; tt = 0; }
-    frame(tt);
+    if (tt > VIDEO_DURATION) { start = now; tt = 0; }
+    frame(toFilm(tt), tt);
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);
