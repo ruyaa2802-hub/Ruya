@@ -1,0 +1,9 @@
+1|B|Hayatımda gördüğüm, en güzel çileksin.
+2|H|Teşekkür ederim. Organik olduğum için olabilir.
+3|B|Ben de organiğim!
+4|H|Etiketine baktım. Sen hormonlusun.
+5|B|Aşkın önünde, etiket mi olur?
+6|H|Bizim ailede olur.
+7|B|Kaçırıldık mı?
+8|H|Hayır aptal, alışveriş başladı.
+9|D|Bunlar da mı başladı?
