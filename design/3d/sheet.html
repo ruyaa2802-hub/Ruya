@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script></head><body>
+<script>window.onerror=()=>{window.DONE=true}</script><script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { makeStrawberry } from './berry.js';
+const W=1920,H=1080;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setSize(W,H); r.setPixelRatio(1);
+r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=1.05;
+r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const scene=new THREE.Scene();
+// bokeh backdrop
+const c=document.createElement('canvas'); c.width=1920; c.height=1080; const x=c.getContext('2d');
+const g=x.createLinearGradient(0,0,0,1080); g.addColorStop(0,'#3a1a22'); g.addColorStop(1,'#6a3030'); x.fillStyle=g; x.fillRect(0,0,1920,1080); const g2=x.createLinearGradient(0,620,0,1080); g2.addColorStop(0,'rgba(120,60,55,0)'); g2.addColorStop(1,'rgba(150,80,70,1)'); x.fillStyle=g2; x.fillRect(0,620,1920,460);
+let s=7; const rnd=()=>{s=(s*16807)%2147483647; return s/2147483647};
+x.filter='blur(14px)';
+for(let i=0;i<70;i++){const R=20+rnd()*70; x.globalAlpha=0.15+rnd()*0.45; x.fillStyle=['#ffcf8a','#ffb070','#fff0c8','#ff9a7a'][i%4]; x.beginPath(); x.arc(rnd()*1920,rnd()*800,R,0,7); x.fill();}
+const bg=new THREE.CanvasTexture(c); bg.colorSpace=THREE.SRGBColorSpace; scene.background=bg;
+const pm=new THREE.PMREMGenerator(r); scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture; scene.environmentIntensity=0.55;
+scene.add(new THREE.HemisphereLight('#ffe6d0','#5a2a2a',0.6));
+const key=new THREE.DirectionalLight('#fff1e0',2.6); key.position.set(-3,5,6); key.castShadow=true; key.shadow.mapSize.set(2048,2048); key.shadow.radius=6;
+Object.assign(key.shadow.camera,{left:-4,right:4,top:4,bottom:-4}); scene.add(key);
+const rim=new THREE.DirectionalLight('#ffb27a',2.2); rim.position.set(4,3,-5); scene.add(rim);
+const rim2=new THREE.DirectionalLight('#ffd0a0',1.2); rim2.position.set(-5,2,-4); scene.add(rim2);
+const fill=new THREE.PointLight('#ffc89a',8,10); fill.position.set(0,0.2,3); scene.add(fill);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(8,64),new THREE.ShadowMaterial({opacity:0.45}));
+floor.rotation.x=-Math.PI/2; floor.receiveShadow=true; scene.add(floor);
+const bey=makeStrawberry('bey',{lid:[0.32,0.18],lidTilt:0.12,look:[0.6,0.1],browUp:[0.0,0.07],browTilt:[0.02,-0.03],mouth:'smirk',mouthX:0.03,arms:['hip','hip']});
+const han=makeStrawberry('hanim',{lid:[0.28,0.36],lidTilt:-0.1,look:[-0.6,0.1],browUp:[0.07,0.0],browTilt:[-0.03,0.02],mouth:'smirkL',mouthX:-0.03,arms:['hip','wave']});
+for(const [o,xp,ry] of [[bey,-1.25,0.32],[han,1.25,-0.32]]){o.position.set(xp,-o.userData.feetY,0); o.rotation.y=ry; scene.add(o);}
+floor.position.y=0;
+const cam=new THREE.PerspectiveCamera(30,W/H,0.1,100); cam.position.set(0,1.0,6.6); cam.lookAt(0,0.95,0);
+r.render(scene,cam); window.DONE=true;
+</script></body></html>
