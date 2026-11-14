@@ -69,10 +69,14 @@ def eye(cv, xf, cx, cy, rx, ry, pal, lid=1.0, px=0.0, py=0.0, lid_col='#e2a986',
         lp = rot_about(lp, cx, cy, lid_tilt)
         gr = None
         if open_ < 0.25:  # kapalı göz: kirpik çizgisi
-            yl = cy + cut * 0.9
+            yl = cy + ry * 0.2
             gr = [(xf(rot_about(bezier((cx - rx * 0.95, yl - ry * 0.05), (cx, yl + ry * 0.35), (cx + rx * 0.95, yl - ry * 0.05)),
                                 cx, cy, lid_tilt)), max(2.0, rx * 0.12) * xf.s)]
         cv.part([('poly', xf(lp))], lid_col, tex=0.6, shadow_k=0.3, roundness=rx * 0.5, grooves=gr, groove_depth=7)
+        if gr:  # koyu kirpik sosisi
+            cv.part([('poly', xf(poly_tube(rot_about(bezier((cx - rx * 1.0, yl - ry * 0.08), (cx, yl + ry * 0.38),
+                                                           (cx + rx * 1.0, yl - ry * 0.08)), cx, cy, lid_tilt),
+                                            max(1.5, rx * 0.08), max(1.2, rx * 0.06))))], '#3a2316', shadow_k=0.2)
     if lower_lid > 0:
         cutb = ry * 1.12 - 2.24 * ry * lower_lid
         lp = ellipse_pts(0, 0, rx * 1.1, ry * 1.12, n=60)
@@ -351,3 +355,66 @@ def findik(cv, xf, t=0.0, **kw):
         draw_arm(34, eR, hR)
     return dict(head=hd.pt(0, -86), handL=body.pt(*hL), handR=body.pt(*hR), waistL=body.pt(-50, -110),
                 waistR=body.pt(50, -110))
+
+
+# ===================================================================== MARTI
+G_PAL = dict(white='#f4f1ea', grey='#9aa3ad', grey_dk='#6d7680', tip='#1d1b1f', beak='#f0b630',
+             spot='#d8352c', feet='#e8823a', pupil='#141012', eye='#f3e27a')
+
+
+def marti(cv, xf, t=0.0, fly=0.0, flap=0.0, beak=0.0, look=0.0, lid=0.55, squash=0.0, settle=0.0):
+    """Kil martı. fly=1 uçuyor (kanatlar açık, ayaklar toplu). flap = kanat açısı (-1..1)."""
+    P = G_PAL
+    b = xf.child(0, 0, s=1.0)
+    sq = squash
+    # bacaklar + perdeli ayaklar (otururken)
+    if fly < 0.5:
+        for lx in (-10, 12):
+            cv.part([('poly', b(tube_pts((lx, -30 + 10 * settle), (lx + 2, -4), 4.5, 4)))], P['feet'], shadow_k=0.3)
+            cv.part([('poly', b([(lx - 12, 0), (lx + 18, 0), (lx + 6, -8)]))], P['feet'], shadow_k=0.4)
+    sh = (2, -62 * (1 - sq * 0.15))
+
+    def wing(side):
+        if fly > 0.5:
+            ang = -0.75 + 1.15 * flap
+            w = b.child(sh[0], sh[1], rot=ang if side > 0 else ang - 0.3)
+            pts = [(0, -8), (60, -22), (125, -12), (150, 4), (110, 10), (55, 10), (0, 10)]
+            pts = [(x * (1 if side > 0 else 0.85), y) for x, y in pts]
+            cv.part([('poly', w(pts))], P['grey'], shadow_k=0.3 if side > 0 else 0.15,
+                    grooves=[(w([(20, 2), (110, -4)]), 2), (w([(40, 8), (120, 6)]), 1.6)])
+            cv.part([('poly', w([(105, -14), (150, 4), (112, 10)]))], P['tip'], shadow=False)
+        else:
+            w = b.child(-4, -50 + 6 * settle, rot=0.12)
+            cv.part([('poly', w(ellipse_pts(-6, 0, 46, 18, 0.05)))], P['grey'], shadow_k=0.3,
+                    grooves=[(w(bezier((-40, 4), (-5, -4), (36, 2))), 2), (w(bezier((-44, 10), (-10, 4), (30, 10))), 1.6)])
+            cv.part([('poly', w([(-50, -4), (-78, 4), (-52, 10)]))], P['tip'], shadow=False)
+
+    if fly > 0.5:
+        wing(-1)
+    # kuyruk
+    cv.part([('poly', b([(-40, -52), (-86, -62), (-90, -44), (-40, -38)]))], P['white'], shadow_k=0.3,
+            grooves=[(b([(-48, -48), (-86, -54)]), 1.6)])
+    # gövde
+    cv.part([('poly', b(ellipse_pts(-2, -50 + 6 * settle, 50, 30 * (1 - sq * 0.2), -0.12)))], P['white'], shadow_k=0.35)
+    # kafa
+    h = b.child(38, -82 + 6 * settle, rot=look)
+    cv.part([('poly', h(ellipse_pts(0, 0, 25, 23)))], P['white'], shadow_k=0.35)
+    # gaga (alt çene açılır)
+    o = beak * 0.55
+    up = [(16, -6), (54, -4), (60, 2), (16, 4)]
+    cv.part([('poly', h(up))], P['beak'], spec=0.5, shadow_k=0.3)
+    low = rot_about([(16, 4), (52, 4), (48, 11), (16, 10)], 16, 4, o)
+    cv.part([('poly', h(low))], P['beak'], spec=0.5, shadow_k=0.3)
+    sp = rot_about([(44, 6)], 16, 4, o)[0]
+    cv.part([('poly', h(ellipse_pts(sp[0], sp[1], 4, 3)))], P['spot'], shadow=False)
+    if beak > 0.2:
+        cv.part([('poly', h([(18, 4), (52, 2)] + rot_about([(50, 6), (18, 8)], 16, 4, o)))], '#7a1f22',
+                shadow=False, bump=0.3)
+    # göz: sarı, öfkeli küçük bebek, kalın kaş
+    cv.part([('poly', h(ellipse_pts(6, -6, 7, 7)))], P['eye'], spec=0.6, shadow=False)
+    cv.part([('poly', h(ellipse_pts(7, -6, 3.2, 3.2)))], P['pupil'], spec=0.8, shadow=False)
+    cv.part([('poly', h(ellipse_pts(6, -6, 8.5, 8.5, ymax=-8.5 + 17 * (1 - lid))))], P['white'], shadow_k=0.2)
+    cv.part([('poly', h(poly_tube([(-4, -16), (8, -13), (16, -9)], 3, 2)))], P['grey_dk'], shadow=False)
+    if fly > 0.5:
+        wing(1)
+    return dict(head=h.pt(0, 0))

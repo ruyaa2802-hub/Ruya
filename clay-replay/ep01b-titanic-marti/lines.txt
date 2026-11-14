@@ -1,0 +1,9 @@
+RO1|Cek! Çok güzel!|0.9
+JA1|Gözlerini kapat Roz. Bana güven.|0.95
+JA2|Şimdi aç kollarını!|0.9
+RO2|Uçuyorum Cek! Uçuyorum!|0.85
+RO3|Cek, dünyanın en güzel hissi bu!|0.9
+JA3|Biliyorum Roz!|0.9
+RO4|Cek... Kıpırdama.|1.05
+JA4|Neden?|1.0
+RO5|Saçında yeni bir yolcu var.|0.95

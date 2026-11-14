@@ -16,7 +16,8 @@ from clay import (W, H, Canvas, Light, Xf, Camera, hexc, ellipse_pts, tube_pts, 
 from characters import ruzgar, findik
 from timeline import FPS, DURATION, LINES, EVENTS, NAMES, SHOTS
 
-LIPS = json.load(open(os.path.join(HERE, 'build', 'lipsync.json')))
+_LP = os.path.join(HERE, 'build', 'lipsync.json')
+LIPS = json.load(open(_LP)) if os.path.exists(_LP) else dict(lips={'R': [], 'F': []}, lines=[])
 LINE_T = {l[0]: (l[2], l[3]) for l in LIPS['lines']}
 
 
