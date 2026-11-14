@@ -141,72 +141,60 @@ function mats() {
 // ---------- eye ----------
 function makeEye(M, irisColor, opt) {
   const g = new THREE.Group();
-  const R = opt.r;
-  const sx = 1, sy = opt.tall, sz = 0.55;
+  const R = opt.r, sy = opt.tall, sz = 0.55, zf = R * sz;
   const white = new THREE.Mesh(new THREE.SphereGeometry(R, 48, 32), M.white);
-  white.scale.set(sx, sy, sz); g.add(white);
+  white.scale.set(1, sy, sz); g.add(white);
   const irisMat = new THREE.MeshPhysicalMaterial({ color: irisColor, roughness: 0.25, clearcoat: 1 });
-  const lx = opt.look[0] * R * 0.28, ly = opt.look[1] * R * 0.28;
-  const zf = R * sz;
-  const ish = opt.shock ? 0.55 : 1;
-  if (opt.heart) {
-    const hs = new THREE.Shape(); const k = R * 0.75;
-    hs.moveTo(0, -0.9 * k); hs.bezierCurveTo(-1.3 * k, -0.1 * k, -0.7 * k, 0.95 * k, 0, 0.35 * k); hs.bezierCurveTo(0.7 * k, 0.95 * k, 1.3 * k, -0.1 * k, 0, -0.9 * k);
-    const hg = new THREE.ExtrudeGeometry(hs, { depth: R * 0.08, bevelEnabled: true, bevelThickness: R * 0.06, bevelSize: R * 0.05, bevelSegments: 4, curveSegments: 24 });
-    const heart = new THREE.Mesh(hg, new THREE.MeshPhysicalMaterial({ color: '#ff2d6a', roughness: 0.2, clearcoat: 1, emissive: '#ff1050', emissiveIntensity: 0.25 }));
-    heart.position.set(0, 0, R * 0.5); g.add(heart);
-    const hl = new THREE.Mesh(new THREE.SphereGeometry(R * 0.12, 12, 8), M.spec); hl.scale.set(1, 0.7, 0.3); hl.position.set(-R * 0.3, R * 0.25, R * 0.7); g.add(hl);
-    return g;
-  }
-  const iris = new THREE.Mesh(new THREE.SphereGeometry(R * 0.7 * ish, 40, 24), irisMat);
-  iris.scale.set(1, 1.05, 0.28); iris.position.set(lx, ly - R * 0.05, zf * 0.78); g.add(iris);
-  // iris ring
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(R * 0.68 * ish, R * 0.035, 8, 48), M.dark);
-  ring.scale.set(1, 1.05, 0.4); ring.position.set(lx, ly - R * 0.05, R * 0.56); g.add(ring);
-  const pupil = new THREE.Mesh(new THREE.SphereGeometry(R * 0.38 * ish, 32, 16), M.pupil);
-  pupil.scale.set(1, 1.05, 0.25); pupil.position.set(lx, ly - R * 0.05, R * 0.55); g.add(pupil);
+  const irisG = new THREE.Group(); g.add(irisG);
+  const iris = new THREE.Mesh(new THREE.SphereGeometry(R * 0.7, 40, 24), irisMat);
+  iris.scale.set(1, 1.05, 0.28); iris.position.set(0, -R * 0.05, zf * 0.78); irisG.add(iris);
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(R * 0.68, R * 0.035, 8, 48), M.dark);
+  ring.scale.set(1, 1.05, 0.4); ring.position.set(0, -R * 0.05, R * 0.56); irisG.add(ring);
+  const pupil = new THREE.Mesh(new THREE.SphereGeometry(R * 0.38, 32, 16), M.pupil);
+  pupil.scale.set(1, 1.05, 0.25); pupil.position.set(0, -R * 0.05, R * 0.55); irisG.add(pupil);
+  // heart iris
+  const hs = new THREE.Shape(); const k = R * 0.75;
+  hs.moveTo(0, -0.9 * k); hs.bezierCurveTo(-1.3 * k, -0.1 * k, -0.7 * k, 0.95 * k, 0, 0.35 * k); hs.bezierCurveTo(0.7 * k, 0.95 * k, 1.3 * k, -0.1 * k, 0, -0.9 * k);
+  const hg = new THREE.ExtrudeGeometry(hs, { depth: R * 0.08, bevelEnabled: true, bevelThickness: R * 0.06, bevelSize: R * 0.05, bevelSegments: 4, curveSegments: 24 });
+  const heart = new THREE.Mesh(hg, new THREE.MeshPhysicalMaterial({ color: '#ff2d6a', roughness: 0.2, clearcoat: 1, emissive: '#ff1050', emissiveIntensity: 0.25 }));
+  const heartG = new THREE.Group(); heartG.position.set(0, 0, R * 0.5); heartG.add(heart); g.add(heartG);
+  // highlights stay fixed (light reflection)
   const s1 = new THREE.Mesh(new THREE.SphereGeometry(R * 0.17, 16, 12), M.spec);
-  s1.scale.set(1, 1, 0.3); s1.position.set(lx - R * 0.24, ly + R * 0.2, R * 0.66); g.add(s1);
+  s1.scale.set(1, 1, 0.3); s1.position.set(-R * 0.24, R * 0.2, R * 0.66); g.add(s1);
   const s2 = new THREE.Mesh(new THREE.SphereGeometry(R * 0.08, 12, 8), M.spec);
-  s2.scale.set(1, 1, 0.3); s2.position.set(lx + R * 0.24, ly - R * 0.3, R * 0.66); g.add(s2);
+  s2.scale.set(1, 1, 0.3); s2.position.set(R * 0.24, -R * 0.3, R * 0.66); g.add(s2);
   const cornea = new THREE.Mesh(new THREE.SphereGeometry(R * 1.02, 48, 32), M.cornea);
-  cornea.scale.set(sx, sy, sz * 1.12); g.add(cornea);
-  // upper lid (berry-colored shell) - lid 0..1
-  if (opt.lid > 0) {
-    const th = Math.PI * (0.18 + opt.lid * 0.5);
-    const lid = new THREE.Mesh(new THREE.SphereGeometry(R * 1.07, 48, 24, 0, Math.PI * 2, 0, th), M.limb);
-    lid.scale.set(sx, sy, sz * 1.25);
-    lid.rotation.z = (opt.lidTilt || 0);
-    g.add(lid);
-    // lid edge line
-    const edgeR = R * 1.08 * Math.sin(th);
-    const edge = new THREE.Mesh(new THREE.TorusGeometry(edgeR, R * 0.045, 8, 48, Math.PI), M.dark);
-    edge.rotation.x = Math.PI / 2; edge.rotation.z = Math.PI;
-    edge.position.y = R * 1.07 * Math.cos(th) * sy;
-    edge.scale.set(sx, 1, sz * 1.27 * (1 / 1));
-    const holder = new THREE.Group(); holder.add(edge); holder.rotation.z = (opt.lidTilt || 0);
-    // edge is a half ring in xz plane; scale y for eye squash
-    edge.position.y = R * 1.07 * Math.cos(th) * sy;
-    g.add(holder);
-  } else {
-    // crease line above eye
-  }
-  // lashes
+  cornea.scale.set(1, sy, sz * 1.12); g.add(cornea);
+  // eyelid rig: hemisphere cap rotating around the eye's x axis
+  const lidFrame = new THREE.Group(); lidFrame.scale.set(1, sy, sz * 1.25); g.add(lidFrame);
+  const lidPivot = new THREE.Group(); lidFrame.add(lidPivot);
+  const cap = new THREE.Mesh(new THREE.SphereGeometry(R * 1.07, 48, 24, 0, Math.PI * 2, 0, Math.PI / 2), M.limb); lidPivot.add(cap);
+  const edge = new THREE.Mesh(new THREE.TorusGeometry(R * 1.07, R * 0.045, 8, 64), M.dark); edge.rotation.x = Math.PI / 2; lidPivot.add(edge);
   if (opt.lashes) {
     const side = opt.side;
-    const baseY = opt.lid > 0 ? R * 1.07 * Math.cos(Math.PI * (0.18 + opt.lid * 0.5)) * sy : R * sy * 0.92;
-    for (let k = 0; k < 4; k++) {
-      const a = 0.25 + k * 0.17;
-      const bx = side * R * Math.sin(a + 0.3) * 1.0, by = baseY - k * R * 0.07;
-      const start = new THREE.Vector3(bx, by, zf * 0.6);
-      const mid = start.clone().add(new THREE.Vector3(side * R * 0.25, R * 0.25, zf * 0.15));
-      const end = start.clone().add(new THREE.Vector3(side * R * 0.55, R * 0.3 - k * 0.02, -zf * 0.05));
-      const tg = new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(start, mid, end), 12, R * 0.035, 6, false);
-      g.add(new THREE.Mesh(tg, M.dark));
+    for (let i = 0; i < 4; i++) {
+      const a = 0.55 + i * 0.2;
+      const p = V3(side * Math.sin(a) * R * 1.07, 0, Math.cos(a) * R * 1.07);
+      const rad = p.clone().normalize();
+      const mid = p.clone().addScaledVector(rad, R * 0.25).add(V3(0, R * 0.22, 0));
+      const end = p.clone().addScaledVector(rad, R * 0.42).add(V3(0, R * 0.42 - i * R * 0.03, 0));
+      lidPivot.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(p, mid, end), 10, R * 0.034, 6, false), M.dark));
     }
   }
+  g.userData.set = ({ lx = 0, ly = 0, lid = 0, tilt = 0, shock = 0, heart: h = 0 }) => {
+    const x = lx * R * 0.3, y = ly * R * 0.3;
+    const dz = -zf * (1 - Math.sqrt(Math.max(0, 1 - (x / R) ** 2 - (y / (R * sy)) ** 2)));
+    irisG.position.set(x, y, dz);
+    const sc = (1 - 0.45 * shock) * (1 - h);
+    irisG.scale.set(sc, sc, 1); irisG.visible = sc > 0.02;
+    const hp = h <= 0 ? 0 : (h < 1 ? 1 + 2.7 * Math.pow(h - 1, 3) + 1.7 * Math.pow(h - 1, 2) : 1);
+    heartG.visible = h > 0.01; heartG.scale.setScalar(Math.max(0.001, hp));
+    lidPivot.rotation.x = -1.3 + lid * 2.93;
+    lidFrame.rotation.z = tilt;
+  };
   return g;
 }
+const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
 
 // ---------- build a character ----------
 export function makeStrawberry(kind, expr = {}) {
@@ -265,28 +253,24 @@ export function makeStrawberry(kind, expr = {}) {
     const g = projectGeometry(probe, new THREE.CircleGeometry(0.13, 40, 0, Math.PI * 2), side * (eyeX + 0.1), -0.17, 0.004);
     root.add(new THREE.Mesh(g, M.blush));
   });
-  const faceRoot = new THREE.Group(); root.add(faceRoot);
-  const cache = {}, cur = {};
-  function buildEyes(E) {
-    const g = new THREE.Group(); const lids = E.lid || [0, 0]; g.userData.eyes = [];
-    [-1, 1].forEach((side, i) => {
-      const h = front(probe, side * eyeX, eyeY);
-      const e = makeEye(M, irisColor, { r: R_EYE, tall: 1.18, look: E.look || [0, 0], lid: lids[i], lidTilt: (E.lidTilt || 0) * side,
-        lashes: kind === 'hanim', side, heart: E.heart, shock: E.shock });
-      e.position.copy(h.p).addScaledVector(h.n, -0.035);
-      e.lookAt(h.p.clone().add(h.n.clone().lerp(new THREE.Vector3(0, 0, 1), 0.55).normalize()));
-      g.add(e); g.userData.eyes.push(e);
-    });
-    return g;
-  }
-  function buildBrows(B) {
-    const g = new THREE.Group(); const bu = B.up || [0, 0], bt = B.tilt || [0, 0];
-    [-1, 1].forEach((side, i) => {
-      const cx = side * eyeX, cy = eyeY + 0.29 + bu[i], w = 0.13;
-      g.add(surfaceTube(probe, [[cx - w, cy + bt[i] * side * -1], [cx, cy + 0.035], [cx + w, cy + bt[i] * side]], kind === 'bey' ? 0.028 : 0.02, M.brow));
-    });
-    return g;
-  }
+  const eyes = [-1, 1].map((side) => {
+    const h = front(probe, side * eyeX, eyeY);
+    const e = makeEye(M, irisColor, { r: R_EYE, tall: 1.18, lashes: kind === 'hanim', side });
+    e.position.copy(h.p).addScaledVector(h.n, -0.035);
+    e.lookAt(h.p.clone().add(h.n.clone().lerp(V3(0, 0, 1), 0.55).normalize()));
+    root.add(e); return e;
+  });
+  const brows = [-1, 1].map((side) => {
+    const cx = side * eyeX, cy = eyeY + 0.3, w = 0.13;
+    const c = front(probe, cx, cy).p;
+    const tube = surfaceTube(probe, [[cx - w, cy], [cx, cy + 0.035], [cx + w, cy]], kind === 'bey' ? 0.028 : 0.02, M.brow, 0.02);
+    tube.geometry.translate(-c.x, -c.y, -c.z);
+    const piv = new THREE.Group(); piv.position.copy(c); piv.add(tube); piv.userData.base = c.clone(); root.add(piv);
+    return piv;
+  });
+  const mouthC = front(probe, 0, -0.27).p;
+  const mouthRoot = new THREE.Group(); mouthRoot.position.copy(mouthC); root.add(mouthRoot);
+  const mouths = {};
   function buildMouth(mk) {
     const g = new THREE.Group(); const my = -0.2; let mx = 0;
     const shape = new THREE.Shape(); let tongue = null;
@@ -298,34 +282,33 @@ export function makeStrawberry(kind, expr = {}) {
     else if (mk === 'flat') { shape.moveTo(-0.11, -0.04); shape.quadraticCurveTo(-0.05, -0.02, 0, -0.04); shape.quadraticCurveTo(0.05, -0.06, 0.11, -0.04); shape.lineTo(0.11, -0.058); shape.quadraticCurveTo(0.05, -0.078, 0, -0.058); shape.quadraticCurveTo(-0.05, -0.038, -0.11, -0.058); }
     else if (mk === 'frown') { shape.moveTo(-0.11, -0.08); shape.quadraticCurveTo(0, 0.0, 0.11, -0.08); shape.quadraticCurveTo(0, -0.03, -0.11, -0.08); }
     else if (mk === 'grin') { shape.moveTo(-0.14, 0.0); shape.quadraticCurveTo(0, -0.13, 0.14, 0.0); shape.quadraticCurveTo(0, -0.1, -0.14, 0.0); }
-    else if (mk === 'talkA') { shape.moveTo(-0.12, -0.01); shape.quadraticCurveTo(0, -0.24, 0.12, -0.01); shape.quadraticCurveTo(0, -0.04, -0.12, -0.01); tongue = [0, -0.13, 0.055, 0.03]; }
-    else if (mk === 'talkE') { shape.moveTo(-0.13, -0.02); shape.quadraticCurveTo(0, -0.16, 0.13, -0.02); shape.quadraticCurveTo(0, -0.05, -0.13, -0.02); tongue = [0, -0.1, 0.05, 0.02]; }
-    else if (mk === 'talkO') { shape.absellipse(0, -0.06, 0.06, 0.06, 0, Math.PI * 2); tongue = [0, -0.09, 0.035, 0.018]; }
+    else if (mk === 'talk') { shape.moveTo(-0.12, -0.02); shape.quadraticCurveTo(-0.1, -0.2, 0, -0.2); shape.quadraticCurveTo(0.1, -0.2, 0.12, -0.02); shape.quadraticCurveTo(0, -0.05, -0.12, -0.02); tongue = [0, -0.15, 0.055, 0.03]; }
     else { shape.moveTo(-0.14, 0.01); shape.quadraticCurveTo(0, -0.2, 0.14, 0.01); shape.quadraticCurveTo(0, -0.03, -0.14, 0.01); tongue = [0, -0.105, 0.06, 0.03]; }
-    g.add(new THREE.Mesh(projectGeometry(probe, new THREE.ShapeGeometry(shape, 32), mx, my, 0.006), M.mouth));
+    const add = (geo, mat) => { geo.translate(-mouthC.x, -mouthC.y, -mouthC.z); g.add(new THREE.Mesh(geo, mat)); };
+    add(projectGeometry(probe, new THREE.ShapeGeometry(shape, 32), mx, my, 0.006), M.mouth);
     if (tongue) { const t = new THREE.Shape(); t.absellipse(tongue[0], tongue[1], tongue[2], tongue[3], 0, Math.PI * 2);
-      g.add(new THREE.Mesh(projectGeometry(probe, new THREE.ShapeGeometry(t, 24), mx, my, 0.009), M.tongue)); }
+      add(projectGeometry(probe, new THREE.ShapeGeometry(t, 24), mx, my, 0.009), M.tongue); }
     return g;
   }
-  function setPart(type, key, builder, parent = faceRoot) {
-    const k = type + JSON.stringify(key);
-    if (!cache[k]) { cache[k] = builder(key); parent.add(cache[k]); }
-    const g = cache[k];
-    if (cur[type] && cur[type] !== g) cur[type].visible = false;
-    g.visible = true; cur[type] = g; return g;
-  }
+  let curMouth = null;
   const api = {
-    setFace({ eyes, brows, mouth }) {
-      if (eyes) setPart('e', eyes, buildEyes); if (brows) setPart('b', brows, buildBrows); if (mouth) setPart('m', mouth, buildMouth);
+    eyes: (L, Rr) => { eyes[0].userData.set(L); eyes[1].userData.set(Rr); },
+    brows: (up, tilt) => brows.forEach((b, i) => { const side = i ? 1 : -1; b.position.copy(b.userData.base).add(V3(0, up[i], 0)); b.rotation.z = Math.atan(tilt[i] * side / 0.13); }),
+    mouth: (mk, open = 1, wide = 1) => {
+      if (!mouths[mk]) { mouths[mk] = buildMouth(mk); mouthRoot.add(mouths[mk]); }
+      if (curMouth && curMouth !== mouths[mk]) curMouth.visible = false;
+      curMouth = mouths[mk]; curMouth.visible = true; mouthRoot.scale.set(wide, open, 1);
     },
-    blink(v) { if (cur.e) cur.e.userData.eyes.forEach((e) => e.scale.set(1, v, 1)); },
   };
   // sweat drop
   const sweat = new THREE.Mesh(new THREE.SphereGeometry(0.06, 20, 16), new THREE.MeshPhysicalMaterial({ color: '#bfe8ff', roughness: 0.05, clearcoat: 1, transparent: true, opacity: 0.85 }));
   { const p = sweat.geometry.attributes.position; for (let i = 0; i < p.count; i++) { const y = p.getY(i); if (y > 0) { const k2 = 1 - y / 0.06; p.setX(i, p.getX(i) * k2); p.setZ(i, p.getZ(i) * k2); p.setY(i, y * 2.2); } } sweat.geometry.computeVertexNormals(); }
-  { const h = front(probe, 0.62, 0.42); sweat.position.copy(h.p).addScaledVector(h.n, 0.05); }
-  sweat.visible = false; root.add(sweat);
-  api.sweat = (v) => { sweat.visible = v; };
+  const sweatBase = (() => { const h = front(probe, 0.62, 0.42); return h.p.addScaledVector(h.n, 0.05); })();
+  sweat.position.copy(sweatBase); sweat.visible = false; root.add(sweat);
+  api.sweat = (v, slide = 0) => { sweat.visible = v; sweat.position.copy(sweatBase).add(V3(0.02 * slide, -0.25 * slide, 0)); };
+  // crown (leaves/stem/bow) on a pivot so it can lag & jiggle
+  const crownPivot = new THREE.Group(); const crown = new THREE.Group(); crownPivot.add(crown); root.add(crownPivot);
+  api.crown = crownPivot;
 
   // ---- leaves (calyx)
   const topY = hitFrom(probe, new THREE.Vector3(0.003, 5, 0.002), new THREE.Vector3(0, -1, 0)).p.y;
@@ -346,7 +329,7 @@ export function makeStrawberry(kind, expr = {}) {
       y += Math.abs(v) * width * 0.35 + 0.025 * Math.sin(u * 9 + i) * u; // cupped & wavy
       return new THREE.Vector3(px, y, pz);
     });
-    const leaf = new THREE.Mesh(geo, M.leaf); leaf.castShadow = true; root.add(leaf);
+    const leaf = new THREE.Mesh(geo, M.leaf); leaf.castShadow = true; crown.add(leaf);
   }
   // hair / upright leaves for bey, small crown for hanim
   const upright = kind === 'bey' ? [[-0.5, 0.5, 0.9], [-0.1, 0.6, 1.0], [0.3, 0.55, 0.85], [0.7, 0.42, 0.7]] : [[-0.3, 0.26, 0.6], [0.3, 0.26, 0.6]];
@@ -361,11 +344,11 @@ export function makeStrawberry(kind, expr = {}) {
       const y = topY + 0.02 + up * 0.95 - 0.25 * u * u * L;
       return new THREE.Vector3(x, y, z - 0.05 + Math.abs(v) * width * 0.4);
     });
-    const leaf = new THREE.Mesh(geo, M.leaf); leaf.castShadow = true; root.add(leaf);
+    const leaf = new THREE.Mesh(geo, M.leaf); leaf.castShadow = true; crown.add(leaf);
   });
   const stem = new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(
     new THREE.Vector3(0, topY - 0.02, 0), new THREE.Vector3(0.02, topY + 0.14, 0), new THREE.Vector3(-0.06, topY + 0.22, -0.02)), 12, 0.035, 10, false), M.stem);
-  root.add(stem);
+  crown.add(stem);
 
   // ---- bow (hanim)
   if (kind === 'hanim') {
@@ -381,34 +364,24 @@ export function makeStrawberry(kind, expr = {}) {
     const knot = new THREE.Mesh(new THREE.SphereGeometry(0.055, 24, 16), M.bow); knot.scale.set(1, 1, 0.8); bow.add(knot);
     bow.position.copy(h.p).addScaledVector(h.n, 0.07);
     bow.lookAt(h.p.clone().add(h.n)); bow.rotateZ(-0.4); bow.scale.setScalar(1.7);
-    root.add(bow);
+    crown.add(bow);
   }
 
 
-  // ================= arms (pose variants) =================
-  function buildArms(pose) {
-    const g = new THREE.Group();
-    [-1, 1].forEach((side, i) => {
-      const h = hitFrom(probe, new THREE.Vector3(side * 4, -0.12, 0.1), new THREE.Vector3(-side, 0, 0));
-      const a = h.p.clone().addScaledVector(h.n, -0.03);
-      let mid, end; const p = pose[i];
-      if (p === 'hip') { mid = a.clone().add(new THREE.Vector3(side * 0.28, -0.05, 0.05)); end = a.clone().add(new THREE.Vector3(side * 0.06, -0.3, 0.12)); }
-      else if (p === 'wave') { mid = a.clone().add(new THREE.Vector3(side * 0.25, 0.12, 0.05)); end = a.clone().add(new THREE.Vector3(side * 0.32, 0.45, 0.08)); }
-      else if (p === 'up') { mid = a.clone().add(new THREE.Vector3(side * 0.2, 0.2, 0.05)); end = a.clone().add(new THREE.Vector3(side * 0.18, 0.55, 0.1)); }
-      else if (p === 'heart') { mid = a.clone().add(new THREE.Vector3(side * 0.08, -0.05, 0.3)); const f = front(probe, -side * 0.12, -0.42); end = f.p.addScaledVector(f.n, 0.1); }
-      else if (p === 'cross') { mid = a.clone().add(new THREE.Vector3(side * 0.06, -0.12, 0.35)); const f = front(probe, -side * 0.2, -0.45); end = f.p.addScaledVector(f.n, 0.1); }
-      else if (p === 'open') { mid = a.clone().add(new THREE.Vector3(side * 0.3, 0.02, 0.15)); end = a.clone().add(new THREE.Vector3(side * 0.45, 0.12, 0.3)); }
-      else { mid = a.clone().add(new THREE.Vector3(side * 0.16, -0.12, 0.06)); end = a.clone().add(new THREE.Vector3(side * 0.2, -0.38, 0.12)); }
-      const tube = new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(a, mid, end), 20, 0.05, 12, false), M.limb);
-      tube.castShadow = true; g.add(tube);
-      const hand = new THREE.Mesh(new THREE.SphereGeometry(0.085, 24, 16), M.limb);
-      hand.position.copy(end); hand.scale.set(1, 0.9, 0.85); hand.castShadow = true; g.add(hand);
-      const thumb = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 10), M.limb);
-      thumb.position.copy(end).add(new THREE.Vector3(-side * 0.055, 0.04, 0.05)); g.add(thumb);
-    });
-    return g;
-  }
-  api.setArms = (pose) => setPart('a', pose, buildArms, root);
+  crownPivot.position.set(0, topY, 0); crown.position.set(0, -topY, 0);
+  // ================= arms (two-bone rig) =================
+  const armRig = [-1, 1].map((side) => {
+    const h = hitFrom(probe, new THREE.Vector3(side * 4, -0.12, 0.1), new THREE.Vector3(-side, 0, 0));
+    const sh = new THREE.Group(); sh.position.copy(h.p).addScaledVector(h.n, -0.02); root.add(sh);
+    const up = new THREE.Mesh(new THREE.CapsuleGeometry(0.052, 0.17, 6, 12), M.limb); up.position.y = -0.1; up.castShadow = true; sh.add(up);
+    const el = new THREE.Group(); el.position.y = -0.2; sh.add(el);
+    const fo = new THREE.Mesh(new THREE.CapsuleGeometry(0.048, 0.16, 6, 12), M.limb); fo.position.y = -0.1; fo.castShadow = true; el.add(fo);
+    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.085, 24, 16), M.limb); hand.position.y = -0.22; hand.scale.set(1, 0.9, 0.85); hand.castShadow = true; el.add(hand);
+    const th = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 10), M.limb); th.position.set(-side * 0.055, -0.2, 0.05); el.add(th);
+    return { sh, el, side };
+  });
+  api.arm = (i, { sz, sx, eb }) => { const a = armRig[i]; a.sh.rotation.set(-sx, 0, a.side * sz); a.el.rotation.set(0, 0, -a.side * eb); };
+
   if (kind === 'bey') {
     // price sticker with barcode + syringe icon (no text)
     const c = document.createElement('canvas'); c.width = 256; c.height = 160; const x = c.getContext('2d');
@@ -444,7 +417,5 @@ export function makeStrawberry(kind, expr = {}) {
     sole.scale.set(0.95, 1, 1.45); sole.position.set(x + side * 0.02, feetY - 0.055, 0.08); root.add(sole);
   });
   root.userData = { feetY: feetY - 0.07, api };
-  api.setFace({ eyes: expr.eyes || {}, brows: expr.brows || {}, mouth: expr.mouth || 'smile' });
-  api.setArms(expr.arms || ['down', 'down']);
   return root;
 }

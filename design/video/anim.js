@@ -225,6 +225,7 @@ const bey = makeStrawberry('bey', { arms: ['hip', 'hip'] });
 const han = makeStrawberry('hanim', { arms: ['hip', 'hip'] });
 scene.add(bey, han);
 const B = bey.userData.api, Hn = han.userData.api;
+const _bf = 0;
 const bFeet = -bey.userData.feetY, hFeet = -han.userData.feetY;
 
 // ---------- FX: hearts / sparkles / overlay ----------
@@ -241,23 +242,59 @@ const overlay = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 2.0), new THREE.Mesh
 overlay.position.z = -0.75; overlay.renderOrder = 999; camera.add(overlay);
 
 // ---------- timeline helpers ----------
-const lines = Object.values(LIP);
+const lines = Object.values(LIP); const ENV = 24;
 function speaking(who, t) {
   for (const l of lines) {
     if (l.who !== who) continue;
-    const i = Math.floor((t - l.start) * FPS);
-    if (i >= 0 && i < l.env.length) return l.env[i];
+    const f = (t - l.start) * ENV; if (f < 0 || f >= l.env.length) continue;
+    const i = Math.floor(f); return lerp(l.env[i], l.env[Math.min(i + 1, l.env.length - 1)], f - i);
   }
   return -1;
 }
-function talkMouth(amp, rest, t) {
-  if (amp < 0) return rest;
-  if (amp > 0.55) return (Math.floor(t * 8) % 3 === 0) ? 'talkO' : 'talkA';
-  if (amp > 0.18) return 'talkE';
-  return rest === 'talkA' ? 'talkE' : (rest === 'O' ? 'O' : 'grin');
+function smoothAmp(who, t) { if (speaking(who, t) < 0) return -1; let s = 0, n = 0; for (const d of [-0.035, 0, 0.035]) { const a = speaking(who, t + d); if (a >= 0) { s += a; n++; } } return s / n; }
+const POSES = { down: [0.35, 0.15, 0.25], hip: [0.95, -0.1, 1.9], wave: [2.45, 0.25, 0.6], up: [2.6, 0.3, 0.3], heart: [0.45, 1.1, 1.35], cross: [0.42, 1.2, 1.6], open: [1.0, 0.7, 0.35] };
+function keyIndex(tab, t) { let i = 0; for (let j = 0; j < tab.length; j++) if (t >= tab[j][0]) i = j; return i; }
+function interp(tab, t, get, dur, lin = false) {
+  const i = keyIndex(tab, t); const cur = get(tab[i][1]); if (i === 0) return cur;
+  const prev = get(tab[i - 1][1]); const x = clamp((t - tab[i][0]) / dur); const k = lin ? x : ease(x);
+  return Array.isArray(cur) ? cur.map((v, n) => lerp(prev[n], v, k)) : lerp(prev, cur, k);
 }
-function pick(table, t) { let cur = table[0][1]; for (const [ts, v] of table) if (t >= ts) cur = v; return cur; }
-function blinkAt(t, offs) { const per = 3.1; const ph = ((t + offs) % per); return ph < 0.13 ? 1 - Math.sin(ph / 0.13 * Math.PI) * 0.92 : 1; }
+function pick(table, t) { return table[keyIndex(table, t)][1]; }
+const easeBack = (x) => { x = clamp(x); return 1 + 2.4 * Math.pow(x - 1, 3) + 1.4 * Math.pow(x - 1, 2); };
+function numKey(tab, t, dur) { const i = keyIndex(tab, t); if (i === 0) return tab[0][1]; return lerp(tab[i - 1][1], tab[i][1], easeBack((t - tab[i][0]) / dur)); }
+const hash = (n) => { const v = Math.sin(n * 78.233) * 43758.5453; return v - Math.floor(v); };
+function blinkCurve(t, list) { let b = 0; for (const s of list) { const d = t - s; if (d < 0 || d > 0.22) continue; b = Math.max(b, d < 0.07 ? d / 0.07 : 1 - (d - 0.07) / 0.15); } return clamp(b); }
+function mkBlinks(ph, tab) { const out = []; let x = ph; while (x < 31) { out.push(x); x += 2.3 + hash(x * 7.1 + ph) * 2.4; } tab.forEach((k) => { if (k[0] > 0) out.push(k[0] - 0.03); }); return out; }
+function saccade(t, ph) { const seg = Math.floor(t * 1.4 + ph); return [(hash(seg + ph * 31) - 0.5) * 0.18, (hash(seg + 77 + ph * 13) - 0.5) * 0.1]; }
+
+function drive(api, tab, who, t, blinks, ph) {
+  const e = pick(tab, t);
+  const lid = interp(tab, t, (x) => (x.eyes.lid || [0, 0]).map((v) => v * 0.85), 0.18);
+  const look = interp(tab, t, (x) => x.eyes.look || [0, 0], 0.14);
+  const tilt = interp(tab, t, (x) => x.eyes.lidTilt || 0, 0.18);
+  const shock = interp(tab, t, (x) => (x.eyes.shock ? 1 : 0), 0.12);
+  const heart = interp(tab, t, (x) => (x.eyes.heart ? 1 : 0), 0.35, true);
+  const sc = saccade(t, ph);
+  const bl = heart > 0.3 || shock > 0.5 ? 0 : blinkCurve(t, blinks);
+  const amp = smoothAmp(who, t);
+  const L = (l) => l + (1 - l) * bl;
+  api.eyes({ lx: look[0] + sc[0], ly: look[1] + sc[1], lid: L(lid[0]), tilt: -tilt, shock, heart: Math.max(0, heart) },
+           { lx: look[0] + sc[0], ly: look[1] + sc[1], lid: L(lid[1]), tilt, shock, heart: Math.max(0, heart) });
+  const up = interp(tab, t, (x) => x.brows.up || [0, 0], 0.2), bt = interp(tab, t, (x) => x.brows.tilt || [0, 0], 0.2);
+  const em = amp > 0 ? amp * 0.025 : 0;
+  api.brows([up[0] + em, up[1] + em], bt);
+  if (amp >= 0) api.mouth('talk', 0.22 + 1.05 * Math.sqrt(amp), 1.04 - 0.12 * amp); else api.mouth(e.mouth, 1, 1);
+  for (let i = 0; i < 2; i++) {
+    const p = interp(tab, t, (x) => POSES[x.arms[i]], 0.32);
+    const pose = e.arms[i];
+    if (pose === 'wave') p[2] += Math.sin(t * 9) * 0.35;
+    if (pose === 'up') { p[0] += Math.sin(t * 13 + i * 2) * 0.18; p[2] += Math.sin(t * 11 + i) * 0.2; }
+    if (pose === 'open' && amp > 0) p[1] += amp * 0.25;
+    if (pose === 'down') { p[0] += Math.sin(t * 1.3 + i + ph) * 0.04; }
+    api.arm(i, { sz: p[0], sx: p[1], eb: p[2] });
+  }
+  return { amp, e };
+}
 
 // expression tables [time, {eyes, brows, mouth, arms, sweat}]
 const WORRY = { up: [0.08, 0.08], tilt: [-0.045, -0.045] };
@@ -296,32 +333,87 @@ const hanTab = [
   [27.65, { eyes: { lid: [0.22, 0.22], look: [-0.8, 0] }, brows: {}, mouth: 'grin', arms: ['down', 'down'] }],
 ];
 
-// positions
+// ---------- body poses (pure functions of time) ----------
 const BEY0 = V(-1.3, SURF, 0.1), HAN0 = V(1.3, SURF, 0.0);
 const hopPts = [V(1.3, SURF, 0.0), V(1.15, SURF, 0.45), V(0.95, SURF, 0.8), V(0.8, SURF, 1.05), V(0.7, SURF, 1.15)];
-const HOPS = TL.hops;
-function hanPos(t) {
-  if (t < HOPS[0]) return { p: HAN0.clone(), yaw: -0.45, hop: 0 };
-  for (let i = 0; i < HOPS.length; i++) {
-    if (t < HOPS[i] + 0.45) {
-      const k = clamp((t - HOPS[i]) / 0.42); const a = hopPts[i], b = hopPts[i + 1];
-      const p = a.clone().lerp(b, ease(k)); p.y += Math.sin(Math.PI * k) * 0.45;
-      return { p, yaw: lerp(-0.6, -1.3, (i + k) / 4), hop: k };
-    }
-    if (i + 1 < HOPS.length && t < HOPS[i + 1]) return { p: hopPts[i + 1].clone(), yaw: lerp(-0.6, -1.3, (i + 1) / 4), hop: 0 };
-  }
-  const end = hopPts[4].clone();
-  if (t < 13.55) return { p: end, yaw: -1.3, hop: 0, lean: ease((t - 12.6) / 0.4) * 0.22 };
-  if (t < 20.0) return { p: end, yaw: lerp(-1.3, -0.65, ease((t - 13.55) / 0.4)), hop: 0 };
-  // step back next to bey before the hand
-  const k = ease((t - 20.0) / 0.45);
-  return { p: end.clone().lerp(V(0.95, SURF, 0.55), k).add(V(0, Math.sin(Math.PI * clamp((t - 20) / 0.45)) * 0.35, 0)), yaw: lerp(-0.65, -0.1, k), hop: 0 };
+const HOPS = TL.hops, AIR = 0.34, CROUCH = 0.12;
+const yawB = [[0, 0.15], [1.15, 0.55], [8.4, 0.35], [10.3, 0.45], [11.6, 0.75], [16.55, 0.6], [20.55, 0.45], [21.2, 0.2]];
+const yawH = [[0, -0.45], [5.0, -0.3], [8.4, -0.45], [10.3, -0.55], [11.0, -0.6], [12.94, -1.3], [13.55, -0.65], [20.0, -0.1]];
+const yawBb = [[23.4, 0.35], [24.6, 0.05], [24.95, 0.65], [25.35, 0.35], [27.6, 0.85]];
+const yawHb = [[23.4, -0.35], [25.7, -0.15], [26.3, -0.4], [27.6, -0.85]];
+function liftAt(t) { return t >= TL.handLift ? Math.pow(clamp((t - TL.handLift) / 0.85), 2) * 9 : 0; }
+function grabSwing(t, ph) { if (t < TL.grab) return 0; const d = t - TL.grab; return 0.16 * Math.sin(d * 7 + ph) * Math.exp(-d * 1.1) + Math.sin(t * 13 + ph) * 0.03; }
+function dropPose(t, t0, x) {
+  const k = clamp((t - t0) / 0.3); let y = 5.5 * (1 - k * k); let sq = 1 + 0.1 * (1 - k);
+  if (t - t0 >= 0.3) { const d = t - t0 - 0.3; y = Math.abs(Math.sin(d * 11)) * 0.32 * Math.exp(-d * 5.5); sq = 1 - 0.2 * Math.exp(-d * 7) * Math.cos(d * 22); }
+  return { p: V(BX + x, 1.35 + y, 0.55), sq };
 }
+function poseB(t) {
+  const ph = 0.3;
+  if (t >= 23.4) {
+    const d = dropPose(t, TL.drop - 0.27, -1.4); const amp = Math.max(0, speaking('B', t));
+    return { p: d.p, sq: d.sq + 0.014 * Math.sin(t * 2.6) + amp * 0.025, yaw: numKey(yawBb, t, 0.35), roll: 0.04 + 0.02 * Math.sin(t * 1.7) + amp * 0.03 * Math.sin(t * 6), pitch: 0 };
+  }
+  const p = BEY0.clone(); let yaw = numKey(yawB, t, 0.4), roll = 0.02 * Math.sin(t * 1.7 + ph), pitch = 0;
+  let sq = 1 + 0.014 * Math.sin(t * 2.6 + ph);
+  const love = t >= 1.9 && t < 5.2 ? clamp((t - 1.9) / 0.3) * (1 - clamp((t - 4.9) / 0.3)) : 0;
+  p.y += Math.abs(Math.sin(t * 3.2)) * 0.07 * love; roll += Math.sin(t * 3.2) * 0.05 * love; sq += Math.abs(Math.cos(t * 3.2)) * 0.03 * love;
+  if (t >= 8.6 && t < 10.4) { const k = easeBack((t - 8.75) / 0.3) * (1 - ease((t - 9.95) / 0.35)); sq += 0.08 * k; pitch -= 0.06 * k; }
+  if (t >= 15.8 && t < 16.55) { sq = 1; roll = Math.sin(t * 70) * 0.008; }
+  if (t >= 16.55 && t < 18.6) roll += Math.sin(t * 5) * 0.03;
+  if (t >= 20.55 && t < 21.2) pitch += 0.08 * ease((t - 20.55) / 0.2);
+  const amp = Math.max(0, speaking('B', t)); sq += amp * 0.025; roll += amp * 0.03 * Math.sin(t * 6);
+  if (t >= TL.grab) { p.x = lerp(p.x, -1.05, ease((t - TL.grab) / 0.3)); p.y += liftAt(t); roll += grabSwing(t, 0); }
+  return { p, sq, yaw, roll, pitch };
+}
+function poseH(t) {
+  const ph = 1.7;
+  if (t >= 23.4) {
+    const d = dropPose(t, TL.drop - 0.19, 1.4); const amp = Math.max(0, speaking('H', t));
+    return { p: d.p, sq: d.sq + 0.014 * Math.sin(t * 2.6 + ph) + amp * 0.025, yaw: numKey(yawHb, t, 0.35), roll: -0.04 + 0.02 * Math.sin(t * 1.7 + ph) + amp * 0.03 * Math.sin(t * 6 + 1), pitch: 0 };
+  }
+  let p = HAN0.clone(); let sq = 1 + 0.014 * Math.sin(t * 2.6 + ph), roll = 0.02 * Math.sin(t * 1.7 + ph), pitch = 0;
+  let yaw = numKey(yawH, t, 0.4);
+  // hops with anticipation / stretch / landing squash
+  HOPS.forEach((h, i) => {
+    if (t >= h - CROUCH && t < h) sq -= 0.14 * ease((t - h + CROUCH) / CROUCH);
+    if (t >= h && t < h + AIR) { const k = (t - h) / AIR; sq += k < 0.5 ? lerp(0.12, 0.0, k * 2) : lerp(0.0, 0.05, (k - 0.5) * 2); }
+    if (t >= h + AIR) { const d = t - h - AIR; sq -= 0.17 * Math.exp(-d * 9) * Math.cos(d * 20); }
+  });
+  if (t >= HOPS[0]) {
+    p = hopPts[HOPS.length].clone();
+    for (let i = 0; i < HOPS.length; i++) {
+      const h = HOPS[i];
+      if (t < h) { p = hopPts[i].clone(); break; }
+      if (t < h + AIR) { const k = (t - h) / AIR; p = hopPts[i].clone().lerp(hopPts[i + 1], k); p.y += Math.sin(Math.PI * k) * 0.5; yaw = lerp(-0.6 - i * 0.17, -0.6 - (i + 1) * 0.17, k); roll += Math.sin(Math.PI * k) * 0.06; break; }
+    }
+  }
+  if (t >= 12.94 && t < 13.6) pitch += 0.22 * ease((t - 12.94) / 0.3) * (1 - ease((t - 13.35) / 0.25));
+  if (t > 5 && t < 6.8) roll += Math.sin(t * 4) * 0.045;
+  if (t >= 20.0) { // little hop back next to bey
+    const k = clamp((t - 20.0) / 0.4); p = p.clone().lerp(V(0.95, SURF, 0.55), ease(k)); p.y += Math.sin(Math.PI * k) * 0.35;
+    if (t < 20.0) sq -= 0.1; if (t >= 20.4) { const d = t - 20.4; sq -= 0.14 * Math.exp(-d * 9) * Math.cos(d * 20); }
+  }
+  const amp = Math.max(0, speaking('H', t)); sq += amp * 0.025; roll += amp * 0.03 * Math.sin(t * 6 + 1);
+  if (t >= TL.grab) { p.x = lerp(p.x, 0.75, ease((t - TL.grab) / 0.3)); p.y += liftAt(t); roll += grabSwing(t, 1.3); }
+  return { p, sq, yaw, roll, pitch };
+}
+function applyPose(obj, api, feet, poseFn, t) {
+  const P = poseFn(t); const t2 = (t >= 23.4 && t - 0.09 < 23.4) ? t : t - 0.09; const Q = poseFn(t2);
+  obj.position.copy(P.p).add(V(0, feet * P.sq, 0));
+  obj.rotation.set(P.pitch, P.yaw, P.roll);
+  const w = 1 / Math.sqrt(P.sq); obj.scale.set(w, P.sq, w);
+  const dv = P.p.clone().sub(Q.p);
+  const lx = clamp(-dv.z * 1.4 + (P.sq - Q.sq) * 2.5 - (P.pitch - Q.pitch) * 1.2, -0.35, 0.35);
+  const lz = clamp(dv.x * 1.4 - (P.roll - Q.roll) * 1.3, -0.35, 0.35);
+  api.crown.rotation.set(lx + 0.012 * Math.sin(t * 3.1), (Q.yaw - P.yaw) * 0.7, lz + 0.012 * Math.sin(t * 2.3 + 1));
+}
+const blinksB = mkBlinks(0.7, beyTab), blinksH = mkBlinks(1.9, hanTab);
 
 // camera shots
 function shot(t) {
   const bc = bey.position.clone().add(V(0, 0.15, 0)), hc = han.position.clone().add(V(0, 0.2, 0));
-  const S = (t0, t1) => clamp((t - t0) / (t1 - t0));
+  const S = (t0, t1) => ease(clamp((t - t0) / (t1 - t0)));
   if (t < 1.9) { const k = ease(S(0, 1.9)); return { p: V(lerp(0.5, -0.6, k), lerp(4.6, 3.4, k), lerp(15, 9.5, k)), l: V(lerp(0, -0.6, k), 2.6, 0), f: 40 }; }
   if (t < 5.0) { const k = S(1.9, 5.0); return { p: bc.clone().add(V(lerp(1.4, 1.1, k), 0.5, lerp(5.8, 5.0, k))), l: bc.clone().add(V(0.15, 0.1, 0)), f: 40 }; }
   if (t < 8.4) { const k = S(5.0, 8.4); return { p: hc.clone().add(V(lerp(-1.3, -1.0, k), 0.5, lerp(5.5, 4.8, k))), l: hc.clone().add(V(-0.1, 0.1, 0)), f: 40 }; }
@@ -355,50 +447,11 @@ window.frame = (tIn) => {
   }
   hand.position.set(HAND_X, handY, HAND_Z); hand.visible = !inBasket && t >= TL.handIn; curlHand(curl);
 
-  // ---- characters state
-  const be = pick(beyTab, t), he = pick(hanTab, t);
-  const bAmp = speaking('B', t), hAmp = speaking('H', t);
-  B.setFace({ eyes: be.eyes, brows: be.brows, mouth: talkMouth(bAmp, be.mouth, t) }); B.setArms(be.arms); B.sweat(!!be.sweat);
-  Hn.setFace({ eyes: he.eyes, brows: he.brows, mouth: talkMouth(hAmp, he.mouth, t) }); Hn.setArms(he.arms); Hn.sweat(false);
-  B.blink(be.eyes.heart || be.eyes.shock ? 1 : blinkAt(t, 0.4));
-  Hn.blink(he.eyes.shock ? 1 : blinkAt(t, 1.9));
+  // ---- characters
+  const db = drive(B, beyTab, 'B', t, blinksB, 0.4), dh = drive(Hn, hanTab, 'H', t, blinksH, 2.1);
+  B.sweat(!!db.e.sweat, clamp((t - 15.9) / 2.2)); Hn.sweat(false);
+  applyPose(bey, B, bFeet, poseB, t); applyPose(han, Hn, hFeet, poseH, t);
 
-  const bob = (ph, amp) => Math.sin(t * 2.4 + ph) * amp;
-  if (!inBasket) {
-    // bey
-    let bp = BEY0.clone(), byaw = 0.45, bsq = 1 + bob(0, 0.012), bt = 0;
-    if (t < 1.15) byaw = 0.15; else if (t < 1.9) byaw = lerp(0.15, 0.55, ease((t - 1.15) / 0.4));
-    if (t >= 1.9 && t < 8.4) { byaw = 0.5; bt = Math.sin(t * 3) * 0.05; bp.y += Math.abs(Math.sin(t * 3)) * 0.05; }
-    if (t >= 8.4 && t < 10.3) { const k = ease((t - 8.75) / 0.25) * (1 - ease((t - 9.9) / 0.3)); bsq = 1 + 0.07 * k; byaw = 0.35; }
-    if (t >= 11 && t < 15.8) byaw = lerp(0.45, 0.75, ease((t - 11) / 1.5));
-    if (t >= 15.8 && t < 16.55) { bsq = 1; bt = Math.sin(t * 60) * 0.006; }
-    if (t >= 16.55 && t < 18.6) bt = Math.sin(t * 5) * 0.03;
-    if (bAmp > 0) bsq += bAmp * 0.02;
-    // hand lift
-    let bHang = 0;
-    if (t >= TL.grab) { bp.x = lerp(bp.x, -1.05, ease((t - TL.grab) / 0.3)); bp.y += lift; bHang = Math.sin(t * 9) * 0.08; }
-    bey.position.copy(bp).add(V(0, bFeet * bsq, 0)); bey.rotation.set(0, byaw, bt + bHang); bey.scale.set(1 / Math.sqrt(bsq), bsq, 1 / Math.sqrt(bsq));
-    // hanim
-    const hp = hanPos(t); let hsq = 1 + bob(1.3, 0.012); if (hp.hop) hsq = 1 + Math.sin(Math.PI * hp.hop) * 0.08 - (hp.hop > 0.85 ? 0.08 : 0);
-    if (hAmp > 0) hsq += hAmp * 0.02;
-    let hpp = hp.p.clone(); let hHang = 0;
-    if (t >= TL.grab) { hpp.x = lerp(hpp.x, 0.75, ease((t - TL.grab) / 0.3)); hpp.y += lift; hHang = Math.sin(t * 9 + 1) * 0.08; }
-    han.position.copy(hpp).add(V(0, hFeet * hsq, 0)); han.rotation.set(hp.lean || 0, hp.yaw, hHang + (t > 5 && t < 6.8 ? Math.sin(t * 4) * 0.04 : 0)); han.scale.set(1 / Math.sqrt(hsq), hsq, 1 / Math.sqrt(hsq));
-  } else {
-    // drop into basket
-    const drop = (t0, x, yaw) => {
-      const k = clamp((t - t0) / 0.28); let y = lerp(5.5, 0, k * k);
-      let sq = 1; if (k >= 1) { const d = t - t0 - 0.28; sq = 1 - Math.exp(-d * 9) * Math.sin(d * 28) * 0.18; }
-      return { p: V(BX + x, 1.35 + y, 0.55), sq, yaw };
-    };
-    let byaw = 0.35, hyaw = -0.35;
-    if (t >= 24.6 && t < 25.5) byaw = 0.35 + Math.sin((t - 24.6) * 7) * 0.35;
-    if (t >= 27.6) { const k = ease((t - 27.6) / 0.4); byaw = lerp(0.35, 0.85, k); hyaw = lerp(-0.35, -0.85, k); }
-    const bd = drop(TL.drop - 0.25, -1.4, byaw), hd = drop(TL.drop - 0.17, 1.4, hyaw);
-    const bsq = bd.sq + (bAmp > 0 ? bAmp * 0.02 : 0), hsq = hd.sq + (hAmp > 0 ? hAmp * 0.02 : 0);
-    bey.position.copy(bd.p).add(V(0, bFeet * bsq, 0)); bey.rotation.set(0, bd.yaw, 0.04); bey.scale.set(1 / Math.sqrt(bsq), bsq, 1 / Math.sqrt(bsq));
-    han.position.copy(hd.p).add(V(0, hFeet * hsq, 0)); han.rotation.set(0, hd.yaw, -0.04); han.scale.set(1 / Math.sqrt(hsq), hsq, 1 / Math.sqrt(hsq));
-  }
   // watchers look at the strawberries
   watchers.forEach((w) => { const target = t < 28.1 ? (w.g.position.x < BX ? bey.position : han.position) : V(BX, 3, 8); w.eyes.forEach((e) => { const d = target.clone().sub(w.g.position).normalize(); e.userData.p.position.x = d.x * 0.05; e.userData.p.position.y = 0.04 + d.y * 0.04; }); });
   // tomato
@@ -422,7 +475,8 @@ window.frame = (tIn) => {
 
   // ---- camera
   const c = shot(t);
-  camera.position.copy(c.p); camera.fov = c.f; camera.updateProjectionMatrix(); camera.lookAt(c.l);
+  const hx = (Math.sin(t * 1.3) + Math.sin(t * 2.9 + 1)) * 0.013, hy = (Math.sin(t * 1.7 + 2) + Math.sin(t * 3.3)) * 0.01;
+  camera.position.copy(c.p).add(V(hx, hy, 0)); camera.fov = c.f; camera.updateProjectionMatrix(); camera.lookAt(c.l.clone().add(V(hx * 0.5, hy * 0.5, 0)));
   renderer.render(scene, camera);
   return renderer.domElement.toDataURL('image/jpeg', 0.93);
 };
