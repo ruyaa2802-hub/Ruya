@@ -43,7 +43,7 @@
 Ultra-detailed cinematic 3D CGI character, anthropomorphic cockroach young man, waist-up portrait, sitting upright like a human, facing camera at a slight three-quarter angle.
 Realistic cockroach anatomy: glossy copper-brown chitin exoskeleton with subtle amber translucency at the edges, visible segmented plates on neck and abdomen, fine micro-scratches and specular highlights, two long thin curved antennae rising from the head and arching backward.
 Face: large, slightly bulging, glossy dark-brown eyes with realistic wet reflections, heavy half-lowered eyelids giving a sleepy, overconfident, unbothered look, a slight lopsided smirk, small mandible-like mouth that can articulate human speech.
-Body: four human-like arms are reduced to two expressive humanoid arms with three-segment insect hands, thin insect legs hidden under the frame.
+Body: two expressive humanoid arms with slim segmented insect hands, relaxed broad posture.
 Outfit: oversized loose white cotton t-shirt with soft fabric folds, a chunky silver curb-chain necklace resting on the shirt, a matte black wristwatch on the left wrist.
 Neutral seamless light-grey studio background, soft key light from the front-left, warm rim light, shallow depth of field.
 Style: high-end feature-film animation quality, photoreal textures, subsurface scattering, 85mm lens look, sharp focus on the eyes.
@@ -152,7 +152,7 @@ No background music, no narrator, no subtitles, no on-screen text, no watermark.
 
 ## 6. Birleştirme ve seslendirme (ücretsiz)
 
-**Seslendirme:** Ayrı bir seslendirme adımı yok. Veo diyaloğu dudak senkronuyla birlikte üretiyor. Ses tonu klipler arasında değişirse ağır klibi yeniden üret. Böylece ayrıca seslendirme ve dudak senkronu aracı gerekmez (bunlar çoğunlukla ücretli).
+**Seslendirme:** Ayrı bir seslendirme adımı yok. Veo diyaloğu dudak senkronuyla birlikte üretiyor. Ses tonu klipler arasında değişirse o klibi yeniden üret. Böylece ayrıca seslendirme ve dudak senkronu aracı gerekmez (bunlar çoğunlukla ücretli).
 
 **Kurgu (Edits veya CapCut ücretsiz, telefonda):**
 1. Yeni proje → 9:16 → üç klibi sırayla ekle.
