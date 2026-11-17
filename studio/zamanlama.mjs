@@ -1,6 +1,8 @@
 // Zamanlama: senaryodan (tahmini) ya da gerçek ses dosyasından (sessizlik analizi) zaman çizelgesi üretir.
 // Harici API yok — yalnızca yerel ffmpeg/ffprobe.
 import { execFileSync, spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 
 // Türkçe anlatım için ortalama hız (ağırlık birimi/sn). Ölçüm: belgesel anlatıcısı, ~14.6 harf/sn.
 const HIZ = 17.8;
@@ -71,7 +73,64 @@ function altyaziParcala(kelimeListesi) {
   return parcalar;
 }
 
+// Diyalog modu: her replik bir "cümle"; zamanlar ses/replikler.json'dan (yoksa metinden tahmin)
+function diyalogZamanlama(senaryo, sesYolu) {
+  const giris = senaryo.giris ?? 1.0, kapanis = senaryo.kapanis ?? 2.0;
+  const D = senaryo.diyalog;
+  const jsonYol = sesYolu ? path.join(path.dirname(sesYolu), 'replikler.json') : null;
+  let R, kaynak;
+  if (jsonYol && fs.existsSync(jsonYol)) { R = JSON.parse(fs.readFileSync(jsonYol, 'utf8')).replikler; kaynak = 'ses+replik'; }
+  else {
+    kaynak = 'tahmin'; let t = 0;
+    R = D.replikler.map((r, i) => {
+      t += r.once ?? (i ? 0.35 : 0);
+      const tempo = (D.karakterler[r.kim] || {}).tempo || 1;
+      const d = cumleler(r.okunus || r.metin).reduce((s, c) => s + cumleAgirlik(c), 0) / HIZ / tempo + 0.25 * (cumleler(r.metin).length - 1);
+      const o = { kim: r.kim, metin: r.metin, start: t, end: t + d }; t += d; return o;
+    });
+  }
+  const V = x => x + giris;
+  const sesSure = sesYolu ? sesSuresi(sesYolu) : 0;
+  const toplam = Math.max(V(R[R.length - 1].end) + kapanis, sesSure ? V(sesSure) + 0.3 : 0);
+  const out = {
+    kaynak, fps: senaryo.fps || 30, W: 1080, H: 1920, giris, toplam,
+    konusmaBas: V(R[0].start), konusmaSon: V(R[R.length - 1].end),
+    altyaziY: senaryo.altyaziY || 1390, ses: senaryo.ses || {}, acilis: senaryo.acilis ?? 0.6,
+    konusmacilar: senaryo.konusmacilar || {}, bolumler: [], altyazi: [],
+    replikler: R.map(r => ({ kim: r.kim, start: V(r.start), end: V(r.end) })),
+    agiz: R.filter(r => r.agiz).map(r => ({ kim: r.kim, start: V(r.start), d: r.agiz })),
+  };
+  senaryo.bolumler.forEach((b, i) => {
+    const rs = b.replikler.map(k => R[k]);
+    const start = i === 0 ? 0 : out.bolumler[i - 1].end;
+    const end = i === senaryo.bolumler.length - 1 ? toplam : V(rs[rs.length - 1].end + (b.sonBosluk ?? 0.35));
+    out.bolumler.push({
+      id: b.id, sahne: b.sahne || b.id, gecis: b.gecis || 'karart', gecisSure: b.gecisSure || 1.0, start, end,
+      konusma: { start: V(rs[0].start), end: V(rs[rs.length - 1].end) },
+      cumleler: rs.map(r => ({ metin: r.metin, kim: r.kim, start: V(r.start), end: V(r.end) })),
+    });
+  });
+  for (const r of R) {
+    // replik içindeki cümlelere süreyi ağırlıkla böl, kelimeleri dağıt
+    const cl = cumleler(r.metin), ag = cl.map(cumleAgirlik), top = ag.reduce((a, c) => a + c, 0);
+    let t = V(r.start); const d = r.end - r.start;
+    cl.forEach((c, j) => {
+      const cd = d * ag[j] / top;
+      for (const p of altyaziParcala(kelimeleriDagit(c, t, t + cd))) out.altyazi.push({ start: p[0].start, end: p[p.length - 1].end, kim: r.kim, kelimeler: p });
+      t += cd;
+    });
+  }
+  for (let i = 0; i < out.altyazi.length - 1; i++) {
+    const a = out.altyazi[i], b = out.altyazi[i + 1];
+    if (b.start - a.end < 0.45 && a.kim === b.kim) { a.end = b.start; a.devam = true; }
+    else a.end = Math.min(a.end + 0.25, b.start);
+  }
+  if (out.altyazi.length) out.altyazi[out.altyazi.length - 1].end += 0.4;
+  return out;
+}
+
 export function zamanlamaOlustur(senaryo, sesYolu = null) {
+  if (senaryo.diyalog) return diyalogZamanlama(senaryo, sesYolu);
   const giris = senaryo.giris ?? 2.0;
   const kapanis = senaryo.kapanis ?? 2.0;
   const bolumler = senaryo.bolumler.map(b => ({ ...b, cumleListesi: cumleler(b.metin) }));

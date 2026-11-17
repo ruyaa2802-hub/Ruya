@@ -174,7 +174,7 @@
         ctx.textAlign = 'center';
         ctx.strokeText(k.k, 0, 0);
         ctx.shadowBlur = 0;
-        ctx.fillStyle = aktif ? '#FFD54A' : gecti ? '#FFFFFF' : 'rgba(255,255,255,0.62)';
+        ctx.fillStyle = aktif ? ((TL.konusmacilar || {})[p.kim] || '#FFD54A') : gecti ? '#FFFFFF' : 'rgba(255,255,255,0.62)';
         ctx.fillText(k.k, 0, 0);
         ctx.restore();
         x += k.w + bosluk;
@@ -190,6 +190,17 @@
     const b = TL.bolumler;
     for (let i = 0; i < b.length; i++) if (t < b[i].end || i === b.length - 1) return i;
     return b.length - 1;
+  }
+
+  function agizDeger(kim, t) {
+    for (const a of TL.agiz || []) {
+      if (a.kim !== kim) continue;
+      const f = (t - a.start) * (TL.fps || 30);
+      if (f < 0 || f >= a.d.length - 1) continue;
+      const i = Math.floor(f), u = f - i;
+      return a.d[i] * (1 - u) + a.d[i + 1] * u;
+    }
+    return 0;
   }
 
   function sahneDurumu(i, t) {
@@ -214,6 +225,10 @@
         return c.start - b.start + oran * (c.end - c.start);
       },
       konusma: { start: b.konusma.start - b.start, end: b.konusma.end - b.start },
+      // dudak senkronu: karakterin o anki ağız açıklığı (0..1)
+      agiz: (kim, ileri = 0.03) => agizDeger(kim, t + ileri),
+      // şu an konuşan karakter (yoksa null)
+      konusan: () => { for (const r of TL.replikler || []) if (t >= r.start && t < r.end) return r.kim; return null; },
       R,
     };
   }

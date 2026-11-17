@@ -1,0 +1,245 @@
+{
+ "baslik": "Neco – Bölüm 1: İnsan beyninin gece vardiyası",
+ "fps": 30,
+ "giris": 1.5,
+ "kapanis": 2.7,
+ "acilis": 0.8,
+ "altyaziY": 1560,
+ "konusmacilar": {
+  "neco": "#FFB547",
+  "insan": "#9FD8FF"
+ },
+ "diyalog": {
+  "karakterler": {
+   "neco": {
+    "referans": "fettah",
+    "duygu": 0.85,
+    "cfg": 0.3,
+    "perde": -3,
+    "filtre": "equalizer=f=140:t=q:w=1:g=3,equalizer=f=2600:t=q:w=1:g=2"
+   },
+   "insan": {
+    "referans": "fahrettin",
+    "duygu": 0.35,
+    "cfg": 0.5,
+    "tempo": 0.93,
+    "seviye": 0.85,
+    "filtre": "lowpass=f=7500,equalizer=f=280:t=q:w=1:g=2"
+   }
+  },
+  "replikler": [
+   {
+    "kim": "insan",
+    "metin": "Ulan ben 2016’da o kıza neden öyle dedim ya…",
+    "okunus": "Ulan ben iki bin on altıda o kıza neden öyle dedim ya...",
+    "once": 0
+   },
+   {
+    "kim": "neco",
+    "metin": "Hassiktir! Yine mi başladın lan? Sekiz sene olmuş, kız evlenmiş çocuğu olmuş, sen hâlâ buradasın!",
+    "once": 0.5,
+    "duygu": 0.95
+   },
+   {
+    "kim": "insan",
+    "metin": "Acaba herkes benim ne kadar salak olduğumu düşünüyor mu?",
+    "once": 1.25,
+    "seviye": 0.85
+   },
+   {
+    "kim": "neco",
+    "metin": "Ulan senin beynin gece gece niye mesaiye kalıyor? Gündüz neredeydin amına koyayım?",
+    "once": 0.5
+   },
+   {
+    "kim": "insan",
+    "metin": "Hayatımda neyi yanlış yaptım acaba?",
+    "once": 1.0,
+    "seviye": 0.85
+   },
+   {
+    "kim": "neco",
+    "metin": "Önce şu uyku düzenini düzelt pezevenk! Hayatını sabah 3’te çözmeye çalışıyorsun, gündüz iki yumurta kıramıyorsun!",
+    "okunus": "Önce şu uyku düzenini düzelt pezevenk! Hayatını sabah üçte çözmeye çalışıyorsun, gündüz iki yumurta kıramıyorsun!",
+    "once": 0.4,
+    "duygu": 1.0
+   },
+   {
+    "kim": "neco",
+    "metin": "Hadi yat lan. Yarın yine hiçbir bok yapmayacaksın.",
+    "once": 1.15,
+    "duygu": 0.5,
+    "cfg": 0.4
+   }
+  ]
+ },
+ "bolumler": [
+  {
+   "id": "s1",
+   "sahne": "oda",
+   "replikler": [
+    0,
+    1
+   ],
+   "gecis": "capraz",
+   "gecisSure": 0.1
+  },
+  {
+   "id": "s2",
+   "sahne": "oda",
+   "replikler": [
+    2,
+    3
+   ],
+   "gecis": "capraz",
+   "gecisSure": 0.1
+  },
+  {
+   "id": "s3",
+   "sahne": "oda",
+   "replikler": [
+    4,
+    5,
+    6
+   ],
+   "gecis": "capraz",
+   "gecisSure": 0.1
+  }
+ ],
+ "ses": {
+  "sting": false,
+  "kapanisDarbe": false,
+  "whoosh": 0,
+  "pad": 0.55,
+  "akorlar": {
+   "oda": [
+    55.0,
+    82.41,
+    130.81,
+    164.81
+   ]
+  },
+  "pizz": {
+   "seviye": 0.85,
+   "bpm": 100,
+   "bas": 1.4
+  },
+  "ortam": [
+   {
+    "tip": "oda",
+    "bas": "s1",
+    "son": "s3",
+    "seviye": 1.0
+   },
+   {
+    "tip": "saat",
+    "bas": "s1",
+    "son": "s3",
+    "seviye": 1.3
+   }
+  ],
+  "isaretler": [
+   {
+    "tip": "darbe",
+    "replik": 0,
+    "ofset": -0.8,
+    "seviye": 0.8
+   },
+   {
+    "tip": "whip",
+    "replik": 0,
+    "son": true,
+    "ofset": 0.05,
+    "seviye": 1
+   },
+   {
+    "tip": "cekirdek",
+    "replik": 1,
+    "ofset": -0.2,
+    "seviye": 1
+   },
+   {
+    "tip": "yorgan",
+    "replik": 1,
+    "son": true,
+    "ofset": 0.55,
+    "sure": 1.3,
+    "seviye": 1
+   },
+   {
+    "tip": "whip",
+    "replik": 2,
+    "son": true,
+    "ofset": 0.05,
+    "seviye": 0.9
+   },
+   {
+    "tip": "tok",
+    "replik": 2,
+    "son": true,
+    "ofset": 0.5,
+    "seviye": 0.6
+   },
+   {
+    "tip": "yorgan",
+    "replik": 3,
+    "son": true,
+    "ofset": 0.3,
+    "sure": 0.6,
+    "seviye": 1.2
+   },
+   {
+    "tip": "whip",
+    "replik": 4,
+    "son": true,
+    "ofset": 0.05,
+    "seviye": 0.9
+   },
+   {
+    "tip": "whip",
+    "replik": 5,
+    "son": true,
+    "ofset": 0.08,
+    "seviye": 0.7
+   },
+   {
+    "tip": "tok",
+    "replik": 5,
+    "son": true,
+    "ofset": 0.75,
+    "seviye": 0.9
+   },
+   {
+    "tip": "cekirdek",
+    "replik": 6,
+    "ofset": -0.2,
+    "seviye": 1
+   },
+   {
+    "tip": "yorgan",
+    "replik": 6,
+    "son": true,
+    "ofset": 0.45,
+    "sure": 1.0,
+    "seviye": 1.2
+   },
+   {
+    "tip": "whip",
+    "replik": 6,
+    "son": true,
+    "ofset": 1.4,
+    "seviye": 0.8
+   },
+   {
+    "tip": "boing",
+    "replik": 6,
+    "son": true,
+    "ofset": 1.95,
+    "seviye": 1
+   }
+  ],
+  "anlatim": "highpass=f=70,aecho=0.8:0.5:18:0.06",
+  "ducking": 3,
+  "release": 500
+ }
+}

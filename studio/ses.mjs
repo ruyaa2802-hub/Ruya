@@ -130,9 +130,15 @@ export function sesYatagiUret(TL, dosya) {
 
   // ---- 6b) Senaryodaki genel ses işaretleri: pop / parilti / zap ----
   for (const is of (TL.ses && TL.ses.isaretler) || []) {
-    const b = bolumZaman(is.bolum); if (!b) continue;
-    const c = b.cumleler[Math.min(is.cumle || 0, b.cumleler.length - 1)];
-    const t0 = c.start + (is.oran || 0) * (c.end - c.start), n0 = Math.floor(t0 * SR);
+    let t0;
+    if (is.zaman != null) t0 = is.zaman;
+    else if (is.replik != null && TL.replikler) { const rp = TL.replikler[is.replik]; t0 = (is.son ? rp.end : rp.start) + (is.ofset || 0); }
+    else {
+      const b = bolumZaman(is.bolum); if (!b) continue;
+      const c = b.cumleler[Math.min(is.cumle || 0, b.cumleler.length - 1)];
+      t0 = c.start + (is.oran || 0) * (c.end - c.start);
+    }
+    const n0 = Math.floor(t0 * SR);
     const sev = is.seviye || 1;
     if (is.tip === 'pop') {
       for (let k = 0; k < (is.adet || 1); k++) for (let j = 0; j < SR * 0.18; j++) {
@@ -163,6 +169,46 @@ export function sesYatagiUret(TL, dosya) {
       for (let k = 0; k < (is.adet || 4); k++) for (const [ofs, a] of [[0, 1], [0.17, 0.7]]) {
         const nk = n0 + Math.floor((k * (is.aralik || 0.85) + ofs) * SR);
         for (let j = 0; j < SR * 0.25; j++) { const t = j / SR, v = Math.sin(2 * Math.PI * (48 + 30 * Math.exp(-t * 30)) * t) * Math.exp(-t * 18) * 0.38 * a * sev * (1 - k * 0.12); ekle(nk + j, v, v, 0.2); }
+      }
+    } else if (is.tip === 'whip') {           // hızlı kamera savurma
+      const f = svf(), d = 0.38;
+      for (let j = 0; j < SR * d; j++) {
+        const u = j / (SR * d), env = Math.sin(Math.PI * Math.pow(u, 0.6)) ** 2;
+        const v = f(r() * 2 - 1, 600 + 5000 * Math.sin(Math.PI * u), 1.4).bp * env * 0.35 * sev;
+        ekle(n0 + j, v * (1.2 - u), v * (0.2 + u), 0.3);
+      }
+    } else if (is.tip === 'cekirdek') {      // çekirdek çıtlatma: çatlama + kabuk tıkırtısı
+      const f = svf();
+      for (let j = 0; j < SR * 0.12; j++) {
+        const t = j / SR;
+        const v = (f(r() * 2 - 1, 3800, 2.5).bp * Math.exp(-t * 90) * 0.9 + (j < 40 ? (r() * 2 - 1) * 0.6 : 0) * Math.exp(-t * 400)
+          + f(r() * 2 - 1, 1500, 3).bp * Math.exp(-Math.max(0, t - 0.035) * 120) * (t > 0.035 ? 0.4 : 0)) * 0.5 * sev;
+        ekle(n0 + j, v, v * 0.8, 0.2);
+      }
+    } else if (is.tip === 'yorgan') {        // yorgan hışırtısı
+      const f = svf(), d = is.sure || 1.1;
+      for (let j = 0; j < SR * d; j++) {
+        const t = j / SR, u = t / d, env = Math.sin(Math.PI * u) * (0.6 + 0.4 * Math.sin(2 * Math.PI * 5 * t) ** 2);
+        const v = f(r() * 2 - 1, 1800 + 1200 * Math.sin(2 * Math.PI * 3 * t), 0.9).bp * env * 0.22 * sev;
+        ekle(n0 + j, v, v * 0.85, 0.2);
+      }
+    } else if (is.tip === 'boing') {         // komik yay sesi (göz kırpma)
+      for (let j = 0; j < SR * 0.7; j++) {
+        const t = j / SR, fr = 330 + 260 * Math.sin(2 * Math.PI * 9 * t) * Math.exp(-t * 4) + 120 * t;
+        const v = Math.sin(2 * Math.PI * fr * t) * Math.exp(-t * 4.5) * clamp(t * 300) * 0.12 * sev;
+        ekle(n0 + j, v, v, 0.5);
+      }
+    } else if (is.tip === 'tok') {          // küçük düşüş / ayak basma
+      for (let j = 0; j < SR * 0.2; j++) {
+        const t = j / SR, v = Math.sin(2 * Math.PI * (90 + 160 * Math.exp(-t * 40)) * t) * Math.exp(-t * 30) * 0.35 * sev;
+        ekle(n0 + j, v, v, 0.2);
+      }
+    } else if (is.tip === 'darbe') {        // dramatik vurgu (göz açılması)
+      for (let j = 0; j < SR * 1.6; j++) {
+        const t = j / SR;
+        const v = Math.sin(2 * Math.PI * (40 + 60 * Math.exp(-t * 10)) * t) * Math.exp(-t * 3) * 0.5 * sev
+          + [392, 466, 554].reduce((a, fr, k) => a + Math.sin(2 * Math.PI * fr * t + k), 0) * Math.exp(-t * 2.5) * clamp(t * 20) * 0.025 * sev;
+        ekle(n0 + j, v, v, 0.8);
       }
     } else if (is.tip === 'zap') {
       for (let j = 0; j < SR * 1.0; j++) {
@@ -292,8 +338,30 @@ export function sesYatagiUret(TL, dosya) {
     }
   }
 
+  // ---- 6f) Komik pizzicato (senaryo.ses.pizz): sinsi, parmak ucu bas yürüyüşü ----
+  if (TL.ses && TL.ses.pizz) {
+    const P = TL.ses.pizz, bpm = P.bpm || 96, adim = 60 / bpm / 2;
+    const dizi = P.notalar || [110, 0, 130.81, 0, 146.83, 0, 155.56, 146.83, 110, 0, 130.81, 0, 98, 0, 103.83, 0];
+    const a = P.bas ?? 0.5, z = P.son ?? TL.toplam - 1.0;
+    let k = 0;
+    for (let t0 = a; t0 < z; t0 += adim, k++) {
+      const f = dizi[k % dizi.length]; if (!f) continue;
+      const n0 = Math.floor(t0 * SR), vurgu = k % 8 === 0 ? 1 : 0.75;
+      const w = clamp((t0 - a) / 1.5) * clamp((z - t0) / 1.5) * (P.seviye ?? 1);
+      for (let j = 0; j < SR * 0.45; j++) {
+        const t = j / SR, env = Math.exp(-t * 9) * clamp(t * 400);
+        const v = (Math.sin(2 * Math.PI * f * t) + 0.45 * Math.sin(2 * Math.PI * f * 2 * t) * Math.exp(-t * 14) + 0.2 * Math.sin(2 * Math.PI * f * 3 * t) * Math.exp(-t * 20)) * env * 0.11 * vurgu * w;
+        ekle(n0 + j, v * 0.9, v, 0.4);
+      }
+      if (k % 4 === 2) for (let j = 0; j < SR * 0.05; j++) {        // hafif fırça/tık
+        const t = j / SR, v = (r() * 2 - 1) * Math.exp(-t * 120) * 0.025 * w;
+        ekle(n0 + j, v * 0.6, v, 0.2);
+      }
+    }
+  }
+
   // ---- 7) Kapanış darbesi ----
-  {
+  if (!TL.ses || TL.ses.kapanisDarbe !== false) {
     const t0 = TL.konusmaSon + 0.15, n0 = Math.floor(t0 * SR);
     for (let j = 0; j < SR * 4; j++) {
       const t = j / SR;

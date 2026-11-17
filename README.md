@@ -49,6 +49,8 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 ## Ücretsiz seslendirme (isteğe bağlı)
 `python3 studio/seslendir.py <video> [--ses fahrettin|dfki|fettah]` — açık kaynak Piper TTS ile Türkçe seslendirme üretir, kredi harcamaz (erkek sesleri; ElevenLabs kadar doğal değildir). İlk çalıştırmada model Hugging Face'ten indirilir.
 
+**Diyalog / çok karakter:** `/root/cbx-venv/bin/python studio/seslendir_diyalog.py <video>` — `senaryo.json` → `diyalog` alanındaki her karakter için ayrı ses rengi üretir, replik zamanlarını ve 30 fps ağız açıklığını (`ses/replikler.json`) yazar; sahneler `S.agiz(kim)` ile dudak senkronu yapar.
+
 **Daha doğal ses (önerilen ücretsiz seçenek):** `/root/cbx-venv/bin/python studio/seslendir_dogal.py <video>` — Chatterbox Multilingual (MIT lisanslı) ile üretir, her cümleyi Whisper ile kontrol edip en iyi denemeyi seçer. 30 sn metin ≈ 8–10 dk.
 
 ## Kredi koruma
@@ -63,5 +65,6 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 | [insan-atlasi-01-aglama](videolar/insan-atlasi-01-aglama) — İnsan Atlası #01: Neden bazen sebepsiz yere ağlamak isteriz? | Final hazır (ses: Evren) |
 | [insan-atlasi-03-unutamamak](videolar/insan-atlasi-03-unutamamak) — İnsan Atlası #03: Bizi görmezden gelen birini neden unutamayız? | Final hazır (ses: Evren) |
 | [ic-ses](videolar/ic-ses) — Beynin neden kendi kendine konuşur? | Final hazır (ses: Chatterbox, ücretsiz) |
+| [neco-01-gece-vardiyasi](videolar/neco-01-gece-vardiyasi) — Neco #01: İnsan beyninin gece vardiyası (diyalog, dudak senkronu) | Final hazır (sesler: Piper renk + Chatterbox, ücretsiz) |
 
 Yazı tipi: Inter (SIL OFL, `studio/fonts/`).
