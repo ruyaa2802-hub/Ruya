@@ -1,7 +1,7 @@
 # Bölüm 1 · "Kızların kendini savunma taktiği"
 ## Sahne 1 üretim paketi (karakter tasarımını sabitleme)
 
-> **Referans görsel notu:** Bu konuşmaya hamam böceği/kafe görseli eklenmedi. Depodaki tek görsel `karakterler/velun.png`. O görsel düz 2D bir çizim ve hamam böceği değil, yumurta kafalı, sarı gözlü, yeşil pelerinli bir karakter. Bu yüzden aşağıdaki paket senin yazılı tarifine göre hazırlandı. Viral görseli `karakterler/` klasörüne eklersen promptları ona göre ince ayarlarım.
+> **Kaynak:** Bu paket, proje brief'indeki karakter ve mekân tarifine göre sıfırdan hazırlandı.
 
 ---
 
