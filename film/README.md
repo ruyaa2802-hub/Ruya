@@ -3,7 +3,7 @@
 Çıktı: `output/guclu_gorunmek.mp4` (1080x1920, 9:16, 24 fps, 40 sn, Türkçe anlatım).
 
 Tamamen ücretsiz araçlarla, kodla üretildi:
-- **Görüntü:** `film.py` — Skia ile prosedürel elle çizim animasyonu (iki karede bir "titreyen" kurşun kalem çizgileri, pastel tarama, kâğıt dokusu, paralaks katmanlar). Ana karakter `karakterler/velun` tasarımına dayanır.
+- **Görüntü:** `film.py` — Skia ile prosedürel elle çizim animasyonu (iki karede bir "titreyen" kurşun kalem çizgileri, pastel tarama, kâğıt dokusu, paralaks katmanlar). Ana karakter ve mekân bu film için sıfırdan tasarlandı: minicik başlı, uzun burunlu, uzun bacak ve kollu, koyu teal paltolu ve rüzgârda uçuşan turuncu atkılı bir insan; ufukta alçalmış dev ay, kuma gömülü devasa taş eller, eğik telgraf direkleri.
 - **Ses:** `audio.py` — Piper (çevrimdışı nöral TTS, `tr_TR-dfki-medium`) anlatım + sentezlenmiş yumuşak piyano + rüzgâr, ayak sesi, çatlak, çarpma ve gözyaşı efektleri.
 - **Zamanlama:** `timeline.py` görüntü ve sesin ortak zaman çizelgesi.
 

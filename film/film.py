@@ -258,14 +258,20 @@ def ik(a, b, l1, l2, flip=1.0):
 
 
 # ---------------------------------------------------------------- characters
-MAIN = dict(robe=TURQ, skin=SKIN, eye='yellow', leg=40, T=44, neck=16, hrx=17, hry=21,
-            arm=17, collar=True, hat=None, limbw=3.4, hem=24)
-FIG_A = dict(robe=DPINK, skin=hx('#c88f73'), eye='white', leg=34, T=36, neck=9, hrx=13, hry=15,
-             arm=15, collar=False, hat='cone', limbw=3.0, hem=20)
-FIG_B = dict(robe=FORANGE, skin=hx('#b98468'), eye='white', leg=44, T=38, neck=28, hrx=11, hry=16,
-             arm=18, collar=False, hat=None, limbw=2.8, hem=17)
-FIG_C = dict(robe=TURQ_L, skin=hx('#d39a7a'), eye='white', leg=24, T=28, neck=6, hrx=15, hry=14,
-             arm=12, collar=True, hat='bobble', limbw=2.8, hem=16)
+# Main character, designed from scratch for this film: a thin person with a tiny head,
+# a long drooping nose, very long legs and arms, a dark teal coat and a long faded-orange
+# scarf that the wind keeps pulling backwards.
+COAT = hx('#4e6e6c')
+MAIN = dict(coat=COAT, trousers=hx('#2c3348'), skin=hx('#e2b9a0'), hair=hx('#232838'), hairstyle='tuft',
+            hat=None, leg=54, T=46, neck=7, hr=9.5, nose=10, arm=24, limbw=3.6, hem=13, scarf=ORANGE,
+            shoe=hx('#3a2a26'))
+FIG_A = dict(coat=DPINK, trousers=EARTH, skin=hx('#d8a88c'), hair=hx('#3a2a26'), hairstyle='bun', hat='brim',
+             leg=46, T=40, neck=6, hr=9, nose=5, arm=21, limbw=3.2, hem=12, scarf=None, shoe=INK)
+FIG_B = dict(coat=hx('#c9a063'), trousers=NAVY, skin=hx('#c99880'), hair=INK, hairstyle='tuft', hat=None,
+             leg=58, T=40, neck=22, hr=8.5, nose=8, arm=24, limbw=3.0, hem=11, scarf=None, shoe=INK)
+FIG_C = dict(coat=TURQ_L, trousers=DPINK, skin=hx('#e4b49a'), hair=INK, hairstyle='none', hat='beanie',
+             leg=28, T=28, neck=4, hr=10, nose=3, arm=15, limbw=3.0, hem=9, scarf=None, shoe=hx('#8a4a3a'))
+EYE_T = (4.2, 0.8)  # main character's eye in head coordinates (for the tear)
 
 
 def new_pose(style, x, y=0.0, s=1.0, face=1):
@@ -280,25 +286,23 @@ def rig(P):
     t = G['tq']
     L = st['leg']
     amp, ph = P['amp'], P['phase']
-    hop = P['hop']
-    P['Mp'] = Tm(P['x'], P['y'] - hop) @ Sm(P['s'] * P['face'], P['s'])
-    bob = amp * (2.6 + 3 * P['bounce']) * abs(math.sin(ph)) - P['bounce'] * amp * 4 * abs(math.cos(ph))
-    hip = np.array([0.0, -L + bob + P['kb'] * 17])
+    P['Mp'] = Tm(P['x'], P['y'] - P['hop']) @ Sm(P['s'] * P['face'], P['s'])
+    bob = amp * (2.8 + 3 * P['bounce']) * abs(math.sin(ph)) - P['bounce'] * amp * 4 * abs(math.cos(ph))
+    hip = np.array([0.0, -L + bob + P['kb'] * L * 0.42])
     trem = P['tremble']
     if trem:
         hip = hip + np.array([math.sin(t * 47) * 0.6, math.sin(t * 61 + 1) * 0.5]) * trem
-    sitpos = np.array([-4.0, -7.0])
-    hip = mix(hip, sitpos, P['sit'])
+    hip = mix(hip, np.array([-4.0, -7.0]), P['sit'])
     feet = []
     for i, off in enumerate([0.0, math.pi]):
         p = ph + off
-        fx = 13 * amp * math.sin(p) + (2.5 if i == 0 else -2.5)
-        lift = 5 * amp * max(0.0, math.cos(p))
+        fx = 0.3 * L * amp * math.sin(p) + (2.5 if i == 0 else -2.5)
+        lift = 0.12 * L * amp * max(0.0, math.cos(p))
         f = np.array([fx, -lift])
         if i == 0 and P['tryfoot'] > 0:
             tf = P['tryfoot']
-            f = f + np.array([7 * tf, -6 * tf + math.sin(t * 38) * 0.8 * tf])
-        sit_f = np.array([22.0, 0.0]) if i == 0 else np.array([17.0, 0.5])
+            f = f + np.array([9 * tf, -8 * tf + math.sin(t * 38) * 0.8 * tf])
+        sit_f = np.array([0.55 * L, 0.0]) if i == 0 else np.array([0.46 * L, 0.5])
         feet.append(mix(f, sit_f, P['sit']))
     P['hip'], P['feet'] = hip, feet
     theta = P['stoop'] * 50 + P['theta_add']
@@ -308,7 +312,7 @@ def rig(P):
     neckang = -P['stoop'] * 40 + P['droop'] * 35
     neckang = mix(neckang, P['droop'] * 52, P['sit'])
     P['Mn'] = P['Mt'] @ Tm(0, -st['T']) @ Rm(neckang)
-    P['Mh'] = P['Mn'] @ Tm(0, -st['neck']) @ Rm(P['droop'] * 8) @ Tm(0, -st['hry'] * 0.82)
+    P['Mh'] = P['Mn'] @ Tm(0, -st['neck']) @ Rm(P['droop'] * 8) @ Tm(0, -st['hr'] * 0.85)
     return P
 
 
@@ -368,177 +372,235 @@ def draw_leg(cv, P, i, shade):
     hip = P['hip'] + np.array([2.5 if i == 0 else -2.5, 0])
     foot = P['feet'][i]
     knee, end = ik(hip, foot, st['leg'] / 2, st['leg'] / 2, 1.0)
-    c = mix(st['skin'], INK, shade)
-    limb(cv, [hip, knee, end], st['limbw'], c, P['sid'] * 10 + i, P['alpha'])
-    # small pointed foot
-    fp = np.array([[end[0] - 2, end[1] - 1.2], [end[0] + 6, end[1] - 0.6], [end[0] + 6.5, end[1] + 0.8],
-                   [end[0] - 2.5, end[1] + 1.0]])
-    shape(cv, fp, fill=c, w=1.4, sid=P['sid'] * 10 + 5 + i, amp=0.4, fa=P['alpha'], oa=0.9 * P['alpha'], misreg=0.3)
+    c = mix(st['trousers'], INK, shade)
+    limb(cv, [hip, knee, end + np.array([0, -1.5])], st['limbw'], c, P['sid'] * 10 + i, P['alpha'])
+    # long pointed shoe
+    e = end
+    fp = np.array([[e[0] - 3, e[1] - 2.4], [e[0] + 5, e[1] - 1.8], [e[0] + 10, e[1] - 0.4], [e[0] + 9.5, e[1] + 0.9],
+                   [e[0] - 3.2, e[1] + 1.0]])
+    shape(cv, fp, fill=mix(st['shoe'], INK, shade), w=1.4, sid=P['sid'] * 10 + 5 + i, amp=0.4, fa=P['alpha'],
+          oa=0.9 * P['alpha'], misreg=0.3)
     return knee
 
 
 def default_arms(P):
-    st = P['style']
-    return [(6.0, -6.0), (2.0, -6.0)]
+    return [(6.0, 8.0), (2.0, 8.0)]
 
 
 def draw_arm(cv, P, i, target, shade):
     st = P['style']
     setM(cv, G['cam'] @ P['Mt'])
-    sh = np.array([3.0 if i == 0 else -2.0, -st['T'] + 6])
+    sh = np.array([3.0 if i == 0 else -2.0, -st['T'] + 5])
     el, hand = ik(sh, target, st['arm'], st['arm'], -1.0)
-    c = mix(st['skin'], INK, shade)
-    limb(cv, [sh, el, hand], st['limbw'] * 0.9, c, P['sid'] * 20 + i, P['alpha'])
-    # hand with long thin fingers (Velun)
     d = hand - el
     d = d / (np.hypot(*d) + 1e-6)
-    base = math.atan2(d[1], d[0])
-    fp = skia.Path()
-    for k, sp in enumerate([-0.55, -0.18, 0.18, 0.5]):
-        a = base + sp
-        Lf = 7.5 + (1.5 if k in (1, 2) else 0)
-        q = hand + np.array([math.cos(a), math.sin(a)]) * Lf
-        mid = hand + np.array([math.cos(a - 0.15), math.sin(a - 0.15)]) * Lf * 0.55
-        fp.moveTo(*map(float, hand))
-        fp.quadTo(float(mid[0]), float(mid[1]), float(q[0]), float(q[1]))
-    cv.drawPath(fp, strokep(1.2, INK, 0.85 * P['alpha'], rough=0.3, seed=G['bs'] + i))
-    shape(cv, ellipse_pts(hand[0], hand[1], 2.6, 2.2, n=8), fill=c, w=1.2, sid=P['sid'] * 20 + 7 + i,
-          amp=0.3, misreg=0.3, fa=P['alpha'], oa=0.85 * P['alpha'])
+    wrist = hand - d * 2.5
+    c = mix(st['coat'], INK, shade + 0.08)
+    limb(cv, [sh, el, wrist], st['limbw'] * 1.05, c, P['sid'] * 20 + i, P['alpha'])
+    # cuff
+    cv.drawCircle(float(wrist[0]), float(wrist[1]), st['limbw'] * 0.55, fillp(mix(c, PAPER, 0.25), P['alpha']))
+    # mitten-like hand with a small thumb
+    ang = math.atan2(d[1], d[0])
+    sk = mix(st['skin'], INK, shade)
+    hp = ellipse_pts(hand[0] + d[0] * 1.2, hand[1] + d[1] * 1.2, 3.4, 2.4, n=9, rot=ang)
+    shape(cv, hp, fill=sk, w=1.2, sid=P['sid'] * 20 + 7 + i, amp=0.25, misreg=0.3, fa=P['alpha'],
+          oa=0.85 * P['alpha'])
+    tp = skia.Path()
+    tb = hand + np.array([math.cos(ang - 1.2), math.sin(ang - 1.2)]) * 2.0
+    tp.moveTo(float(tb[0]), float(tb[1]))
+    te = tb + np.array([math.cos(ang - 0.5), math.sin(ang - 0.5)]) * 2.6
+    tp.lineTo(float(te[0]), float(te[1]))
+    cv.drawPath(tp, strokep(1.0, INK, 0.8 * P['alpha'], rough=0.2, seed=G['bs'] + i))
     return hand
 
 
-def draw_robe(cv, P):
+def draw_coat(cv, P):
     st = P['style']
+    a = P['alpha']
     setM(cv, G['cam'] @ P['Mt'])
     T, hm = st['T'], st['hem']
-    sway = math.sin(P['phase']) * 2.0 * P['amp']
-    pts = np.array([[-8, -T + 1], [0, -T - 1.5], [8, -T + 1], [12, -T * 0.55], [hm * 0.8, -T * 0.05],
-                    [hm + sway, 13], [hm * 0.5 + sway, 15.5], [0 + sway, 14], [-hm * 0.5 + sway, 15.5],
-                    [-hm + sway, 13], [-hm * 0.8, -T * 0.05], [-12, -T * 0.55]], float)
+    sway = math.sin(P['phase']) * 1.8 * P['amp']
+    flap = math.sin(G['t'] * 5.0) * 0.8
+    pts = np.array([[-3.5, -T - 1.5], [3.5, -T - 1.5], [8, -T + 3], [9.5, -T * 0.5], [10, -2],
+                    [hm + sway, 17], [sway, 18.5], [-hm + sway - flap, 17.5], [-10, -2], [-9.5, -T * 0.5],
+                    [-8, -T + 3]], float)
     sid = P['sid'] * 30
-    path = shape(cv, pts, fill=st['robe'], w=2.3, sid=sid, fa=P['alpha'], oa=0.92 * P['alpha'])
-    crayon(cv, path, mix(st['robe'], PAPER, 0.35), a=0.25 * P['alpha'], n=40, w=px(3), sid=sid, length=10, angle=80, spread=10)
-    back = spath(np.array([[-40, -T - 5], [-1, -T - 5], [1 + sway, 20], [-40, 20]]))
-    hatch(cv, path, angle=55, spacing=5.5, color=INK, a=0.3 * P['alpha'], w=0.9, clip=back, sid=sid)
-    # folds
+    path = shape(cv, pts, fill=st['coat'], w=2.3, sid=sid, fa=a, oa=0.92 * a)
+    crayon(cv, path, mix(st['coat'], PAPER, 0.3), a=0.25 * a, n=50, w=px(3), sid=sid, length=11, angle=85,
+           spread=10)
+    back = spath(np.array([[-30, -T - 5], [-1.5, -T - 5], [0 + sway, 22], [-30, 22]]))
+    hatch(cv, path, angle=55, spacing=5, color=INK, a=0.32 * a, w=0.9, clip=back, sid=sid)
+    # front edge, buttons, pocket, belt
     fp = skia.Path()
-    for fx in (-0.45, 0.05, 0.5):
-        fp.moveTo(fx * 9, -T * 0.6)
-        fp.quadTo(fx * hm * 0.9, 0, fx * hm * 1.02 + sway, 13.5)
-    cv.drawPath(fp, strokep(1.1, INK, 0.6 * P['alpha'], rough=0.6, seed=sid + G['bs']))
-    if st['collar']:
-        for k in range(5):
-            cx_ = -9 + k * 4.5
-            cy_ = -T - 1 + abs(k - 2) * 0.6
-            shape(cv, ellipse_pts(cx_, cy_ + 1.5, 3.0, 2.8, n=8), fill=PAPER, w=1.1, sid=sid + 40 + k,
-                  amp=0.25, misreg=0.3, fa=P['alpha'], oa=0.85 * P['alpha'])
+    fp.moveTo(3.0, -T - 1)
+    fp.quadTo(6.5, -T * 0.4, 7.5 + sway, 17.5)
+    fp.moveTo(-9.5, -T * 0.32)
+    fp.quadTo(0, -T * 0.29, 9.8, -T * 0.33)
+    fp.moveTo(-2, 4)
+    fp.lineTo(4.5, 4.4)
+    cv.drawPath(fp, strokep(1.1, INK, 0.65 * a, rough=0.5, seed=sid + G['bs']))
+    for k in range(3):
+        cv.drawCircle(5.6 + k * 0.4, -T * 0.72 + k * T * 0.2, 1.0, fillp(mix(st['coat'], INK, 0.55), a))
+
+
+def draw_scarf_tail(cv, P):
+    """Long scarf trailing in the wind (secondary motion). Drawn in world space."""
+    st = P['style']
+    t = G['t']
+    root = ap(P['Mt'], (1.0, -st['T'] - 0.5))
+    calm = max(P['sit'], 0.75 * warm(t))
+    n = 9
+    pts = [root]
+    for k in range(1, n):
+        wv = math.sin(t * 7.0 - k * 0.85) * (0.9 + k * 0.55)
+        wind = np.array([-7.2, -0.9 + wv * 0.55])
+        hang = np.array([-4.2 + math.sin(t * 1.3 - k) * 0.6, 3.6 if P['sit'] > 0.5 else 6.0])
+        step = mix(wind, hang, calm) * P['s']
+        pts.append(pts[-1] + step)
+    pts = np.array(pts)
+    setM(cv, G['cam'])
+    path = spath(wob(pts, P['sid'] * 77, 0.5), closed=False)
+    w = 4.6 * P['s']
+    cv.drawPath(path, skia.Paint(AntiAlias=True, Style=skia.Paint.kStroke_Style, StrokeWidth=w + px(2.6),
+                                 Color=col(INK, 0.9), StrokeCap=skia.Paint.kRound_Cap,
+                                 StrokeJoin=skia.Paint.kRound_Join,
+                                 PathEffect=skia.DiscretePathEffect.Make(px(6), px(0.6), G['bs'])))
+    cv.drawPath(path, skia.Paint(AntiAlias=True, Style=skia.Paint.kStroke_Style, StrokeWidth=w,
+                                 Color=col(st['scarf']), StrokeCap=skia.Paint.kRound_Cap,
+                                 StrokeJoin=skia.Paint.kRound_Join))
+    # knitted stripes
+    sp = skia.Path()
+    for k in range(1, n - 1, 2):
+        q = pts[k]
+        d = pts[k + 1] - pts[k - 1]
+        d = d / (np.hypot(*d) + 1e-6)
+        nrm = np.array([-d[1], d[0]]) * w * 0.45
+        sp.moveTo(*map(float, q - nrm))
+        sp.lineTo(*map(float, q + nrm))
+    cv.drawPath(sp, strokep(1.2, hx('#a8562e'), 0.8, rough=0.2, seed=G['bs']))
+    # fringe at the end
+    e, d = pts[-1], pts[-1] - pts[-2]
+    d = d / (np.hypot(*d) + 1e-6)
+    fr = skia.Path()
+    for j in (-1, 0, 1):
+        b = e + np.array([-d[1], d[0]]) * j * w * 0.3
+        fr.moveTo(*map(float, b))
+        fr.lineTo(*map(float, b + d * 3.5 * P['s']))
+    cv.drawPath(fr, strokep(1.0, INK, 0.8, rough=0.3, seed=G['bs']))
+
+
+def draw_scarf_wrap(cv, P):
+    st = P['style']
+    setM(cv, G['cam'] @ P['Mt'])
+    T = st['T']
+    p = shape(cv, ellipse_pts(0.5, -T - 0.5, 7.0, 3.6, n=10), fill=st['scarf'], w=1.8, sid=P['sid'] * 78,
+              amp=0.3, misreg=0.4)
+    hatch(cv, p, angle=80, spacing=2.4, color=hx('#a8562e'), a=0.5, w=0.7, sid=P['sid'] * 78)
 
 
 def draw_neck(cv, P):
     st = P['style']
     setM(cv, G['cam'] @ P['Mn'])
     nl = st['neck']
-    w = 4.2 if st is MAIN else 3.2
+    w = 2.6
     pts = np.array([[-w, 1], [-w * 0.9, -nl - 2], [w * 0.9, -nl - 2], [w, 1]])
-    path = shape(cv, pts, fill=mix(st['skin'], INK, 0.08), w=1.6, sid=P['sid'] * 40, closed=True, amp=0.3,
-                 misreg=0.3, fa=P['alpha'], oa=0.85 * P['alpha'])
-    if st is MAIN:
-        rp = skia.Path()
-        for k in range(1, 4):
-            y = -k * nl / 4
-            rp.moveTo(-w * 0.9, y)
-            rp.quadTo(0, y + 1.2, w * 0.9, y)
-        cv.drawPath(rp, strokep(1.0, INK, 0.7 * P['alpha'], rough=0.3, seed=G['bs']))
+    shape(cv, pts, fill=mix(st['skin'], INK, 0.1), w=1.5, sid=P['sid'] * 40, amp=0.25, misreg=0.3,
+          fa=P['alpha'], oa=0.85 * P['alpha'])
 
 
 def draw_head(cv, P):
+    """Side-profile head facing +x: tiny skull, long drooping nose, heavy-lidded eye."""
     st = P['style']
     a = P['alpha']
     setM(cv, G['cam'] @ P['Mh'])
-    rx, ry = st['hrx'], st['hry']
+    r = st['hr']
     sid = P['sid'] * 60
-    hp = shape(cv, ellipse_pts(0, 0, rx, ry, n=16, egg=0.06), fill=st['skin'], w=2.3, sid=sid, fa=a, oa=0.92 * a)
-    hatch(cv, hp, angle=60, spacing=4.5, color=INK, a=0.28 * a, w=0.8,
-          clip=spath(ellipse_pts(-rx * 1.25, 2, rx * 0.65, ry * 1.3)), sid=sid)
-    # ear antenna (Velun) on the back side of the head
-    if st is MAIN:
-        ep = spath(wob(np.array([[-rx + 1, 2], [-rx - 4, 8], [-rx - 3.5, 15]]), sid + 3, 0.3), closed=False)
-        cv.drawPath(ep, strokep(1.2, INK, 0.9 * a, rough=0.2, seed=G['bs']))
-        shape(cv, ellipse_pts(-rx - 3.5, 16.2, 1.6, 1.6, n=6), fill=hx('#c9785a'), w=1.0, sid=sid + 4, amp=0.2,
-              misreg=0.2, fa=a, oa=0.9 * a)
-        fp = skia.Path()
-        fp.moveTo(-6, -ry * 0.62)
-        fp.quadTo(3, -ry * 0.68, 11, -ry * 0.6)
-        fp.moveTo(-5, -ry * 0.5)
-        fp.quadTo(3, -ry * 0.55, 10, -ry * 0.48)
-        cv.drawPath(fp, strokep(0.9, INK, 0.55 * a, rough=0.3, seed=G['bs']))
-        shape(cv, ellipse_pts(3, -ry * 0.86, 2.2, 0.9, n=8), fill=hx('#c9785a'), w=0.8, sid=sid + 6, amp=0.1,
-              misreg=0.1, fa=a, oa=0.8 * a)
-    if st['hat'] == 'cone':
-        shape(cv, np.array([[-rx * 0.9, -ry * 0.55], [2, -ry * 2.6], [rx * 0.9, -ry * 0.55], [0, -ry * 0.45]]),
-              fill=NAVY, w=1.8, sid=sid + 8, fa=a, oa=0.9 * a)
-    if st['hat'] == 'bobble':
-        shape(cv, ellipse_pts(0, -ry * 0.75, rx * 0.8, ry * 0.4, n=10), fill=ORANGE, w=1.6, sid=sid + 8, fa=a, oa=0.9 * a)
-        shape(cv, ellipse_pts(1, -ry * 1.25, 3, 3, n=8), fill=PAPER, w=1.2, sid=sid + 9, fa=a, oa=0.9 * a)
-    # eyes (3/4 view, facing +x)
+    sk = st['skin']
+    t = G['t']
+    # nose first so the head outline overlaps its root
+    nl = st['nose']
+    npts = np.array([[r * 0.62, -r * 0.32], [r * 0.85 + nl * 0.55, r * 0.05], [r * 0.8 + nl, r * 0.38 + nl * 0.25],
+                     [r * 0.78 + nl * 0.75, r * 0.52 + nl * 0.2], [r * 0.7, r * 0.4]])
+    shape(cv, npts, fill=sk, w=1.6, sid=sid + 1, amp=0.3, misreg=0.4, fa=a, oa=0.9 * a)
+    hp = shape(cv, ellipse_pts(0, 0, r * 0.95, r, n=14, egg=0.05), fill=sk, w=2.1, sid=sid, fa=a, oa=0.92 * a)
+    hatch(cv, hp, angle=60, spacing=3.6, color=INK, a=0.25 * a, w=0.7,
+          clip=spath(ellipse_pts(-r * 1.1, r * 0.3, r * 0.6, r * 1.2)), sid=sid)
+    # cheek
+    cv.drawCircle(r * 0.35, r * 0.38, r * 0.28, fillp(hx('#d98a7a'), 0.35 * a, blur=1.5))
+    # ear
+    shape(cv, ellipse_pts(-r * 0.22, r * 0.12, r * 0.2, r * 0.3, n=8), fill=mix(sk, INK, 0.08), w=1.1,
+          sid=sid + 2, amp=0.2, misreg=0.2, fa=a, oa=0.85 * a)
+    # hair
+    hc = st['hair']
+    if st['hairstyle'] in ('tuft', 'bun'):
+        hpts = np.array([[r * 0.55, -r * 0.8], [r * 0.1, -r * 1.06], [-r * 0.55, -r * 0.92], [-r * 0.98, -r * 0.35],
+                         [-r * 0.95, r * 0.35], [-r * 0.6, r * 0.55], [-r * 0.5, r * 0.05], [-r * 0.15, -r * 0.45],
+                         [r * 0.45, -r * 0.5]])
+        p = shape(cv, hpts, fill=hc, w=1.6, sid=sid + 3, amp=0.35, misreg=0.3, fa=a, oa=0.9 * a)
+        crayon(cv, p, mix(hc, TURQ, 0.4), a=0.35 * a, n=14, w=px(1.6), sid=sid + 3, length=r * 0.6, angle=160,
+               spread=20)
+        if st['hairstyle'] == 'tuft':
+            sw = math.sin(t * 5.5) * 1.6
+            tf = skia.Path()
+            for j, (bx, L) in enumerate([(-r * 0.1, 7), (-r * 0.35, 5.5), (r * 0.15, 4.5)]):
+                tf.moveTo(bx, -r * 1.0)
+                tf.quadTo(bx - 2 + sw * 0.5, -r - L * 0.7, bx - 4.5 + sw, -r - L + j)
+            cv.drawPath(tf, strokep(1.3, hc, 0.95 * a, rough=0.3, seed=G['bs']))
+        else:
+            shape(cv, ellipse_pts(-r * 0.75, -r * 0.85, r * 0.42, r * 0.4, n=9), fill=hc, w=1.4, sid=sid + 4,
+                  amp=0.2, misreg=0.2, fa=a, oa=0.9 * a)
+    if st['hat'] == 'brim':
+        shape(cv, np.array([[-r * 0.8, -r * 0.6], [-r * 0.65, -r * 1.55], [r * 0.6, -r * 1.55], [r * 0.75, -r * 0.6]]),
+              fill=NAVY, w=1.6, sid=sid + 8, fa=a, oa=0.9 * a, amp=0.3)
+        shape(cv, ellipse_pts(0, -r * 0.62, r * 1.55, r * 0.18, n=10), fill=NAVY, w=1.5, sid=sid + 9, fa=a,
+              oa=0.9 * a, amp=0.3)
+    if st['hat'] == 'beanie':
+        shape(cv, ellipse_pts(-r * 0.05, -r * 0.55, r * 0.98, r * 0.62, n=10), fill=ORANGE, w=1.6, sid=sid + 8,
+              fa=a, oa=0.9 * a, amp=0.3)
+        shape(cv, ellipse_pts(-r * 0.1, -r * 1.25, 2.6, 2.6, n=8), fill=PAPER, w=1.2, sid=sid + 9, fa=a, oa=0.9 * a)
+    # eye (profile almond), heavy lid, tired under-eye line, sad brow
     lid = clamp(max(P['lid'], P['blink']))
     lx, ly = P['look']
-    if st['eye'] == 'yellow':
-        eyes = [(-3.0, 1.5, 6.8, 7.8), (10.0, 1.5, 5.0, 7.2)]
-    else:
-        eyes = [(1.0, 1.0, 3.2, 3.6), (8.5, 1.0, 2.6, 3.3)]
-    for k, (ex, ey, erx, ery) in enumerate(eyes):
-        ept = ellipse_pts(ex, ey, erx, ery, n=12)
-        epath = spath(wob(ept, sid + 20 + k, 0.25))
-        if st['eye'] == 'yellow':
-            shader = skia.GradientShader.MakeRadial(skia.Point(ex - erx * 0.2, ey - ery * 0.3), erx * 1.3,
-                                                    [col(YEL1, a), col(YEL2, a)])
-            cv.drawPath(epath, skia.Paint(AntiAlias=True, Shader=shader))
-            ring = skia.Path()
-            ring.addOval(skia.Rect.MakeXYWH(ex - erx * 0.62 + lx * 1.2, ey - ery * 0.6, erx * 1.2, ery * 1.25))
-            cv.drawPath(ring, strokep(0.7, hx('#b8860b'), 0.5 * a, rough=0.3, seed=G['bs']))
-        else:
-            cv.drawPath(epath, fillp(hx('#f1e8d6'), a))
-        # pupil
-        pr = 1.15 if st['eye'] == 'yellow' else 0.95
-        pxp = ex + lx * erx * 0.45
-        pyp = ey + ly * ery * 0.4 + lid * ery * 0.3
-        cv.save()
-        cv.clipPath(epath, skia.ClipOp.kIntersect, True)
-        cv.drawCircle(pxp, pyp, pr, fillp(INK, a))
-        cv.drawCircle(pxp - pr * 0.35, pyp - pr * 0.35, pr * 0.3, fillp(PAPER, 0.8 * a))
-        # eyelid: heavy, skin coloured, lowered by exhaustion
-        if lid > 0.02:
-            ytop = ey - ery - 1
-            ylid = ey - ery + 2 * ery * lid
-            lp = skia.Path()
-            lp.moveTo(ex - erx - 2, ytop)
-            lp.lineTo(ex + erx + 2, ytop)
-            lp.lineTo(ex + erx + 2, ylid - 1)
-            lp.quadTo(ex, ylid + 1.8, ex - erx - 2, ylid - 1)
-            lp.close()
-            cv.drawPath(lp, fillp(mix(st['skin'], INK, 0.12), a))
-            hatch(cv, lp, angle=40, spacing=2.6, color=INK, a=0.3 * a, w=0.6, sid=sid + 30 + k)
-            ln = skia.Path()
-            ln.moveTo(ex - erx - 1, ylid - 1)
-            ln.quadTo(ex, ylid + 1.8, ex + erx + 1, ylid - 1)
-            cv.drawPath(ln, strokep(1.3, INK, 0.9 * a, rough=0.2, seed=G['bs'] + k))
-        cv.restore()
-        cv.drawPath(epath, strokep(1.6, INK, 0.92 * a, rough=0.3, seed=sid + k + G['bs']))
-    # nose dots and small mouth
-    if st['eye'] == 'yellow':
-        cv.drawCircle(5.5, 11.0, 0.8, fillp(INK, 0.9 * a))
-        cv.drawCircle(8.3, 11.2, 0.75, fillp(INK, 0.9 * a))
-        m = skia.Path()
-        sm = P['smile']
-        m.moveTo(3.2, 15.5)
-        m.quadTo(6.5, 15.5 + 1.2 * sm - 0.5 * (1 - sm), 9.6, 15.3)
-        cv.drawPath(m, strokep(1.0, INK, 0.8 * a, rough=0.2, seed=G['bs']))
-    else:
-        m = skia.Path()
-        m.moveTo(3, 7)
-        m.quadTo(5.5, 7 + 1.5 * P['smile'], 8, 6.8)
-        cv.drawPath(m, strokep(0.9, INK, 0.8 * a, rough=0.2, seed=G['bs']))
+    ex, ey = r * 0.44, -r * 0.16
+    erx, ery = 2.5, 1.8
+    epath = spath(wob(np.array([[ex - erx, ey], [ex - erx * 0.2, ey - ery], [ex + erx, ey - ery * 0.2],
+                                [ex + erx * 0.3, ey + ery * 0.9]]), sid + 20, 0.12))
+    cv.drawPath(epath, fillp(hx('#f3ead8'), a))
+    cv.save()
+    cv.clipPath(epath, skia.ClipOp.kIntersect, True)
+    cv.drawCircle(ex + 0.4 + lx * 0.8, ey + ly * 0.6 + lid * 0.5, 1.0, fillp(INK, a))
+    if lid > 0.02:
+        ytop = ey - ery - 1
+        ylid = ey - ery + 2 * ery * lid
+        lp = skia.Path()
+        lp.moveTo(ex - erx - 1, ytop)
+        lp.lineTo(ex + erx + 1, ytop)
+        lp.lineTo(ex + erx + 1, ylid)
+        lp.lineTo(ex - erx - 1, ylid)
+        lp.close()
+        cv.drawPath(lp, fillp(mix(sk, INK, 0.12), a))
+    cv.restore()
+    ln = skia.Path()
+    ylid = ey - ery + 2 * ery * lid
+    ln.moveTo(ex - erx - 0.6, min(ey, ylid))
+    ln.quadTo(ex, ylid - 0.6, ex + erx + 0.6, ylid + 0.2)
+    cv.drawPath(ln, strokep(1.3, INK, 0.92 * a, rough=0.15, seed=G['bs']))
+    cv.drawPath(epath, strokep(0.8, INK, 0.6 * a, rough=0.15, seed=G['bs'] + 2))
+    bag = skia.Path()
+    bag.moveTo(ex - erx * 0.6, ey + ery + 0.8)
+    bag.quadTo(ex + 0.4, ey + ery + 2.0, ex + erx * 0.9, ey + ery + 0.6)
+    cv.drawPath(bag, strokep(0.7, INK, 0.45 * a, rough=0.2, seed=G['bs'] + 3))
+    sad = 1.0 - P['smile']
+    br = skia.Path()
+    br.moveTo(ex - erx, ey - ery - 2.2 + sad * 0.4)
+    br.lineTo(ex + erx * 0.8, ey - ery - 2.6 - sad * 1.2)
+    cv.drawPath(br, strokep(1.0, st['hair'], 0.85 * a, rough=0.15, seed=G['bs'] + 4))
+    # small mouth
+    m = skia.Path()
+    mx, my = r * 0.62, r * 0.66
+    m.moveTo(mx - 2.2, my)
+    m.quadTo(mx - 0.8, my + 1.2 * P['smile'] - 0.6 * sad, mx + 0.6, my - 0.2)
+    cv.drawPath(m, strokep(0.9, INK, 0.8 * a, rough=0.15, seed=G['bs'] + 5))
 
 
 def draw_sack(cv, M, alpha=1.0, sid=700):
@@ -565,14 +627,18 @@ def draw_person(cv, P, under=None):
         draw_burden(cv, burden_M(P), P['burden']['R'], P['burden'].get('dark', 0.0))
     if under:
         under(cv, P)
+    if st['scarf'] is not None:
+        draw_scarf_tail(cv, P)
     if P['sit'] < 0.5:
         draw_leg(cv, P, 0, 0.0)
-    draw_robe(cv, P)
+    draw_coat(cv, P)
     if P['sit'] >= 0.5:
         draw_leg(cv, P, 0, 0.0)
     if P['burden'] is not None:
         draw_straps(cv, P)
     draw_neck(cv, P)
+    if st['scarf'] is not None:
+        draw_scarf_wrap(cv, P)
     draw_head(cv, P)
     hand = draw_arm(cv, P, 0, arms[0], 0.0)
     return P
@@ -654,8 +720,8 @@ CAMK = [  # t, zoom, offset x (from character), center y
     (0.0, 0.92, 40, 0.75),
     (3.5, 1.15, 40, 0.75),
     (6.6, 1.5, 45, 0.74),
-    (8.2, 1.78, 75, 0.72),
-    (11.0, 1.82, 80, 0.72),
+    (8.2, 2.1, 70, 0.72),
+    (11.0, 2.05, 80, 0.72),
     (12.8, 1.95, 45, 0.76),
     (16.5, 2.15, 35, 0.78),
     (20.2, 2.45, 22, 0.78),
@@ -726,86 +792,142 @@ def layer_M(p, z, cx, horizon_screen, lift=0.0):
 
 
 def draw_moons_clouds(cv, t, z, cx, hs):
-    M = layer_M(0.04, z, cx, hs, lift=0)
-    a = 1.0
-    # moons (Velun's two moons)
-    setM(cv, Tm(0, 0) @ M)
+    """Sky layer: one enormous pale moon sinking behind the far hills, thin clouds, birds."""
+    M = layer_M(0.06, z, cx, hs)
+    setM(cv, M)
     G['z'] = 1.0
-    for (mx, my, r, sid) in [(-300, -980, 70, 901), (-205, -1070, 28, 902)]:
-        p = shape(cv, ellipse_pts(mx, my + math.sin(t * 0.3 + sid) * 4, r, r, n=18), fill=hx('#ecd9ab'), w=2.0,
-                  sid=sid, slow=True, fa=0.95)
-        crayon(cv, p, hx('#f7ead0'), a=0.35, n=30, w=3, sid=sid, length=r * 0.4)
-    # long drifting clouds
-    for k, (y0, L, sp, c) in enumerate([(-900, 520, 6, PINK), (-640, 380, 9, hx('#e8c3a6')),
-                                         (-1450, 600, 4, hx('#9fb5b0'))]):
-        x0 = ((k * 700 + t * sp) % 2400) - 1200 + cx * 0.04
-        pts = np.array([[x0 - L / 2, y0], [x0 - L * 0.2, y0 - 26], [x0 + L * 0.15, y0 - 34], [x0 + L / 2, y0 - 6],
-                        [x0 + L * 0.2, y0 + 10], [x0 - L * 0.25, y0 + 8]])
+    w_ = warm(t)
+    mx, my, r = 250, -150 + 30 * w_, 260
+    glow = skia.GradientShader.MakeRadial(skia.Point(mx, my), r * 1.9,
+                                          [col(hx('#f4e2bf'), 0.35), col(hx('#f4e2bf'), 0)])
+    cv.drawCircle(mx, my, r * 1.9, skia.Paint(Shader=glow))
+    p = shape(cv, ellipse_pts(mx, my, r, r, n=26), fill=mix(hx('#ead7b0'), hx('#f2dcb4'), w_), w=2.4, sid=901,
+              slow=True, fa=0.92, oa=0.6)
+    crayon(cv, p, hx('#f8ecd2'), a=0.35, n=120, w=px(4), sid=901, length=r * 0.25, angle=-20, spread=30)
+    for k, (dx, dy, rr) in enumerate([(-80, -60, 36), (60, 40, 52), (-20, 120, 24), (110, -110, 20), (-140, 70, 18)]):
+        cp = shape(cv, ellipse_pts(mx + dx, my + dy, rr, rr * 0.85, n=10), fill=hx('#dcc49c'), w=1.2, sid=903 + k,
+                   slow=True, fa=0.5, oa=0.35)
+    # long thin clouds drifting across the moon
+    for k, (y0, L, sp, c) in enumerate([(-260, 560, 7, hx('#d9b4a8')), (-470, 380, 10, hx('#e6c4a8')),
+                                         (-860, 640, 4, hx('#9fb5b0')), (-1150, 420, 6, hx('#8fa6a6'))]):
+        x0 = ((k * 650 + t * sp) % 2600) - 1300
+        pts = np.array([[x0 - L / 2, y0], [x0 - L * 0.2, y0 - 14], [x0 + L * 0.2, y0 - 18], [x0 + L / 2, y0 - 4],
+                        [x0 + L * 0.2, y0 + 7], [x0 - L * 0.25, y0 + 6]])
         path = spath(wob(pts, 910 + k, 1.0, slow=True))
-        cv.drawPath(path, fillp(c, 0.55, blur=4))
-        outline(cv, path, 1.2, 0.35, 910 + k)
-    # floating stones
-    for k, (sx, sy, r) in enumerate([(380, -760, 22), (470, -840, 11), (-470, -560, 15)]):
-        yy = sy + math.sin(t * 0.8 + k * 2) * 10
-        p = shape(cv, ellipse_pts(sx, yy, r * 1.3, r * 0.8, n=10, lump=0.15, seed=k), fill=hx('#7a7f86'), w=1.8,
-                  sid=920 + k, slow=True)
-        hatch(cv, p, angle=-30, spacing=4, a=0.3, w=0.8, sid=920 + k, slow=True,
-              clip=spath(ellipse_pts(sx, yy + r * 0.5, r * 1.5, r * 0.6)))
+        cv.drawPath(path, fillp(c, 0.6, blur=3))
+        outline(cv, path, 1.1, 0.3, 910 + k)
+    # a small flock crossing the sky (beginning and end)
+    for (t0, t1, y0, dirn) in [(0.0, 11.0, -700, -1), (29.0, 40.0, -820, -1)]:
+        if not (t0 <= t <= t1):
+            continue
+        u = (t - t0) / (t1 - t0)
+        for b in range(6):
+            bx = 700 - u * 1500 + (b % 3) * 34 + b * 18
+            by = y0 + (b % 3) * 22 - b * 6 + math.sin(t * 1.5 + b) * 6
+            fl = math.sin(t * 7 + b * 1.3)
+            s_ = 7 + b % 2 * 2
+            bp_ = skia.Path()
+            bp_.moveTo(bx - s_, by - fl * s_ * 0.5)
+            bp_.quadTo(bx - s_ * 0.4, by - s_ * 0.2, bx, by)
+            bp_.quadTo(bx + s_ * 0.4, by - s_ * 0.2, bx + s_, by - fl * s_ * 0.5)
+            cv.drawPath(bp_, strokep(1.6, hx('#2f3446'), 0.8, rough=0.3, seed=G['bs'] + b))
+
+
+HAND = np.array([[-0.35, 0], [-0.42, -0.62], [-0.62, -0.82], [-0.8, -1.05], [-0.68, -1.12], [-0.46, -0.95],
+                 [-0.44, -1.5], [-0.33, -1.58], [-0.22, -1.08], [-0.15, -1.62], [-0.02, -1.72], [0.07, -1.08],
+                 [0.12, -1.58], [0.25, -1.62], [0.3, -1.02], [0.36, -1.32], [0.47, -1.3], [0.45, -0.8],
+                 [0.4, -0.45], [0.35, 0]])
+
+
+def stone_hand(cv, x, h, flip, color, sid):
+    pts = HAND * np.array([flip * h * 0.85, h / 1.7]) + np.array([x, 4])
+    p = shape(cv, pts, fill=color, w=1.6, sid=sid, slow=True, amp=0.6, oa=0.55)
+    crayon(cv, p, mix(color, PAPER, 0.25), a=0.3, n=70, w=px(3.5), sid=sid, length=h * 0.12, angle=-80, spread=15)
+    hatch(cv, p, angle=60, spacing=5, a=0.22, w=0.8, sid=sid, slow=True,
+          clip=spath(np.array([[x - flip * h * 0.1, -h * 1.2], [x + flip * h * 0.6, -h * 1.2],
+                               [x + flip * h * 0.6, 10], [x - flip * h * 0.1, 10]])))
+    # cracks in the stone
+    cr = skia.Path()
+    cr.moveTo(x - flip * h * 0.1, -h * 0.25)
+    cr.lineTo(x + flip * h * 0.02, -h * 0.4)
+    cr.lineTo(x - flip * h * 0.05, -h * 0.52)
+    cv.drawPath(cr, strokep(1.0, INK, 0.4, rough=0.6, seed=sid))
 
 
 def draw_far(cv, t, z, cx, hs):
+    """Misty ridge and colossal stone hands half-buried in the far sand."""
     M = layer_M(0.15, z, cx, hs)
     setM(cv, M)
     G['z'] = 1.0
     w_ = warm(t)
-    xs = np.linspace(-2600, 2600, 40)
-    ys = -40 - 50 * np.sin(xs / 310) ** 2 - 30 * np.sin(xs / 140 + 1) ** 2
+    xs = np.linspace(-2600, 2600, 44)
+    ys = -60 - 70 * np.sin(xs / 420 + 0.8) ** 2 - 25 * np.sin(xs / 130) ** 2
     pts = np.vstack([np.stack([xs, ys], 1), [[2600, 3000], [-2600, 3000]]])
-    c = mix(hx('#5f7a80'), hx('#7f9694'), w_)
-    p = shape(cv, pts, fill=c, w=1.8, sid=930, slow=True, oa=0.7)
-    crayon(cv, p, mix(c, PAPER, 0.25), a=0.25, n=160, w=px(3.5), sid=930, length=30, angle=0, spread=8)
-    # lonely door frame standing in the distance
-    for (dx, sc) in [(520, 1.0)]:
-        door = np.array([[dx - 40, 0], [dx - 40, -190], [dx + 40, -190], [dx + 40, 0], [dx + 26, 0],
-                         [dx + 26, -176], [dx - 26, -176], [dx - 26, 0]])
-        shape(cv, door, fill=hx('#3d4a5e'), w=1.8, sid=931, slow=True, amp=0.8)
-        inner = np.array([[dx - 26, 0], [dx - 26, -176], [dx + 26, -176], [dx + 26, 0]])
-        cv.drawPath(spath(inner), fillp(hx('#f0cfa8'), 0.35 + 0.25 * w_))
-    # thin pillars with balanced stones
-    for k, (px_, h) in enumerate([(-640, 260), (-560, 180), (980, 300)]):
-        pil = np.array([[px_ - 7, 0], [px_ - 4, -h], [px_ + 4, -h], [px_ + 7, 0]])
-        shape(cv, pil, fill=hx('#4b5a6a'), w=1.6, sid=940 + k, slow=True)
-        shape(cv, ellipse_pts(px_ + 3, -h - 14, 20, 13, n=10, lump=0.12, seed=k), fill=hx('#56657a'), w=1.6,
-              sid=945 + k, slow=True)
+    c = mix(hx('#6f8a8c'), hx('#8aa09c'), w_)
+    p = shape(cv, pts, fill=c, w=1.6, sid=930, slow=True, oa=0.55)
+    crayon(cv, p, mix(c, PAPER, 0.3), a=0.25, n=160, w=px(3.5), sid=930, length=34, angle=0, spread=8)
+    xs = np.linspace(-2600, 2600, 40)
+    ys = -10 - 30 * np.sin(xs / 260 + 2) ** 2
+    pts = np.vstack([np.stack([xs, ys], 1), [[2600, 3000], [-2600, 3000]]])
+    c2 = mix(hx('#5d7479'), hx('#768c8a'), w_)
+    p2 = shape(cv, pts, fill=c2, w=1.8, sid=931, slow=True, oa=0.65)
+    hatch(cv, p2, angle=15, spacing=8, a=0.12, w=0.8, sid=931, slow=True)
+    sc = mix(hx('#4c5c6c'), hx('#66768a'), w_)
+    stone_hand(cv, 330, 340, 1, sc, 935)
+    stone_hand(cv, -420, 210, -1, sc, 936)
+    stone_hand(cv, 1250, 300, 1, sc, 937)
 
 
 def draw_mid(cv, t, z, cx, hs):
+    """Dusty mesas and a line of leaning telegraph poles with sagging wires."""
     M = layer_M(0.45, z, cx, hs)
     setM(cv, M)
     G['z'] = 1.0
     w_ = warm(t)
-    xs = np.linspace(-2400, 2400, 34)
-    ys = -6 - 26 * np.sin(xs / 230 + 0.5) ** 2 - 14 * np.sin(xs / 97) ** 2
-    pts = np.vstack([np.stack([xs, ys], 1), [[2400, 3000], [-2400, 3000]]])
+    pts = [[-2400, 3000], [-2400, -12]]
+    r = np.random.default_rng(4)
+    x = -2400.0
+    while x < 2400:
+        wdt = r.uniform(140, 320)
+        hgt = r.uniform(10, 46) if r.uniform() < 0.55 else r.uniform(0, 8)
+        pts += [[x + 18, -12 - hgt], [x + wdt - 18, -12 - hgt], [x + wdt, -12]]
+        x += wdt
+    pts += [[2400, -12], [2400, 3000]]
     c = mix(hx('#c79a8a'), hx('#d6ab98'), w_)
-    p = shape(cv, pts, fill=c, w=2.0, sid=950, slow=True, oa=0.8)
-    crayon(cv, p, mix(c, FORANGE, 0.4), a=0.28, n=200, w=px(3.5), sid=950, length=26, angle=-5, spread=10)
-    hatch(cv, p, angle=20, spacing=9, a=0.12, w=0.8, sid=950, slow=True)
-    # odd lollipop trees and a staircase to nowhere
-    for k, (tx, h, r) in enumerate([(-420, 150, 30), (-330, 95, 18), (300, 170, 26), (760, 120, 22)]):
-        sway = math.sin(t * 0.9 + k) * 3
-        tp = spath(wob(np.array([[tx, -10], [tx + 2, -h * 0.5], [tx + sway, -h]]), 960 + k, 0.6, True), closed=False)
-        cv.drawPath(tp, strokep(2.4, INK, 0.85, rough=0.6, seed=960 + k))
-        pc = shape(cv, ellipse_pts(tx + sway, -h - r * 0.8, r, r * 1.15, n=12, lump=0.08, seed=k),
-                   fill=mix(TURQ, NAVY, 0.25), w=1.8, sid=965 + k, slow=True)
-        hatch(cv, pc, angle=50, spacing=4.5, a=0.3, w=0.8, sid=965 + k, slow=True,
-              clip=spath(ellipse_pts(tx + sway - r * 0.6, -h - r * 0.5, r, r * 1.4)))
-    sx = 120
-    st_pts = [[sx, -8]]
-    for i in range(6):
-        st_pts += [[sx + i * 16, -8 - (i + 1) * 16], [sx + (i + 1) * 16, -8 - (i + 1) * 16]]
-    st_pts += [[sx + 96, -8]]
-    shape(cv, np.array(st_pts), fill=hx('#b07d68'), w=1.8, sid=970, slow=True, amp=0.6)
+    p = shape(cv, np.array(pts), fill=c, w=1.8, sid=950, slow=True, oa=0.75, amp=0.8)
+    crayon(cv, p, mix(c, FORANGE, 0.45), a=0.3, n=220, w=px(3.5), sid=950, length=26, angle=-3, spread=8)
+    hatch(cv, p, angle=20, spacing=9, a=0.1, w=0.8, sid=950, slow=True)
+    # telegraph poles
+    tops = []
+    for k in range(-6, 8):
+        px_ = k * 210 + 40
+        lean = math.sin(k * 1.7) * 7
+        h = 135 + math.sin(k * 2.3) * 12
+        top = np.array([px_ + math.sin(math.radians(lean)) * h, -12 - h * math.cos(math.radians(lean))])
+        pp = spath(wob(np.array([[px_, -8], top]), 960 + k + 6, 0.6, True), closed=False)
+        cv.drawPath(pp, strokep(3.0, hx('#4a3a33'), 0.9, rough=0.5, seed=960 + k + 6))
+        d = (top - np.array([px_, -8])) / h
+        nrm = np.array([-d[1], d[0]])
+        bar = spath(np.array([top + d * -10 - nrm * 14, top + d * -10 + nrm * 14]), closed=False)
+        cv.drawPath(bar, strokep(2.2, hx('#4a3a33'), 0.9, rough=0.4, seed=970 + k + 6))
+        tops.append((top + d * -10 - nrm * 12, top + d * -10 + nrm * 12))
+    wp = skia.Path()
+    for (a1, b1), (a2, b2) in zip(tops[:-1], tops[1:]):
+        for s1, s2 in ((a1, a2), (b1, b2)):
+            mid = (s1 + s2) / 2 + np.array([0, 26 + math.sin(t * 0.8 + s1[0]) * 1.5])
+            wp.moveTo(*map(float, s1))
+            wp.quadTo(float(mid[0]), float(mid[1]), float(s2[0]), float(s2[1]))
+    cv.drawPath(wp, strokep(0.9, INK, 0.55, rough=0.4, seed=980 + G['bs'] // 2))
+    # dry shrubs
+    for k, sx in enumerate([-700, -260, 330, 860]):
+        sh = skia.Path()
+        for j in range(7):
+            ang = math.radians(-160 + j * 23)
+            L = 14 + (j % 3) * 6
+            sh.moveTo(sx, -10)
+            sh.quadTo(sx + math.cos(ang) * L * 0.5, -10 + math.sin(ang) * L * 0.7,
+                      sx + math.cos(ang) * L, -10 + math.sin(ang) * L)
+        cv.drawPath(sh, strokep(1.3, hx('#6b5444'), 0.8, rough=0.6, seed=990 + k))
 
 
 ROCKS = None
@@ -1083,7 +1205,7 @@ def arm_targets(t, P, objs, A=None, sack_w=None):
     st = MAIN
     T_ = st['T']
     strap = [(8.0, -T_ + 16), (4.0, -T_ + 15)]
-    relax = [(5.0, -5.0), (1.0, -5.0)]
+    relax = [(6.0, 8.0), (2.0, 8.0)]
     arms = [np.array(strap[0]), np.array(strap[1])]
     m = ss(7.0, 7.6, t) * (1 - ss(11.8, 12.4, t))
     arms = [mix(arms[i], np.array(relax[i]), m) for i in range(2)]
@@ -1108,14 +1230,14 @@ def arm_targets(t, P, objs, A=None, sack_w=None):
                 arms[arm_i] = mix(arms[arm_i], tgt, reach * (0.85 if arm_i == 0 else 0.7))
     # kneeling: arms drop, then hold the knees while sitting
     drop = ss(KNEEL[0] + 0.8, KNEEL[1], t)
-    arms = [mix(arms[i], np.array(relax[i]) + np.array([4, 4]), drop) for i in range(2)]
+    arms = [mix(arms[i], np.array(relax[i]) + np.array([4, -2]), drop) for i in range(2)]
     if P['sit'] > 0:
-        knee_p = np.array([13.0, -18.0])
+        knee_p = np.array([17.0, -24.0])
         for i in range(2):
             arms[i] = mix(arms[i], p2t(P, knee_p + np.array([2 - 3 * i, -1])), P['sit'])
     reach_plant = ss(33.8, 35.6, t)
     if reach_plant > 0:
-        arms[0] = mix(arms[0], p2t(P, np.array([37.0, -8.0])), reach_plant)
+        arms[0] = mix(arms[0], p2t(P, np.array([40.0, -8.0])), reach_plant)
     return arms
 
 
@@ -1368,7 +1490,7 @@ def render(fi):
     if tq >= TEAR_FORM:
         Pt = main_pose(TEAR_FORM)
         rig(Pt)
-        eye_w = ap(Pt['Mh'], (10.0, 6.5))
+        eye_w = ap(Pt['Mh'], EYE_T)
         eye_land = np.array([eye_w[0], 3.0])
     if eye_land is not None and tq >= TEAR_FALL[1]:
         setM(cv, cam)
@@ -1402,7 +1524,7 @@ def render(fi):
     if eye_land is not None and tq < TEAR_FALL[1]:
         Pt = main_pose(TEAR_FORM)
         rig(Pt)
-        e = ap(Pt['Mh'], (10.0, 6.5))
+        e = ap(Pt['Mh'], EYE_T)
         if t < TEAR_FALL[0]:
             g = ss(TEAR_FORM, TEAR_FALL[0], t)
             pos = e + np.array([0, 2 * g])
