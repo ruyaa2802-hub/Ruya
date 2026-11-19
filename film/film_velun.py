@@ -1246,11 +1246,27 @@ def draw_text(cv, t):
         y += 78
 
 
+# Optional time warp (output time -> story time) so the picture follows a recorded narration.
+WARP = None
+if os.environ.get('FILM_WARP'):
+    import json
+    _w = json.load(open(os.environ['FILM_WARP']))
+    WARP = (np.array(_w['out']), np.array(_w['film']))
+    NF = int(round(_w['out'][-1] * FPS))
+
+
+def o2f(t_out):
+    if WARP is None:
+        return t_out
+    return float(np.interp(t_out, WARP[0], WARP[1]))
+
+
 def render(fi):
-    t = fi / FPS
+    t_out = fi / FPS
+    t = o2f(t_out)
     G['t'] = t
-    G['bs'] = int(t * 12)
-    G['tq'] = math.floor(t * 12) / 12  # characters animated "on twos"
+    G['bs'] = int(t_out * 12)
+    G['tq'] = o2f(math.floor(t_out * 12) / 12)  # characters animated "on twos"
     tq = G['tq']
     global FOOTP
     if FOOTP is None:
@@ -1472,7 +1488,8 @@ def _init():
     make_textures()
 
 
-def video_cmd(out, start=0, end=NF, workers=4):
+def video_cmd(out, start=0, end=None, workers=4):
+    end = NF if end is None else end
     from multiprocessing import Pool
     cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}',
            '-r', str(FPS), '-i', '-', '-c:v', 'libx264', '-preset', 'slow', '-crf', '15',
