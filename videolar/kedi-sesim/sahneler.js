@@ -8,7 +8,7 @@
   const TAU = Math.PI * 2;
   const A = {};
   const C = {
-    kontur: '#4a3226', tur: '#e9954c', turK: '#c8702e', turA: '#f6b878', bey: '#fbf4ea', beyG: '#e6d8c8', pembe: '#eaa3a0',
+    kontur: '#4a3226', tur: '#e8913f', turK: '#c0652a', turA: '#f6b878', bey: '#f6e4c8', beyG: '#e2cdb0', pembe: '#eaa3a0',
     ten: '#f1c9a9', tenG: '#d9a07e', sac: '#3e2a20', pijama: '#9fb6cc', pijamaG: '#7f97b0',
     duvar: '#f0dfc4', duvarG: '#e2c9a6', ahsap: '#a8724c', ahsapK: '#7c4f34', yorgan: '#f7efe2', yorganG: '#dccbb4', yesil: '#8fae7e',
   };
@@ -73,7 +73,7 @@
   // ======================= KEDİ: YAN GÖRÜNÜŞ =======================
   const POZ = {
     ayakta: { gx: -10, gy: -150, gr: 0, grx: 160, gry: 76, bx: 168, by: -228, kalx: -118, kaly: -142, kalca: 66, on: [64, -128, 78, 0], arka: [-118, -122, -128, 0], kk: [-168, -165], ka: -2.3, ke: 0.8 },
-    otur: { gx: -36, gy: -150, gr: -1.0, grx: 128, gry: 80, bx: 58, by: -300, kalx: -72, kaly: -78, kalca: 86, on: [32, -170, 46, 0], arka: [-70, -50, -10, -2], kk: [-118, -30], ka: 0.15, ke: -1.4 },
+    otur: { gx: -36, gy: -150, gr: -1.0, grx: 128, gry: 80, bx: 58, by: -300, kalx: -72, kaly: -78, kalca: 86, on: [32, -170, 46, 0], arka: [-70, -50, -10, -2], kk: [-110, -26], ka: 0.25, ke: -0.55 },
     yat: { gx: -10, gy: -64, gr: 0.04, grx: 172, gry: 62, bx: 150, by: -108, kalx: -108, kaly: -66, kalca: 70, on: [80, -50, 196, -8], arka: [-110, -40, -20, -6], kk: [-168, -60], ka: 0.4, ke: -1.6 },
   };
   const kar = (a, b, u) => { const o = {}; for (const k in a) o[k] = Array.isArray(a[k]) ? a[k].map((v, i) => lerp(v, b[k][i], u)) : lerp(a[k], b[k], u); return o; };
@@ -89,9 +89,11 @@
     ctx.fillStyle = 'rgba(70,40,20,0.22)'; ctx.beginPath(); ctx.ellipse(-10, 2, 200, 20, 0, 0, TAU); ctx.fill();
     ctx.translate(0, -Math.abs(Math.sin(fz)) * 6 * adim);
     const sal = Math.sin(t * (1.2 - yas * 0.5)) * (p.kuyrukSal ?? 0.35);
-    const kn = u => { const a = P.ka + sal * u * 1.2 + P.ke * u * u; return [P.kk[0] + u * 225 * Math.cos(a), P.kk[1] + u * 225 * Math.sin(a)]; };
+    const KN = [[P.kk[0], P.kk[1]]];
+    for (let i = 1; i <= 48; i++) { const u = i / 48, a = P.ka + sal * u * 1.6 + P.ke * u * 1.6 + (u > 0.75 ? (u - 0.75) * 7 * Math.sign(P.ke || 1) : 0); const q = KN[i - 1]; KN.push([q[0] + Math.cos(a) * 225 / 48, q[1] + Math.sin(a) * 225 / 48]); }
+    const kn = u => KN[Math.round(clamp(u) * 48)];
     const sol = [], sag = [];
-    for (let i = 0; i <= 12; i++) { const u = i / 12, [qx, qy] = kn(u), [rx2, ry2] = kn(Math.min(1, u + 0.01)), dx = rx2 - qx, dy = ry2 - qy, L = Math.hypot(dx, dy) || 1, w = lerp(30, 18, u); sol.push([qx - dy / L * w, qy + dx / L * w]); sag.unshift([qx + dy / L * w, qy - dx / L * w]); }
+    for (let i = 0; i <= 12; i++) { const u = i / 12, [qx, qy] = kn(u), [rx2, ry2] = u < 1 ? kn(Math.min(1, u + 0.03)) : kn(1), [px0, py0] = u < 1 ? [qx, qy] : kn(0.97), dx = rx2 - px0, dy = ry2 - py0, L = Math.hypot(dx, dy) || 1, w = lerp(30, 18, u); sol.push([qx - dy / L * w, qy + dx / L * w]); sag.unshift([qx + dy / L * w, qy - dx / L * w]); }
     const kq = boya(ctx, [...sol, ...sag], sd + 1, K.tur, { kenar: 18 });
     ctx.save(); ctx.clip(kq); ctx.strokeStyle = K.turK; ctx.lineWidth = 14; for (let i = 1; i < 6; i++) { const [a, b] = kn(i / 6); ctx.beginPath(); ctx.arc(a, b, 26, 0, TAU); ctx.stroke(); } ctx.restore();
     const bacak = (o, faz, uzak, on) => {
@@ -109,9 +111,9 @@
     ctx.save(); ctx.clip(gP);
     ctx.save(); ctx.translate(P.gx, P.gy); ctx.rotate(P.gr);
     ctx.globalAlpha = 0.75; ctx.strokeStyle = K.turK; ctx.lineCap = 'round';
-    for (let i = -3; i <= 3; i++) { ctx.lineWidth = 15 - Math.abs(i) * 2; ctx.beginPath(); ctx.moveTo(i * 42, -P.gry - 8); ctx.quadraticCurveTo(i * 42 + 16, -P.gry * 0.45, i * 42 + 4, -P.gry * 0.05); ctx.stroke(); }
+    for (let i = -4; i <= 4; i++) { ctx.lineWidth = 14 - Math.abs(i) * 1.2; ctx.beginPath(); ctx.moveTo(i * 36, -P.gry - 8); ctx.quadraticCurveTo(i * 36 + 18, -P.gry * 0.2, i * 36 + 2, P.gry * 0.5); ctx.stroke(); }
     ctx.globalAlpha = 1;
-    boya(ctx, elips(P.grx * 0.35, P.gry * 0.65, P.grx * 0.72, P.gry * 0.52, 18), sd + 11, K.bey, { kontur: false, kenar: 14 });
+    boya(ctx, elips(P.grx * 0.55, P.gry * 0.55, P.grx * 0.5, P.gry * 0.42, 18), sd + 11, K.bey, { kontur: false, kenar: 14 });
     ctx.restore(); ctx.restore();
     tuyler(ctx, elipsTuy(P.gx, P.gy, P.grx, P.gry, Math.PI * 1.05, Math.PI * 1.95, 18, 14, sd + 12), C.kontur, 2.2);
     boya(ctx, elips(P.kalx, P.kaly, P.kalca, P.kalca * 0.92, 18), sd + 13, K.tur, { kenar: 20 });
@@ -123,64 +125,83 @@
   }
 
   // ======================= KEDİ: BAŞ =======================
+  /* Tekir turuncu kedi: geniş yanaklı köşeli yüz, uzun sivri kulaklar (krem tüylü), iri yuvarlak yeşil gözler (kirpikli),
+   * krem alt yüz, pembe-kırmızı burun, gülümseyen ağız, alında çizgiler ve tepede kıvrık tutam. */
   function kediBas(ctx, x, y, s, p) {
     const t = p.t || 0, yas = p.yas || 0, K = renk(yas), yan = clamp(p.yan || 0), sd = 400;
     ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
-    const kx = yan * 22;
+    const kx = yan * 24;
+    // kulaklar (uzun, sivri)
     for (const k of [-1, 1]) {
-      const uz = k === -1 ? 1 - yan * 0.25 : 1;
-      ctx.save(); ctx.translate(k * 92 + kx * 0.6 - (k === -1 ? yan * 14 : 0), -96); ctx.rotate(k * (0.32 + (p.kulak || 0) * 0.5)); ctx.scale(uz, 1);
-      boya(ctx, [[-56, 46], [-20, -40], [4, -104], [28, -46], [56, 42]], sd + 1 + k, K.tur, { kenar: 18 });
-      boya(ctx, [[-34, 38], [-10, -30], [4, -78], [16, -30], [32, 34]], sd + 3 + k, C.pembe, { kontur: false, golge: false });
-      ctx.strokeStyle = C.bey; ctx.lineWidth = 2.2; for (let i = 0; i < 7; i++) { ctx.beginPath(); ctx.moveTo(-16 + i * 5, 36); ctx.quadraticCurveTo(-14 + i * 5, -6, -10 + i * 4 + k * 4, -34 - i * 2); ctx.stroke(); }
+      const uz = k === -1 ? 1 - yan * 0.3 : 1;
+      ctx.save(); ctx.translate(k * 88 + kx * 0.6 - (k === -1 ? yan * 16 : 0), -92); ctx.rotate(k * (0.22 + (p.kulak || 0) * 0.55)); ctx.scale(uz, 1);
+      boya(ctx, [[-58, 50], [-34, -40], [-6, -140], [14, -136], [40, -40], [60, 44]], sd + 1 + k, K.tur, { kenar: 18 });
+      boya(ctx, [[-36, 40], [-20, -30], [-2, -104], [10, -100], [24, -30], [36, 38]], sd + 3 + k, '#e7a090', { kontur: false, golge: false });
+      ctx.strokeStyle = K.bey; ctx.lineWidth = 3; ctx.lineCap = 'round';
+      for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.moveTo(-18 + i * 7, 40); ctx.quadraticCurveTo(-16 + i * 7 + k * 6, 0, -12 + i * 5 + k * 10, -26 - i * 4); ctx.stroke(); }
       ctx.restore();
     }
-    const yuz = [[-150, 30], [-138, -30], [-104, -92], [-40, -122], [40, -122], [104, -92], [138, -30], [150, 30], [126, 84], [70, 122], [0, 134], [-70, 122], [-126, 84]];
-    const yP = boya(ctx, yuz, sd + 10, K.tur, { isik: [-50, -70, 170], kenar: 34 });
-    tuyler(ctx, [[-150, 30, -1, 0.1, 18], [-146, 54, -0.9, 0.4, 20], [-132, 80, -0.8, 0.6, 18], [150, 30, 1, 0.1, 18], [146, 54, 0.9, 0.4, 20], [132, 80, 0.8, 0.6, 18], [-104, 112, -0.5, 0.9, 16], [104, 112, 0.5, 0.9, 16]], sd + 11, C.kontur, 2.4);
+    // köşeli, geniş yanaklı yüz
+    const yuz = [[-168, 52], [-150, -10], [-118, -76], [-62, -112], [0, -122], [62, -112], [118, -76], [150, -10], [168, 52], [120, 96], [60, 128], [0, 138], [-60, 128], [-120, 96]];
+    const yP = boya(ctx, yuz, sd + 10, K.tur, { isik: [-50, -70, 180], kenar: 34 });
     ctx.save(); ctx.clip(yP);
-    ctx.strokeStyle = K.turK; ctx.lineCap = 'round'; ctx.globalAlpha = 0.85;
-    for (const [a, b, w] of [[-26, -118, 10], [0, -124, 11], [26, -118, 10]]) { ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(a + kx, b); ctx.quadraticCurveTo(a * 1.1 + kx, b + 26, a * 0.8 + kx, b + 48); ctx.stroke(); }
-    for (const k of [-1, 1]) { ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(k * 140 + kx * 0.3, -10); ctx.quadraticCurveTo(k * 110 + kx * 0.3, 0, k * 92 + kx * 0.3, -6); ctx.stroke(); ctx.beginPath(); ctx.moveTo(k * 142, 26); ctx.quadraticCurveTo(k * 116, 34, k * 98, 28); ctx.stroke(); }
+    // alın ve yanak çizgileri
+    ctx.strokeStyle = K.turK; ctx.lineCap = 'round'; ctx.globalAlpha = 0.9;
+    for (const [a, w] of [[-34, 9], [-12, 11], [12, 11], [34, 9]]) { ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(a * 1.3 + kx, -124); ctx.quadraticCurveTo(a * 1.15 + kx, -96, a * 0.9 + kx, -66); ctx.stroke(); }
+    for (const k of [-1, 1]) for (let i = 0; i < 3; i++) { ctx.lineWidth = 10 - i * 2; ctx.beginPath(); ctx.moveTo(k * 170, -2 + i * 26); ctx.quadraticCurveTo(k * 136, 4 + i * 26, k * (112 - i * 4), -2 + i * 24); ctx.stroke(); }
     ctx.globalAlpha = 1;
-    boya(ctx, [[kx - 12, -70], [kx + 12, -70], [kx + 30, 0], [kx + 92, 40], [kx + 96, 96], [kx + 40, 136], [kx - 40, 136], [kx - 96 + yan * 30, 96], [kx - 92 + yan * 30, 40], [kx - 30, 0]], sd + 12, K.bey, { kontur: false, kenar: 18 });
-    if (yas > 0) { ctx.globalAlpha = yas * 0.5; ctx.fillStyle = '#dcd5ce'; ctx.beginPath(); ctx.ellipse(kx, 70, 90, 60, 0, 0, TAU); ctx.fill(); ctx.globalAlpha = 1; }
+    // krem alt yüz (ağız-çene)
+    boya(ctx, [[kx - 150, 60], [kx - 96, 26], [kx - 40, 14], [kx, 22], [kx + 40, 14], [kx + 96, 26], [kx + 150, 60], [kx + 110, 104], [kx + 50, 132], [kx, 140], [kx - 50, 132], [kx - 110, 104]], sd + 12, K.bey, { kontur: false, kenar: 18 });
+    if (yas > 0) { ctx.globalAlpha = yas * 0.55; ctx.fillStyle = '#dcd5ce'; ctx.beginPath(); ctx.ellipse(kx, 80, 120, 66, 0, 0, TAU); ctx.fill(); ctx.globalAlpha = 1; }
     ctx.restore();
+    // tepede kıvrık tutam
+    boya(ctx, [[kx - 16, -112], [kx - 26, -140], [kx - 10, -160], [kx + 12, -158], [kx + 2, -146], [kx + 14, -114]], sd + 13, K.tur, { kal: 3.5, golge: false });
+    // gözler: iri, yuvarlak, kirpikli
     const goz = clamp(p.goz ?? 1) * (1 - yas * 0.1), mutlu = p.mutlu || 0;
     for (const k of [-1, 1]) {
-      const ex = k * 58 + kx - (k === -1 ? yan * 10 : 0), ey = -24, olc = k === -1 ? 1 - yan * 0.22 : 1;
-      ctx.save(); ctx.translate(ex, ey); ctx.scale(olc, 1); ctx.rotate(k * -0.12);
+      const ex = k * 62 + kx - (k === -1 ? yan * 12 : 0), ey = -30, olc = k === -1 ? 1 - yan * 0.25 : 1;
+      ctx.save(); ctx.translate(ex, ey); ctx.scale(olc, 1);
       if (mutlu > 0.5 || goz < 0.12) {
-        cizgi(ctx, mutlu > 0.5 ? [[-28, 6], [0, -10], [28, 6]] : [[-28, -2], [0, 8], [28, -2]], sd + 20 + k, 5);
-        cizgi(ctx, [[-28, 0], [-36, -6]], sd + 22 + k, 3);
+        cizgi(ctx, mutlu > 0.5 ? [[-32, 8], [0, -14], [32, 8]] : [[-32, -2], [0, 10], [32, -2]], sd + 20 + k, 6);
+        for (let i = 0; i < 3; i++) cizgi(ctx, [[k * (26 + i * 5), mutlu > 0.5 ? 2 - i * 6 : -2 - i * 5], [k * (36 + i * 6), mutlu > 0.5 ? -4 - i * 8 : -8 - i * 7]], sd + 23 + k * 3 + i, 3);
       } else {
-        const gy = 26 * goz;
-        const P2 = new Path2D(); P2.moveTo(-32, 0); P2.bezierCurveTo(-22, -gy - 4, 22, -gy - 6, 32, -2); P2.bezierCurveTo(22, gy, -22, gy + 4, -32, 0);
+        const R = 40, ry = R * goz;
+        const P2 = new Path2D(); P2.ellipse(0, 0, R, Math.max(4, ry), 0, 0, TAU);
+        ctx.fillStyle = '#fffaf2'; ctx.fill(P2);
         ctx.save(); ctx.clip(P2);
-        const ig = ctx.createRadialGradient(-4, 6, 2, 0, 0, 30); ig.addColorStop(0, '#e6f3a6'); ig.addColorStop(0.45, '#86c35e'); ig.addColorStop(1, '#3d7a3a');
-        ctx.fillStyle = ig; ctx.fillRect(-40, -40, 80, 80);
-        const bx = (p.bakX || 0) * 10, by = (p.bakY || 0) * 6;
-        ctx.fillStyle = '#1a120c'; ctx.beginPath(); ctx.ellipse(bx, by, 8 + (p.bebek ?? 0.5) * 10, 22, 0, 0, TAU); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.beginPath(); ctx.ellipse(-10, -9, 8, 6, -0.4, 0, TAU); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.beginPath(); ctx.arc(10, 9, 3.5, 0, TAU); ctx.fill();
-        ctx.fillStyle = 'rgba(80,40,20,0.35)'; ctx.fillRect(-40, -40, 80, 22 - gy * 0.4);
-        if (yas > 0) { ctx.fillStyle = `rgba(225,232,236,${yas * 0.2})`; ctx.fillRect(-40, -40, 80, 80); }
+        const bx = (p.bakX || 0) * 10, by = (p.bakY || 0) * 8;
+        const ig = ctx.createRadialGradient(bx - 4, by + 6, 4, bx, by, 32); ig.addColorStop(0, '#a9d48c'); ig.addColorStop(0.6, '#4f9a5e'); ig.addColorStop(1, '#2e6a3e');
+        ctx.fillStyle = ig; ctx.beginPath(); ctx.arc(bx, by + 2, 31, 0, TAU); ctx.fill();
+        ctx.fillStyle = '#1a120c'; ctx.beginPath(); ctx.arc(bx, by + 2, 16 + (p.bebek ?? 0.6) * 8, 0, TAU); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.97)'; ctx.beginPath(); ctx.ellipse(bx - 9, by - 8, 10, 8, -0.4, 0, TAU); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.arc(bx + 11, by + 12, 4.5, 0, TAU); ctx.fill();
+        if (yas > 0) { ctx.fillStyle = `rgba(225,232,236,${yas * 0.2})`; ctx.fillRect(-50, -50, 100, 100); }
+        if (goz < 0.98) { ctx.fillStyle = K.tur; ctx.fillRect(-50, -60, 100, 60 - ry); }
         ctx.restore();
-        ctx.strokeStyle = C.kontur; ctx.lineWidth = 5; ctx.stroke(P2);
+        ctx.strokeStyle = C.kontur; ctx.lineWidth = 4; ctx.stroke(P2);
+        // üst kapak çizgisi + kirpikler (dış köşe)
+        ctx.lineWidth = 6; ctx.beginPath(); ctx.ellipse(0, 0, R + 1, Math.max(4, ry) + 1, 0, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+        for (let i = 0; i < 3; i++) cizgi(ctx, [[k * (R - 6 + i * 2), -ry * 0.6 - i * 6], [k * (R + 8 + i * 4), -ry * 0.8 - i * 9]], sd + 26 + k * 3 + i, 3.5);
       }
       ctx.restore();
+      // kaş tüyleri
+      cizgi(ctx, [[ex - 20, ey - 52], [ex + k * 4, ey - 60], [ex + 22, ey - 54]], sd + 40 + k, 3, K.turK);
     }
-    const nx = kx * 1.3, miy = clamp(p.miyav || 0);
-    boya(ctx, [[nx - 18, 22], [nx + 18, 22], [nx + 6, 40], [nx - 6, 40]], sd + 30, '#e48f90', { kal: 3, golge: false });
-    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.beginPath(); ctx.ellipse(nx - 5, 26, 5, 3, 0, 0, TAU); ctx.fill();
+    // burun (pembe-kırmızı) + gülümseyen ağız
+    const nx = kx * 1.25, miy = clamp(p.miyav || 0);
+    boya(ctx, [[nx - 20, 28], [nx + 20, 28], [nx + 12, 42], [nx, 50], [nx - 12, 42]], sd + 30, '#d9666a', { kal: 3.5, golge: false });
+    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.beginPath(); ctx.ellipse(nx - 6, 33, 6, 3.5, 0, 0, TAU); ctx.fill();
     if (miy > 0.05) {
-      boya(ctx, elips(nx, 66 + miy * 6, 18 + miy * 6, 8 + miy * 18, 14), sd + 31, '#7a3436', { kal: 3.5, golge: false });
-      ctx.fillStyle = '#e48a8c'; ctx.beginPath(); ctx.ellipse(nx, 76 + miy * 12, 11, 5 + miy * 5, 0, 0, TAU); ctx.fill();
-      ctx.fillStyle = '#fff'; for (const k of [-1, 1]) { ctx.beginPath(); ctx.moveTo(nx + k * 14, 56); ctx.lineTo(nx + k * 10, 66); ctx.lineTo(nx + k * 6, 56); ctx.fill(); }
-    } else cizgi(ctx, [[nx - 26, 58], [nx - 10, 64], [nx, 50], [nx + 10, 64], [nx + 26, 58]], sd + 32, 4);
-    cizgi(ctx, [[nx, 40], [nx, 50]], sd + 33, 4);
-    ctx.strokeStyle = 'rgba(255,252,245,0.95)'; ctx.lineWidth = 2.2;
-    for (let i = 0; i < 4; i++) for (const k of [-1, 1]) { ctx.beginPath(); ctx.moveTo(nx + k * 34, 48 + i * 7); ctx.quadraticCurveTo(nx + k * 120, 32 + i * 12, nx + k * (196 + i * 8), 50 + i * 20 + Math.sin(t * 1.3 + i) * 3); ctx.stroke(); }
+      boya(ctx, elips(nx, 78 + miy * 6, 20 + miy * 6, 8 + miy * 18, 14), sd + 31, '#7a3436', { kal: 3.5, golge: false });
+      ctx.fillStyle = '#e48a8c'; ctx.beginPath(); ctx.ellipse(nx, 88 + miy * 12, 12, 5 + miy * 5, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = '#fff'; for (const k of [-1, 1]) { ctx.beginPath(); ctx.moveTo(nx + k * 15, 66); ctx.lineTo(nx + k * 11, 76); ctx.lineTo(nx + k * 7, 66); ctx.fill(); }
+    } else {
+      cizgi(ctx, [[nx, 50], [nx, 62]], sd + 33, 4);
+      cizgi(ctx, [[nx - 46, 60], [nx - 24, 78], [nx, 64], [nx + 24, 78], [nx + 46, 60]], sd + 32, 4.5);
+    }
+    // bıyıklar
+    ctx.strokeStyle = 'rgba(255,252,245,0.95)'; ctx.lineWidth = 2.4;
+    for (let i = 0; i < 3; i++) for (const k of [-1, 1]) { ctx.beginPath(); ctx.moveTo(nx + k * 40, 58 + i * 8); ctx.quadraticCurveTo(nx + k * 130, 40 + i * 14, nx + k * (210 + i * 8), 52 + i * 22 + Math.sin(t * 1.3 + i) * 3); ctx.stroke(); }
     ctx.restore();
   }
   function pati(ctx, x, y, s, a, K) {
