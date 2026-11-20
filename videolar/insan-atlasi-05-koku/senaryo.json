@@ -1,0 +1,51 @@
+{
+  "baslik": "İnsan Atlası — Bir koku neden bizi yıllar öncesine götürür?",
+  "fps": 30,
+  "giris": 0.9,
+  "kapanis": 3.6,
+  "acilis": 0.5,
+  "altyaziY": 1560,
+  "ses": {
+    "sting": false,
+    "kapanisDarbe": false,
+    "whoosh": 0.45,
+    "pad": 0.8,
+    "piyano": 0.9,
+    "akorlar": {
+      "koku":    [65.41, 98.0, 164.81, 196.0],
+      "mutfak":  [87.31, 130.81, 220.0, 261.63],
+      "beyin":   [73.42, 110.0, 174.61, 220.0],
+      "cicek":   [98.0, 146.83, 246.94, 293.66],
+      "pencere": [65.41, 98.0, 164.81, 246.94]
+    },
+    "yayli": { "seviye": 0.8, "bolumler": { "koku": 0.4, "mutfak": 0.9, "beyin": 0.5, "cicek": 0.9, "pencere": 1.3 } },
+    "ortam": [
+      { "tip": "oda", "bas": "koku", "son": "pencere", "seviye": 0.5 },
+      { "tip": "saat", "bas": "mutfak", "son": "mutfak", "seviye": 0.6 },
+      { "tip": "kus", "bas": "pencere", "son": "pencere", "seviye": 0.5 }
+    ],
+    "isaretler": [
+      { "tip": "nefes", "bolum": "koku", "cumle": 0, "oran": -0.15, "seviye": 0.8 },
+      { "tip": "parilti", "bolum": "koku", "cumle": 0, "oran": 0.75, "seviye": 0.7 },
+      { "tip": "pop", "bolum": "beyin", "cumle": 1, "oran": 0.3, "adet": 1, "seviye": 0.6 },
+      { "tip": "pop", "bolum": "beyin", "cumle": 1, "oran": 0.62, "adet": 1, "seviye": 0.6 },
+      { "tip": "nefes", "bolum": "cicek", "cumle": 0, "oran": -0.1, "seviye": 0.7 },
+      { "tip": "parilti", "bolum": "cicek", "cumle": 1, "oran": 0.2, "seviye": 0.8 }
+    ],
+    "anlatim": "highpass=f=70,equalizer=f=220:t=q:w=1.2:g=1.5,aecho=0.85:0.6:35|70:0.08|0.05",
+    "ducking": 3,
+    "release": 600
+  },
+  "bolumler": [
+    { "id": "koku", "sahne": "koku", "gecis": "capraz", "gecisSure": 1.0,
+      "metin": "Hiç bir koku yüzünden kendini yıllar öncesinde bulduğun oldu mu?" },
+    { "id": "mutfak", "sahne": "mutfak", "gecis": "capraz", "gecisSure": 0.9,
+      "metin": "Mesela anneannenin mutfağındaki o koku… Bir anda çocukluğuna dönmüş gibi hissedebilirsin." },
+    { "id": "beyin", "sahne": "beyin", "gecis": "capraz", "gecisSure": 0.9,
+      "metin": "Çünkü koku duyusu, beynindeki hafıza ve duygu merkezleriyle güçlü bağlantılara sahip. Özellikle hipokampus ve amigdala bu süreçte önemli rol oynuyor." },
+    { "id": "cicek", "sahne": "cicek", "gecis": "capraz", "gecisSure": 1.0,
+      "metin": "Bu yüzden bazı kokular yalnızca bir anıyı hatırlatmaz. O anın duygularını da yeniden canlandırabilir." },
+    { "id": "pencere", "sahne": "pencere",
+      "metin": "Bazen geçmişe dönmek için bir zaman makinesine değil, yalnızca bir kokuya ihtiyacımız vardır." }
+  ]
+}

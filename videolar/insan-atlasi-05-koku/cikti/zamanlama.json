@@ -1,0 +1,758 @@
+{
+ "kaynak": "ses",
+ "fps": 30,
+ "W": 1080,
+ "H": 1920,
+ "giris": 0.9,
+ "toplam": 34.97,
+ "konusmaBas": 0.9,
+ "konusmaSon": 31.369999999999997,
+ "altyaziY": 1560,
+ "ses": {
+  "sting": false,
+  "kapanisDarbe": false,
+  "whoosh": 0.45,
+  "pad": 0.8,
+  "piyano": 0.9,
+  "akorlar": {
+   "koku": [
+    65.41,
+    98,
+    164.81,
+    196
+   ],
+   "mutfak": [
+    87.31,
+    130.81,
+    220,
+    261.63
+   ],
+   "beyin": [
+    73.42,
+    110,
+    174.61,
+    220
+   ],
+   "cicek": [
+    98,
+    146.83,
+    246.94,
+    293.66
+   ],
+   "pencere": [
+    65.41,
+    98,
+    164.81,
+    246.94
+   ]
+  },
+  "yayli": {
+   "seviye": 0.8,
+   "bolumler": {
+    "koku": 0.4,
+    "mutfak": 0.9,
+    "beyin": 0.5,
+    "cicek": 0.9,
+    "pencere": 1.3
+   }
+  },
+  "ortam": [
+   {
+    "tip": "oda",
+    "bas": "koku",
+    "son": "pencere",
+    "seviye": 0.5
+   },
+   {
+    "tip": "saat",
+    "bas": "mutfak",
+    "son": "mutfak",
+    "seviye": 0.6
+   },
+   {
+    "tip": "kus",
+    "bas": "pencere",
+    "son": "pencere",
+    "seviye": 0.5
+   }
+  ],
+  "isaretler": [
+   {
+    "tip": "nefes",
+    "bolum": "koku",
+    "cumle": 0,
+    "oran": -0.15,
+    "seviye": 0.8
+   },
+   {
+    "tip": "parilti",
+    "bolum": "koku",
+    "cumle": 0,
+    "oran": 0.75,
+    "seviye": 0.7
+   },
+   {
+    "tip": "pop",
+    "bolum": "beyin",
+    "cumle": 1,
+    "oran": 0.3,
+    "adet": 1,
+    "seviye": 0.6
+   },
+   {
+    "tip": "pop",
+    "bolum": "beyin",
+    "cumle": 1,
+    "oran": 0.62,
+    "adet": 1,
+    "seviye": 0.6
+   },
+   {
+    "tip": "nefes",
+    "bolum": "cicek",
+    "cumle": 0,
+    "oran": -0.1,
+    "seviye": 0.7
+   },
+   {
+    "tip": "parilti",
+    "bolum": "cicek",
+    "cumle": 1,
+    "oran": 0.2,
+    "seviye": 0.8
+   }
+  ],
+  "anlatim": "highpass=f=70,equalizer=f=220:t=q:w=1.2:g=1.5,aecho=0.85:0.6:35|70:0.08|0.05",
+  "ducking": 3,
+  "release": 600
+ },
+ "acilis": 0.5,
+ "bolumler": [
+  {
+   "id": "koku",
+   "sahne": "koku",
+   "gecis": "capraz",
+   "gecisSure": 1,
+   "start": 0,
+   "end": 4.150565,
+   "konusma": {
+    "start": 0.9,
+    "end": 3.76122
+   },
+   "cumleler": [
+    {
+     "metin": "Hiç bir koku yüzünden kendini yıllar öncesinde bulduğun oldu mu?",
+     "start": 0.9,
+     "end": 3.76122
+    }
+   ]
+  },
+  {
+   "id": "mutfak",
+   "sahne": "mutfak",
+   "gecis": "capraz",
+   "gecisSure": 0.9,
+   "start": 4.150565,
+   "end": 10.392395,
+   "konusma": {
+    "start": 4.53991,
+    "end": 9.97948
+   },
+   "cumleler": [
+    {
+     "metin": "Mesela anneannenin mutfağındaki o koku…",
+     "start": 4.53991,
+     "end": 7.10723
+    },
+    {
+     "metin": "Bir anda çocukluğuna dönmüş gibi hissedebilirsin.",
+     "start": 7.671340000000001,
+     "end": 9.97948
+    }
+   ]
+  },
+  {
+   "id": "beyin",
+   "sahne": "beyin",
+   "gecis": "capraz",
+   "gecisSure": 0.9,
+   "start": 10.392395,
+   "end": 19.7164,
+   "konusma": {
+    "start": 10.80531,
+    "end": 19.369799999999998
+   },
+   "cumleler": [
+    {
+     "metin": "Çünkü koku duyusu, beynindeki hafıza ve duygu merkezleriyle güçlü bağlantılara sahip.",
+     "start": 10.80531,
+     "end": 15.4938
+    },
+    {
+     "metin": "Özellikle hipokampus ve amigdala bu süreçte önemli rol oynuyor.",
+     "start": 16.0321,
+     "end": 19.369799999999998
+    }
+   ]
+  },
+  {
+   "id": "cicek",
+   "sahne": "cicek",
+   "gecis": "capraz",
+   "gecisSure": 1,
+   "start": 19.7164,
+   "end": 26.1743,
+   "konusma": {
+    "start": 20.063,
+    "end": 25.7596
+   },
+   "cumleler": [
+    {
+     "metin": "Bu yüzden bazı kokular yalnızca bir anıyı hatırlatmaz.",
+     "start": 20.063,
+     "end": 22.667199999999998
+    },
+    {
+     "metin": "O anın duygularını da yeniden canlandırabilir.",
+     "start": 23.1559,
+     "end": 25.7596
+    }
+   ]
+  },
+  {
+   "id": "pencere",
+   "sahne": "pencere",
+   "gecis": "karart",
+   "gecisSure": 1,
+   "start": 26.1743,
+   "end": 34.97,
+   "konusma": {
+    "start": 26.589,
+    "end": 31.369999999999997
+   },
+   "cumleler": [
+    {
+     "metin": "Bazen geçmişe dönmek için bir zaman makinesine değil, yalnızca bir kokuya ihtiyacımız vardır.",
+     "start": 26.589,
+     "end": 31.369999999999997
+    }
+   ]
+  }
+ ],
+ "altyazi": [
+  {
+   "start": 0.9,
+   "end": 1.8930116470588234,
+   "kelimeler": [
+    {
+     "k": "Hiç",
+     "start": 0.9,
+     "end": 1.0851377647058824
+    },
+    {
+     "k": "bir",
+     "start": 1.0851377647058824,
+     "end": 1.2702755294117647
+    },
+    {
+     "k": "koku",
+     "start": 1.2702755294117647,
+     "end": 1.4974900588235294
+    },
+    {
+     "k": "yüzünden",
+     "start": 1.4974900588235294,
+     "end": 1.8930116470588234
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 1.8930116470588234,
+   "end": 2.9954228823529414,
+   "kelimeler": [
+    {
+     "k": "kendini",
+     "start": 1.8930116470588234,
+     "end": 2.2464564705882353
+    },
+    {
+     "k": "yıllar",
+     "start": 2.2464564705882353,
+     "end": 2.5578245294117647
+    },
+    {
+     "k": "öncesinde",
+     "start": 2.5578245294117647,
+     "end": 2.9954228823529414
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 2.9954228823529414,
+   "end": 4.01122,
+   "kelimeler": [
+    {
+     "k": "bulduğun",
+     "start": 2.9954228823529414,
+     "end": 3.3909444705882357
+    },
+    {
+     "k": "oldu",
+     "start": 3.3909444705882357,
+     "end": 3.6181590000000003
+    },
+    {
+     "k": "mu?",
+     "start": 3.6181590000000003,
+     "end": 3.7612200000000002
+    }
+   ]
+  },
+  {
+   "start": 4.53991,
+   "end": 5.779737707317073,
+   "kelimeler": [
+    {
+     "k": "Mesela",
+     "start": 4.53991,
+     "end": 5.003279951219512
+    },
+    {
+     "k": "anneannenin",
+     "start": 5.003279951219512,
+     "end": 5.779737707317073
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 5.779737707317073,
+   "end": 7.3572299999999995,
+   "kelimeler": [
+    {
+     "k": "mutfağındaki",
+     "start": 5.779737707317073,
+     "end": 6.618813024390244
+    },
+    {
+     "k": "o",
+     "start": 6.618813024390244,
+     "end": 6.769095170731707
+    },
+    {
+     "k": "koku…",
+     "start": 6.769095170731707,
+     "end": 7.1072299999999995
+    }
+   ]
+  },
+  {
+   "start": 7.671340000000001,
+   "end": 8.668240933852141,
+   "kelimeler": [
+    {
+     "k": "Bir",
+     "start": 7.671340000000001,
+     "end": 7.868923968871596
+    },
+    {
+     "k": "anda",
+     "start": 7.868923968871596,
+     "end": 8.111413385214009
+    },
+    {
+     "k": "çocukluğuna",
+     "start": 8.111413385214009,
+     "end": 8.668240933852141
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 8.668240933852141,
+   "end": 9.2430306614786,
+   "kelimeler": [
+    {
+     "k": "dönmüş",
+     "start": 8.668240933852141,
+     "end": 9.000541245136189
+    },
+    {
+     "k": "gibi",
+     "start": 9.000541245136189,
+     "end": 9.2430306614786
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 9.2430306614786,
+   "end": 10.229480000000002,
+   "kelimeler": [
+    {
+     "k": "hissedebilirsin.",
+     "start": 9.2430306614786,
+     "end": 9.979480000000002
+    }
+   ]
+  },
+  {
+   "start": 10.80531,
+   "end": 11.91274582781457,
+   "kelimeler": [
+    {
+     "k": "Çünkü",
+     "start": 10.80531,
+     "end": 11.136505761589405
+    },
+    {
+     "k": "koku",
+     "start": 11.136505761589405,
+     "end": 11.415952185430465
+    },
+    {
+     "k": "duyusu,",
+     "start": 11.415952185430465,
+     "end": 11.91274582781457
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 11.91274582781457,
+   "end": 13.061581125827814,
+   "kelimeler": [
+    {
+     "k": "beynindeki",
+     "start": 11.91274582781457,
+     "end": 12.502688278145696
+    },
+    {
+     "k": "hafıza",
+     "start": 12.502688278145696,
+     "end": 12.885633377483444
+    },
+    {
+     "k": "ve",
+     "start": 12.885633377483444,
+     "end": 13.061581125827814
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 13.061581125827814,
+   "end": 14.137967350993378,
+   "kelimeler": [
+    {
+     "k": "duygu",
+     "start": 13.061581125827814,
+     "end": 13.392776887417218
+    },
+    {
+     "k": "merkezleriyle",
+     "start": 13.392776887417218,
+     "end": 14.137967350993378
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 14.137967350993378,
+   "end": 15.162604238410596,
+   "kelimeler": [
+    {
+     "k": "güçlü",
+     "start": 14.137967350993378,
+     "end": 14.469163112582782
+    },
+    {
+     "k": "bağlantılara",
+     "start": 14.469163112582782,
+     "end": 15.162604238410596
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 15.162604238410596,
+   "end": 15.7438,
+   "kelimeler": [
+    {
+     "k": "sahip.",
+     "start": 15.162604238410596,
+     "end": 15.4938
+    }
+   ]
+  },
+  {
+   "start": 16.0321,
+   "end": 17.295013513513513,
+   "kelimeler": [
+    {
+     "k": "Özellikle",
+     "start": 16.0321,
+     "end": 16.5533024024024
+    },
+    {
+     "k": "hipokampus",
+     "start": 16.5533024024024,
+     "end": 17.12462042042042
+    },
+    {
+     "k": "ve",
+     "start": 17.12462042042042,
+     "end": 17.295013513513513
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 17.295013513513513,
+   "end": 18.357464564564566,
+   "kelimeler": [
+    {
+     "k": "amigdala",
+     "start": 17.295013513513513,
+     "end": 17.7661003003003
+    },
+    {
+     "k": "bu",
+     "start": 17.7661003003003,
+     "end": 17.936493393393395
+    },
+    {
+     "k": "süreçte",
+     "start": 17.936493393393395,
+     "end": 18.357464564564566
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 18.357464564564566,
+   "end": 19.6198,
+   "kelimeler": [
+    {
+     "k": "önemli",
+     "start": 18.357464564564566,
+     "end": 18.72832012012012
+    },
+    {
+     "k": "rol",
+     "start": 18.72832012012012,
+     "end": 18.94882882882883
+    },
+    {
+     "k": "oynuyor.",
+     "start": 18.94882882882883,
+     "end": 19.3698
+    }
+   ]
+  },
+  {
+   "start": 20.063,
+   "end": 21.182988111888108,
+   "kelimeler": [
+    {
+     "k": "Bu",
+     "start": 20.063,
+     "end": 20.217795104895103
+    },
+    {
+     "k": "yüzden",
+     "start": 20.217795104895103,
+     "end": 20.554702097902094
+    },
+    {
+     "k": "bazı",
+     "start": 20.554702097902094,
+     "end": 20.800553146853144
+    },
+    {
+     "k": "kokular",
+     "start": 20.800553146853144,
+     "end": 21.182988111888108
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 21.182988111888108,
+   "end": 22.102653146853143,
+   "kelimeler": [
+    {
+     "k": "yalnızca",
+     "start": 21.182988111888108,
+     "end": 21.610951048951044
+    },
+    {
+     "k": "bir",
+     "start": 21.610951048951044,
+     "end": 21.81127412587412
+    },
+    {
+     "k": "anıyı",
+     "start": 21.81127412587412,
+     "end": 22.102653146853143
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 22.102653146853143,
+   "end": 22.917199999999998,
+   "kelimeler": [
+    {
+     "k": "hatırlatmaz.",
+     "start": 22.102653146853143,
+     "end": 22.667199999999998
+    }
+   ]
+  },
+  {
+   "start": 23.1559,
+   "end": 24.425472727272723,
+   "kelimeler": [
+    {
+     "k": "O",
+     "start": 23.1559,
+     "end": 23.28500909090909
+    },
+    {
+     "k": "anın",
+     "start": 23.28500909090909,
+     "end": 23.575504545454542
+    },
+    {
+     "k": "duygularını",
+     "start": 23.575504545454542,
+     "end": 24.24256818181818
+    },
+    {
+     "k": "da",
+     "start": 24.24256818181818,
+     "end": 24.425472727272723
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 24.425472727272723,
+   "end": 26.009599999999995,
+   "kelimeler": [
+    {
+     "k": "yeniden",
+     "start": 24.425472727272723,
+     "end": 24.87735454545454
+    },
+    {
+     "k": "canlandırabilir.",
+     "start": 24.87735454545454,
+     "end": 25.759599999999995
+    }
+   ]
+  },
+  {
+   "start": 26.589,
+   "end": 27.656788732394364,
+   "kelimeler": [
+    {
+     "k": "Bazen",
+     "start": 26.589,
+     "end": 26.896830985915493
+    },
+    {
+     "k": "geçmişe",
+     "start": 26.896830985915493,
+     "end": 27.300859154929576
+    },
+    {
+     "k": "dönmek",
+     "start": 27.300859154929576,
+     "end": 27.656788732394364
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 27.656788732394364,
+   "end": 28.435985915492957,
+   "kelimeler": [
+    {
+     "k": "için",
+     "start": 27.656788732394364,
+     "end": 27.91652112676056
+    },
+    {
+     "k": "bir",
+     "start": 27.91652112676056,
+     "end": 28.128154929577462
+    },
+    {
+     "k": "zaman",
+     "start": 28.128154929577462,
+     "end": 28.435985915492957
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 28.435985915492957,
+   "end": 29.39795774647887,
+   "kelimeler": [
+    {
+     "k": "makinesine",
+     "start": 28.435985915492957,
+     "end": 28.984309859154926
+    },
+    {
+     "k": "değil,",
+     "start": 28.984309859154926,
+     "end": 29.39795774647887
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 29.39795774647887,
+   "end": 30.41764788732394,
+   "kelimeler": [
+    {
+     "k": "yalnızca",
+     "start": 29.39795774647887,
+     "end": 29.85008450704225
+    },
+    {
+     "k": "bir",
+     "start": 29.85008450704225,
+     "end": 30.061718309859152
+    },
+    {
+     "k": "kokuya",
+     "start": 30.061718309859152,
+     "end": 30.41764788732394
+    }
+   ],
+   "devam": true
+  },
+  {
+   "start": 30.41764788732394,
+   "end": 31.769999999999996,
+   "kelimeler": [
+    {
+     "k": "ihtiyacımız",
+     "start": 30.41764788732394,
+     "end": 31.01407042253521
+    },
+    {
+     "k": "vardır.",
+     "start": 31.01407042253521,
+     "end": 31.369999999999997
+    }
+   ]
+  }
+ ]
+}

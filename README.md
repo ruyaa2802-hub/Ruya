@@ -66,5 +66,6 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 | [insan-atlasi-03-unutamamak](videolar/insan-atlasi-03-unutamamak) — İnsan Atlası #03: Bizi görmezden gelen birini neden unutamayız? | Final hazır (ses: Evren) |
 | [ic-ses](videolar/ic-ses) — Beynin neden kendi kendine konuşur? | Final hazır (ses: Chatterbox, ücretsiz) |
 | [neco-01-gece-vardiyasi](videolar/neco-01-gece-vardiyasi) — Neco #01: İnsan beyninin gece vardiyası (diyalog, dudak senkronu) | Final hazır (sesler: Piper renk + Chatterbox, ücretsiz) |
+| [insan-atlasi-05-koku](videolar/insan-atlasi-05-koku) — İnsan Atlası #05: Bir koku neden bizi yıllar öncesine götürür? (2D el çizimi stil) | Final hazır (ses: Chatterbox, ücretsiz) |
 
 Yazı tipi: Inter (SIL OFL, `studio/fonts/`).
