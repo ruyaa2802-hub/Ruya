@@ -13,6 +13,7 @@ karakterler, Türkçe dudak senkronu, kamera kurgusu, ses miksajı ve 9:16 MP4 �
 | B04 — Yastığın Kaçışı (seri Bölüm 2: gece kaçışı, sisli sokak, gölgeler, izleyici oylaması) | 30 sn | `renders/b04_v1/b04_v1_final.mp4` |
 | B05 — Eşya Meclisi Bölüm 2: Oy Çokluğu ile Kaçtı (park, anı balonu, gözyaşı geçişi, A/B oylaması) | ~38 sn | `renders/b05_v1/b05_v1_final.mp4` |
 | B06 — Eşya Meclisi Bölüm 3: Kavuşma (dönüş, sarılma, insanlar sohbeti, pencereden gökyüzüne çıkış) | ~40 sn | `renders/b06_v1/b06_v1_final.mp4` |
+| B07 — Eşya Meclisi: Demirbaş (Yastık, Battaniye, Kupa; altyazısız, stop-motion hissi) | ~39 sn | `renders/b07_v1/b07_v1_final.mp4` |
 
 ## Kurulum
 
