@@ -68,5 +68,6 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 | [neco-01-gece-vardiyasi](videolar/neco-01-gece-vardiyasi) — Neco #01: İnsan beyninin gece vardiyası (diyalog, dudak senkronu) | Final hazır (sesler: Piper renk + Chatterbox, ücretsiz) |
 | [insan-atlasi-05-koku](videolar/insan-atlasi-05-koku) — İnsan Atlası #05: Bir koku neden bizi yıllar öncesine götürür? (2D el çizimi stil) | Final hazır (ses: Chatterbox, ücretsiz) |
 | [insan-atlasi-06-dus](videolar/insan-atlasi-06-dus) — İnsan Atlası #06: Neden en iyi cevapları duşta buluruz? | Final hazır (ses: kullanıcı, müzik: studio/besteci.py) |
+| [kedi-sesim](videolar/kedi-sesim) — Bir gün sesimi duymayacaksın (kedinin gözünden) | Müzikli önizleme hazır · seslendirme kullanıcıdan bekleniyor |
 
 Yazı tipi: Inter (SIL OFL, `studio/fonts/`).

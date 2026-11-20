@@ -44,7 +44,7 @@ def piyano(m, sure, hiz=0.7):
     kal = np.clip(1 - (t - sure) / 0.35, 0, 1)
     out *= np.where(t > sure, kal, 1)
     # çekiç tıkı
-    ck = rng.standard_normal(int(0.012 * SR)) * np.exp(-np.arange(int(0.012 * SR)) / (0.002 * SR)) * 0.03
+    ck = sosfilt(butter(2, 1800, "low", fs=SR, output="sos"), rng.standard_normal(int(0.012 * SR))) * np.exp(-np.arange(int(0.012 * SR)) / (0.002 * SR)) * 0.012
     out[:len(ck)] += ck
     return out * hiz
 
@@ -108,7 +108,22 @@ YURUYUS = {
     'sakin':    [5, 3, 0, 4, 5, 3, 1, 4],          # vi IV I V vi IV ii V
     'yukselis': [3, 4, 2, 5, 3, 4, 0, 0],          # IV V iii vi IV V I I
     'final':    [0, 5, 3, 4, 3, 4, 0, 0],
+    'huzun_giris': [5, 3, 0, 4, 5, 3, 1, 4],       # vi IV I V vi IV ii V
+    'huzun':    [5, 3, 0, 4, 5, 3, 1, 4],
+    'buyume':   [3, 4, 2, 5, 3, 4, 0, 4],
+    'doruk':    [5, 3, 0, 4, 5, 3, 4, 0],
 }
+# hüzünlü tema (vi IV I V vi IV ii V), okt 0: 7 = C5
+TEMA_HUZUN = [
+    [(0, 1.5, 9), (1.5, .5, 8), (2, 1, 7), (3, 1, 5)],
+    [(0, 1.5, 7), (1.5, .5, 5), (2, 2, 5)],
+    [(0, 1, 4), (1, 1, 7), (2, 1, 9), (3, 1, 8)],
+    [(0, 3, 8), (3, 1, 6)],
+    [(0, 1.5, 9), (1.5, .5, 8), (2, 1, 7), (3, 1, 11)],
+    [(0, 1.5, 10), (1.5, .5, 9), (2, 2, 7)],
+    [(0, 1, 8), (1, 1, 7), (2, 1, 5), (3, 1, 7)],
+    [(0, 4, 8)],
+]
 # ana tema (I vi IV V üzerinde, ölçü başına (vuruş, süre, ton içi derece; 7 = üst oktav tonik))
 TEMA = [
     [(0, .5, 4), (.5, .5, 2), (1, 1, 0), (2, .5, 1), (2.5, .5, 2), (3, 1, 4)],
@@ -211,6 +226,38 @@ def main():
                 for v in (0, 2):
                     koy(celesta(ak[(oi + v) % 3] + 24, 0.3 * guc), t0 + v * vurus + vurus / 2, 0.4)
                 tema_i += 1
+            elif kar in ('huzun_giris', 'huzun', 'buyume', 'doruk'):
+                n_olcu = max(1, o1 - o0)
+                guc = {'huzun_giris': 0.55, 'huzun': 0.7, 'buyume': 0.8 + 0.15 * oi / n_olcu}.get(kar, 0)
+                if kar == 'doruk':
+                    # anlatım bitimine doğru kabarır, sonda çözülür
+                    kon = TL['konusmaSon']
+                    guc = 0.6 + 0.4 * float(np.clip((t0 - (kon - 3 * olcu)) / (3 * olcu), 0, 1))
+                if son_olcu:
+                    for n in ak + [ak[0] + 12, ak[2] + 12]:
+                        koy(yayli(n, olcu * 1.6, 0.34, atak=0.8, birak=2.5), t0, (n % 5 - 2) * 0.2)
+                    for k, n in enumerate([ak[0] - 12, ak[0], ak[1], ak[2], ak[0] + 12]):
+                        koy(piyano(n, olcu * 2, 0.42), t0 + k * 0.09, -0.1 + 0.05 * k)
+                    koy(kontrbas(ak[0] - 24, olcu * 1.6, 0.4), t0, -0.1)
+                    continue
+                koy(piyano(bas_nota + 12, olcu * 0.98, 0.42 * guc), t0, -0.25)
+                koy(piyano(bas_nota + 24 if bas_nota + 24 < 60 else bas_nota + 12, olcu * 0.5, 0.25 * guc), t0 + 2 * vurus, -0.2)
+                if kar != 'huzun_giris':
+                    for n in ak:
+                        koy(yayli(n, olcu * 0.98, 0.26 * guc, atak=0.9, birak=1.2), t0, (n % 5 - 2) * 0.2)
+                    koy(kontrbas(bas_nota, olcu * 0.98, 0.42 * guc), t0, -0.1)
+                # yumuşak arpej (sol el) — sekizlik değil, dörtlük: sakin
+                for k, n in enumerate([ak[0], ak[2], ak[1] + 12, ak[2]]):
+                    koy(piyano(n, vurus * 0.95, 0.24 * guc), t0 + k * vurus + 0.5 * vurus, -0.05)
+                tema = TEMA_HUZUN[tema_i % 8]
+                for (bv, sv, dd) in tema:
+                    nota = derece_nota(kok, dd, 0)
+                    koy(piyano(nota, sv * vurus * 0.95, 0.62 * (0.8 + 0.2 * guc)), t0 + bv * vurus, 0.12)
+                    if kar in ('buyume', 'doruk'):
+                        koy(yayli(nota, sv * vurus, 0.36 * guc, ses=4, atak=0.2, birak=0.7), t0 + bv * vurus, 0.25)
+                    if kar == 'doruk' and guc > 0.85:
+                        koy(yayli(nota - 12, sv * vurus, 0.25, ses=4, atak=0.25, birak=0.7), t0 + bv * vurus, -0.25)
+                tema_i += 1
             else:  # final
                 koy(kontrbas(bas_nota, olcu * (2.5 if son_olcu else 0.95), 0.5), t0, -0.1)
                 if son_olcu:
@@ -249,6 +296,7 @@ def main():
     L2 = sosfilt(sos, L2 * zarf); R2 = sosfilt(sos, R2 * zarf)
     st = np.stack([L2, R2], 1)
     st /= np.max(np.abs(st)) / 0.8
+    (vdir / 'ses').mkdir(exist_ok=True)
     hedef = vdir / 'ses' / 'muzik.wav'
     import wave
     with wave.open(str(hedef), 'wb') as w:

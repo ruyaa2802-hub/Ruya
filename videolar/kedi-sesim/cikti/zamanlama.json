@@ -1,0 +1,197 @@
+{
+ "kaynak": "tahmin",
+ "fps": 30,
+ "W": 1080,
+ "H": 1920,
+ "giris": 1.2,
+ "toplam": 55.76741573033709,
+ "konusmaBas": 1.2,
+ "konusmaSon": 48.26741573033709,
+ "altyaziY": 1600,
+ "ses": {
+  "sting": false,
+  "kapanisDarbe": false,
+  "whoosh": 0,
+  "pad": 0,
+  "piyano": 0,
+  "anlatim": "highpass=f=80,equalizer=f=250:t=q:w=1.2:g=1,aecho=0.85:0.6:30|60:0.06|0.04",
+  "ducking": 2,
+  "release": 800,
+  "muzikDosyasi": "ses/muzik.wav",
+  "muzikSeviye": -11
+ },
+ "acilis": 1.2,
+ "bolumler": [
+  {
+   "id": "sabah",
+   "sahne": "sabah",
+   "gecis": "capraz",
+   "gecisSure": 1.2,
+   "start": 0,
+   "end": 8.91814606741573,
+   "konusma": {
+    "start": 1.2,
+    "end": 8.64314606741573
+   },
+   "cumleler": [
+    {
+     "metin": "Her sabah senden önce uyanıyorum.",
+     "start": 1.2,
+     "end": 3.1662921348314605
+    },
+    {
+     "metin": "Önce yüzüne bakıyorum…",
+     "start": 3.4862921348314604,
+     "end": 4.789662921348315
+    },
+    {
+     "metin": "Sonra burnuna küçük bir pati dokunduruyorum.",
+     "start": 5.109662921348314,
+     "end": 7.716404494382022
+    },
+    {
+     "metin": "Uyan diye.",
+     "start": 8.036404494382023,
+     "end": 8.64314606741573
+    }
+   ]
+  },
+  {
+   "id": "rutin",
+   "sahne": "rutin",
+   "gecis": "capraz",
+   "gecisSure": 1.2,
+   "start": 8.91814606741573,
+   "end": 17.79893258426966,
+   "konusma": {
+    "start": 9.19314606741573,
+    "end": 17.523932584269662
+   },
+   "cumleler": [
+    {
+     "metin": "Bazen umursamıyorsun.",
+     "start": 9.19314606741573,
+     "end": 10.417865168539326
+    },
+    {
+     "metin": "Yorganı başına çekiyorsun.",
+     "start": 10.737865168539326,
+     "end": 12.265955056179775
+    },
+    {
+     "metin": "Bazen de uykulu gözlerle bana kızıyorsun.",
+     "start": 12.585955056179776,
+     "end": 15.024157303370787
+    },
+    {
+     "metin": "Ama ben yine de her sabah geliyorum.",
+     "start": 15.344157303370787,
+     "end": 17.523932584269662
+    }
+   ]
+  },
+  {
+   "id": "kahve",
+   "sahne": "kahve",
+   "gecis": "karart",
+   "gecisSure": 1.6,
+   "start": 17.79893258426966,
+   "end": 26.517022471910114,
+   "konusma": {
+    "start": 18.073932584269663,
+    "end": 26.24202247191011
+   },
+   "cumleler": [
+    {
+     "metin": "Sen kahveni hazırlarken ayaklarının arasında dolaşıyorum.",
+     "start": 18.073932584269663,
+     "end": 21.411011235955055
+    },
+    {
+     "metin": "Evden çıkarken arkandan bakıyorum.",
+     "start": 21.731011235955055,
+     "end": 23.731011235955055
+    },
+    {
+     "metin": "Ben de kapının kapanmasını izliyorum.",
+     "start": 24.051011235955055,
+     "end": 26.24202247191011
+    }
+   ]
+  },
+  {
+   "id": "zaman",
+   "sahne": "zaman",
+   "gecis": "karart",
+   "gecisSure": 2,
+   "start": 26.517022471910114,
+   "end": 35.319157303370794,
+   "konusma": {
+    "start": 26.792022471910112,
+    "end": 35.044157303370795
+   },
+   "cumleler": [
+    {
+     "metin": "Büyüdüm.",
+     "start": 26.792022471910112,
+     "end": 27.263932584269664
+    },
+    {
+     "metin": "Eskisi kadar hızlı koşamıyorum.",
+     "start": 27.583932584269665,
+     "end": 29.415393258426967
+    },
+    {
+     "metin": "Sabahları yanına gelmem biraz daha uzun sürüyor.",
+     "start": 29.735393258426967,
+     "end": 32.58932584269663
+    },
+    {
+     "metin": "Ama seni uyandırmayı hiç bırakmadım.",
+     "start": 32.90932584269663,
+     "end": 35.044157303370795
+    }
+   ]
+  },
+  {
+   "id": "sessiz",
+   "sahne": "sessiz",
+   "gecis": "karart",
+   "gecisSure": 1,
+   "start": 35.319157303370794,
+   "end": 55.76741573033709,
+   "konusma": {
+    "start": 35.59415730337079,
+    "end": 48.26741573033709
+   },
+   "cumleler": [
+    {
+     "metin": "Bir sabah uyandığında beni göremeyeceksin.",
+     "start": 35.59415730337079,
+     "end": 38.066067415730345
+    },
+    {
+     "metin": "Burnuna dokunan küçük patilerim olmayacak.",
+     "start": 38.386067415730345,
+     "end": 40.8579775280899
+    },
+    {
+     "metin": "Belki ilk kez alarm çalmadan uyanacaksın.",
+     "start": 41.1779775280899,
+     "end": 43.61617977528091
+    },
+    {
+     "metin": "İşte o zaman…",
+     "start": 43.93617977528091,
+     "end": 44.733932584269674
+    },
+    {
+     "metin": "Her sabah şikâyet ettiğin o küçük sesimi özleyeceksin.",
+     "start": 45.053932584269674,
+     "end": 48.26741573033709
+    }
+   ]
+  }
+ ],
+ "altyazi": []
+}

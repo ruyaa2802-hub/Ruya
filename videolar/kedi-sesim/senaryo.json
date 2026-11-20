@@ -1,0 +1,37 @@
+{
+  "baslik": "Bir gün sesimi duymayacaksın",
+  "fps": 30,
+  "giris": 1.2,
+  "kapanis": 7.5,
+  "acilis": 1.2,
+  "altyaziY": 1600,
+  "ses": {
+    "sting": false,
+    "kapanisDarbe": false,
+    "whoosh": 0,
+    "pad": 0,
+    "piyano": 0,
+    "anlatim": "highpass=f=80,equalizer=f=250:t=q:w=1.2:g=1,aecho=0.85:0.6:30|60:0.06|0.04",
+    "ducking": 2,
+    "release": 800,
+    "muzikDosyasi": "ses/muzik.wav",
+    "muzikSeviye": -11
+  },
+  "muzik": {
+    "ton": "C",
+    "tempo": 70,
+    "bolumler": { "sabah": "huzun_giris", "rutin": "huzun", "kahve": "huzun", "zaman": "buyume", "sessiz": "doruk" }
+  },
+  "bolumler": [
+    { "id": "sabah", "sahne": "sabah", "gecis": "capraz", "gecisSure": 1.2, "altyazi": false,
+      "metin": "Her sabah senden önce uyanıyorum. Önce yüzüne bakıyorum… Sonra burnuna küçük bir pati dokunduruyorum. Uyan diye." },
+    { "id": "rutin", "sahne": "rutin", "gecis": "capraz", "gecisSure": 1.2, "altyazi": false,
+      "metin": "Bazen umursamıyorsun. Yorganı başına çekiyorsun. Bazen de uykulu gözlerle bana kızıyorsun. Ama ben yine de her sabah geliyorum." },
+    { "id": "kahve", "sahne": "kahve", "gecis": "karart", "gecisSure": 1.6, "altyazi": false,
+      "metin": "Sen kahveni hazırlarken ayaklarının arasında dolaşıyorum. Evden çıkarken arkandan bakıyorum. Ben de kapının kapanmasını izliyorum." },
+    { "id": "zaman", "sahne": "zaman", "gecis": "karart", "gecisSure": 2.0, "altyazi": false,
+      "metin": "Büyüdüm. Eskisi kadar hızlı koşamıyorum. Sabahları yanına gelmem biraz daha uzun sürüyor. Ama seni uyandırmayı hiç bırakmadım." },
+    { "id": "sessiz", "sahne": "sessiz", "altyazi": false,
+      "metin": "Bir sabah uyandığında beni göremeyeceksin. Burnuna dokunan küçük patilerim olmayacak. Belki ilk kez alarm çalmadan uyanacaksın. İşte o zaman… Her sabah şikâyet ettiğin o küçük sesimi özleyeceksin." }
+  ]
+}
