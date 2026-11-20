@@ -2,43 +2,43 @@
  {
   "word": "Ben",
   "start": 0.0,
-  "end": 0.34,
-  "p": 0.331,
+  "end": 0.24,
+  "p": 0.33,
   "asr": "Ben"
  },
  {
   "word": "de",
-  "start": 0.34,
-  "end": 0.5,
-  "p": 0.991,
+  "start": 0.24,
+  "end": 0.4,
+  "p": 0.987,
   "asr": "de"
  },
  {
   "word": "oy",
-  "start": 0.5,
-  "end": 0.64,
-  "p": 0.976,
+  "start": 0.4,
+  "end": 0.62,
+  "p": 0.954,
   "asr": "oy"
  },
  {
   "word": "verdim.",
-  "start": 0.64,
-  "end": 1.02,
-  "p": 0.909,
-  "asr": "verdim."
+  "start": 0.62,
+  "end": 1.0,
+  "p": 0.748,
+  "asr": "verdim,"
  },
  {
   "word": "“Gitsin”",
-  "start": 1.18,
-  "end": 1.66,
-  "p": 0.98,
-  "asr": "Gitsin"
+  "start": 1.12,
+  "end": 1.58,
+  "p": 0.926,
+  "asr": "gitsin"
  },
  {
   "word": "dedim!",
-  "start": 1.66,
-  "end": 1.98,
-  "p": 0.682,
+  "start": 1.58,
+  "end": 1.74,
+  "p": 0.881,
   "asr": "dedim."
  }
 ]

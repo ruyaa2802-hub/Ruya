@@ -84,10 +84,12 @@ def build(tl, ep):
     P = lambda x, y, z: tuple(O + Vector((x, y, z)))
 
     # ============================================================ beats
-    l01 = tl.say(K, 0.35, A("L01_kupa"), intensity=1.2, bob=1.3)
-    l02 = tl.say(Y, l01.end + 0.15, A("L02_yastik"), intensity=0.9, bob=0.8)
-    l03 = tl.say(K, l02.end + 0.12, A("L03_kupa"), intensity=1.15, bob=1.1)
-    l04 = tl.say(B, l03.end + 0.15, A("L04_battaniye"), intensity=0.85, bob=0.7)
+    # the first two mug lines end where they always did, so everything after keeps its timing
+    from ig import lipsync
+    l01 = tl.say(K, 4.37 - lipsync.duration(A("L01_kupa")), A("L01_kupa"), intensity=1.2, bob=1.3)
+    l02 = tl.say(Y, 4.52, A("L02_yastik"), intensity=0.9, bob=0.8)
+    l03 = tl.say(K, 9.14 - lipsync.duration(A("L03_kupa")), A("L03_kupa"), intensity=1.15, bob=1.1)
+    l04 = tl.say(B, 9.29, A("L04_battaniye"), intensity=0.85, bob=0.7)
     l05 = tl.say(K, l04.end + 0.12, A("L05_kupa"), intensity=1.2, bob=1.3)
     l06 = tl.say(Y, l05.end + 0.3, A("L06_yastik"), intensity=0.8, bob=0.6)
     l07 = tl.say(B, l06.end + 0.1, A("L07_battaniye"), intensity=0.8, bob=0.6)
