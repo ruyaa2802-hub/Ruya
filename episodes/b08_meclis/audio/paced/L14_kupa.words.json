@@ -1,0 +1,37 @@
+[
+ {
+  "word": "Gördünüz",
+  "start": 0.0,
+  "end": 0.36,
+  "p": 0.973,
+  "asr": "Gördünüz"
+ },
+ {
+  "word": "mü?",
+  "start": 0.36,
+  "end": 0.58,
+  "p": 0.997,
+  "asr": "mü?"
+ },
+ {
+  "word": "Seçilmiş",
+  "start": 0.88,
+  "end": 1.32,
+  "p": 0.942,
+  "asr": "Seçilmiş"
+ },
+ {
+  "word": "kişi",
+  "start": 1.32,
+  "end": 1.48,
+  "p": 0.993,
+  "asr": "kişi"
+ },
+ {
+  "word": "benim!",
+  "start": 1.48,
+  "end": 1.7,
+  "p": 0.993,
+  "asr": "benim."
+ }
+]

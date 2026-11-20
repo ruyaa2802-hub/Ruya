@@ -1,0 +1,72 @@
+[
+ {
+  "word": "Bu",
+  "start": 0.0,
+  "end": 0.22,
+  "p": 0.798,
+  "asr": "Bu"
+ },
+ {
+  "word": "evde",
+  "start": 0.22,
+  "end": 0.58,
+  "p": 0.995,
+  "asr": "evde"
+ },
+ {
+  "word": "herkes",
+  "start": 0.58,
+  "end": 0.92,
+  "p": 0.892,
+  "asr": "herkes"
+ },
+ {
+  "word": "bir",
+  "start": 0.92,
+  "end": 1.16,
+  "p": 0.983,
+  "asr": "bir"
+ },
+ {
+  "word": "şey",
+  "start": 1.16,
+  "end": 1.32,
+  "p": 0.98,
+  "asr": "şey"
+ },
+ {
+  "word": "çekiyor",
+  "start": 1.32,
+  "end": 1.68,
+  "p": 0.995,
+  "asr": "çekiyor"
+ },
+ {
+  "word": "zaten.",
+  "start": 1.68,
+  "end": 1.96,
+  "p": 0.99,
+  "asr": "zaten."
+ },
+ {
+  "word": "Ben",
+  "start": 2.38,
+  "end": 2.66,
+  "p": 0.894,
+  "asr": "Ben"
+ },
+ {
+  "word": "yere",
+  "start": 2.66,
+  "end": 2.86,
+  "p": 0.555,
+  "asr": "yere"
+ },
+ {
+  "word": "atılıyorum…",
+  "start": 2.86,
+  "end": 3.36,
+  "p": 0.988,
+  "asr": "atılıyorum."
+ }
+]

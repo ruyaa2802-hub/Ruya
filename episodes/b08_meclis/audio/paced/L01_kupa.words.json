@@ -1,0 +1,86 @@
+[
+ {
+  "word": "Durun",
+  "start": 0.0,
+  "end": 0.3,
+  "p": 0.931,
+  "asr": "Durun"
+ },
+ {
+  "word": "durun",
+  "start": 0.3,
+  "end": 0.76,
+  "p": 0.701,
+  "asr": "durun"
+ },
+ {
+  "word": "durun!",
+  "start": 0.76,
+  "end": 1.26,
+  "p": 0.925,
+  "asr": "durun"
+ },
+ {
+  "word": "Üç",
+  "start": 1.26,
+  "end": 1.46,
+  "p": 0.133,
+  "asr": "üç"
+ },
+ {
+  "word": "gün",
+  "start": 1.46,
+  "end": 1.66,
+  "p": 0.994,
+  "asr": "gün"
+ },
+ {
+  "word": "önce",
+  "start": 1.66,
+  "end": 1.88,
+  "p": 0.996,
+  "asr": "önce"
+ },
+ {
+  "word": "“Ben",
+  "start": 1.88,
+  "end": 2.32,
+  "p": 0.523,
+  "asr": "ben"
+ },
+ {
+  "word": "bu",
+  "start": 2.32,
+  "end": 2.46,
+  "p": 0.984,
+  "asr": "bu"
+ },
+ {
+  "word": "evde",
+  "start": 2.46,
+  "end": 2.7,
+  "p": 0.993,
+  "asr": "evde"
+ },
+ {
+  "word": "kalamam”",
+  "start": 2.7,
+  "end": 3.04,
+  "p": 0.986,
+  "asr": "kalamam"
+ },
+ {
+  "word": "diyen",
+  "start": 3.04,
+  "end": 3.52,
+  "p": 0.886,
+  "asr": "diyen"
+ },
+ {
+  "word": "kimdi?",
+  "start": 3.52,
+  "end": 3.84,
+  "p": 0.737,
+  "asr": "kimdi?"
+ }
+]

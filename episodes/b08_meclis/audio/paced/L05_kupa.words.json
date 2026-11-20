@@ -1,0 +1,79 @@
+[
+ {
+  "word": "Ben",
+  "start": 0.0,
+  "end": 0.36,
+  "p": 0.71,
+  "asr": "Ben"
+ },
+ {
+  "word": "soğuk",
+  "start": 0.36,
+  "end": 0.72,
+  "p": 0.951,
+  "asr": "soğuk"
+ },
+ {
+  "word": "değilim,",
+  "start": 0.72,
+  "end": 1.14,
+  "p": 0.991,
+  "asr": "değilim"
+ },
+ {
+  "word": "kahvem",
+  "start": 1.14,
+  "end": 1.64,
+  "p": 0.729,
+  "asr": "kahvem"
+ },
+ {
+  "word": "soğuk!",
+  "start": 1.64,
+  "end": 2.2,
+  "p": 0.981,
+  "asr": "soğuk"
+ },
+ {
+  "word": "Üç",
+  "start": 2.2,
+  "end": 2.44,
+  "p": 0.114,
+  "asr": "üç"
+ },
+ {
+  "word": "kere",
+  "start": 2.44,
+  "end": 2.66,
+  "p": 0.921,
+  "asr": "kere"
+ },
+ {
+  "word": "ısıttı,",
+  "start": 2.66,
+  "end": 3.18,
+  "p": 0.941,
+  "asr": "ısıttı"
+ },
+ {
+  "word": "üç",
+  "start": 3.18,
+  "end": 3.42,
+  "p": 0.527,
+  "asr": "üç"
+ },
+ {
+  "word": "kere",
+  "start": 3.42,
+  "end": 3.64,
+  "p": 0.992,
+  "asr": "kere"
+ },
+ {
+  "word": "unuttu!",
+  "start": 3.64,
+  "end": 4.0,
+  "p": 0.737,
+  "asr": "unuttu"
+ }
+]

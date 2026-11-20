@@ -1,0 +1,16 @@
+[
+ {
+  "word": "Toplantı",
+  "start": 0.0,
+  "end": 0.78,
+  "p": 0.773,
+  "asr": "Toplantı"
+ },
+ {
+  "word": "ertelenmiştir.",
+  "start": 0.78,
+  "end": 1.7,
+  "p": 0.968,
+  "asr": "ertelenmiştir."
+ }
+]

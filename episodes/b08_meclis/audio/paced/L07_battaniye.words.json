@@ -1,0 +1,32 @@
+[
+ {
+  "word": "Ben",
+  "start": 0.0,
+  "end": 0.16,
+  "p": 0.835
+ },
+ {
+  "word": "her",
+  "start": 0.16,
+  "end": 0.32,
+  "p": 0.99
+ },
+ {
+  "word": "gece",
+  "start": 0.32,
+  "end": 0.5,
+  "p": 0.986
+ },
+ {
+  "word": "tek",
+  "start": 0.5,
+  "end": 0.7,
+  "p": 0.984
+ },
+ {
+  "word": "meneniyorum.",
+  "start": 0.7,
+  "end": 1.14,
+  "p": 0.598
+ }
+]

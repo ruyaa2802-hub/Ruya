@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Hah!",
+  "start": 0.0,
+  "end": 0.22,
+  "p": 0.518,
+  "asr": "Ha,"
+ },
+ {
+  "word": "O",
+  "start": 0.48,
+  "end": 0.64,
+  "p": 0.976,
+  "asr": "o"
+ },
+ {
+  "word": "zaman",
+  "start": 0.64,
+  "end": 0.88,
+  "p": 0.997,
+  "asr": "zaman"
+ },
+ {
+  "word": "bir",
+  "start": 0.88,
+  "end": 1.16,
+  "p": 0.94,
+  "asr": "bir"
+ },
+ {
+  "word": "meclis",
+  "start": 1.16,
+  "end": 1.54,
+  "p": 0.834,
+  "asr": "meclis"
+ },
+ {
+  "word": "kuralım.",
+  "start": 1.54,
+  "end": 1.92,
+  "p": 0.782,
+  "asr": "kuralım."
+ },
+ {
+  "word": "Eşya",
+  "start": 2.1,
+  "end": 2.46,
+  "p": 0.791,
+  "asr": "Eşya"
+ },
+ {
+  "word": "Meclisi!",
+  "start": 2.46,
+  "end": 2.84,
+  "p": 0.902,
+  "asr": "meclisi."
+ }
+]
