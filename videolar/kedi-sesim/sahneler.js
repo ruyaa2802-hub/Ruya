@@ -204,6 +204,49 @@
     for (let i = 0; i < 3; i++) for (const k of [-1, 1]) { ctx.beginPath(); ctx.moveTo(nx + k * 40, 58 + i * 8); ctx.quadraticCurveTo(nx + k * 130, 40 + i * 14, nx + k * (210 + i * 8), 52 + i * 22 + Math.sin(t * 1.3 + i) * 3); ctx.stroke(); }
     ctx.restore();
   }
+  // ======================= KEDİ: ÖNDEN OTURAN (referans duruş) =======================
+  /* kediOtur(ctx, x, y, s, p): (x,y) patilerin altı, s=1 → ~720 px boy. Armut gövde, göğüste krem şerit, düz ön bacaklar,
+   * krem patiler, yerde kıvrılan çizgili kuyruk, iri baş. p: kediBas parametreleri + kuyrukSal, nefes, yas */
+  function kediOtur(ctx, x, y, s, p) {
+    const t = p.t || 0, yas = p.yas || 0, K = renk(yas), sd = 1500;
+    const nef = Math.sin(t * 2) * 3, sal = Math.sin(t * (1.1 - yas * 0.5)) * (p.kuyrukSal ?? 0.3);
+    ctx.save(); ctx.translate(x, y); ctx.scale(s * (p.yon || 1), s);
+    ctx.fillStyle = 'rgba(70,40,20,0.22)'; ctx.beginPath(); ctx.ellipse(40, 4, 260, 26, 0, 0, TAU); ctx.fill();
+    // kuyruk: arka sağdan çıkıp yerde kıvrılır
+    const KN = [[90, -40]];
+    for (let i = 1; i <= 40; i++) { const u = i / 40, a = -0.15 + u * 0.4 - (u > 0.7 ? (u - 0.7) * 9 : 0) + sal * u; const q = KN[i - 1]; KN.push([q[0] + Math.cos(a) * 300 / 40, q[1] + Math.sin(a) * 300 / 40 - (u > 0.7 ? 0 : 0)]); }
+    const sol = [], sag = [];
+    for (let i = 0; i <= 40; i += 2) { const q = KN[i], r2 = KN[Math.min(40, i + 1)], r0 = KN[Math.max(0, i - 1)], dx = r2[0] - r0[0], dy = r2[1] - r0[1], L = Math.hypot(dx, dy) || 1, w = lerp(30, 20, i / 40); sol.push([q[0] - dy / L * w, q[1] + dx / L * w]); sag.unshift([q[0] + dy / L * w, q[1] - dx / L * w]); }
+    const kq = boya(ctx, [...sol, ...sag], sd + 1, K.tur, { kenar: 16 });
+    ctx.save(); ctx.clip(kq); ctx.strokeStyle = K.turK; ctx.lineWidth = 16; for (let i = 6; i < 40; i += 6) { const [a, b] = KN[i]; ctx.beginPath(); ctx.moveTo(a - 6, b - 40); ctx.lineTo(a + 6, b + 40); ctx.stroke(); } ctx.restore();
+    // arka bacak kalçaları (yanlarda yuvarlak)
+    for (const k of [-1, 1]) boya(ctx, elips(k * 112, -110, 98, 110, 20), sd + 3 + k, K.tur, { isik: [k * 80, -170, 120], kenar: 26 });
+    for (const k of [-1, 1]) boya(ctx, elips(k * 150, -18, 52, 26, 14), sd + 6 + k, K.bey, { kenar: 10 });
+    // gövde (armut)
+    const gov = [[-60, -470], [60, -470], [118, -380], [150, -250], [160, -120], [130, -30], [0, -10], [-130, -30], [-160, -120], [-150, -250], [-118, -380]];
+    const gP = boya(ctx, gov.map(([a, b]) => [a * (1 + nef * 0.004), b]), sd + 10, K.tur, { isik: [-60, -340, 220], kenar: 34 });
+    ctx.save(); ctx.clip(gP);
+    ctx.strokeStyle = K.turK; ctx.lineCap = 'round';
+    for (const k of [-1, 1]) for (let i = 0; i < 6; i++) { ctx.lineWidth = 14 - i; const yy = -410 + i * 66; ctx.beginPath(); ctx.moveTo(k * 170, yy); ctx.quadraticCurveTo(k * 120, yy + 20, k * 66, yy + 6); ctx.stroke(); }
+    boya(ctx, [[-36, -470], [36, -470], [52, -340], [46, -200], [24, -90], [0, -60], [-24, -90], [-46, -200], [-52, -340]], sd + 11, K.bey, { kontur: false, kenar: 14 });
+    ctx.restore();
+    // yele/boyun tüyleri
+    tuyler(ctx, [[-100, -420, -0.9, 0.3, 22], [-120, -390, -0.9, 0.4, 20], [100, -420, 0.9, 0.3, 22], [120, -390, 0.9, 0.4, 20]], sd + 12, C.kontur, 2.4);
+    // ön bacaklar (düz) + krem patiler
+    for (const k of [-1, 1]) {
+      boya(ctx, [[k * 30, -300], [k * 92, -300], [k * 96, -40], [k * 26, -40]], sd + 14 + k, K.tur, { isik: [k * 50, -250, 90], kenar: 16 });
+      ctx.save(); ctx.strokeStyle = K.turK; ctx.lineWidth = 11; ctx.lineCap = 'round';
+      for (let i = 0; i < 4; i++) { const yy = -260 + i * 52; ctx.beginPath(); ctx.moveTo(k * 32, yy); ctx.lineTo(k * 92, yy + 10); ctx.stroke(); }
+      ctx.restore();
+      boya(ctx, elips(k * 62, -26, 52, 32, 16), sd + 17 + k, K.bey, { kenar: 10 });
+      for (const d of [-16, 16]) cizgi(ctx, [[k * 62 + d, -40], [k * 62 + d, -6]], sd + 19 + d + k, 3);
+    }
+    // baş
+    ctx.save(); ctx.translate(0, -590 + nef * 0.6); ctx.rotate(p.basEgim || 0);
+    kediBas(ctx, 0, 0, 1.3, p);
+    ctx.restore();
+    ctx.restore();
+  }
   function pati(ctx, x, y, s, a, K) {
     ctx.save(); ctx.translate(x, y); ctx.rotate(a); ctx.scale(s, s);
     boya(ctx, [[-60, -400], [60, -400], [70, -60], [60, 30], [0, 60], [-60, 30], [-70, -60]], 501, (K || renk(0)).tur, { kenar: 24 });
@@ -401,7 +444,7 @@
         [S.at(1, -0.05), (c, u, t) => {
           kamera(c, 470, 1080, lerp(2.0, 2.15, clamp(u / 3)));
           yatakOdasi(c, gt, { yuz: { goz: 0 } });
-          kediYan(c, 590, 1185, 0.55, { t: gt, yon: -1, otur: 1, bak: 0.25, goz: 1 - pencere(u, 1.4, 1.65, 0.08), basEgim: -0.12, kuyrukSal: 0.4 });
+          kediOtur(c, 620, 1192, 0.42, { t: gt, yon: 1, yan: 0, bakX: -0.8, bakY: 0.5, goz: 1 - pencere(u, 1.4, 1.65, 0.08), basEgim: -0.12, kuyrukSal: 0.4 });
           c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 30);
         }],
         [S.at(2, -0.05), (c, u, t) => {
@@ -431,7 +474,7 @@
           const ort = ramp(t, S.at(1, 0.0), S.at(1, 0.55));
           kamera(c, 560, 1100, 1.5);
           const o = yatakOdasi(c, gt, { yorgan: ort, yuz: { goz: 0, kiz: 0.4 }, el: { x: 640, y: 1330, a: 0.1 } });
-          kediYan(c, 820, o.ust(820) + 10, 0.55, { t: gt, yon: -1, otur: 1, bak: 0.5, goz: 1 - pencere(u % 2.6, 2.2, 2.45, 0.08), kuyrukSal: 0.55, kulak: ort * 0.2 });
+          kediOtur(c, 820, o.ust(820) + 14, 0.42, { t: gt, yon: 1, yan: 0, bakX: -0.7, bakY: 0.3, goz: 1 - pencere(u % 2.6, 2.2, 2.45, 0.08), kuyrukSal: 0.55, kulak: ort * 0.2, basEgim: 0.08 });
           c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 30);
         }],
         [S.at(2, -0.05), (c, u, t) => {
@@ -516,7 +559,7 @@
           };
           kamera(c, 900, 760, 1.55);
           yatakOdasi(c, gt, { isik, dis, yuz: { goz: 0 } });
-          kediYan(c, 900, 735, 0.42, { t: gt, yon: -1, otur: 1, yas: lapse, bak: 0.1, goz: 0.85, kuyrukSal: 0.2 });
+          kediOtur(c, 900, 738, 0.3, { t: gt, yon: 1, yas: lapse, bakX: -0.4, bakY: 0.2, goz: 0.85, kuyrukSal: 0.2 });
         }],
         [S.at(1, -0.05), (c, u, t) => {
           c.save(); kamera(c, 640, 1500, 1.5);
