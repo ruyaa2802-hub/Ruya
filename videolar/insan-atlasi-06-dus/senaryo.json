@@ -1,58 +1,66 @@
 {
-  "baslik": "İnsan Atlası — Neden en iyi cevapları duşta buluruz?",
-  "fps": 30,
-  "giris": 0.7,
-  "kapanis": 2.0,
-  "acilis": 0.4,
-  "altyaziY": 1600,
-  "ses": {
-    "sting": false,
-    "kapanisDarbe": false,
-    "whoosh": 0.4,
-    "pad": 0.6,
-    "piyano": 0.7,
-    "pizz": { "seviye": 0.45, "bpm": 104, "bas": 0.6,
-              "notalar": [130.81, 0, 164.81, 0, 196.0, 0, 164.81, 0, 146.83, 0, 174.61, 0, 220.0, 0, 174.61, 0] },
-    "akorlar": {
-      "kanca":   [65.41, 98.0, 164.81, 196.0],
-      "hayal":   [87.31, 130.81, 220.0, 261.63],
-      "aciklama":[73.42, 110.0, 174.61, 220.0],
-      "beyin":   [98.0, 146.83, 246.94, 293.66],
-      "son":     [65.41, 98.0, 164.81, 246.94]
-    },
-    "yayli": { "seviye": 0.6, "bolumler": { "kanca": 0.2, "hayal": 0.5, "aciklama": 0.6, "beyin": 0.7, "son": 0.9 } },
-    "ortam": [
-      { "tip": "yagmur", "bas": "kanca", "son": "beyin", "seviye": 1.1, "sonOfs": 0.6 }
-    ],
-    "isaretler": [
-      { "tip": "pop", "bolum": "kanca", "cumle": 0, "oran": 0.28, "adet": 2, "seviye": 0.7 },
-      { "tip": "parilti", "bolum": "kanca", "cumle": 0, "oran": 0.7, "seviye": 0.6 },
-      { "tip": "pop", "bolum": "hayal", "cumle": 0, "oran": 0.0, "adet": 1, "seviye": 0.7 },
-      { "tip": "pop", "bolum": "hayal", "cumle": 0, "oran": 0.25, "adet": 1, "seviye": 0.7 },
-      { "tip": "pop", "bolum": "hayal", "cumle": 0, "oran": 0.5, "adet": 1, "seviye": 0.7 },
-      { "tip": "pop", "bolum": "aciklama", "cumle": 1, "oran": 0.2, "adet": 3, "seviye": 0.5 },
-      { "tip": "parilti", "bolum": "aciklama", "cumle": 2, "oran": 0.2, "seviye": 0.6 },
-      { "tip": "pop", "bolum": "beyin", "cumle": 1, "oran": 0.15, "adet": 1, "seviye": 0.6 },
-      { "tip": "pop", "bolum": "beyin", "cumle": 1, "oran": 0.45, "adet": 1, "seviye": 0.6 },
-      { "tip": "pop", "bolum": "beyin", "cumle": 1, "oran": 0.75, "adet": 1, "seviye": 0.6 },
-      { "tip": "tok", "bolum": "son", "cumle": 1, "oran": -0.05, "seviye": 0.6 },
-      { "tip": "boing", "bolum": "son", "cumle": 1, "oran": 0.0, "seviye": 0.8 },
-      { "tip": "pop", "bolum": "son", "cumle": 1, "oran": 0.35, "adet": 2, "seviye": 0.7 }
-    ],
-    "anlatim": "highpass=f=70,equalizer=f=220:t=q:w=1.2:g=1.5",
-    "ducking": 3,
-    "release": 550
+ "baslik": "İnsan Atlası — Neden en iyi cevapları duşta buluruz?",
+ "fps": 30,
+ "giris": 0.7,
+ "kapanis": 2.0,
+ "acilis": 0.4,
+ "altyaziY": 1600,
+ "ses": {
+  "sting": false,
+  "kapanisDarbe": false,
+  "whoosh": 0,
+  "pad": 0,
+  "piyano": 0,
+  "anlatim": "highpass=f=70,equalizer=f=220:t=q:w=1.2:g=1.5",
+  "ducking": 2,
+  "release": 700,
+  "muzikDosyasi": "ses/muzik.wav",
+  "muzikSeviye": -13
+ },
+ "bolumler": [
+  {
+   "id": "kanca",
+   "sahne": "kanca",
+   "gecis": "capraz",
+   "gecisSure": 0.8,
+   "metin": "Hiç duşta, aslında hiç yaşanmamış bir tartışmayı kazanıp, yıllar önce söyleyemediğin bütün cevapları verdiğin oldu mu?"
   },
-  "bolumler": [
-    { "id": "kanca", "sahne": "kanca", "gecis": "capraz", "gecisSure": 0.8,
-      "metin": "Hiç duşta, aslında hiç yaşanmamış bir tartışmayı kazanıp, yıllar önce söyleyemediğin bütün cevapları verdiğin oldu mu?" },
-    { "id": "hayal", "sahne": "hayal", "gecis": "capraz", "gecisSure": 0.8,
-      "metin": "Üstelik o konuşmada o kadar iyisin ki, keşke gerçek hayatta da böyle konuşabilseydim diyorsun." },
-    { "id": "aciklama", "sahne": "aciklama", "gecis": "capraz", "gecisSure": 0.9,
-      "metin": "Aslında bunun bir nedeni var. Duş almak gibi otomatikleşmiş işler, beynimizin dikkatini sürekli meşgul etmez. Böylece zihnimiz serbestçe dolaşmaya başlar." },
-    { "id": "beyin", "sahne": "beyin", "gecis": "capraz", "gecisSure": 0.9,
-      "metin": "Psikolojide buna zihinsel gezinme deniyor. Beynimiz geçmişi yeniden canlandırıyor, geleceği prova ediyor ve bazen hiç yaşanmamış konuşmaları bile simüle ediyor." },
-    { "id": "son", "sahne": "son",
-      "metin": "Yani belki de en iyi cevaplarını duşta buluyorsun… Çünkü beynin, sen rahatladığında konuşmaya başlıyor." }
-  ]
+  {
+   "id": "hayal",
+   "sahne": "hayal",
+   "gecis": "capraz",
+   "gecisSure": 0.8,
+   "metin": "Üstelik o konuşmada o kadar iyisin ki, keşke gerçek hayatta da böyle konuşabilseydim diyorsun."
+  },
+  {
+   "id": "aciklama",
+   "sahne": "aciklama",
+   "gecis": "capraz",
+   "gecisSure": 0.9,
+   "metin": "Aslında bunun bir nedeni var. Duş almak gibi otomatikleşmiş işler, beynimizin dikkatini sürekli meşgul etmez. Böylece zihnimiz serbestçe dolaşmaya başlar."
+  },
+  {
+   "id": "beyin",
+   "sahne": "beyin",
+   "gecis": "capraz",
+   "gecisSure": 0.9,
+   "metin": "Psikolojide buna zihinsel gezinme deniyor. Beynimiz geçmişi yeniden canlandırıyor, geleceği prova ediyor ve bazen hiç yaşanmamış konuşmaları bile simüle ediyor."
+  },
+  {
+   "id": "son",
+   "sahne": "son",
+   "metin": "Yani belki de en iyi cevaplarını duşta buluyorsun… Çünkü beynin, sen rahatladığında konuşmaya başlıyor."
+  }
+ ],
+ "muzik": {
+  "ton": "F",
+  "tempo": 92,
+  "bolumler": {
+   "kanca": "oyunbaz",
+   "hayal": "hayal",
+   "aciklama": "sakin",
+   "beyin": "yukselis",
+   "son": "final"
+  }
+ }
 }

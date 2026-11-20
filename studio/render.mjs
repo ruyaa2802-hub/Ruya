@@ -7,7 +7,7 @@
 //   seçenekler: --isci 4  (paralel tarayıcı sayfası)   --hizli (540x960 taslak)
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawn, execFileSync } from 'node:child_process';
+import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 import { zamanlamaOlustur } from './zamanlama.mjs';
@@ -124,13 +124,20 @@ try {
 
   if (final) {
     // Müzik + efekt yatağı (yerel sentez), anlatım üstüne sidechain ile alçaltılır
-    const yatak = path.join(gecici, 'yatak.wav');
-    sesYatagiUret(TL, yatak);
+    // Müzik: senaryo.ses.muzikDosyasi varsa (studio/besteci.py ile bestelenmiş parça) onu, yoksa sentez yatağını kullan
+    let yatak = path.join(gecici, 'yatak.wav'), yatakFiltre = '';
+    const muzik = TL.ses && TL.ses.muzikDosyasi ? path.join(VDIR, TL.ses.muzikDosyasi) : null;
+    if (muzik && fs.existsSync(muzik)) {
+      const lufs = f => { const r = spawnSync('ffmpeg', ['-hide_banner', '-i', f, '-af', 'ebur128', '-f', 'null', '-'], { encoding: 'utf8' }); const m = [...r.stderr.matchAll(/I:\s+(-?[\d.]+) LUFS/g)]; return parseFloat(m[m.length - 1][1]); };
+      const kazanc = (lufs(ses) + (TL.ses.muzikSeviye ?? -13)) - lufs(muzik);
+      yatak = muzik; yatakFiltre = `volume=${kazanc.toFixed(2)}dB,`;
+      console.log(`🎼 Müzik: ${path.relative(KOK, muzik)} (anlatıma göre ${TL.ses.muzikSeviye ?? -13} LU, kazanç ${kazanc.toFixed(1)} dB)`);
+    } else sesYatagiUret(TL, yatak);
     const cikis = path.join(CIKTI, 'final.mp4');
     const gecikme = Math.round(TL.giris * 1000);
     execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', sessiz, '-i', ses, '-i', yatak, '-filter_complex',
       `[1:a]aresample=48000,aformat=channel_layouts=stereo,${(TL.ses && TL.ses.anlatim) ? TL.ses.anlatim + ',' : ''}adelay=${gecikme}|${gecikme},apad,asplit=2[an][yan];` +
-      `[2:a]aresample=48000,aformat=channel_layouts=stereo[ya];` +
+      `[2:a]aresample=48000,aformat=channel_layouts=stereo,${yatakFiltre}apad[ya];` +
       `[ya][yan]sidechaincompress=threshold=0.04:ratio=${(TL.ses && TL.ses.ducking) || 6}:attack=20:release=${(TL.ses && TL.ses.release) || 450}:makeup=1[yd];` +
       `[an][yd]amix=inputs=2:normalize=0:duration=longest,loudnorm=I=-14:TP=-1.5:LRA=11,alimiter=limit=0.74:level=false[a]`,
       '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-ar', '48000',
