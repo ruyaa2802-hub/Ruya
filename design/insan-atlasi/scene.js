@@ -342,7 +342,7 @@ function scene3(t, t0) {
       <text x="${x}" y="${y}" text-anchor="${anchor}" font-family="Nunito" font-weight="800" font-size="50" fill="${col}" stroke="#fff" stroke-width="10" paint-order="stroke">${title}</text>
       <text x="${x}" y="${y + 48}" text-anchor="${anchor}" font-family="Nunito" font-weight="700" font-size="36" fill="${OL}" stroke="#fff" stroke-width="8" paint-order="stroke">${sub}</text></g>`;
   };
-  s += lab(70, 1330, 'Koku soğanı', 'kokuyu algılar', '#b8892d', k(lt, 1.1, 1.6) * (1 - k(lt, 5.4, 5.9)), 210, 1290, 362, 978);
+  s += lab(70, 1330, 'Koku soğanı', 'koku sinyalini işler', '#b8892d', k(lt, 1.1, 1.6) * (1 - k(lt, 5.4, 5.9)), 210, 1290, 362, 978);
   s += lab(640, 400, 'Hipokampus', 'anılar ve hafıza', P.blueDk, hipOn, 760, 450, 660, 930, 'middle');
   s += lab(70, 1330, 'Amigdala', 'duygular', '#b9634e', amyOn, 210, 1290, 518, 950);
   s += sparkles(600, 930, 180, t, 10, Math.max(hipOn, amyOn) * pulse * 0.8, '#ffe9a8');
