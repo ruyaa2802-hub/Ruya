@@ -1,0 +1,44 @@
+[
+ {
+  "word": "Senin",
+  "start": 0.0,
+  "end": 0.26,
+  "p": 0.437,
+  "asr": "Senin"
+ },
+ {
+  "word": "bütün",
+  "start": 0.26,
+  "end": 0.52,
+  "p": 0.991,
+  "asr": "bütün"
+ },
+ {
+  "word": "hayatın",
+  "start": 0.52,
+  "end": 1.0,
+  "p": 0.862,
+  "asr": "hayatın"
+ },
+ {
+  "word": "dolup",
+  "start": 1.0,
+  "end": 1.24,
+  "p": 0.704,
+  "asr": "dolup"
+ },
+ {
+  "word": "boşalmak",
+  "start": 1.24,
+  "end": 1.68,
+  "p": 0.952,
+  "asr": "boşalmak"
+ },
+ {
+  "word": "zaten.",
+  "start": 1.68,
+  "end": 1.9,
+  "p": 0.997,
+  "asr": "zaten."
+ }
+]

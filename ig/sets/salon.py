@@ -17,13 +17,16 @@ ORIGIN = Vector((-40.0, 0.0, 0.0))
 SEAT_Z = 0.44
 SEAT_FRONT = 0.15
 TV = (0.0, -1.55)
+TABLE = (0.15, -0.42)          # coffee table centre (x, y); its top is TABLE_Z high
+TABLE_Z = 0.4
 
 
 def P(x, y, z):
     return tuple(ORIGIN + Vector((x, y, z)))
 
 
-def build():
+def build(coffee_table=False):
+    """coffee_table: a low wooden table in front of the sofa, with a tray, sugar bowl and a little cloth."""
     col = collection("Salon")
     floor = M.wood("salon_floor", light=(0.6, 0.4, 0.24), dark=(0.36, 0.2, 0.1), roughness=0.4, planks=True,
                    scale=1.2, coat=0.3)
@@ -53,6 +56,25 @@ def build():
         .location = P(-0.85, 0.85, SEAT_Z + 0.2)
     for x in (-0.85, 0.85):
         cylinder("sofa_foot", 0.025, 0.06, P(x, 0.25, 0.03), M.wood("foot_wood"), col)
+
+    if coffee_table:
+        tw = M.wood("table_walnut", light=(0.5, 0.31, 0.17), dark=(0.28, 0.15, 0.07), roughness=0.35, coat=0.4)
+        tx, ty = TABLE
+        box("table_top", (0.95, 0.55, 0.04), P(tx, ty, TABLE_Z - 0.02), tw, col, bevel=0.012)
+        box("table_apron", (0.88, 0.48, 0.06), P(tx, ty, TABLE_Z - 0.07), tw, col, bevel=0.006)
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                cylinder("table_leg", 0.022, TABLE_Z - 0.04, P(tx + sx * 0.4, ty + sy * 0.22, (TABLE_Z - 0.04) / 2),
+                         tw, col)
+        lace = M.fabric("table_lace", (0.96, 0.94, 0.88), sheen=0.3, wrinkle=0.01, mapping="object")
+        box("table_doily", (0.36, 0.36, 0.004), P(tx + 0.18, ty + 0.02, TABLE_Z + 0.002), lace, col)
+        brass = M.metal("tray_brass", (0.85, 0.62, 0.28), 0.25)
+        cylinder("tray", 0.13, 0.012, P(tx - 0.26, ty + 0.05, TABLE_Z + 0.006), brass, col, verts=48, bevel=0.004)
+        bowl = cylinder("sugar_bowl", 0.045, 0.05, P(tx - 0.3, ty + 0.06, TABLE_Z + 0.037),
+                        M.ceramic("sugar_bowl", (0.95, 0.95, 0.97)), col, verts=32, bevel=0.006)
+        _blobs("sugar_cubes", [((-0.2, 0.0, 0.0), (0.009, 0.009, 0.009)), ((-0.19, 0.012, 0.004), (0.009, 0.009, 0.009))],
+               M.paint("sugar", (0.98, 0.98, 0.98), roughness=0.6, texture=0.3), col).location = \
+            P(tx - 0.03, ty + 0.06, TABLE_Z + 0.07)
 
     # TV on a low stand, facing the sofa
     stand = M.wood("tv_stand", light=(0.55, 0.36, 0.2), dark=(0.32, 0.18, 0.08))

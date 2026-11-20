@@ -87,9 +87,18 @@ if args.frames:
     sys.exit(0)
 
 sc.render.use_overwrite = not args.resume
+on_twos = getattr(ep, "ON_TWOS", False)        # stop-motion feel: render every other frame, hold each twice
+if on_twos:
+    sc.frame_step = 2
 t_render = time.time()
 bpy.ops.render.render(animation=True)
 n = f1 - f0 + 1
+if on_twos:
+    import shutil
+    for f in range(f0 + 1, f1 + 1, 2):
+        held = os.path.join(out, "frames", f"f_{f - 1:04d}.png")
+        if os.path.exists(held):
+            shutil.copyfile(held, os.path.join(out, "frames", f"f_{f:04d}.png"))
 print(f"[build] rendered {n} frames in {time.time() - t_render:.0f}s "
       f"({(time.time() - t_render) / n:.1f}s/frame)", flush=True)
 
@@ -101,7 +110,7 @@ if hasattr(ep, "post_video"):                    # episode compositing (overlays
     mp4 = ep.post_video(mp4, f0 / args.fps)
 texts = getattr(ep, "LINES", {})
 ass = None
-if texts:
+if texts and not getattr(ep, "NO_SUBTITLES", False):
     audio.srt(tl, os.path.splitext(mp4)[0] + ".srt", texts, f0 / args.fps)
     ass = subtitles.build_ass(tl.lines, texts, os.path.splitext(mp4)[0] + ".ass", f0 / args.fps)
     if hasattr(ep, "post_ass"):                     # episode overlays (e.g. on-screen choices) as extra ASS events

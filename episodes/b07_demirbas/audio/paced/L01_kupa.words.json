@@ -1,0 +1,93 @@
+[
+ {
+  "word": "Ben",
+  "start": 0.0,
+  "end": 0.12,
+  "p": 0.867,
+  "asr": "Ben"
+ },
+ {
+  "word": "bir",
+  "start": 0.12,
+  "end": 0.24,
+  "p": 0.96,
+  "asr": "bir"
+ },
+ {
+  "word": "şey",
+  "start": 0.24,
+  "end": 0.38,
+  "p": 0.749,
+  "asr": "şey"
+ },
+ {
+  "word": "soracağım.",
+  "start": 0.38,
+  "end": 0.8,
+  "p": 0.992,
+  "asr": "soracağım."
+ },
+ {
+  "word": "Siz",
+  "start": 1.08,
+  "end": 1.22,
+  "p": 0.971,
+  "asr": "Siz"
+ },
+ {
+  "word": "şimdi",
+  "start": 1.22,
+  "end": 1.48,
+  "p": 0.986,
+  "asr": "şimdi"
+ },
+ {
+  "word": "barıştınız",
+  "start": 1.48,
+  "end": 1.88,
+  "p": 0.978,
+  "asr": "barıştınız"
+ },
+ {
+  "word": "mı,",
+  "start": 1.88,
+  "end": 2.08,
+  "p": 0.997,
+  "asr": "mı?"
+ },
+ {
+  "word": "yoksa",
+  "start": 2.36,
+  "end": 2.6,
+  "p": 0.971,
+  "asr": "Yoksa"
+ },
+ {
+  "word": "bu",
+  "start": 2.6,
+  "end": 2.7,
+  "p": 0.976,
+  "asr": "bu"
+ },
+ {
+  "word": "sarılma",
+  "start": 2.7,
+  "end": 2.98,
+  "p": 0.813,
+  "asr": "sarılma"
+ },
+ {
+  "word": "geçici",
+  "start": 2.98,
+  "end": 3.24,
+  "p": 0.966,
+  "asr": "geçici"
+ },
+ {
+  "word": "mi?",
+  "start": 3.24,
+  "end": 3.36,
+  "p": 0.999,
+  "asr": "mi?"
+ }
+]

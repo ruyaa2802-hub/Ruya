@@ -1,0 +1,114 @@
+[
+ {
+  "word": "Ulan",
+  "start": 0.0,
+  "end": 0.34,
+  "p": 0.92,
+  "asr": "Ulan"
+ },
+ {
+  "word": "ben",
+  "start": 0.34,
+  "end": 0.52,
+  "p": 0.987,
+  "asr": "ben"
+ },
+ {
+  "word": "olmasam",
+  "start": 0.52,
+  "end": 1.02,
+  "p": 0.962,
+  "asr": "olmasam"
+ },
+ {
+  "word": "bu",
+  "start": 1.02,
+  "end": 1.14,
+  "p": 0.917,
+  "asr": "bu"
+ },
+ {
+  "word": "evde",
+  "start": 1.14,
+  "end": 1.48,
+  "p": 0.998,
+  "asr": "evde"
+ },
+ {
+  "word": "kimsenin",
+  "start": 1.48,
+  "end": 1.96,
+  "p": 0.991,
+  "asr": "kimsenin"
+ },
+ {
+  "word": "hayatı",
+  "start": 1.96,
+  "end": 2.4,
+  "p": 0.99,
+  "asr": "hayatı"
+ },
+ {
+  "word": "yok.",
+  "start": 2.4,
+  "end": 2.54,
+  "p": 0.999,
+  "asr": "yok."
+ },
+ {
+  "word": "Sabah",
+  "start": 2.76,
+  "end": 3.12,
+  "p": 0.979,
+  "asr": "Sabah"
+ },
+ {
+  "word": "kahve",
+  "start": 3.12,
+  "end": 3.5,
+  "p": 0.993,
+  "asr": "kahve"
+ },
+ {
+  "word": "bende,",
+  "start": 3.5,
+  "end": 3.84,
+  "p": 0.989,
+  "asr": "bende,"
+ },
+ {
+  "word": "akşam",
+  "start": 4.16,
+  "end": 4.5,
+  "p": 0.995,
+  "asr": "akşam"
+ },
+ {
+  "word": "çay",
+  "start": 4.5,
+  "end": 4.76,
+  "p": 0.996,
+  "asr": "çay"
+ },
+ {
+  "word": "bende.",
+  "start": 4.76,
+  "end": 5.08,
+  "p": 0.997,
+  "asr": "bende."
+ },
+ {
+  "word": "Biraz",
+  "start": 5.32,
+  "end": 5.6,
+  "p": 0.984,
+  "asr": "Biraz"
+ },
+ {
+  "word": "saygı!",
+  "start": 5.6,
+  "end": 6.26,
+  "p": 0.968,
+  "asr": "saygı."
+ }
+]

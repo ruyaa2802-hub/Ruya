@@ -1,0 +1,30 @@
+[
+ {
+  "word": "İÇİMDE",
+  "start": 0.0,
+  "end": 0.4,
+  "p": 0.975,
+  "asr": "İçimde"
+ },
+ {
+  "word": "ÇAY",
+  "start": 0.4,
+  "end": 0.66,
+  "p": 0.977,
+  "asr": "çay"
+ },
+ {
+  "word": "YOK",
+  "start": 0.66,
+  "end": 0.82,
+  "p": 0.999,
+  "asr": "yok"
+ },
+ {
+  "word": "ULAN!",
+  "start": 0.82,
+  "end": 1.08,
+  "p": 0.934,
+  "asr": "ulan!"
+ }
+]

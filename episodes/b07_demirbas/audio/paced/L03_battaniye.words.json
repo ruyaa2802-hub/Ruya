@@ -1,0 +1,58 @@
+[
+ {
+  "word": "Sen",
+  "start": 0.0,
+  "end": 0.2,
+  "p": 0.756,
+  "asr": "Sen"
+ },
+ {
+  "word": "de",
+  "start": 0.2,
+  "end": 0.36,
+  "p": 0.994,
+  "asr": "de"
+ },
+ {
+  "word": "her",
+  "start": 0.36,
+  "end": 0.54,
+  "p": 0.979,
+  "asr": "her"
+ },
+ {
+  "word": "şeye",
+  "start": 0.54,
+  "end": 0.76,
+  "p": 0.804,
+  "asr": "şeye"
+ },
+ {
+  "word": "burnunu",
+  "start": 0.76,
+  "end": 1.08,
+  "p": 0.779,
+  "asr": "burnunu"
+ },
+ {
+  "word": "sokma,",
+  "start": 1.08,
+  "end": 1.42,
+  "p": 0.813,
+  "asr": "sokma."
+ },
+ {
+  "word": "soğuk",
+  "start": 1.54,
+  "end": 1.82,
+  "p": 0.969,
+  "asr": "Soğuk"
+ },
+ {
+  "word": "çay!",
+  "start": 1.82,
+  "end": 2.04,
+  "p": 0.933,
+  "asr": "çay."
+ }
+]

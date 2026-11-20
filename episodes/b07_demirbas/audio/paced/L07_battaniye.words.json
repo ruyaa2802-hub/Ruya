@@ -1,0 +1,65 @@
+[
+ {
+  "word": "Yastığım,",
+  "start": 0.0,
+  "end": 0.48,
+  "p": 0.684,
+  "asr": "Yastığım"
+ },
+ {
+  "word": "bence",
+  "start": 0.48,
+  "end": 0.72,
+  "p": 0.839,
+  "asr": "bence"
+ },
+ {
+  "word": "bunu",
+  "start": 0.72,
+  "end": 0.86,
+  "p": 0.961,
+  "asr": "bunu"
+ },
+ {
+  "word": "da",
+  "start": 0.86,
+  "end": 1.0,
+  "p": 0.984,
+  "asr": "da"
+ },
+ {
+  "word": "aileye",
+  "start": 1.0,
+  "end": 1.28,
+  "p": 0.918,
+  "asr": "aileye"
+ },
+ {
+  "word": "alalım.",
+  "start": 1.28,
+  "end": 1.48,
+  "p": 0.946,
+  "asr": "alalım,"
+ },
+ {
+  "word": "Biraz",
+  "start": 1.54,
+  "end": 1.66,
+  "p": 0.964,
+  "asr": "biraz"
+ },
+ {
+  "word": "yalnız",
+  "start": 1.66,
+  "end": 1.98,
+  "p": 0.975,
+  "asr": "yalnız"
+ },
+ {
+  "word": "kalmış.",
+  "start": 1.98,
+  "end": 2.34,
+  "p": 0.97,
+  "asr": "kalmış."
+ }
+]

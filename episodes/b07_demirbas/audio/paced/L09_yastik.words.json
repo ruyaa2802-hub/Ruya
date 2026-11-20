@@ -1,0 +1,51 @@
+[
+ {
+  "word": "Tamam",
+  "start": 0.0,
+  "end": 0.26,
+  "p": 0.651,
+  "asr": "Tamam"
+ },
+ {
+  "word": "demirbaş,",
+  "start": 0.26,
+  "end": 0.88,
+  "p": 0.909,
+  "asr": "Demirbaş,"
+ },
+ {
+  "word": "sus",
+  "start": 1.12,
+  "end": 1.22,
+  "p": 0.876,
+  "asr": "sus"
+ },
+ {
+  "word": "da",
+  "start": 1.22,
+  "end": 1.4,
+  "p": 0.634,
+  "asr": "da"
+ },
+ {
+  "word": "biraz",
+  "start": 1.4,
+  "end": 1.58,
+  "p": 0.99,
+  "asr": "biraz"
+ },
+ {
+  "word": "çayını",
+  "start": 1.58,
+  "end": 1.9,
+  "p": 0.893,
+  "asr": "çayını"
+ },
+ {
+  "word": "içelim.",
+  "start": 1.9,
+  "end": 2.14,
+  "p": 0.776,
+  "asr": "içelim."
+ }
+]
