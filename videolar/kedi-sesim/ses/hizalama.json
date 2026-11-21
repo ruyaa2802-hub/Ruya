@@ -1,0 +1,803 @@
+{
+ "cumleler": [
+  {
+   "metin": "Merhaba…",
+   "start": 0.043,
+   "end": 1.417,
+   "kelimeler": [
+    {
+     "k": "Merhaba…",
+     "start": 0.043,
+     "end": 1.417
+    }
+   ]
+  },
+  {
+   "metin": "Ben Tarçın.",
+   "start": 1.427,
+   "end": 2.258,
+   "kelimeler": [
+    {
+     "k": "Ben",
+     "start": 1.427,
+     "end": 1.753
+    },
+    {
+     "k": "Tarçın.",
+     "start": 1.702,
+     "end": 2.258
+    }
+   ]
+  },
+  {
+   "metin": "Size her sabah uyandırdığım birini anlatacağım.",
+   "start": 2.958,
+   "end": 5.435,
+   "kelimeler": [
+    {
+     "k": "Size",
+     "start": 2.958,
+     "end": 3.322
+    },
+    {
+     "k": "her",
+     "start": 3.27,
+     "end": 3.61
+    },
+    {
+     "k": "sabah",
+     "start": 3.552,
+     "end": 3.948
+    },
+    {
+     "k": "uyandırdığım",
+     "start": 3.867,
+     "end": 4.593
+    },
+    {
+     "k": "birini",
+     "start": 4.505,
+     "end": 4.895
+    },
+    {
+     "k": "anlatacağım.",
+     "start": 4.805,
+     "end": 5.435
+    }
+   ]
+  },
+  {
+   "metin": "Ondan önce uyanırım.",
+   "start": 6.196,
+   "end": 7.511,
+   "kelimeler": [
+    {
+     "k": "Ondan",
+     "start": 6.196,
+     "end": 6.784
+    },
+    {
+     "k": "önce",
+     "start": 6.73,
+     "end": 7.05
+    },
+    {
+     "k": "uyanırım.",
+     "start": 6.969,
+     "end": 7.511
+    }
+   ]
+  },
+  {
+   "metin": "Önce yüzüne bakarım…",
+   "start": 8.337,
+   "end": 9.374,
+   "kelimeler": [
+    {
+     "k": "Önce",
+     "start": 8.337,
+     "end": 8.702
+    },
+    {
+     "k": "yüzüne",
+     "start": 8.625,
+     "end": 9.015
+    },
+    {
+     "k": "bakarım…",
+     "start": 8.926,
+     "end": 9.374
+    }
+   ]
+  },
+  {
+   "metin": "Sonra burnuna küçük bir pati.",
+   "start": 10.184,
+   "end": 12.298,
+   "kelimeler": [
+    {
+     "k": "Sonra",
+     "start": 10.184,
+     "end": 10.676
+    },
+    {
+     "k": "burnuna",
+     "start": 10.64,
+     "end": 11.5
+    },
+    {
+     "k": "küçük",
+     "start": 11.442,
+     "end": 11.758
+    },
+    {
+     "k": "bir",
+     "start": 11.677,
+     "end": 11.963
+    },
+    {
+     "k": "pati.",
+     "start": 11.902,
+     "end": 12.298
+    }
+   ]
+  },
+  {
+   "metin": "Uyansın diye.",
+   "start": 13.12,
+   "end": 13.938,
+   "kelimeler": [
+    {
+     "k": "Uyansın",
+     "start": 13.12,
+     "end": 13.74
+    },
+    {
+     "k": "diye.",
+     "start": 13.662,
+     "end": 13.938
+    }
+   ]
+  },
+  {
+   "metin": "Bazen yorganı başına çeker.",
+   "start": 15.482,
+   "end": 17.12,
+   "kelimeler": [
+    {
+     "k": "Bazen",
+     "start": 15.482,
+     "end": 15.958
+    },
+    {
+     "k": "yorganı",
+     "start": 15.89,
+     "end": 16.39
+    },
+    {
+     "k": "başına",
+     "start": 16.308,
+     "end": 16.732
+    },
+    {
+     "k": "çeker.",
+     "start": 16.66,
+     "end": 17.12
+    }
+   ]
+  },
+  {
+   "metin": "Bazen uykulu gözlerle bana kızar.",
+   "start": 17.718,
+   "end": 19.54,
+   "kelimeler": [
+    {
+     "k": "Bazen",
+     "start": 17.718,
+     "end": 18.162
+    },
+    {
+     "k": "uykulu",
+     "start": 18.083,
+     "end": 18.457
+    },
+    {
+     "k": "gözlerle",
+     "start": 18.374,
+     "end": 18.986
+    },
+    {
+     "k": "bana",
+     "start": 18.9,
+     "end": 19.16
+    },
+    {
+     "k": "kızar.",
+     "start": 19.08,
+     "end": 19.54
+    }
+   ]
+  },
+  {
+   "metin": "Ama ben bilirim…",
+   "start": 20.18,
+   "end": 21.744,
+   "kelimeler": [
+    {
+     "k": "Ama",
+     "start": 20.18,
+     "end": 20.48
+    },
+    {
+     "k": "ben",
+     "start": 20.42,
+     "end": 20.72
+    },
+    {
+     "k": "bilirim…",
+     "start": 20.696,
+     "end": 21.744
+    }
+   ]
+  },
+  {
+   "metin": "O kızgınlığı bile sıcacıktır.",
+   "start": 21.77,
+   "end": 23.385,
+   "kelimeler": [
+    {
+     "k": "O",
+     "start": 21.77,
+     "end": 21.91
+    },
+    {
+     "k": "kızgınlığı",
+     "start": 21.886,
+     "end": 22.494
+    },
+    {
+     "k": "bile",
+     "start": 22.405,
+     "end": 22.695
+    },
+    {
+     "k": "sıcacıktır.",
+     "start": 22.615,
+     "end": 23.385
+    }
+   ]
+  },
+  {
+   "metin": "O kahvesini hazırlarken ayaklarının arasında dolaşırım.",
+   "start": 24.71,
+   "end": 27.45,
+   "kelimeler": [
+    {
+     "k": "O",
+     "start": 24.71,
+     "end": 24.85
+    },
+    {
+     "k": "kahvesini",
+     "start": 24.829,
+     "end": 25.431
+    },
+    {
+     "k": "hazırlarken",
+     "start": 25.344,
+     "end": 25.956
+    },
+    {
+     "k": "ayaklarının",
+     "start": 25.871,
+     "end": 26.629
+    },
+    {
+     "k": "arasında",
+     "start": 26.537,
+     "end": 26.922
+    },
+    {
+     "k": "dolaşırım.",
+     "start": 26.83,
+     "end": 27.45
+    }
+   ]
+  },
+  {
+   "metin": "Kapı kapanınca orada otururum.",
+   "start": 27.485,
+   "end": 30.028,
+   "kelimeler": [
+    {
+     "k": "Kapı",
+     "start": 27.485,
+     "end": 28.495
+    },
+    {
+     "k": "kapanınca",
+     "start": 28.523,
+     "end": 29.037
+    },
+    {
+     "k": "orada",
+     "start": 28.938,
+     "end": 29.222
+    },
+    {
+     "k": "otururum.",
+     "start": 29.152,
+     "end": 30.028
+    }
+   ]
+  },
+  {
+   "metin": "Ve dönmesini beklerim.",
+   "start": 30.065,
+   "end": 31.565,
+   "kelimeler": [
+    {
+     "k": "Ve",
+     "start": 30.065,
+     "end": 30.455
+    },
+    {
+     "k": "dönmesini",
+     "start": 30.466,
+     "end": 31.014
+    },
+    {
+     "k": "beklerim.",
+     "start": 30.935,
+     "end": 31.565
+    }
+   ]
+  },
+  {
+   "metin": "Her seferinde.",
+   "start": 32.093,
+   "end": 33.029,
+   "kelimeler": [
+    {
+     "k": "Her",
+     "start": 32.093,
+     "end": 32.447
+    },
+    {
+     "k": "seferinde.",
+     "start": 32.391,
+     "end": 33.029
+    }
+   ]
+  },
+  {
+   "metin": "Sonra…",
+   "start": 34.38,
+   "end": 35.32,
+   "kelimeler": [
+    {
+     "k": "Sonra…",
+     "start": 34.38,
+     "end": 35.32
+    }
+   ]
+  },
+  {
+   "metin": "büyüdüm.",
+   "start": 35.316,
+   "end": 35.884,
+   "kelimeler": [
+    {
+     "k": "büyüdüm.",
+     "start": 35.316,
+     "end": 35.884
+    }
+   ]
+  },
+  {
+   "metin": "Artık eskisi gibi koşamıyorum.",
+   "start": 36.696,
+   "end": 38.251,
+   "kelimeler": [
+    {
+     "k": "Artık",
+     "start": 36.696,
+     "end": 37.124
+    },
+    {
+     "k": "eskisi",
+     "start": 37.048,
+     "end": 37.472
+    },
+    {
+     "k": "gibi",
+     "start": 37.378,
+     "end": 37.622
+    },
+    {
+     "k": "koşamıyorum.",
+     "start": 37.529,
+     "end": 38.251
+    }
+   ]
+  },
+  {
+   "metin": "Yatağına çıkmam biraz uzun sürüyor.",
+   "start": 39.084,
+   "end": 40.834,
+   "kelimeler": [
+    {
+     "k": "Yatağına",
+     "start": 39.084,
+     "end": 39.556
+    },
+    {
+     "k": "çıkmam",
+     "start": 39.47,
+     "end": 39.91
+    },
+    {
+     "k": "biraz",
+     "start": 39.824,
+     "end": 40.156
+    },
+    {
+     "k": "uzun",
+     "start": 40.08,
+     "end": 40.46
+    },
+    {
+     "k": "sürüyor.",
+     "start": 40.386,
+     "end": 40.834
+    }
+   ]
+  },
+  {
+   "metin": "Ama yanına kıvrılınca, hâlâ dünyanın en güvenli yeri orası.",
+   "start": 41.487,
+   "end": 45.722,
+   "kelimeler": [
+    {
+     "k": "Ama",
+     "start": 41.487,
+     "end": 41.813
+    },
+    {
+     "k": "yanına",
+     "start": 41.745,
+     "end": 42.135
+    },
+    {
+     "k": "kıvrılınca,",
+     "start": 42.058,
+     "end": 42.882
+    },
+    {
+     "k": "hâlâ",
+     "start": 43.402,
+     "end": 43.798
+    },
+    {
+     "k": "dünyanın",
+     "start": 43.731,
+     "end": 44.309
+    },
+    {
+     "k": "en",
+     "start": 44.275,
+     "end": 44.565
+    },
+    {
+     "k": "güvenli",
+     "start": 44.536,
+     "end": 45.104
+    },
+    {
+     "k": "yeri",
+     "start": 45.03,
+     "end": 45.35
+    },
+    {
+     "k": "orası.",
+     "start": 45.278,
+     "end": 45.722
+    }
+   ]
+  },
+  {
+   "metin": "Bir sabah uyandığında beni göremeyecek.",
+   "start": 47.207,
+   "end": 49.808,
+   "kelimeler": [
+    {
+     "k": "Bir",
+     "start": 47.207,
+     "end": 48.013
+    },
+    {
+     "k": "sabah",
+     "start": 48.064,
+     "end": 48.396
+    },
+    {
+     "k": "uyandığında",
+     "start": 48.304,
+     "end": 48.916
+    },
+    {
+     "k": "beni",
+     "start": 48.825,
+     "end": 49.115
+    },
+    {
+     "k": "göremeyecek.",
+     "start": 49.032,
+     "end": 49.808
+    }
+   ]
+  },
+  {
+   "metin": "Burnuna dokunan küçük patilerim olmayacak.",
+   "start": 50.427,
+   "end": 52.73,
+   "kelimeler": [
+    {
+     "k": "Burnuna",
+     "start": 50.427,
+     "end": 50.893
+    },
+    {
+     "k": "dokunan",
+     "start": 50.811,
+     "end": 51.329
+    },
+    {
+     "k": "küçük",
+     "start": 51.246,
+     "end": 51.594
+    },
+    {
+     "k": "patilerim",
+     "start": 51.513,
+     "end": 52.187
+    },
+    {
+     "k": "olmayacak.",
+     "start": 52.11,
+     "end": 52.73
+    }
+   ]
+  },
+  {
+   "metin": "O yüzden…",
+   "start": 53.1,
+   "end": 53.977,
+   "kelimeler": [
+    {
+     "k": "O",
+     "start": 53.1,
+     "end": 53.24
+    },
+    {
+     "k": "yüzden…",
+     "start": 53.603,
+     "end": 53.977
+    }
+   ]
+  },
+  {
+   "metin": "ona son bir şey söylemek istiyorum.",
+   "start": 54.027,
+   "end": 56.399,
+   "kelimeler": [
+    {
+     "k": "ona",
+     "start": 54.027,
+     "end": 54.833
+    },
+    {
+     "k": "son",
+     "start": 54.907,
+     "end": 55.233
+    },
+    {
+     "k": "bir",
+     "start": 55.17,
+     "end": 55.43
+    },
+    {
+     "k": "şey",
+     "start": 55.347,
+     "end": 55.593
+    },
+    {
+     "k": "söylemek",
+     "start": 55.506,
+     "end": 56.014
+    },
+    {
+     "k": "istiyorum.",
+     "start": 55.921,
+     "end": 56.399
+    }
+   ]
+  },
+  {
+   "metin": "Üzülme.",
+   "start": 56.978,
+   "end": 57.702,
+   "kelimeler": [
+    {
+     "k": "Üzülme.",
+     "start": 56.978,
+     "end": 57.702
+    }
+   ]
+  },
+  {
+   "metin": "Ben hiçbir sabahı kaçırmadım.",
+   "start": 58.413,
+   "end": 60.388,
+   "kelimeler": [
+    {
+     "k": "Ben",
+     "start": 58.413,
+     "end": 58.687
+    },
+    {
+     "k": "hiçbir",
+     "start": 58.602,
+     "end": 58.958
+    },
+    {
+     "k": "sabahı",
+     "start": 58.875,
+     "end": 59.365
+    },
+    {
+     "k": "kaçırmadım.",
+     "start": 59.312,
+     "end": 60.388
+    }
+   ]
+  },
+  {
+   "metin": "Hepsi seninleydi.",
+   "start": 60.474,
+   "end": 61.482,
+   "kelimeler": [
+    {
+     "k": "Hepsi",
+     "start": 60.474,
+     "end": 60.886
+    },
+    {
+     "k": "seninleydi.",
+     "start": 60.802,
+     "end": 61.482
+    }
+   ]
+  },
+  {
+   "metin": "Teşekkür ederim…",
+   "start": 62.734,
+   "end": 63.692,
+   "kelimeler": [
+    {
+     "k": "Teşekkür",
+     "start": 62.734,
+     "end": 63.346
+    },
+    {
+     "k": "ederim…",
+     "start": 63.268,
+     "end": 63.692
+    }
+   ]
+  },
+  {
+   "metin": "Beni sevdiğin için.",
+   "start": 64.438,
+   "end": 65.375,
+   "kelimeler": [
+    {
+     "k": "Beni",
+     "start": 64.438,
+     "end": 64.683
+    },
+    {
+     "k": "sevdiğin",
+     "start": 64.591,
+     "end": 65.169
+    },
+    {
+     "k": "için.",
+     "start": 65.085,
+     "end": 65.375
+    }
+   ]
+  },
+  {
+   "metin": "Şimdi gözlerimi kapatıyorum.",
+   "start": 66.134,
+   "end": 67.435,
+   "kelimeler": [
+    {
+     "k": "Şimdi",
+     "start": 66.134,
+     "end": 66.386
+    },
+    {
+     "k": "gözlerimi",
+     "start": 66.289,
+     "end": 66.891
+    },
+    {
+     "k": "kapatıyorum.",
+     "start": 66.805,
+     "end": 67.435
+    }
+   ]
+  },
+  {
+   "metin": "Uyan diye değil…",
+   "start": 68.222,
+   "end": 69.11,
+   "kelimeler": [
+    {
+     "k": "Uyan",
+     "start": 68.222,
+     "end": 68.617
+    },
+    {
+     "k": "diye",
+     "start": 68.542,
+     "end": 68.818
+    },
+    {
+     "k": "değil…",
+     "start": 68.73,
+     "end": 69.11
+    }
+   ]
+  },
+  {
+   "metin": "Bu sefer, sen beni uyurken izle.",
+   "start": 69.88,
+   "end": 72.327,
+   "kelimeler": [
+    {
+     "k": "Bu",
+     "start": 69.88,
+     "end": 70.1
+    },
+    {
+     "k": "sefer,",
+     "start": 70.038,
+     "end": 70.482
+    },
+    {
+     "k": "sen",
+     "start": 70.53,
+     "end": 71.27
+    },
+    {
+     "k": "beni",
+     "start": 71.308,
+     "end": 71.612
+    },
+    {
+     "k": "uyurken",
+     "start": 71.533,
+     "end": 72.065
+    },
+    {
+     "k": "izle.",
+     "start": 71.991,
+     "end": 72.327
+    }
+   ]
+  }
+ ]
+}

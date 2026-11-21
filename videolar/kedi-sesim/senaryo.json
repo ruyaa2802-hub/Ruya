@@ -1,10 +1,10 @@
 {
   "baslik": "Tarçın — Bir gün sesimi duymayacaksın",
   "fps": 30,
-  "giris": 1.2,
-  "kapanis": 7.5,
+  "giris": 0.8,
+  "kapanis": 7.0,
   "acilis": 1.2,
-  "altyaziY": 1600,
+  "altyaziY": 1640,
   "ses": {
     "sting": false,
     "kapanisDarbe": false,
@@ -34,7 +34,6 @@
       "sahne": "sabah",
       "gecis": "capraz",
       "gecisSure": 1.2,
-      "altyazi": false,
       "metin": "Merhaba… Ben Tarçın. Size her sabah uyandırdığım birini anlatacağım. Ondan önce uyanırım. Önce yüzüne bakarım… Sonra burnuna küçük bir pati. Uyansın diye."
     },
     {
@@ -42,7 +41,6 @@
       "sahne": "rutin",
       "gecis": "capraz",
       "gecisSure": 1.2,
-      "altyazi": false,
       "metin": "Bazen yorganı başına çeker. Bazen uykulu gözlerle bana kızar. Ama ben bilirim… O kızgınlığı bile sıcacıktır."
     },
     {
@@ -50,7 +48,6 @@
       "sahne": "kahve",
       "gecis": "karart",
       "gecisSure": 1.6,
-      "altyazi": false,
       "metin": "O kahvesini hazırlarken ayaklarının arasında dolaşırım. Kapı kapanınca orada otururum. Ve dönmesini beklerim. Her seferinde."
     },
     {
@@ -58,14 +55,18 @@
       "sahne": "zaman",
       "gecis": "karart",
       "gecisSure": 2.0,
-      "altyazi": false,
       "metin": "Sonra… büyüdüm. Artık eskisi gibi koşamıyorum. Yatağına çıkmam biraz uzun sürüyor. Ama yanına kıvrılınca, hâlâ dünyanın en güvenli yeri orası."
     },
     {
       "id": "sessiz",
       "sahne": "sessiz",
-      "altyazi": false,
       "metin": "Bir sabah uyandığında beni göremeyecek. Burnuna dokunan küçük patilerim olmayacak. O yüzden… ona son bir şey söylemek istiyorum. Üzülme. Ben hiçbir sabahı kaçırmadım. Hepsi seninleydi. Teşekkür ederim… Beni sevdiğin için. Şimdi gözlerimi kapatıyorum. Uyan diye değil… Bu sefer, sen beni uyurken izle."
     }
+  ],
+  "sesSinirlari": [
+    15.1,
+    24.2,
+    33.9,
+    46.9
   ]
 }

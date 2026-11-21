@@ -136,7 +136,7 @@ export function zamanlamaOlustur(senaryo, sesYolu = null) {
   const bolumler = senaryo.bolumler.map(b => ({ ...b, cumleListesi: cumleler(b.metin) }));
   const bolumAg = bolumler.map(b => b.cumleListesi.reduce((s, c) => s + cumleAgirlik(c), 0));
 
-  let konusmaBas, konusmaSon, sesSure = null, kaynak;
+  let konusmaBas, konusmaSon, sesSure = null, kaynak, kelimeHizali = null;
   const bolumAraliklari = [];   // ses zamanında [bas, son] (konuşma)
   const cumleAraliklari = [];   // her bölüm için cümle [bas, son] listesi
 
@@ -156,7 +156,10 @@ export function zamanlamaOlustur(senaryo, sesYolu = null) {
     const beklenen = [];
     let kum = 0;
     for (let i = 0; i < bolumler.length - 1; i++) { kum += bolumAg[i]; beklenen.push(konusmaBas + (konusmaSon - konusmaBas) * kum / topAg); }
-    const sinirlar = sinirSec(beklenen, ic, konusmaBas, konusmaSon, 2.0);
+    // senaryo.sesSinirlari: bölüm sınırları elle verilmişse (ses zamanı, sn) onları içeren sessizlikleri kullan
+    const sinirlar = senaryo.sesSinirlari
+      ? senaryo.sesSinirlari.map(v => ic.find(a => a.s - 0.15 <= v && v <= a.e + 0.15) || { s: v - 0.1, e: v + 0.1, sahte: true })
+      : sinirSec(beklenen, ic, konusmaBas, konusmaSon, 2.0);
     bolumler.forEach((b, i) => {
       const bas = i === 0 ? konusmaBas : sinirlar[i - 1].e;
       const son = i === bolumler.length - 1 ? konusmaSon : sinirlar[i].s;
@@ -169,6 +172,23 @@ export function zamanlamaOlustur(senaryo, sesYolu = null) {
       const cs = sinirSec(bekl, icSil, bas, son, 0.8);
       cumleAraliklari.push(cl.map((_, j) => [j === 0 ? bas : cs[j - 1].e, j === cl.length - 1 ? son : cs[j].s]));
     });
+    // ses/hizalama.json (studio/hizala.py) varsa: cümle ve kelime zamanları doğrudan oradan
+    const hz = path.join(path.dirname(sesYolu), 'hizalama.json');
+    if (fs.existsSync(hz)) {
+      const HC = JSON.parse(fs.readFileSync(hz, 'utf8')).cumleler;
+      const toplamC = bolumler.reduce((n, b) => n + b.cumleListesi.length, 0);
+      if (HC.length === toplamC) {
+        kaynak = 'ses+hizalama'; let k = 0;
+        bolumAraliklari.length = 0; cumleAraliklari.length = 0; kelimeHizali = [];
+        bolumler.forEach(b => {
+          const cl = b.cumleListesi.map(() => HC[k++]);
+          cumleAraliklari.push(cl.map(c => [c.start, c.end]));
+          bolumAraliklari.push([cl[0].start, cl[cl.length - 1].end]);
+          kelimeHizali.push(cl.map(c => c.kelimeler));
+        });
+        konusmaBas = HC[0].start; konusmaSon = HC[HC.length - 1].end;
+      }
+    }
   } else {
     kaynak = 'tahmin';
     konusmaBas = 0;
@@ -208,8 +228,8 @@ export function zamanlamaOlustur(senaryo, sesYolu = null) {
       id: b.id, sahne: b.sahne || b.id, gecis: b.gecis || 'karart', gecisSure: b.gecisSure || 1.0,
       start, end, konusma: { start: V(kb), end: V(ks) }, cumleler: cumleListe,
     });
-    if (b.altyazi !== false) for (const c of cumleListe) {
-      const ks2 = kelimeleriDagit(c.metin, c.start, c.end);
+    if (b.altyazi !== false) for (const [j, c] of cumleListe.entries()) {
+      const ks2 = kelimeHizali ? kelimeHizali[i][j].map(w => ({ k: w.k, start: V(w.start), end: V(w.end) })) : kelimeleriDagit(c.metin, c.start, c.end);
       for (const p of altyaziParcala(ks2)) out.altyazi.push({ start: p[0].start, end: p[p.length - 1].end, kelimeler: p });
     }
   });

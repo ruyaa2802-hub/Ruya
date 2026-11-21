@@ -427,34 +427,68 @@
     }
   }
 
-  // ======================= SAHNE 1: HER SABAH =======================
+  // ======================= YAŞLI TARÇIN YAKIN PLAN (veda) =======================
+  function yasliYakin(c, gt, o) {
+    bulanik(c, 12, () => { c.save(); kamera(c, 640, 1150, 2.0); yatakOdasi(c, gt, { yuz: { goz: o.sahipGoz ?? 0.5 } }); c.restore(); });
+    c.save(); c.globalCompositeOperation = 'soft-light'; c.globalAlpha = 0.5; c.fillStyle = '#ffc88a'; c.fillRect(0, 0, W, H); c.restore();
+    const K = renk(1), nef = Math.sin(gt * 1.2) * 6 * (o.nefes ?? 1);
+    // kıvrılmış gövde: başın arkasında sağa uzanır, kuyruk önden dolanır
+    const g = boya(c, elips(720, 1500 + nef * 0.3, 360 + nef, 210 + nef * 0.5, 26, -0.08), 1601, K.tur, { isik: [640, 1380, 300], kenar: 40 });
+    c.save(); c.clip(g); c.strokeStyle = K.turK; c.lineWidth = 18; c.lineCap = 'round';
+    for (let i = -3; i <= 4; i++) { c.beginPath(); c.moveTo(720 + i * 80, 1300); c.quadraticCurveTo(740 + i * 84, 1440, 720 + i * 88, 1560); c.stroke(); }
+    boya(c, elips(560, 1600, 200, 110, 18), 1608, K.bey, { kontur: false, kenar: 14 });
+    c.restore();
+    tuyler(c, elipsTuy(720, 1500, 360, 210, Math.PI * 1.15, Math.PI * 1.9, 16, 16, 1609), C.kontur, 2.4);
+    // kuyruk önden dolanır
+    const ky = [[1040, 1560], [980, 1680], [800, 1730], [600, 1720], [470, 1680]];
+    c.save(); c.lineCap = 'round'; c.strokeStyle = C.kontur; c.lineWidth = 64; c.stroke(yol(ky, 1610, 1, false)); c.strokeStyle = K.tur; c.lineWidth = 56; c.stroke(yol(ky, 1610, 1, false));
+    c.strokeStyle = K.turK; c.lineWidth = 14; for (const [x, y] of [[960, 1690], [860, 1724], [740, 1730], [620, 1716]]) { c.beginPath(); c.moveTo(x - 6, y - 26); c.lineTo(x + 6, y + 26); c.stroke(); }
+    c.restore();
+    // ön patiler (çenenin altında)
+    for (const k of [-1, 1]) { boya(c, elips(470 + k * 95, 1560, 80, 44, 16), 1602 + k, K.bey, { kenar: 12 }); for (const d of [-22, 0, 22]) cizgi(c, [[470 + k * 95 + d, 1530], [470 + k * 95 + d, 1588]], 1605 + k * 5 + d, 3); }
+    kediBas(c, 470, 1380 + (o.egim || 0) * 70, 1.45, { t: gt, yas: 1, goz: o.goz, mutlu: o.mutlu, bakX: o.bakX, bakY: o.bakY, bebek: 0.5, kulak: 0.15 });
+    if (o.el) { const s = Math.sin(gt * 1.6) * 0.5 + 0.5; el(c, lerp(200, 270, s), lerp(1000, 1040, s), 1.5, 0.55 + s * 0.08, { parmak: gt * 1.5 }); }
+    toz(c, gt, 30, 0.7);
+  }
+
+  // ======================= SAHNE 1: MERHABA, BEN TARÇIN =======================
   VIDEO.sahne('sabah', {
     ciz(ctx, S) {
       KARE = Math.floor(S.gt * 6);
       const gt = S.gt;
       cekimler(ctx, S, [
-        [0, (c, u, t) => {
-          kamera(c, lerp(660, 600, clamp(u / 4)), 1080, lerp(1.0, 1.08, clamp(u / 4)));
+        [0, (c, u, t) => {                                                         // tanışma: kameraya bakan Tarçın
+          bulanik(c, 9, () => { c.save(); kamera(c, 560, 1100, 1.5); yatakOdasi(c, gt, { yuz: { goz: 0 }, el: { x: 640, y: 1330, a: 0.1 } }); c.restore(); });
+          const z = lerp(1.0, 1.08, ease.inOut(clamp(t / S.at(3, 0))));
+          c.save(); c.translate(540, 1100); c.scale(z, z); c.translate(-540, -1100);
+          const merhaba = pencere(t, S.at(0, 0.05), S.at(0, 0.9), 0.12), egil = pencere(t, S.at(1, 0), S.at(2, 0.2), 0.3);
+          const bak = ramp(t, S.at(2, 0.55), S.at(2, 0.95));
+          kediOtur(c, 540, 1560, 0.88, { t: gt, yan: bak * 0.4, bakX: lerp(0, -0.9, bak), bakY: lerp(0, 0.4, bak), miyav: merhaba * 0.6, basEgim: egil * 0.12 - bak * 0.06,
+            goz: 1 - pencere(t, S.at(1, 0.6), S.at(1, 0.95), 0.08), kuyrukSal: 0.4 });
+          c.restore(); toz(c, gt, 40);
+        }],
+        [S.at(3, -0.05), (c, u, t) => {                                            // yorganın üstünde yürür
+          kamera(c, lerp(660, 600, clamp(u / 2)), 1080, lerp(1.0, 1.06, clamp(u / 2)));
           const o = yatakOdasi(c, gt, { yuz: { goz: 0 }, el: { x: 640, y: 1330, a: 0.1 } });
-          const kx = lerp(1300, 760, ease.out(clamp(u / Math.max(0.5, S.at(1, 0) - 0.3))));
-          kediYan(c, kx, o.ust(kx) + 10, 0.55, { t: gt, yon: -1, yuru: gt * 7, adim: kx > 770 ? 1 : 0, otur: kx > 770 ? 0 : 1, bak: 0.2 });
+          const kx = lerp(1300, 780, ease.out(clamp(u / Math.max(0.5, S.at(4, 0) - S.at(3, 0)))));
+          kediYan(c, kx, o.ust(kx) + 10, 0.55, { t: gt, yon: -1, yuru: gt * 7, adim: kx > 790 ? 1 : 0, otur: kx > 790 ? 0 : 1, bak: 0.2 });
           bulanik(c, 18, () => bitki(c, 1250, 1900, 2.2, gt, 860));
           c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 40);
         }],
-        [S.at(1, -0.05), (c, u, t) => {
-          kamera(c, 470, 1080, lerp(2.0, 2.15, clamp(u / 3)));
+        [S.at(4, -0.05), (c, u, t) => {                                            // yüzüne bakar
+          kamera(c, 470, 1080, lerp(2.0, 2.15, clamp(u / 2)));
           yatakOdasi(c, gt, { yuz: { goz: 0 } });
-          kediOtur(c, 620, 1192, 0.42, { t: gt, yon: 1, yan: 0, bakX: -0.8, bakY: 0.5, goz: 1 - pencere(u, 1.4, 1.65, 0.08), basEgim: -0.12, kuyrukSal: 0.4 });
+          kediOtur(c, 620, 1192, 0.42, { t: gt, yan: 0.3, bakX: -0.8, bakY: 0.5, goz: 1 - pencere(u, 0.9, 1.15, 0.08), basEgim: -0.12, kuyrukSal: 0.4 });
           c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 30);
         }],
-        [S.at(2, -0.05), (c, u, t) => {
-          const pt = S.ci(2, 0.12, 0.92), d = Math.sin(clamp(pt) * Math.PI * 2) ** 2;
+        [S.at(5, -0.05), (c, u, t) => {                                            // pati buruna
+          const pt = S.ci(5, 0.1, 0.95), d = Math.sin(clamp(pt) * Math.PI * 2) ** 2;
           c.save(); kamera(c, 400, 1080, 3.2); yatakOdasi(c, gt, { yuz: { goz: 0, kiz: d * 0.3 } }); c.restore();
           pati(c, lerp(930, 640, d), lerp(980, 1105, d), 1.1, lerp(1.25, 1.2, d));
           toz(c, gt, 20);
         }],
-        [S.at(3, -0.1), (c, u, t) => {
-          const miy = pencere(t, S.at(3, 0.05), S.at(3, 0.9), 0.12);
+        [S.at(6, -0.15), (c, u, t) => {                                            // "uyansın diye": küçük miyav
+          const miy = pencere(t, S.at(6, 0.1), S.at(6, 0.95), 0.12);
           bulanik(c, 10, () => { c.save(); kamera(c, 520, 1120, 1.6); yatakOdasi(c, gt, { yuz: { goz: 0 } }); c.restore(); });
           kediBas(c, 560, 980, 2.2, { t: gt, yan: 0.35, goz: 1, miyav: miy, bakX: -0.5, bakY: 0.4, bebek: 0.7 });
           toz(c, gt, 30);
@@ -471,19 +505,19 @@
       const gt = S.gt;
       cekimler(ctx, S, [
         [0, (c, u, t) => {
-          const ort = ramp(t, S.at(1, 0.0), S.at(1, 0.55));
+          const ort = ramp(t, S.at(0, 0.1), S.at(0, 0.7));
           kamera(c, 560, 1100, 1.5);
           const o = yatakOdasi(c, gt, { yorgan: ort, yuz: { goz: 0, kiz: 0.4 }, el: { x: 640, y: 1330, a: 0.1 } });
-          kediOtur(c, 820, o.ust(820) + 14, 0.42, { t: gt, yon: 1, yan: 0, bakX: -0.7, bakY: 0.3, goz: 1 - pencere(u % 2.6, 2.2, 2.45, 0.08), kuyrukSal: 0.55, kulak: ort * 0.2, basEgim: 0.08 });
+          kediOtur(c, 820, o.ust(820) + 14, 0.42, { t: gt, yan: 0.2, bakX: -0.7, bakY: 0.3, goz: 1 - pencere(u % 2.6, 2.2, 2.45, 0.08), kuyrukSal: 0.55, kulak: ort * 0.2, basEgim: 0.08 });
           c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 30);
         }],
-        [S.at(2, -0.05), (c, u, t) => {
+        [S.at(1, -0.05), (c, u, t) => {
           const ac = ramp(u, 0.2, 0.9);
           kamera(c, 400, 1060, 3.4);
           yatakOdasi(c, gt, { yorgan: lerp(1, 0.62, ac), yorganKalk: ac, yuz: { goz: ac * 0.5, kiz: 1, bakX: 1 } });
           c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 16);
         }],
-        [S.at(3, -0.05), (c, u, t) => {
+        [S.at(2, -0.05), (c, u, t) => {
           const s = Math.sin(u * 2.6) * 0.5 + 0.5;
           kamera(c, 600, 1260, 2.4);
           yatakOdasi(c, gt, { yorgan: 1, yuz: {}, el: { x: 600, y: 1300, a: 0.1, parmak: u * 3 } });
@@ -510,15 +544,15 @@
           const kd = () => kediYan(c, kx, ky, 0.62, { t: gt, yon, yuru: gt * 8, adim: 1, kuyrukSal: 0.7 });
           if (arka) { kd(); bacaklar(c, 520, 1540, 0.95, 0, 0, 1110); } else { bacaklar(c, 520, 1540, 0.95, 0, 0, 1110); kd(); }
         }],
-        [S.at(0, 0.7), (c, u, t) => {
+        [S.at(0, 0.6), (c, u, t) => {
           const ok = Math.sin(u * 3) * 0.5 + 0.5;
           mutfakZemin(c, gt);
           bulanik(c, 8, () => bacaklar(c, 380, 1700, 1.6, 0, 0, 1120));
           kediBas(c, 560, 1180, 2.1, { t: gt, yan: 0.2, mutlu: 1, goz: 0, kulak: 0.25 + ok * 0.2 });
           el(c, 520 + ok * 30, 830 - ok * 20, 1.6, 1.25 + ok * 0.08, { parmak: u * 4 });
         }],
-        [S.at(1, -0.05), (c, u, t) => {
-          const yuru = clamp(u / 2.4), kapan = ramp(t, S.at(2, 0.0), S.at(2, 0.75)), acik = 1 - kapan;
+        [S.at(1, -0.3), (c, u, t) => {
+          const yuru = clamp(u / 1.1), kapan = ramp(t, S.at(1, 0.15), S.at(1, 0.7)), acik = 1 - kapan;
           duvarKagidi(c, '#ecd8bc', '#d8c0a0');
           boya(c, dik(-60, 1500, 1200, 500), 1201, '#b99a78', { kal: 0, kontur: false, golge: false });
           const kx = 560, ky = 360, kw = 400, kh = 1140;
@@ -537,7 +571,7 @@
           if (kapan > 0.95) boya(c, elips(kx + 40, ky + 600, 14, 14), 1214, '#d8b878', { kal: 3 });
           kediYan(c, 280, 1640, 0.85, { t: gt, yon: 1, otur: 1, bak: 0, goz: 1 - pencere(u % 3.1, 2.8, 3.0, 0.08), kulak: kapan * 0.5, kuyrukSal: 0.25 * (1 - kapan), basEgim: -0.05 * kapan });
           bulanik(c, 20, () => boya(c, dik(-80, 1760, 600, 400), 1220, '#8a6a52', { kontur: false, golge: false }));
-          const ka = ramp(t, S.at(2, 0.5), S.d); if (ka > 0) { c.fillStyle = `rgba(30,22,30,${ka * 0.35})`; c.fillRect(0, 0, W, H); }
+          const ka = ramp(t, S.at(3, 0.0), S.d); if (ka > 0) { c.fillStyle = `rgba(30,22,30,${ka * 0.35})`; c.fillRect(0, 0, W, H); }
         }],
       ]);
       kagit(ctx);
@@ -551,7 +585,7 @@
       const gt = S.gt;
       cekimler(ctx, S, [
         [0, (c, u, t) => {
-          const lapse = clamp(u / Math.max(1, S.at(1, 0) - 0.1)), gf = lapse * 3.5, isik = 0.5 + 0.5 * Math.cos(gf * TAU);
+          const lapse = clamp(u / Math.max(1, S.at(2, 0) - 0.1)), gf = lapse * 3.5, isik = 0.5 + 0.5 * Math.cos(gf * TAU);
           const dis = (d, px, py, pw, ph) => {
             const r = rng(4);
             for (let i = 0; i < 30; i++) { const x = px + ((r() * pw + u * 70) % pw), y = py + ((r() * ph + u * 240 * (0.6 + r())) % ph); d.fillStyle = lapse < 0.35 ? 'rgba(210,120,50,0.95)' : lapse < 0.7 ? 'rgba(255,255,255,0.95)' : 'rgba(250,190,205,0.95)'; d.beginPath(); d.ellipse(x, y, lapse < 0.35 ? 10 : 6, 6, r() * 3, 0, TAU); d.fill(); }
@@ -559,24 +593,24 @@
           };
           kamera(c, 900, 760, 1.55);
           yatakOdasi(c, gt, { isik, dis, yuz: { goz: 0 } });
-          kediOtur(c, 900, 738, 0.3, { t: gt, yon: 1, yas: lapse, bakX: -0.4, bakY: 0.2, goz: 0.85, kuyrukSal: 0.2 });
+          kediOtur(c, 900, 738, 0.3, { t: gt, yas: lapse, bakX: -0.4, bakY: 0.2, goz: 0.85, kuyrukSal: 0.2 });
         }],
-        [S.at(1, -0.05), (c, u, t) => {
+        [S.at(2, -0.05), (c, u, t) => {
           c.save(); kamera(c, 640, 1500, 1.5);
           yatakOdasi(c, gt, { yuz: { goz: 0 } });
-          const kx = lerp(980, 560, ease.inOut(clamp(u / Math.max(0.5, S.at(2, 0.3) - S.at(1, 0)))));
+          const kx = lerp(980, 560, ease.inOut(clamp(u / Math.max(0.5, S.at(3, 0.1) - S.at(2, 0)))));
           kediYan(c, kx, 1760, 0.72, { t: gt * 0.7, yon: -1, yuru: gt * 3, adim: 0.55, yas: 1, goz: 0.8, bak: 0.25, kuyrukSal: 0.15 });
           bulanik(c, 16, () => bitki(c, 1300, 2100, 2.4, gt, 870));
           c.restore();
         }],
-        [S.at(2, 0.3), (c, u, t) => {
-          const tir = clamp(u / 1.6);
+        [S.at(3, 0.05), (c, u, t) => {
+          const tir = clamp(u / Math.max(1, S.at(4, 0) - S.at(3, 0.05)));
           kamera(c, 760, 1350, 1.4);
           const o = yatakOdasi(c, gt, { yuz: { goz: 0 }, el: { x: 640, y: 1330, a: 0.1 } });
           const kx = lerp(900, 840, tir), ky = lerp(1720, o.ust(840) + 10, ease.inOut(tir)) - Math.sin(Math.PI * tir) * 60;
           kediYan(c, kx, ky, 0.6, { t: gt * 0.7, yon: -1, yuru: gt * 2, adim: tir < 1 ? 0.5 : 0, yas: 1, goz: 0.8, bak: 0.2 });
         }],
-        [S.at(3, -0.05), (c, u, t) => {
+        [S.at(4, -0.05), (c, u, t) => {
           const yt = ramp(u, 0, 1.2);
           kamera(c, 640, 1180, 1.9);
           const o = yatakOdasi(c, gt, { yuz: { goz: 0 }, el: { x: lerp(640, 700, yt), y: lerp(1330, 1190, yt), a: lerp(0.1, -0.15, yt), parmak: gt * yt } });
@@ -588,36 +622,54 @@
     },
   });
 
-  // ======================= SAHNE 5: SESSİZ SABAH + FİNAL =======================
+  // ======================= SAHNE 5: SESSİZ SABAH + VEDA + FİNAL =======================
   VIDEO.sahne('sessiz', {
     ciz(ctx, S) {
       KARE = Math.floor(S.gt * 6);
       const gt = S.gt, t = S.t;
-      const finalA = ramp(t, S.konusma.end + 0.3, S.konusma.end + 1.6);
+      const finalA = ramp(t, S.konusma.end + 0.4, S.konusma.end + 1.8);
       if (finalA < 1) {
         cekimler(ctx, S, [
-          [0, (c, u) => {
-            const uy = ramp(u, 1.0, 2.6);
+          [0, (c, u) => {                                                        // gelecek: boş minder
+            const uy = ramp(u, 0.8, 2.2);
             kamera(c, 640, 1120, lerp(1.25, 1.35, clamp(u / 4)));
             yatakOdasi(c, gt, { gundogumu: true, minder: true, saat: '06:41', nefes: 0.6, yuz: { goz: uy * 0.7, bakX: 1 }, el: { x: 640, y: 1330, a: 0.1 } });
             c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 36);
           }],
-          [S.at(1, -0.05), (c, u) => {
+          [S.at(1, -0.05), (c, u) => {                                           // el boş mindere uzanır
             const uz = ramp(u, 0.2, 2.0);
             kamera(c, 900, 1250, 2.4);
             yatakOdasi(c, gt, { gundogumu: true, minder: true, yuz: { goz: 0.7 }, el: { x: lerp(700, 930, uz), y: lerp(1320, 1236, uz), a: lerp(0.1, -0.05, uz), parmak: uz } });
             c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 24);
           }],
-          [S.at(2, -0.05), (c, u) => {
-            kamera(c, 200, 1080, 2.6);
-            yatakOdasi(c, gt, { gundogumu: true, minder: true, saat: '06:41', yuz: { goz: 0.75, bakX: -0.5 } });
-            c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 20);
+          [S.at(2, -0.1), (c, u) => {                                            // anı: yaşlı Tarçın sahibinin yanında, altın ışık
+            kamera(c, lerp(560, 620, clamp(u / 3)), 1160, lerp(1.5, 1.75, clamp(u / 3)));
+            const o = yatakOdasi(c, gt, { yuz: { goz: 0.55, bakX: 1 }, el: { x: 700, y: 1195, a: -0.15, parmak: gt * 1.2 } });
+            kediYan(c, 760, o.ust(760) + 12, 0.55, { t: gt, yon: -1, yat: 1, yas: 1, goz: 0.7, bak: 0.6, kuyrukSal: 0.1 });
+            c.setTransform(1, 0, 0, 1, 0, 0);
+            c.save(); c.globalCompositeOperation = 'soft-light'; c.globalAlpha = 0.45; c.fillStyle = '#ffc88a'; c.fillRect(0, 0, W, H); c.restore();
+            toz(c, gt, 36, 0.7);
           }],
-          [S.at(3, -0.1), (c, u) => {
-            const f = ease.inOut(clamp(u / Math.max(1, S.konusma.end + 0.6 - S.at(3, -0.1))));
-            kamera(c, lerp(300, -110, f), lerp(1100, 1010, f), lerp(1.6, 5.6, f));
-            yatakOdasi(c, gt, { gundogumu: true, minder: true, saat: '06:41', yuz: { goz: 0.6 } });
-            c.setTransform(1, 0, 0, 1, 0, 0); toz(c, gt, 24);
+          [S.at(4, -0.1), (c, u, t2) => {                                         // "Üzülme… hepsi seninleydi": sahibine bakar
+            yasliYakin(c, gt, { goz: 0.75 * (1 - pencere(u % 3.4, 2.9, 3.3, 0.1)), bakX: -0.5, bakY: -0.6, el: false });
+          }],
+          [S.at(7, -0.1), (c, u, t2) => {                                         // "Teşekkür ederim": okşanırken gözleri mutlulukla kısılır
+            yasliYakin(c, gt, { goz: 0, mutlu: 1, el: true, egim: 0.1 });
+          }],
+          [S.at(9, -0.1), (c, u, t2) => {                                         // "Şimdi gözlerimi kapatıyorum…"
+            const kapa = ramp(t2, S.at(9, 0.4), S.at(10, 0.9));
+            yasliYakin(c, gt, { goz: lerp(0.6, 0.0, kapa), bakX: -0.3, bakY: -0.4, el: true, egim: kapa * 0.4, nefes: 1 - kapa * 0.6 });
+            c.fillStyle = `rgba(255,236,200,${kapa * 0.15})`; c.fillRect(0, 0, W, H);
+          }],
+          [S.at(11, -0.1), (c, u) => {                                            // geniş: elin altında uyuyan Tarçın, ışık beyazlaşır
+            const geri = ease.inOut(clamp(u / 4));
+            kamera(c, lerp(700, 620, geri), lerp(1180, 1120, geri), lerp(2.2, 1.4, geri));
+            const o = yatakOdasi(c, gt, { yuz: { goz: 0.3, bakX: 1 }, el: { x: 700, y: 1195, a: -0.15, parmak: 0 } });
+            kediYan(c, 760, o.ust(760) + 12, 0.55, { t: gt * 0.2, yon: -1, yat: 1, yas: 1, goz: 0, kuyrukSal: 0 });
+            c.setTransform(1, 0, 0, 1, 0, 0);
+            c.save(); c.globalCompositeOperation = 'soft-light'; c.globalAlpha = 0.5; c.fillStyle = '#ffd59a'; c.fillRect(0, 0, W, H); c.restore();
+            c.fillStyle = `rgba(255,246,228,${ramp(u, 1.0, 4.0) * 0.55})`; c.fillRect(0, 0, W, H);
+            toz(c, gt, 40, 0.8);
           }],
         ]);
         kagit(ctx, 0.8);
@@ -633,7 +685,7 @@
         kagit(ctx, 0.6);
         const vg = ctx.createLinearGradient(0, 1200, 0, H); vg.addColorStop(0, 'rgba(30,16,8,0)'); vg.addColorStop(1, 'rgba(30,16,8,0.82)');
         ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
-        const ya = ramp(t, S.konusma.end + 1.6, S.konusma.end + 3.0);
+        const ya = ramp(t, S.konusma.end + 1.8, S.konusma.end + 3.2);
         if (ya > 0) {
           ctx.globalAlpha = finalA * ya;
           yazi(ctx, 'Bazı seslerin kıymetini,', W / 2, 1610 - (1 - ya) * 14, { boyut: 64, agirlik: 600, renk: '#fff8ee', golgeRenk: 'rgba(0,0,0,0.65)', golgeBulanik: 26 });
@@ -645,7 +697,6 @@
       }
     },
   });
-
   VIDEO.sahne('_ortak', {
     hazirla() {
       A.kagit = gurultuDokusu(270, 480, 5, 21, f => [255 - f * 30, 250 - f * 40, 240 - f * 50, 255], 3);
