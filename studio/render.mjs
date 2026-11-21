@@ -83,7 +83,14 @@ try {
   const hizli = bayrak('--hizli');
   const parcaBoy = 90; // küçük parçalar + iş kuyruğu = dengeli yük
   const parcaSayisi = Math.ceil(N / parcaBoy);
-  const gecici = fs.mkdtempSync(path.join(CIKTI, '.parca-'));
+  // --devam: yarıda kalan render'ın tamamlanmış parçalarını yeniden kullan
+  const eskiler = bayrak('--devam') ? fs.readdirSync(CIKTI).filter(d => d.startsWith('.parca-')).map(d => path.join(CIKTI, d)).sort((a, b) => fs.statSync(b).mtimeMs - fs.statSync(a).mtimeMs) : [];
+  const gecici = eskiler[0] || fs.mkdtempSync(path.join(CIKTI, '.parca-'));
+  const tamam = k => {
+    const f = path.join(gecici, `p${String(k).padStart(4, '0')}.mp4`);
+    if (!fs.existsSync(f)) return false;
+    try { const n = parseInt(execFileSync('ffprobe', ['-v', 'error', '-count_packets', '-select_streams', 'v:0', '-show_entries', 'stream=nb_read_packets', '-of', 'csv=p=0', f]).toString()); return n === Math.min(N, (k + 1) * 90) - k * 90; } catch { return false; }
+  };
   const basla = Date.now();
   let biten = 0, siradaki = 0;
   const sayfalar = await Promise.all(Array.from({ length: isci }, () => sayfaAc(tarayici)));
@@ -113,7 +120,11 @@ try {
   }
   const dosyalar = new Array(parcaSayisi);
   await Promise.all(sayfalar.map(async sayfa => {
-    while (siradaki < parcaSayisi) { const k = siradaki++; dosyalar[k] = await parcaRender(sayfa, k); }
+    while (siradaki < parcaSayisi) {
+      const k = siradaki++;
+      if (eskiler.length && tamam(k)) { dosyalar[k] = path.join(gecici, `p${String(k).padStart(4, '0')}.mp4`); biten += Math.min(N, (k + 1) * parcaBoy) - k * parcaBoy; continue; }
+      dosyalar[k] = await parcaRender(sayfa, k);
+    }
   }));
   const parcalar = dosyalar;
   console.log(`\n✅ ${N} kare ${((Date.now() - basla) / 1000).toFixed(0)} sn'de çizildi`);
