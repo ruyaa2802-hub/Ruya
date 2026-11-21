@@ -1,5 +1,5 @@
 {
-  "baslik": "Bir gün sesimi duymayacaksın",
+  "baslik": "Tarçın — Bir gün sesimi duymayacaksın",
   "fps": 30,
   "giris": 1.2,
   "kapanis": 7.5,
@@ -20,18 +20,52 @@
   "muzik": {
     "ton": "C",
     "tempo": 70,
-    "bolumler": { "sabah": "huzun_giris", "rutin": "huzun", "kahve": "huzun", "zaman": "buyume", "sessiz": "doruk" }
+    "bolumler": {
+      "sabah": "huzun_giris",
+      "rutin": "huzun",
+      "kahve": "huzun",
+      "zaman": "buyume",
+      "sessiz": "doruk"
+    }
   },
   "bolumler": [
-    { "id": "sabah", "sahne": "sabah", "gecis": "capraz", "gecisSure": 1.2, "altyazi": false,
-      "metin": "Her sabah senden önce uyanıyorum. Önce yüzüne bakıyorum… Sonra burnuna küçük bir pati dokunduruyorum. Uyan diye." },
-    { "id": "rutin", "sahne": "rutin", "gecis": "capraz", "gecisSure": 1.2, "altyazi": false,
-      "metin": "Bazen umursamıyorsun. Yorganı başına çekiyorsun. Bazen de uykulu gözlerle bana kızıyorsun. Ama ben yine de her sabah geliyorum." },
-    { "id": "kahve", "sahne": "kahve", "gecis": "karart", "gecisSure": 1.6, "altyazi": false,
-      "metin": "Sen kahveni hazırlarken ayaklarının arasında dolaşıyorum. Evden çıkarken arkandan bakıyorum. Ben de kapının kapanmasını izliyorum." },
-    { "id": "zaman", "sahne": "zaman", "gecis": "karart", "gecisSure": 2.0, "altyazi": false,
-      "metin": "Büyüdüm. Eskisi kadar hızlı koşamıyorum. Sabahları yanına gelmem biraz daha uzun sürüyor. Ama seni uyandırmayı hiç bırakmadım." },
-    { "id": "sessiz", "sahne": "sessiz", "altyazi": false,
-      "metin": "Bir sabah uyandığında beni göremeyeceksin. Burnuna dokunan küçük patilerim olmayacak. Belki ilk kez alarm çalmadan uyanacaksın. İşte o zaman… Her sabah şikâyet ettiğin o küçük sesimi özleyeceksin." }
+    {
+      "id": "sabah",
+      "sahne": "sabah",
+      "gecis": "capraz",
+      "gecisSure": 1.2,
+      "altyazi": false,
+      "metin": "Merhaba… Ben Tarçın. Size her sabah uyandırdığım birini anlatacağım. Ondan önce uyanırım. Önce yüzüne bakarım… Sonra burnuna küçük bir pati. Uyansın diye."
+    },
+    {
+      "id": "rutin",
+      "sahne": "rutin",
+      "gecis": "capraz",
+      "gecisSure": 1.2,
+      "altyazi": false,
+      "metin": "Bazen yorganı başına çeker. Bazen uykulu gözlerle bana kızar. Ama ben bilirim… O kızgınlığı bile sıcacıktır."
+    },
+    {
+      "id": "kahve",
+      "sahne": "kahve",
+      "gecis": "karart",
+      "gecisSure": 1.6,
+      "altyazi": false,
+      "metin": "O kahvesini hazırlarken ayaklarının arasında dolaşırım. Kapı kapanınca orada otururum. Ve dönmesini beklerim. Her seferinde."
+    },
+    {
+      "id": "zaman",
+      "sahne": "zaman",
+      "gecis": "karart",
+      "gecisSure": 2.0,
+      "altyazi": false,
+      "metin": "Sonra… büyüdüm. Artık eskisi gibi koşamıyorum. Yatağına çıkmam biraz uzun sürüyor. Ama yanına kıvrılınca, hâlâ dünyanın en güvenli yeri orası."
+    },
+    {
+      "id": "sessiz",
+      "sahne": "sessiz",
+      "altyazi": false,
+      "metin": "Bir sabah uyandığında beni göremeyecek. Burnuna dokunan küçük patilerim olmayacak. O yüzden… ona son bir şey söylemek istiyorum. Üzülme. Ben hiçbir sabahı kaçırmadım. Hepsi seninleydi. Teşekkür ederim… Beni sevdiğin için. Şimdi gözlerimi kapatıyorum. Uyan diye değil… Bu sefer, sen beni uyurken izle."
+    }
   ]
 }
