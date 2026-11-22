@@ -1,0 +1,25 @@
+{
+  "baslik": "Tarçın — O benim ailemdi (30 sn)",
+  "fps": 30,
+  "giris": 0.6,
+  "kapanis": 5.0,
+  "acilis": 0.8,
+  "altyaziY": 1640,
+  "ses": {
+    "sting": false, "kapanisDarbe": false, "whoosh": 0, "pad": 0, "piyano": 0,
+    "anlatim": "highpass=f=80,equalizer=f=250:t=q:w=1.2:g=1,aecho=0.85:0.6:30|60:0.06|0.04",
+    "ducking": 2, "release": 800,
+    "muzikDosyasi": "ses/muzik.wav", "muzikSeviye": -11
+  },
+  "muzik": { "ton": "C", "tempo": 72, "bolumler": { "tanisma": "huzun_giris", "ilgi": "huzun", "yaramaz": "buyume", "veda": "doruk" } },
+  "bolumler": [
+    { "id": "tanisma", "sahne": "tanisma", "gecis": "capraz", "gecisSure": 0.8,
+      "metin": "Merhaba… Ben Tarçın. Ben bu evin küçük, yaramaz çocuğuydum." },
+    { "id": "ilgi", "sahne": "ilgi", "gecis": "capraz", "gecisSure": 0.8,
+      "metin": "Sahibim benimle hep ilgilendi. Her gün mamamı verdi… benimle oyunlar oynadı." },
+    { "id": "yaramaz", "sahne": "yaramaz", "gecis": "karart", "gecisSure": 1.2,
+      "metin": "Bazen çok yaramazlık yaptım… ama o beni hiç bırakmadı." },
+    { "id": "veda", "sahne": "veda",
+      "metin": "Şimdi ona veda ettim. Ama onu hep… çok seveceğim. Çünkü o… benim ailemdi." }
+  ]
+}

@@ -69,5 +69,6 @@ Gereksinim: Node 20+, FFmpeg, `npm install` (Playwright) + `npx playwright insta
 | [insan-atlasi-05-koku](videolar/insan-atlasi-05-koku) — İnsan Atlası #05: Bir koku neden bizi yıllar öncesine götürür? (2D el çizimi stil) | Final hazır (ses: Chatterbox, ücretsiz) |
 | [insan-atlasi-06-dus](videolar/insan-atlasi-06-dus) — İnsan Atlası #06: Neden en iyi cevapları duşta buluruz? | Final hazır (ses: kullanıcı, müzik: studio/besteci.py) |
 | [kedi-sesim](videolar/kedi-sesim) — Tarçın: Bir gün sesimi duymayacaksın (kedinin gözünden) | Final hazır (ses: kullanıcı, müzik: besteci.py) |
+| [tarcin-30](videolar/tarcin-30) — Tarçın: O benim ailemdi (30 sn) | Müzikli önizleme · seslendirme kullanıcıdan bekleniyor |
 
 Yazı tipi: Inter (SIL OFL, `studio/fonts/`).
