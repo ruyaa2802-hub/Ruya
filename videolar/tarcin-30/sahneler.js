@@ -33,7 +33,10 @@
     ctx.clip(P);
     ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = o.doku ?? 0.35; ctx.drawImage(A.sulu, (seed * 37) % 400 - 400, (seed * 53) % 400 - 400, 1600, 1600);
     ctx.globalAlpha = 1;
-    if (o.golge !== false) { ctx.globalCompositeOperation = 'multiply'; ctx.strokeStyle = o.golgeRenk || 'rgba(150,100,70,0.35)'; ctx.lineWidth = o.kenar ?? 26; ctx.filter = 'blur(10px)'; ctx.stroke(P); ctx.filter = 'none'; }
+    if (o.golge !== false) {   // kenara doğru koyulaşma: bulanıklık yerine kademeli çizgiler (çok daha hızlı)
+      ctx.globalCompositeOperation = 'multiply'; ctx.strokeStyle = o.golgeRenk || 'rgba(150,100,70,0.35)';
+      const k = o.kenar ?? 26; ctx.globalAlpha = 0.45; ctx.lineWidth = k * 1.6; ctx.stroke(P); ctx.globalAlpha = 0.55; ctx.lineWidth = k * 0.8; ctx.stroke(P); ctx.globalAlpha = 1;
+    }
     if (o.isik) { ctx.globalCompositeOperation = 'screen'; const [lx, ly, lr] = o.isik; const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, lr); g.addColorStop(0, 'rgba(255,236,200,0.55)'); g.addColorStop(1, 'rgba(255,236,200,0)'); ctx.fillStyle = g; ctx.fill(P); }
     ctx.restore();
     if (o.kontur !== false) { ctx.strokeStyle = o.renkK || C.kontur; ctx.lineWidth = o.kal ?? 4; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke(P); }
@@ -51,7 +54,15 @@
     return out;
   }
   function kamera(ctx, cx, cy, z, rot = 0) { ctx.translate(W / 2, H / 2); ctx.rotate(rot); ctx.scale(z, z); ctx.translate(-cx, -cy); }
-  function bulanik(ctx, px, f) { ctx.save(); ctx.filter = `blur(${px}px)`; f(); ctx.restore(); }
+  // arka plan bulanıklığı: önce ayrı tuvale çiz, sonra tek seferde bulanıklaştırarak bas
+  function bulanik(ctx, px, f) {
+    A.bulD = (A.bulD || 0) + 1; const ad = 'bul' + A.bulD;
+    if (!A[ad]) A[ad] = tuval();
+    const b = A[ad].getContext('2d'); b.setTransform(1, 0, 0, 1, 0, 0); b.globalAlpha = 1; b.filter = 'none'; b.clearRect(0, 0, W, H);
+    b.setTransform(ctx.getTransform()); f(b);
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.filter = `blur(${px}px)`; ctx.drawImage(A[ad], 0, 0); ctx.restore();
+    A.bulD--;
+  }
   function kagit(ctx, sicak = 1) {
     ctx.save(); ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = 0.28; ctx.drawImage(A.kagit, 0, 0, W, H); ctx.restore();
     ctx.save(); ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = 0.25 * sicak; ctx.fillStyle = '#ffb46e'; ctx.fillRect(0, 0, W, H); ctx.restore();
@@ -364,7 +375,7 @@
     ctx.save(); ctx.globalCompositeOperation = 'screen'; const sg = ctx.createRadialGradient(w * 0.85, h * 0.1, 10, w * 0.85, h * 0.1, w * 1.1); sg.addColorStop(0, 'rgba(255,244,210,0.95)'); sg.addColorStop(1, 'rgba(255,244,210,0)'); ctx.fillStyle = sg; ctx.fillRect(0, 0, w, h); ctx.restore();
     const k = w / 1000;
     ctx.save(); ctx.scale(k, k);
-    bulanik(ctx, 14, () => { boya(ctx, dik(620, 80, 320, 420), 901, '#fbe8c4', { kal: 0, kontur: false }); bitki(ctx, 140, 640, 1.6, t, 902); });
+    bulanik(ctx, 14, (b) => { boya(b, dik(620, 80, 320, 420), 901, '#fbe8c4', { kal: 0, kontur: false }); bitki(b, 140, 640, 1.6, t, 902); });
     const hh = h / k;
     boya(ctx, [[-60, hh + 20], [-40, 980], [120, 860], [420, 820], [600, 900], [760, 1100], [800, hh + 20]], 910, '#7f9cb8', { kal: 4, kenar: 40 });
     boya(ctx, dik(260, 700, 120, 180), 911, C.tenG, { kal: 4 });
@@ -429,7 +440,7 @@
 
   // ======================= YAŞLI TARÇIN YAKIN PLAN (veda) =======================
   function yasliYakin(c, gt, o) {
-    bulanik(c, 12, () => { c.save(); kamera(c, 640, 1150, 2.0); yatakOdasi(c, gt, { yuz: { goz: o.sahipGoz ?? 0.5 } }); c.restore(); });
+    bulanik(c, 12, (b) => { b.save(); kamera(b, 640, 1150, 2.0); yatakOdasi(b, gt, { yuz: { goz: o.sahipGoz ?? 0.5 } }); b.restore(); });
     c.save(); c.globalCompositeOperation = 'soft-light'; c.globalAlpha = 0.5; c.fillStyle = '#ffc88a'; c.fillRect(0, 0, W, H); c.restore();
     const K = renk(1), nef = Math.sin(gt * 1.2) * 6 * (o.nefes ?? 1);
     // kıvrılmış gövde: başın arkasında sağa uzanır, kuyruk önden dolanır
@@ -478,7 +489,7 @@
       const gt = S.gt;
       cekimler(ctx, S, [
         [0, (c, u, t) => {
-          bulanik(c, 9, () => { c.save(); kamera(c, 560, 1100, 1.5); yatakOdasi(c, gt, { yuz: { goz: 0 }, el: { x: 640, y: 1330, a: 0.1 } }); c.restore(); });
+          bulanik(c, 9, (b) => { b.save(); kamera(b, 560, 1100, 1.5); yatakOdasi(b, gt, { yuz: { goz: 0 }, el: { x: 640, y: 1330, a: 0.1 } }); b.restore(); });
           const z = lerp(1.0, 1.08, ease.inOut(clamp(t / Math.max(1, S.at(2, 0)))));
           c.save(); c.translate(540, 1100); c.scale(z, z); c.translate(-540, -1100);
           const merhaba = pencere(t, S.at(0, 0.05), S.at(0, 0.9), 0.12), egil = pencere(t, S.at(1, 0), S.at(1, 1) + 0.3, 0.3);
@@ -508,7 +519,7 @@
       cekimler(ctx, S, [
         [0, (c, u, t) => {                                                       // "benimle hep ilgilendi": okşayan el
           const ok = Math.sin(u * 3) * 0.5 + 0.5;
-          bulanik(c, 12, () => { c.save(); kamera(c, 600, 1150, 1.6); yatakOdasi(c, gt, { yuz: { goz: 0.6 } }); c.restore(); });
+          bulanik(c, 12, (b) => { b.save(); kamera(b, 600, 1150, 1.6); yatakOdasi(b, gt, { yuz: { goz: 0.6 } }); b.restore(); });
           kediBas(c, 560, 1180, 2.1, { t: gt, yan: 0.15, mutlu: 1, goz: 0, kulak: 0.25 + ok * 0.2 });
           el(c, 520 + ok * 30, 830 - ok * 20, 1.6, 1.25 + ok * 0.08, { parmak: u * 4 });
           toz(c, gt, 30);
@@ -563,7 +574,7 @@
         }],
         [S.at(1, -0.1), (c, u, t) => {                                           // "ama o beni hiç bırakmadı": kucakta, okşanan Tarçın
           const ok = Math.sin(u * 2.4) * 0.5 + 0.5;
-          bulanik(c, 12, () => { c.save(); kamera(c, 560, 1150, 1.6); yatakOdasi(c, gt, { yuz: { goz: 0.6 } }); c.restore(); });
+          bulanik(c, 12, (b) => { b.save(); kamera(b, 560, 1150, 1.6); yatakOdasi(b, gt, { yuz: { goz: 0.6 } }); b.restore(); });
           c.save(); c.globalCompositeOperation = 'soft-light'; c.globalAlpha = 0.4; c.fillStyle = '#ffc88a'; c.fillRect(0, 0, W, H); c.restore();
           boya(c, [[-80, 2000], [-60, 1500], [200, 1380], [540, 1360], [900, 1420], [1160, 1560], [1160, 2000]], 1780, C.pijama, { kal: 4, kenar: 40 });   // kucak
           kediOtur(c, 540, 1700, 0.85, { t: gt, yan: 0.1, mutlu: 1, goz: 0, kuyrukSal: 0.4, basEgim: -0.05 + ok * 0.05 });
