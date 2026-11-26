@@ -34,7 +34,7 @@ VO_SLOTS = [
     ('04_gun183', 16.45, 3.5),
     ('05_gun301', 20.0, 2.9),
     ('06_dogumgunu', 25.0, 6.0),
-    ('07_yarin', 64.2, 2.6),
+    ('07_yarin', 64.2, 3.1),
 ]
 HEADPHONE_REUSE = ('06_dogumgunu', 41.2, 5.0)  # Sevim Hanım kulaklıktan dinliyor
 
