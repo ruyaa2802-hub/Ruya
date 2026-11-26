@@ -28,10 +28,10 @@ rng = np.random.default_rng(3)
 
 # (dosya, başlangıç sn, azami süre sn)
 VO_SLOTS = [
-    ('01_kanca', 0.4, 2.7),
-    ('02_gece', 3.8, 7.1),
+    ('01_kanca', 0.15, 3.7),
+    ('02_gece', 3.6, 7.5),
     ('03_gun47', 13.4, 3.0),
-    ('04_gun183', 16.7, 3.1),
+    ('04_gun183', 16.45, 3.5),
     ('05_gun301', 20.0, 2.9),
     ('06_dogumgunu', 25.0, 6.0),
     ('07_yarin', 64.2, 2.6),

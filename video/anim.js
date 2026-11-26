@@ -741,16 +741,16 @@ function s7(t) {
 
 // ---------- altyazılar ----------
 const SUBS = [
-  [0.4, 2.9, 'Hepsini dinliyorsun… neden hiç cevap vermiyorsun?', { y: 1290 }],
-  [3.8, 7.3, 'Bugün yine o kafeye gittim. Senin sevdiğin kurabiyeden aldım…'],
-  [7.3, 10.8, '…ama yiyemedim. İyi geceler.'],
-  [13.4, 16.1, 'Annem seni sordu yine…'],
-  [16.7, 19.5, 'Kar yağdı, sen hep ilk karda dışarı çıkardın…'],
+  [0.15, 3.3, 'Hepsini dinliyorsun… neden hiç cevap vermiyorsun?', { y: 1290 }],
+  [3.6, 8.5, 'Bugün yine o kafeye gittim. Senin sevdiğin kurabiyeden aldım…'],
+  [8.5, 10.9, '…ama yiyemedim. İyi geceler.'],
+  [13.4, 15.9, 'Annem seni sordu yine…'],
+  [16.45, 19.6, 'Kar yağdı, sen hep ilk karda dışarı çıkardın…'],
   [20.0, 22.7, 'Bugün iyiyim. Galiba.'],
-  [25.0, 27.8, 'Bugün senin doğum günün.'],
-  [27.8, 30.8, 'Bir kere… sadece bir kere cevap ver. Lütfen.'],
+  [25.0, 26.5, 'Bugün senin doğum günün.'],
+  [26.5, 30.3, 'Bir kere… sadece bir kere cevap ver. Lütfen.'],
   [41.2, 45.8, '“Bugün senin doğum günün…”', { italic: true, dim: true }],
-  [64.2, 66.6, 'Yarın… size gelebilir miyim?', { y: 880 }],
+  [64.2, 66.7, 'Yarın… size gelebilir miyim?', { y: 880 }],
 ];
 function subtitles(t) {
   for (const [a, b, s, o = {}] of SUBS) {
